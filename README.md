@@ -1,5 +1,5 @@
-RESTmoteControl!
-================
+RESTmoteControl
+===============
 
 Currently Mac and Linux not supported.
 
