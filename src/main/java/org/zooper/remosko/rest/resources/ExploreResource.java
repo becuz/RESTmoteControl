@@ -65,7 +65,7 @@ public class ExploreResource extends AbstractResource {
 			@QueryParam("path") String filePath, 
 			@QueryParam("extensions") List<String> extensions,   //TODO param name: extension or extensions?
 			@QueryParam("depth") Integer depth,
-			@QueryParam("filter") String filter){
+			@QueryParam("filter") String filter){ //TODO filter
 		if (Utils.isEmpty(filePath)){
 			throw new NotAcceptableException("path is mandatory");
 		}
