@@ -134,7 +134,7 @@ function ajax_openFile(media) {
 
 function ajax_control(kind, command) {
 	var u;
-	if (kind == "keyboard" || kind == "mouse"){ //TODO probably kind isn't really keyboard or mouse
+	if (kind == "keyboard" || kind == "mouse"){
 		u = remoteUrl + "pc/" + kind + "/control/" + command;
 	} else {
 		u = remoteUrl + "apps/"+(currentApp ? currentApp.name + "/" : "" ) + "control/" + command
