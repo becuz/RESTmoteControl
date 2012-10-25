@@ -1,0 +1,5 @@
+NumFiles/Directories	Seconds		Memory
+0						0			135
+13612					3			121
+254599					40			260-302
+381898					144			388

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.zooper.remosko.model">
+
+	<class name="KeysEvent" table="KeysEvents">
+		<id name="id" column="keysEventId">
+			<generator class="native" />
+		</id>
+		<property name="logicOrder" />
+		<property name="repeat" />
+		<set name="keys" table="KeysEvent_Keys">
+            <key column="keysEventId"/>
+            <element type="integer" column="key"/>
+        </set>
+	</class>
+
+</hibernate-mapping>
