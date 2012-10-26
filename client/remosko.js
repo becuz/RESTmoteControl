@@ -421,7 +421,7 @@ function displayApps(apps){
 //
 function getConfiguredApp(appName){
 	for(j=0; j<data.mediaRoots.length;j++){
-		if (appName == data.mediaRoots[j].mediaCategory.app.name){
+		if (data.mediaRoots[j].mediaCategory.app && appName == data.mediaRoots[j].mediaCategory.app.name){
 			return data.mediaRoots[j].mediaCategory.app;
 		}
 	}
