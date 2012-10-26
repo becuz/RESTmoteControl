@@ -1,10 +1,7 @@
 package org.zooper.remosko.business;
 
-import java.util.Collection;
-
 import org.zooper.remosko.business.interfaces.BusinessModelAbstract;
 import org.zooper.remosko.model.App;
-import org.zooper.remosko.model.MediaCategory;
 
 public class AppBusiness extends BusinessModelAbstract<App>{
 

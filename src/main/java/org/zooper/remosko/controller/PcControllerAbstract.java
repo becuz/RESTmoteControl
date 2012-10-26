@@ -4,16 +4,12 @@ import java.awt.AWTException;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.PointerInfo;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,24 +22,18 @@ import org.zooper.remosko.business.MediaCategoryBusiness;
 import org.zooper.remosko.business.SettingsBusiness;
 import org.zooper.remosko.controller.keyboards.Keyboard;
 import org.zooper.remosko.controller.keyboards.KeyboardClipboard;
-import org.zooper.remosko.controller.keyboards.KeyboardRobot;
 import org.zooper.remosko.controller.mouses.Mouse;
-import org.zooper.remosko.controller.mouses.Mouse.BTN_ACTION;
 import org.zooper.remosko.controller.mouses.MouseRobot;
 import org.zooper.remosko.model.App;
 import org.zooper.remosko.model.Control;
-import org.zooper.remosko.model.Control.ControlDefaultTypeApp;
 import org.zooper.remosko.model.Control.ControlDefaultTypeKeyboard;
 import org.zooper.remosko.model.Control.ControlDefaultTypeMouse;
 import org.zooper.remosko.model.ControlsManager;
-import org.zooper.remosko.model.KeysEvent;
 import org.zooper.remosko.model.MediaCategory;
 import org.zooper.remosko.model.Settings;
 import org.zooper.remosko.model.transport.ActiveApp;
 import org.zooper.remosko.model.transport.Media;
 import org.zooper.remosko.model.transport.MediaRoot;
-import org.zooper.remosko.utils.Constants;
-import org.zooper.remosko.utils.Utils;
 
 public abstract class PcControllerAbstract {
 
@@ -319,7 +309,7 @@ public abstract class PcControllerAbstract {
 			if (file.exists()){
 				Media mediaPath = new Media(path);
 				mediaPath.setMediaChildren(
-						getMedia(mediaPath.getPath(), new ArrayList(mediaRoot.getMediaCategory().getExtensions()), settings.getScanDepth()));
+						getMedia(mediaPath.getPath(), new ArrayList<String>(mediaRoot.getMediaCategory().getExtensions()), settings.getScanDepth()));
 				mediaRoot.addMediaChild(mediaPath);
 			}
 		}

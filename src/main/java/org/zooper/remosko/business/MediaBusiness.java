@@ -3,8 +3,6 @@ package org.zooper.remosko.business;
 import java.util.List;
 
 import org.zooper.remosko.business.interfaces.BusinessAbstract;
-import org.zooper.remosko.business.interfaces.BusinessModelAbstract;
-import org.zooper.remosko.model.transport.Media;
 import org.zooper.remosko.model.transport.MediaRoot;
 
 public class MediaBusiness extends BusinessAbstract{

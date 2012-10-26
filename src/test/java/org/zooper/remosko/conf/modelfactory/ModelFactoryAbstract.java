@@ -1,9 +1,5 @@
 package org.zooper.remosko.conf.modelfactory;
 
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.util.Set;
-
 import org.zooper.remosko.model.App;
 import org.zooper.remosko.model.MediaCategory;
 import org.zooper.remosko.utils.PopulateDb;

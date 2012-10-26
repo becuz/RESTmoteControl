@@ -1,7 +1,5 @@
 package org.zooper.remosko.model.transport;
 
-import java.util.List;
-
 import org.zooper.remosko.controller.PcControllerFactory;
 import org.zooper.remosko.model.App;
 import org.zooper.remosko.model.MediaCategory;

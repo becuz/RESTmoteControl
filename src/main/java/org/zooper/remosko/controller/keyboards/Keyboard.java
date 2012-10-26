@@ -1,12 +1,11 @@
 package org.zooper.remosko.controller.keyboards;
 
-import java.awt.AWTException;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.zooper.remosko.controller.PcControllerAbstract;
 import org.zooper.remosko.controller.PcControllerFactory;
-import org.zooper.remosko.utils.Constants;
 
 /**
  * Class used to type characters on the screen 
@@ -33,8 +32,8 @@ public abstract class Keyboard {
 	public boolean type(String characters) throws Exception {
 		Integer keycode = SPECIAL_CHARS.get(characters);
 		if (keycode != null){
-			PcControllerFactory.getPcController().getMyRobot().keyPress(keycode);
-			PcControllerFactory.getPcController().getMyRobot().keyRelease(keycode);
+			PcControllerAbstract.getMyRobot().keyPress(keycode);
+			PcControllerAbstract.getMyRobot().keyRelease(keycode);
 			return true;
 		}
 		return false;

@@ -6,10 +6,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
-import org.zooper.remosko.model.ControlsManager;
-import org.zooper.remosko.model.Settings;
 import org.zooper.remosko.model.Control.ControlDefaultTypeKeyboard;
 import org.zooper.remosko.model.Control.ControlDefaultTypeMouse;
+import org.zooper.remosko.model.ControlsManager;
+import org.zooper.remosko.model.Settings;
 import org.zooper.remosko.rest.resources.DataResource;
 
 /**

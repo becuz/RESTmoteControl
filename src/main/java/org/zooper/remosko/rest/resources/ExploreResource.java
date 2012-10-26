@@ -97,7 +97,6 @@ public class ExploreResource extends AbstractResource {
 			return PcControllerFactory.getPcController().getMedia(getMediaBusiness().getMediaRootByName(mediaCategoryName)); 
 		}
 		MediaCategory mediaCategory = null;
-		Set<String> extensions = new HashSet<String>();
 		if (!Utils.isEmpty(mediaCategoryName)){
 			mediaCategory = getMediaCategoryBusiness().getByName(mediaCategoryName);
 		}

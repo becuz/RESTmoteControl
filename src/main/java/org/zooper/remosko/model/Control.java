@@ -1,7 +1,6 @@
 package org.zooper.remosko.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -13,8 +12,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.zooper.remosko.model.interfaces.Persistable;
-import org.zooper.remosko.utils.Constants;
-import org.zooper.remosko.utils.Utils;
 
 /**
  * A control identifies an action to perform on a {@link App} through a series of keyboard shortcuts specified in {@link #keysEvents}.

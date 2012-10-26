@@ -187,7 +187,8 @@ public class TestRemoteControlBusiness extends TestAbstract{
 	public void testFocusActiveApp(){
 		try {
 			ActiveApp activeApp = activeAppBusiness.next();
-			ActiveApp activeApp2 = activeAppBusiness.next();
+//			ActiveApp activeApp2 = 
+					activeAppBusiness.next();
 			activeAppBusiness.focusActiveApp(activeApp.getPid());
 			String pidFocus = null;
 			for(ActiveApp a: activeAppBusiness.getActiveApps(true)){

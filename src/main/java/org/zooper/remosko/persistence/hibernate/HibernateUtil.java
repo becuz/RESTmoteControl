@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
-import org.zooper.remosko.controller.PcControllerFactory;
 import org.zooper.remosko.utils.Utils;
 
 public class HibernateUtil {

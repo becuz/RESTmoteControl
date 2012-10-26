@@ -6,7 +6,6 @@ package org.zooper.remosko.serverui;
 
 import java.awt.AWTException;
 import java.awt.CheckboxMenuItem;
-import java.awt.Image;
 import java.awt.Menu;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
@@ -16,9 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.File;
 
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class TrayApp implements ActionListener, ItemListener {

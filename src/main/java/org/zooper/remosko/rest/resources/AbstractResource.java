@@ -2,8 +2,8 @@ package org.zooper.remosko.rest.resources;
 
 import org.zooper.remosko.business.ActiveAppBusiness;
 import org.zooper.remosko.business.AppBusiness;
-import org.zooper.remosko.business.MediaCategoryBusiness;
 import org.zooper.remosko.business.MediaBusiness;
+import org.zooper.remosko.business.MediaCategoryBusiness;
 import org.zooper.remosko.business.RemoteControlBusiness;
 import org.zooper.remosko.business.SettingsBusiness;
 

@@ -1,6 +1,5 @@
 package org.zooper.remosko.rest.resources;
 
-import java.awt.AWTException;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.PointerInfo;

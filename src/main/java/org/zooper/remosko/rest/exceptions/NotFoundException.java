@@ -12,6 +12,8 @@ import com.sun.jersey.api.Responses;
  */
 public class NotFoundException extends WebApplicationException {
 	
+	private static final long serialVersionUID = 1L;
+	
 	public NotFoundException() {
 		super(Responses.notFound().build());
 	}

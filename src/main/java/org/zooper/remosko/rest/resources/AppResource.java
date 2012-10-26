@@ -1,6 +1,5 @@
 package org.zooper.remosko.rest.resources;
 
-import java.rmi.server.ServerCloneException;
 import java.util.Collection;
 import java.util.logging.Logger;
 

@@ -2,12 +2,7 @@ package org.zooper.remosko.business.interfaces;
 
 import java.util.Collection;
 
-import org.zooper.remosko.model.App;
-import org.zooper.remosko.model.MediaCategory;
 import org.zooper.remosko.model.interfaces.Persistable;
-import org.zooper.remosko.model.transport.Media;
-import org.zooper.remosko.persistence.PersistenceAbstract;
-import org.zooper.remosko.persistence.PersistenceFactory;
 
 /**
  * 

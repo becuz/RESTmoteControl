@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.zooper.remosko.business.interfaces.BusinessAbstract;
-import org.zooper.remosko.controller.PcControllerAbstract;
 import org.zooper.remosko.controller.PcControllerFactory;
 import org.zooper.remosko.model.App;
 import org.zooper.remosko.model.transport.ActiveApp;

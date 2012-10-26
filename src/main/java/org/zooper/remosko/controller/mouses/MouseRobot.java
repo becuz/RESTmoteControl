@@ -6,8 +6,8 @@ import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.util.logging.Logger;
 
+import org.zooper.remosko.controller.PcControllerAbstract;
 import org.zooper.remosko.controller.PcControllerFactory;
-import org.zooper.remosko.rest.resources.ActiveAppResource;
 import org.zooper.remosko.utils.Utils;
 
 /**
@@ -57,7 +57,7 @@ public class MouseRobot implements Mouse {
 		x = Math.max(0, Math.min(x, screenWidth));
 		y = Math.max(0, Math.min(y, screenHeight));
 		log.severe("putting mouse in positions: " + x + " " + y);
-		PcControllerFactory.getPcController().getMyRobot().mouseMove(x, y);
+		PcControllerAbstract.getMyRobot().mouseMove(x, y);
 		return true;
 	}
 	
@@ -79,10 +79,10 @@ public class MouseRobot implements Mouse {
 		}
 		if (btnMask > 0){
 			if (btnAction.equals(BTN_ACTION.CLICK) || btnAction.equals(BTN_ACTION.HOLD)){
-				PcControllerFactory.getPcController().getMyRobot().mousePress(btnMask);
+				PcControllerAbstract.getMyRobot().mousePress(btnMask);
 			}
 			if (btnAction.equals(BTN_ACTION.CLICK) || btnAction.equals(BTN_ACTION.RELEASE)){
-				PcControllerFactory.getPcController().getMyRobot().mouseRelease(btnMask);
+				PcControllerAbstract.getMyRobot().mouseRelease(btnMask);
 			}
 			return true;
 		}
@@ -91,7 +91,7 @@ public class MouseRobot implements Mouse {
 	
 	@Override
 	public boolean mouseWheel(int wheel) throws Exception {
-		PcControllerFactory.getPcController().getMyRobot().mouseWheel(wheel);
+		PcControllerAbstract.getMyRobot().mouseWheel(wheel);
 		return true;
 	}
 

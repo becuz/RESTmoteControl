@@ -8,7 +8,7 @@ import org.zooper.remosko.model.Settings;
  * @author bebo
  *
  */
-public class SettingsBusiness extends BusinessModelAbstract{
+public class SettingsBusiness extends BusinessModelAbstract<Settings>{
 
 	public SettingsBusiness() {
 		super(Settings.class);

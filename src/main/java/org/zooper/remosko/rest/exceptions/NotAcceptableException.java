@@ -12,6 +12,8 @@ import com.sun.jersey.api.Responses;
  */
 public class NotAcceptableException extends WebApplicationException {
     
+	private static final long serialVersionUID = 1L;
+
 	public NotAcceptableException() {
 		super(Responses.notAcceptable().build());
 	}

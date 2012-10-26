@@ -2,11 +2,8 @@ package org.zooper.remosko.business.interfaces;
 
 import org.zooper.remosko.business.ActiveAppBusiness;
 import org.zooper.remosko.business.AppBusiness;
-import org.zooper.remosko.business.MediaCategoryBusiness;
 import org.zooper.remosko.business.MediaBusiness;
-import org.zooper.remosko.model.App;
-import org.zooper.remosko.model.MediaCategory;
-import org.zooper.remosko.model.transport.Media;
+import org.zooper.remosko.business.MediaCategoryBusiness;
 import org.zooper.remosko.persistence.PersistenceAbstract;
 import org.zooper.remosko.persistence.PersistenceFactory;
 

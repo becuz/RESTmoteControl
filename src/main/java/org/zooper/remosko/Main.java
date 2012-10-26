@@ -1,7 +1,5 @@
 package org.zooper.remosko;
 
-import java.io.IOException;
-
 import org.zooper.remosko.controller.PcControllerFactory;
 import org.zooper.remosko.model.App;
 import org.zooper.remosko.model.MediaCategory;

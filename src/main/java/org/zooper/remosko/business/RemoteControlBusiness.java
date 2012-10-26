@@ -1,9 +1,7 @@
 package org.zooper.remosko.business;
 
 import java.awt.AWTException;
-import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -13,12 +11,11 @@ import org.zooper.remosko.controller.PcControllerFactory;
 import org.zooper.remosko.controller.keyboards.KeyboardRobot;
 import org.zooper.remosko.model.App;
 import org.zooper.remosko.model.Control;
-import org.zooper.remosko.model.KeysEvent;
 import org.zooper.remosko.model.Control.ControlDefaultTypeApp;
 import org.zooper.remosko.model.Control.ControlDefaultTypeKeyboard;
 import org.zooper.remosko.model.Control.ControlDefaultTypeMouse;
+import org.zooper.remosko.model.KeysEvent;
 import org.zooper.remosko.model.transport.ActiveApp;
-import org.zooper.remosko.model.transport.Media;
 import org.zooper.remosko.utils.Utils;
 
 public class RemoteControlBusiness extends BusinessAbstract{
@@ -101,7 +98,7 @@ public class RemoteControlBusiness extends BusinessAbstract{
 	
 	private void control(Character c) throws AWTException{
 		int[] k = KeyboardRobot.getKeyEvents(c);
-		Set<Integer> s = new HashSet();
+		Set<Integer> s = new HashSet<Integer>();
 		for (int i: k){
 			s.add(i);
 		}
@@ -117,10 +114,10 @@ public class RemoteControlBusiness extends BusinessAbstract{
 //				System.out.println("key pressed " + KeyEvent.VK_F + " " + key);
 				for (int i = 0; i < repeat; i++) {
 					for(int key: keysEvent.getKeys()){
-						PcControllerFactory.getPcController().getMyRobot().keyPress(key);
+						PcControllerAbstract.getMyRobot().keyPress(key);
 					}
 					for(int key: keysEvent.getKeys()){
-						PcControllerFactory.getPcController().getMyRobot().keyRelease(key);
+						PcControllerAbstract.getMyRobot().keyRelease(key);
 					}
 				}
 		}

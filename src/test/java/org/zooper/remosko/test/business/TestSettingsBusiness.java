@@ -2,15 +2,11 @@
  * 
  */
 package org.zooper.remosko.test.business;
-import static org.junit.Assert.*;
-
-import java.util.Set;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.zooper.remosko.business.SettingsBusiness;
-import org.zooper.remosko.model.Control;
-import org.zooper.remosko.model.ControlsManager;
-import org.zooper.remosko.model.MediaCategory;
 import org.zooper.remosko.model.Settings;
 import org.zooper.remosko.test.TestAbstract;
 /**

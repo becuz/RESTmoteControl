@@ -2,8 +2,6 @@ package org.zooper.remosko.utils;
 
 import java.util.logging.Logger;
 
-import org.zooper.remosko.controller.mouses.MouseRobot;
-
 public class Utils {
 
 	private static final Logger log = Logger.getLogger(Utils.class.getName());

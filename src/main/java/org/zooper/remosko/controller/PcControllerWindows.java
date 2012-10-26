@@ -11,10 +11,7 @@ import java.util.Map;
 import org.zooper.remosko.model.App;
 import org.zooper.remosko.model.MediaCategory;
 import org.zooper.remosko.model.transport.ActiveApp;
-import org.zooper.remosko.model.transport.Media;
 import org.zooper.remosko.utils.Utils;
-
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 public class PcControllerWindows extends PcControllerAbstract{
 

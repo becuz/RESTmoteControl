@@ -57,6 +57,7 @@ public class PopulateDb {
 		        	}
 	        	}
 	        }
+	        br.close();
 		} catch (Exception e){
 //			e.printStackTrace();
 			log.severe(e.toString());

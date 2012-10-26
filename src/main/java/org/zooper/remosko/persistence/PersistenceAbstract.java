@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 
 import org.zooper.remosko.model.interfaces.Editable;
 import org.zooper.remosko.model.interfaces.Persistable;
-import org.zooper.remosko.model.transport.Media;
 import org.zooper.remosko.model.transport.MediaRoot;
 
 public abstract class PersistenceAbstract {

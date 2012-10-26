@@ -7,11 +7,8 @@ import java.util.Set;
 
 import org.zooper.remosko.model.App;
 import org.zooper.remosko.model.Control;
-import org.zooper.remosko.model.ControlsManager;
-import org.zooper.remosko.model.MediaCategory;
 import org.zooper.remosko.model.Control.ControlDefaultTypeApp;
-import org.zooper.remosko.utils.Utils;
-import org.zooper.remosko.utils.Utils.OS;
+import org.zooper.remosko.model.ControlsManager;
 
 public class ModelFactoryWindows extends ModelFactoryAbstract{
 

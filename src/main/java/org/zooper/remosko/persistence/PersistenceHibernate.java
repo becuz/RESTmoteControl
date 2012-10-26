@@ -6,9 +6,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.hibernate.Session;
-import org.zooper.remosko.model.App;
-import org.zooper.remosko.model.MediaCategory;
-import org.zooper.remosko.model.Settings;
 import org.zooper.remosko.model.interfaces.Persistable;
 import org.zooper.remosko.persistence.hibernate.HibernateUtil;
 

@@ -5,33 +5,23 @@ package org.zooper.remosko.test;
 
 import static org.junit.Assert.assertTrue;
 
-import java.awt.event.KeyEvent;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Logger;
 
 import org.hibernate.cfg.Environment;
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.zooper.remosko.conf.modelfactory.ModelFactoryFactory;
-import org.zooper.remosko.conf.modelfactory.ModelFactoryWindows;
-import org.zooper.remosko.controller.PcControllerAbstract;
 import org.zooper.remosko.controller.PcControllerFactory;
 import org.zooper.remosko.model.App;
-import org.zooper.remosko.model.Control;
-import org.zooper.remosko.model.ControlsManager;
 import org.zooper.remosko.model.MediaCategory;
 import org.zooper.remosko.model.Settings;
-import org.zooper.remosko.model.Control.ControlDefaultTypeApp;
 import org.zooper.remosko.persistence.PersistenceAbstract;
 import org.zooper.remosko.persistence.PersistenceFactory;
 import org.zooper.remosko.persistence.PersistenceHibernate;
 import org.zooper.remosko.persistence.hibernate.HibernateUtil;
 import org.zooper.remosko.utils.Utils;
-import org.zooper.remosko.utils.Utils.OS;
 
 /**
  * @author bebo

@@ -11,7 +11,6 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.zooper.remosko.controller.PcControllerAbstract;
 import org.zooper.remosko.model.interfaces.Persistable;
-import org.zooper.remosko.model.transport.Media;
 import org.zooper.remosko.utils.Constants;
 
 /**
