@@ -1,6 +1,6 @@
 RESTmoteControl
 ===============
-*Let the house and his devices control and use the power of a pc!*
+*Your house and his devices use the power of the computer!*
 
 
 Currently Mac and Linux not supported.
