@@ -41,7 +41,7 @@ import org.zooper.remosko.utils.Constants;
  * PUT		/pc/mouse/912
  * PUT		/pc/mouse/32%x22%
  * PUT		/pc/mouse/-22
- * PUT		/pc/mouse/wheel/+912x-22	?
+ * PUT		/pc/mouse/wheel/+12    	?
  * POST		/pc/mouse/buttons/1/click	?
  * POST		/pc/mouse/buttons/1/hold	?
  * POST		/pc/mouse/buttons/1/release	?
