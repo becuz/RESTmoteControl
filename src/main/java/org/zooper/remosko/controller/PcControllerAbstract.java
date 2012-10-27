@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.zooper.remosko.business.ActiveAppBusiness;
 import org.zooper.remosko.business.AppBusiness;
@@ -34,6 +36,7 @@ import org.zooper.remosko.model.Settings;
 import org.zooper.remosko.model.transport.ActiveApp;
 import org.zooper.remosko.model.transport.Media;
 import org.zooper.remosko.model.transport.MediaRoot;
+import org.zooper.remosko.utils.Utils;
 
 public abstract class PcControllerAbstract {
 
@@ -309,7 +312,7 @@ public abstract class PcControllerAbstract {
 			if (file.exists()){
 				Media mediaPath = new Media(path);
 				mediaPath.setMediaChildren(
-						getMedia(mediaPath.getPath(), new ArrayList<String>(mediaRoot.getMediaCategory().getExtensions()), settings.getScanDepth()));
+						getMedia(mediaPath.getPath(), new ArrayList<String>(mediaRoot.getMediaCategory().getExtensions()), settings.getScanDepth(), null));
 				mediaRoot.addMediaChild(mediaPath);
 			}
 		}
@@ -323,7 +326,11 @@ public abstract class PcControllerAbstract {
 	 * @param depth negative to scan everything 
 	 * @return
 	 */
-	public List<Media> getMedia(String path, List<String> extensions, Integer depth){
+	public List<Media> getMedia(String path, List<String> extensions, Integer depth, String pattern){
+		Pattern p = null;
+		if (!Utils.isEmpty(pattern)){
+			p = Pattern.compile(pattern);
+		}
 		List<Media> results = new ArrayList<Media>();
 		if (depth != 0) {
 			File f = new File(path);
@@ -332,17 +339,26 @@ public abstract class PcControllerAbstract {
 				if (children != null){
 					for(File child: children){
 						String childPath = child.getAbsolutePath();
-						if (child.isDirectory() || extensions == null || extensions.isEmpty() || extensions.contains(childPath.substring(childPath.lastIndexOf('.')+1).toLowerCase())){
+						boolean fileAllowed = false;
+						if (child.isDirectory()){
+							fileAllowed = true;
+						} else {
+							if ((p == null || p.matcher(childPath).matches()) 
+									&& (extensions == null || extensions.isEmpty() || extensions.contains(Utils.getFileExtension(childPath).toLowerCase()))){
+								fileAllowed = true;
+							}
+						}
+						if (fileAllowed){
 							Media mediaChild = new Media(childPath);
 							if (!child.isDirectory()){
 								mediaChild.setFile(true);	//let's leave it at null in case it's a directory
 							}
-							results.add(mediaChild);
+							results.add(mediaChild);							
 						}
 					}
 					if (depth != 1){
 						for (Media mediaChild: results){
-							mediaChild.setMediaChildren(getMedia(mediaChild.getPath(), extensions, depth-1));
+							mediaChild.setMediaChildren(getMedia(mediaChild.getPath(), extensions, depth-1, pattern));
 						}
 					}
 				}

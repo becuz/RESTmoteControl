@@ -34,30 +34,6 @@ public class TestRemoteControlBusiness extends TestAbstract{
 	private ActiveAppBusiness activeAppBusiness = new ActiveAppBusiness();
 	private String pid;
 	
-	private Media findMediaByExtensionInMediaRoots(List<MediaRoot> medias, String extension){
-		for(MediaRoot mediaRoot: medias){
-			Media m2 = findMediaByExtension(mediaRoot.getMediaChildren(), extension);
-			if (m2 != null){
-				return m2;
-			}
-		}
-		return null;
-	}
-	
-	private Media findMediaByExtension(List<Media> medias, String extension){
-		for(Media m: medias){
-			if (m.isFile() && m.getPath().endsWith(extension)){
-				return m;
-			} else {
-				Media m2 = findMediaByExtension(m.getMediaChildren(), extension);
-				if (m2 != null){
-					return m2;
-				}
-			}
-		}
-		return null;
-	}
-	
 	private String getActivePid(String appName, boolean wait){
 		int attempts = 15;
 		while (attempts > 0){

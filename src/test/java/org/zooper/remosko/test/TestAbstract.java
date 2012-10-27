@@ -6,6 +6,7 @@ package org.zooper.remosko.test;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -17,6 +18,8 @@ import org.zooper.remosko.controller.PcControllerFactory;
 import org.zooper.remosko.model.App;
 import org.zooper.remosko.model.MediaCategory;
 import org.zooper.remosko.model.Settings;
+import org.zooper.remosko.model.transport.Media;
+import org.zooper.remosko.model.transport.MediaRoot;
 import org.zooper.remosko.persistence.PersistenceAbstract;
 import org.zooper.remosko.persistence.PersistenceFactory;
 import org.zooper.remosko.persistence.PersistenceHibernate;
@@ -66,10 +69,8 @@ public abstract class TestAbstract {
 		settings.setNameRoot("settingsNameRoot");
 		Set<String> paths = new HashSet<String>();
 		
-		String fileSeparator = System.getProperty("file.separator");
 		paths.add(PATH_RESOURCES);
-//		paths.add(System.getProperties().getProperty("user.dir") +  fileSeparator + "src" + fileSeparator + "test" + fileSeparator + "resources");
-		paths.add("path2");
+		paths.add("path2"); 
 		settings.setPaths(paths);
 		
 //			settings.setKeyboardControls(keyboardControls)
@@ -95,6 +96,34 @@ public abstract class TestAbstract {
 	@AfterClass
 	public static void clean() throws Exception {
 		PcControllerFactory.getPcController().clean();
+	}
+	
+	protected Media findMediaByExtensionInMediaRoots(List<MediaRoot> medias, String extension){
+		for(MediaRoot mediaRoot: medias){
+			Media m2 = findMediaByExtension(mediaRoot.getMediaChildren(), extension);
+			if (m2 != null){
+				return m2;
+			}
+		}
+		return null;
+	}
+	
+	protected Media findMediaByExtension(List<Media> medias, String extension){
+		for(Media m: medias){
+			if (m.isFile() && (Utils.isEmpty(extension) || m.getPath().endsWith("."+extension))){
+				return m;
+			} else {
+				Media m2 = findMediaByExtension(m.getMediaChildren(), extension);
+				if (m2 != null){
+					return m2;
+				}
+			}
+		}
+		return null;
+	}
+	
+	protected Media findMediaFile(List<Media> medias){
+		return findMediaByExtension(medias, null);
 	}
 
 }

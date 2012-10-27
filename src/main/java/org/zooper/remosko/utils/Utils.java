@@ -98,6 +98,18 @@ public class Utils {
 		}
     	return absoluteRootProjectPath;
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static String getFileExtension(String path){
+		try {
+			return path.substring(path.lastIndexOf('.')+1).toLowerCase();
+		} catch (Exception e){
+			return null;
+		}
+	}
 
 	
 }

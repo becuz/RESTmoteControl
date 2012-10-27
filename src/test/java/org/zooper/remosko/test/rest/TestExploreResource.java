@@ -3,8 +3,7 @@
  */
 package org.zooper.remosko.test.rest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.net.HttpURLConnection;
 import java.net.URLEncoder;
@@ -21,7 +20,7 @@ import org.zooper.remosko.model.transport.Media;
 import org.zooper.remosko.utils.Utils;
 
 /**
- * TODO
+ * TODO all tests
  * @author bebo
  */
 public class TestExploreResource extends TestResourceAbstract {
@@ -50,7 +49,7 @@ public class TestExploreResource extends TestResourceAbstract {
 		
 		//GET /medias/ 
 		result = invokeUrl(
-				server.getApiUrl() + "medias", "?path=" + URLEncoder.encode(rootPath, "UTF-8") + "&extensions=mp3", 
+				server.getApiUrl() + "medias", "?path=" + URLEncoder.encode(rootPath, "UTF-8") + "&extensions=mp3&extensions=mp2", 
 				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "GET", "", HttpURLConnection.HTTP_OK);
 		myString = IOUtils.toString(result, "UTF-8");
 		log.severe("/get returned:" + myString);
@@ -59,6 +58,26 @@ public class TestExploreResource extends TestResourceAbstract {
 		assertTrue(!medias.isEmpty());
 		assertTrue(sizeMedias > medias.size());
 		sizeMedias = medias.size();
+		
+		result = invokeUrl(
+				server.getApiUrl() + "medias", "?path=" + URLEncoder.encode(rootPath, "UTF-8") + "&extensions=uuuuu", 
+				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "GET", "", HttpURLConnection.HTTP_OK);
+		myString = IOUtils.toString(result, "UTF-8");
+		log.severe("/get returned:" + myString);
+		objectMapper = RestFactory.getJson().getContext(List.class);
+		medias = objectMapper.readValue(myString, new TypeReference<List<Media>>() {});
+		Media m = findMediaFile(medias);
+		assertNull(m); //no files should be found
+		
+		result = invokeUrl(
+				server.getApiUrl() + "medias", "?path=" + URLEncoder.encode(rootPath, "UTF-8") + "&filter=uuuuuuuuuuuuuu", 
+				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "GET", "", HttpURLConnection.HTTP_OK);
+		myString = IOUtils.toString(result, "UTF-8");
+		log.severe("/get returned:" + myString);
+		objectMapper = RestFactory.getJson().getContext(List.class);
+		medias = objectMapper.readValue(myString, new TypeReference<List<Media>>() {});
+		m = findMediaFile(medias);
+		assertNull(m); //no files should be found
 		
 		//GET /medias/Music
 		result = invokeUrl(

@@ -1,9 +1,7 @@
 package org.zooper.remosko.rest.resources;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
@@ -63,9 +61,11 @@ public class ExploreResource extends AbstractResource {
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public List<Media> get(
 			@QueryParam("path") String filePath, 
-			@QueryParam("extensions") List<String> extensions,   //TODO param name: extension or extensions?
+			@QueryParam("extensions") List<String> extensions,
 			@QueryParam("depth") Integer depth,
-			@QueryParam("filter") String filter){ //TODO filter
+			@QueryParam("filter") String filter
+			//@QueryParam("mode") String mode TODO flat or tree
+			){
 		if (Utils.isEmpty(filePath)){
 			throw new NotAcceptableException("path is mandatory");
 		}
@@ -73,15 +73,16 @@ public class ExploreResource extends AbstractResource {
 		return PcControllerFactory.getPcController().getMedia(
 				filePath, 
 				extensions, 
-				depth == null ? getSettingsBusiness().get().getScanDepth() : depth);
+				depth == null ? getSettingsBusiness().get().getScanDepth() : depth,
+				filter);
 	}
 		
 	/**
 	 * 
 	 * @param filePath
-	 * @param extensions
-	 * @param depth
-	 * @param filter
+	 * @param extensions allowed extension
+	 * @param depth 
+	 * @param filter regex
 	 * @return
 	 */
 	@GET
@@ -91,7 +92,9 @@ public class ExploreResource extends AbstractResource {
 			@PathParam("mediaCategoryName") String mediaCategoryName,
 			@QueryParam("path") String filePath, 
 			@QueryParam("depth") Integer depth,
-			@QueryParam("filter") String filter){ //TODO filter
+			@QueryParam("filter") String filter
+			//@QueryParam("mode") String mode TODO flat or tree
+			){
 		log.severe("get path: " + filePath + ", mediaCategoryName: " + mediaCategoryName + ", depth: " + depth + ", filter: " + filter);
 		if (Utils.isEmpty(filePath)){
 			return PcControllerFactory.getPcController().getMedia(getMediaBusiness().getMediaRootByName(mediaCategoryName)); 
@@ -102,8 +105,9 @@ public class ExploreResource extends AbstractResource {
 		}
 		return PcControllerFactory.getPcController().getMedia(
 				filePath, 
-				mediaCategory == null ? null : new ArrayList(mediaCategory.getExtensions()), 
-				depth == null ? getSettingsBusiness().get().getScanDepth() : depth);
+				mediaCategory == null ? null : new ArrayList<String>(mediaCategory.getExtensions()), 
+				depth == null ? getSettingsBusiness().get().getScanDepth() : depth,
+				filter);
 	}
 	
 	//----------------------------- Open ---------------------------------
