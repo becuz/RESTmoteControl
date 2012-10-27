@@ -216,7 +216,7 @@ function displayMedia(media){
 	var $content = $( "#home div[data-role='content']" );
 	var $ul = $( "#listMedia"); 
 	if ($ul.length == 0){	//Let's created it the first time
-		$divMediaTitle = $( "<div>" +
+		$divMediaTitle = $( "<div>" + //TODO btn disalign
 								"<a data-role='button' href='#' data-iconpos='notext' data-icon='refresh' " +
 										"data-inline='true' data-mini='true' id='btn-refresh'></a>" +
 								"<h4 id='media-title'></h4>" +
