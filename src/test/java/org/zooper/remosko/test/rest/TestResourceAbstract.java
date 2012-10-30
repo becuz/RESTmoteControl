@@ -14,10 +14,10 @@ import java.net.URL;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.zooper.remosko.controller.PcControllerFactory;
-import org.zooper.remosko.server.Server;
+import org.zooper.becuz.restmote.controller.PcControllerFactory;
+import org.zooper.becuz.restmote.server.Server;
+import org.zooper.becuz.restmote.utils.Utils;
 import org.zooper.remosko.test.TestAbstract;
-import org.zooper.remosko.utils.Utils;
 
 /**
  * @author bebo

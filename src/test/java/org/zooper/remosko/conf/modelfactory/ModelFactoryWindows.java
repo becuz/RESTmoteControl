@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.zooper.remosko.model.App;
-import org.zooper.remosko.model.Control;
-import org.zooper.remosko.model.Control.ControlDefaultTypeApp;
-import org.zooper.remosko.model.ControlsManager;
+import org.zooper.becuz.restmote.model.App;
+import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.model.ControlsManager;
+import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeApp;
 
 public class ModelFactoryWindows extends ModelFactoryAbstract{
 

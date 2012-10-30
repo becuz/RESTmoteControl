@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.zooper.becuz.restmote.model">
+
+	<class name="App" table="Apps">
+		<id name="id" column="appId">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<property name="path" />
+		<property name="argumentsFile" />
+		<property name="argumentsDir" />	
+		<property name="forceOneInstance" />
+		<set name="extensions" table="App_Extensions" lazy="false">
+            <key column="appId"/>
+            <element type="string" column="extension"/>
+        </set>
+		<many-to-one name="controlsManager" 
+			lazy="false"
+			cascade="all,delete-orphan"
+	        column="controlsManagerId" 
+	        unique="true"
+	        />
+	</class>
+
+</hibernate-mapping>

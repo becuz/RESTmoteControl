@@ -8,8 +8,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.zooper.remosko.business.MediaCategoryBusiness;
-import org.zooper.remosko.model.MediaCategory;
+import org.zooper.becuz.restmote.business.MediaCategoryBusiness;
+import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.remosko.test.TestAbstract;
 
 /**

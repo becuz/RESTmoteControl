@@ -1,7 +1,7 @@
 package org.zooper.remosko.conf.modelfactory;
 
-import org.zooper.remosko.exceptions.NotYetImplementedException;
-import org.zooper.remosko.utils.Utils;
+import org.zooper.becuz.restmote.exceptions.NotYetImplementedException;
+import org.zooper.becuz.restmote.utils.Utils;
 
 public class ModelFactoryFactory {
 

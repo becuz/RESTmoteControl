@@ -15,8 +15,8 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
+import org.zooper.becuz.restmote.model.App;
 import org.zooper.remosko.conf.RestFactory;
-import org.zooper.remosko.model.App;
 
 /**
  * TODO

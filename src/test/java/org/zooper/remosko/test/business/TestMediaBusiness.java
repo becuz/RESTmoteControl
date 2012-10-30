@@ -10,10 +10,10 @@ import static org.junit.Assert.assertNull;
 import java.util.List;
 
 import org.junit.Test;
-import org.zooper.remosko.business.MediaBusiness;
-import org.zooper.remosko.model.MediaCategory;
-import org.zooper.remosko.model.transport.Media;
-import org.zooper.remosko.model.transport.MediaRoot;
+import org.zooper.becuz.restmote.business.MediaBusiness;
+import org.zooper.becuz.restmote.model.MediaCategory;
+import org.zooper.becuz.restmote.model.transport.Media;
+import org.zooper.becuz.restmote.model.transport.MediaRoot;
 import org.zooper.remosko.test.TestAbstract;
 
 /**

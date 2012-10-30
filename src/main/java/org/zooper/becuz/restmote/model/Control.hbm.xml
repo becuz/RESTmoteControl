@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.zooper.becuz.restmote.model">
+
+	<class name="Control" table="Controls">
+		<id name="id" column="controlId">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<property name="description" />
+		<property name="position" />
+		<property name="row" />
+		<!-- <property name="imgSrc" /> -->
+		<property name="hideImg" />
+		<property name="text" />
+		<set name="keysEvents" table="Control_KeysEvents" sort="natural" cascade="all" lazy="false">
+	        <key column="controlId"/>
+	        <many-to-many column="keysEventId" class="KeysEvent"/>
+	    </set>
+	</class>
+
+</hibernate-mapping>

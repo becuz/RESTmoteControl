@@ -13,18 +13,18 @@ import java.util.logging.Logger;
 
 import org.hibernate.cfg.Environment;
 import org.junit.AfterClass;
+import org.zooper.becuz.restmote.controller.PcControllerFactory;
+import org.zooper.becuz.restmote.model.App;
+import org.zooper.becuz.restmote.model.MediaCategory;
+import org.zooper.becuz.restmote.model.Settings;
+import org.zooper.becuz.restmote.model.transport.Media;
+import org.zooper.becuz.restmote.model.transport.MediaRoot;
+import org.zooper.becuz.restmote.persistence.PersistenceAbstract;
+import org.zooper.becuz.restmote.persistence.PersistenceFactory;
+import org.zooper.becuz.restmote.persistence.PersistenceHibernate;
+import org.zooper.becuz.restmote.persistence.hibernate.HibernateUtil;
+import org.zooper.becuz.restmote.utils.Utils;
 import org.zooper.remosko.conf.modelfactory.ModelFactoryFactory;
-import org.zooper.remosko.controller.PcControllerFactory;
-import org.zooper.remosko.model.App;
-import org.zooper.remosko.model.MediaCategory;
-import org.zooper.remosko.model.Settings;
-import org.zooper.remosko.model.transport.Media;
-import org.zooper.remosko.model.transport.MediaRoot;
-import org.zooper.remosko.persistence.PersistenceAbstract;
-import org.zooper.remosko.persistence.PersistenceFactory;
-import org.zooper.remosko.persistence.PersistenceHibernate;
-import org.zooper.remosko.persistence.hibernate.HibernateUtil;
-import org.zooper.remosko.utils.Utils;
 
 /**
  * @author bebo

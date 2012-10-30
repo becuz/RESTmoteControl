@@ -7,8 +7,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.zooper.remosko.business.AppBusiness;
-import org.zooper.remosko.model.App;
+import org.zooper.becuz.restmote.business.AppBusiness;
+import org.zooper.becuz.restmote.model.App;
 import org.zooper.remosko.test.TestAbstract;
 
 /**

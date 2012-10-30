@@ -13,14 +13,14 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
-import org.zooper.remosko.business.ActiveAppBusiness;
-import org.zooper.remosko.business.MediaBusiness;
-import org.zooper.remosko.business.RemoteControlBusiness;
+import org.zooper.becuz.restmote.business.ActiveAppBusiness;
+import org.zooper.becuz.restmote.business.MediaBusiness;
+import org.zooper.becuz.restmote.business.RemoteControlBusiness;
+import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.model.transport.ActiveApp;
+import org.zooper.becuz.restmote.model.transport.Media;
+import org.zooper.becuz.restmote.model.transport.MediaRoot;
 import org.zooper.remosko.conf.modelfactory.ModelFactoryFactory;
-import org.zooper.remosko.model.Control;
-import org.zooper.remosko.model.transport.ActiveApp;
-import org.zooper.remosko.model.transport.Media;
-import org.zooper.remosko.model.transport.MediaRoot;
 import org.zooper.remosko.test.TestAbstract;
 
 /**

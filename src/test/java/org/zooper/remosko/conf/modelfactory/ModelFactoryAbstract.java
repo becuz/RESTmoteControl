@@ -1,8 +1,8 @@
 package org.zooper.remosko.conf.modelfactory;
 
-import org.zooper.remosko.model.App;
-import org.zooper.remosko.model.MediaCategory;
-import org.zooper.remosko.utils.PopulateDb;
+import org.zooper.becuz.restmote.model.App;
+import org.zooper.becuz.restmote.model.MediaCategory;
+import org.zooper.becuz.restmote.utils.PopulateDb;
 
 /**
  * Return instances of model objects used in tests and by {@link PopulateDb} 

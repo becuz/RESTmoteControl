@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.logging.Logger;
 
 import org.junit.Test;
-import org.zooper.remosko.utils.Utils;
+import org.zooper.becuz.restmote.utils.Utils;
 
 /**
  * @author bebo
