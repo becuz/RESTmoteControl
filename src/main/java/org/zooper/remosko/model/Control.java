@@ -21,6 +21,9 @@ import org.zooper.remosko.model.interfaces.Persistable;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class Control implements Persistable{
 	
+	private static final int POSITION_NUM_ROWS = 4;
+//	private static final int POSITION_NUM_COLS = 5;
+	
 	public static enum ControlDefaultTypeApp {
 		PLAY, PAUSE, STOP,
 		PREV, NEXT, FORWARD, BACKWARD, 
@@ -51,6 +54,11 @@ public class Control implements Persistable{
 	 * code name, ex: KBD_TAB
 	 */
 	private String name;
+	
+	/**
+	 * textual description of the control, ex: "pauses the application"
+	 */
+	private String description;
 	
 	/**
 	 * mapped KeysEvent
@@ -121,7 +129,7 @@ public class Control implements Persistable{
 	}
 	
 	public void validate() throws IllegalArgumentException {
-		if (row == null || row < 1 || row > 4){
+		if (row == null || row < 1 || row > POSITION_NUM_ROWS){
 			throw new IllegalArgumentException("Control " + name + ". Row can't be null and has to be between 1 and 4");
 		}
 		if (position == null || position < -2 || position > 2){
@@ -151,6 +159,14 @@ public class Control implements Persistable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public SortedSet<KeysEvent> getKeysEvents() {
