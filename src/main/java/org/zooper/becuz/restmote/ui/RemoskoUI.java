@@ -1,4 +1,4 @@
-package org.zooper.becuz.restmote.serverui;
+package org.zooper.becuz.restmote.ui;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;

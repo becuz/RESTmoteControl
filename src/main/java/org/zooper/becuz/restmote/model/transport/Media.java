@@ -23,7 +23,8 @@ public class Media {
 	protected List<Media> mediaChildren;
 	
 	/**
-	 * If !file, a negative mediaChildrenSize means the directory has not been traversed. 0 means empty directory. 
+	 * If file the field is not used and is always -1.
+	 * if !file: if it's the directory has not been traversed; if it's 0 the directory is empty. 
 	 */
 	protected Integer mediaChildrenSize = -1;
 	

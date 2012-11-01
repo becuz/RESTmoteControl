@@ -31,12 +31,12 @@
         <!-- Drop and re-create the database schema on startup -->
         <!-- <property name="hbm2ddl.auto">create</property> -->
 
-		<mapping resource="org/zooper/remosko/model/KeysEvent.hbm.xml"/>
-		<mapping resource="org/zooper/remosko/model/Control.hbm.xml"/>
-		<mapping resource="org/zooper/remosko/model/ControlsManager.hbm.xml"/> 
-		<mapping resource="org/zooper/remosko/model/App.hbm.xml"/>
-		<mapping resource="org/zooper/remosko/model/MediaCategory.hbm.xml"/>
-        <mapping resource="org/zooper/remosko/model/Settings.hbm.xml"/>
+		<mapping resource="org/zooper/becuz/restmote/model/KeysEvent.hbm.xml"/>
+		<mapping resource="org/zooper/becuz/restmote/model/Control.hbm.xml"/>
+		<mapping resource="org/zooper/becuz/restmote/model/ControlsManager.hbm.xml"/> 
+		<mapping resource="org/zooper/becuz/restmote/model/App.hbm.xml"/>
+		<mapping resource="org/zooper/becuz/restmote/model/MediaCategory.hbm.xml"/>
+        <mapping resource="org/zooper/becuz/restmote/model/Settings.hbm.xml"/>
 
     </session-factory>
 

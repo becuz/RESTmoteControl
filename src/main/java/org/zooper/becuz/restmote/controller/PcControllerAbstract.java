@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.zooper.becuz.restmote.business.ActiveAppBusiness;
@@ -28,11 +27,11 @@ import org.zooper.becuz.restmote.controller.mouses.Mouse;
 import org.zooper.becuz.restmote.controller.mouses.MouseRobot;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeKeyboard;
+import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeMouse;
 import org.zooper.becuz.restmote.model.ControlsManager;
 import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.model.Settings;
-import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeKeyboard;
-import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeMouse;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
 import org.zooper.becuz.restmote.model.transport.Media;
 import org.zooper.becuz.restmote.model.transport.MediaRoot;
@@ -41,6 +40,11 @@ import org.zooper.becuz.restmote.utils.Utils;
 public abstract class PcControllerAbstract {
 
 	protected static final Logger log = Logger.getLogger(PcControllerAbstract.class.getName());
+	
+	/**
+	 * TODO
+	 */
+	protected List<String> binDefaultPaths;
 	
 	protected SettingsBusiness settingsBusiness = new SettingsBusiness();
 	protected MediaBusiness mediaBusiness = new MediaBusiness();
@@ -197,10 +201,17 @@ public abstract class PcControllerAbstract {
 	
 	/**
 	 * 
-	 * @return
+	 * @return all currently {@link ActiveApp}s
 	 */
 	public List<ActiveApp> getActiveApps() {
 		return activeApps;
+	}
+	
+	/**
+	 * @return paths where executable application are usually installed
+	 */
+	public List<String> getBinDefaultPaths(){
+		return binDefaultPaths;
 	}
 
 	/**
@@ -332,6 +343,7 @@ public abstract class PcControllerAbstract {
 			p = Pattern.compile(pattern);
 		}
 		List<Media> results = new ArrayList<Media>();
+		depth = depth == null ? settingsBusiness.get().getScanDepth() : depth;
 		if (depth != 0) {
 			File f = new File(path);
 			if (f.exists() && f.isDirectory()){

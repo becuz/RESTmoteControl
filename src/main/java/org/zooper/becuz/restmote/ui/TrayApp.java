@@ -1,4 +1,4 @@
-package org.zooper.becuz.restmote.serverui;
+package org.zooper.becuz.restmote.ui;
 
 /*
  * TrayIconDemo.java
@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
 
 public class TrayApp implements ActionListener, ItemListener {
     
-	private MainWindow mainWindow;
+	private NewJFrame newJFrame = new NewJFrame();
 	
 	//**********************************************
     
@@ -33,13 +33,6 @@ public class TrayApp implements ActionListener, ItemListener {
 	
     //**********************************************
     
-    private MainWindow getMainWindow() {
-		if (mainWindow == null){
-			mainWindow = new MainWindow();
-		}
-    	return mainWindow;
-	}
-
     public void createAndShowGUI() {
         if (!SystemTray.isSupported()) {
             System.out.println("SystemTray is not supported");
@@ -127,8 +120,7 @@ public class TrayApp implements ActionListener, ItemListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == trayIcon){
-//			getMainWindow().pack();
-			getMainWindow().setVisible(!mainWindow.isVisible());
+			newJFrame.setVisible(!newJFrame.isVisible());
 		} else if (e.getSource() == aboutItem){
 			JOptionPane.showMessageDialog(null, "This dialog box is run from About");
 		} else if (e.getSource() == exitItem){

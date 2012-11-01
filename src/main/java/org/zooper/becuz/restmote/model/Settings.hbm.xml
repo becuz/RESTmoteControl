@@ -11,23 +11,14 @@
 		<property name="name" not-null="true"/>
 		<property name="nameRoot" not-null="true"/>
 		<property name="lastUpdated" type="timestamp"/>
-		<property name="scanDepth" />  
+		<property name="scanDepth" />
 		<set name="paths" table="Settings_Paths" lazy="false">
             <key column="settingsId"/>
             <element type="string" column="path"/>
         </set>
-	   <!-- <many-to-one name="keyboardControlsManager" 
-	        column="keyboardControlsManagerId" 
-	        lazy="false"
-	        cascade="all"
-	        unique="true"
-	        not-null="false"/>  
-        <many-to-one name="mouseControlsManager" 
-	        column="mouseControlsManagerId"
-	        lazy="false"
-	        cascade="all" 
-	        unique="true"
-	        not-null="false"/> -->
+        <property name="serverInetName" />  
+        <property name="serverLastIp" />  
+        <property name="serverPort" />  
 	</class>
 
 </hibernate-mapping>

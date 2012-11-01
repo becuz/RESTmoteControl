@@ -18,8 +18,8 @@ public class PcControllerFactory {
 				pcControllerAbstract = new PcControllerWindows();
 			} else if (os == OS.MAC){
 				pcControllerAbstract = new PcControllerMac();
-//			} else if (os == OS.LINUX){
-//				pcControllerAbstract = new PcControllerLinux();
+			} else if (os == OS.LINUX){
+				pcControllerAbstract = new PcControllerLinux();
 			}
 		}
 		return pcControllerAbstract;

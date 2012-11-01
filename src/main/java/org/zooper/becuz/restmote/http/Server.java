@@ -1,4 +1,4 @@
-package org.zooper.becuz.restmote.server;
+package org.zooper.becuz.restmote.http;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -42,12 +42,6 @@ public class Server implements Runnable {
 	private String serverUrl = null;
 	
 	static {
-//		try {
-//			File f = new File("logging.properties");
-//			LogManager.getLogManager().readConfiguration(new FileInputStream(f));
-//		} catch (Exception e) {
-//			log.severe(e.getMessage());
-//		}
 		contentTypes.put("png", "image/png");
 		contentTypes.put("gif", "image/gif");
 		contentTypes.put("jpg", "image/jpg");
@@ -56,6 +50,44 @@ public class Server implements Runnable {
 		contentTypes.put("html", "text/html");
 	}
 	
+	//***************************************************************************
+	
+	/**
+	 * 
+	 * @param port
+	 */
+	public Server(int port) {
+		this();
+		this.port = port;
+	}
+	
+	/**
+	 * 
+	 */
+	public Server() {}
+	
+	//***************************************************************************
+	
+	/**
+	 * 
+	 * @param address
+	 * @return
+	 */
+	private String getIpAsString(InetAddress address) {
+		byte[] ipAddress = address.getAddress();
+		StringBuffer str = new StringBuffer();
+		for (int i = 0; i < ipAddress.length; i++) {
+			if (i > 0)
+				str.append('.');
+			str.append(ipAddress[i] & 0xFF);
+		}
+		return str.toString();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
 	private String getServerUrl() {
 		if (serverUrl == null){
 			String url = null;
@@ -68,8 +100,9 @@ public class Server implements Runnable {
 					if (!inetAddresses.isEmpty()) {
 						for (InetAddress inetAddress : inetAddresses) {
 							if (inetAddress.isSiteLocalAddress()) {
+								System.out.println(netint.getName());
 								url = getIpAsString(inetAddress);
-								break;
+								//break;
 							}
 						}
 					}
@@ -85,17 +118,6 @@ public class Server implements Runnable {
 		return serverUrl;
 	}
 
-	private static String getIpAsString(InetAddress address) {
-		byte[] ipAddress = address.getAddress();
-		StringBuffer str = new StringBuffer();
-		for (int i = 0; i < ipAddress.length; i++) {
-			if (i > 0)
-				str.append('.');
-			str.append(ipAddress[i] & 0xFF);
-		}
-		return str.toString();
-	}
-	
 	public String getApiUrl(){
 		return getServerUrl() + "api/";
 	}
@@ -104,26 +126,12 @@ public class Server implements Runnable {
 		return getServerUrl() + "client/";
 	}
 
-	public Server(int port) {
-		this();
-		this.port = port;
-	}
-	
-	public Server() {}
-
 	public void start() throws IOException {
-		System.out.println("Starting grizzly...");
+		log.fine("Starting grizzly...");
 		
 		ResourceConfig rc = new PackagesResourceConfig("org.zooper.becuz.restmote.rest.resources");
 		rc.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-		//rc.getFeatures().put(ResourceConfig.FEATURE_TRACE, true);
 		httpServer = GrizzlyServerFactory.createHttpServer(getApiUrl(), rc);
-		
-//		Map<String, String> initParams = new HashMap<String, String>();
-//		initParams.put(JSONConfiguration.FEATURE_POJO_MAPPING, "true");
-//        initParams.put("com.sun.jersey.config.property.packages", "org.zooper.becuz.restmote.test.rest.resources");  
-//        System.out.println("Starting grizzly...");          
-//        httpServer = GrizzlyWebContainerFactory.create(getBaseURI(), initParams);  
 		
 		StaticHttpHandler staticHttpHandler = new StaticHttpHandler(Utils.getRootDir() + "client/"){
 			@Override
@@ -140,15 +148,9 @@ public class Server implements Runnable {
 		};
 		httpServer.getServerConfiguration().addHttpHandler(staticHttpHandler, "/client");
 		
-		System.out.println("Jersey app started with WADL available at " + getServerUrl() + "application.wadl\n" +
+		log.fine("Server started with WADL available at " + getServerUrl() + "application.wadl\n" +
 				"Try out " + getClientUrl() + "index.html or " + getApiUrl()  + "data\n");
 		
-//		no thread way
-//		callGetSettings(getBaseURI()+"settings");
-//		System.in.read();
-//		httpServer.stop();
-		
-//		thread way
 		new Thread(this).start();
 		callGetSettings();
 	}	
@@ -162,7 +164,7 @@ public class Server implements Runnable {
 	public void run() {
 		while(httpServer != null){
 			try {
-				Thread.sleep(100);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -186,7 +188,8 @@ public class Server implements Runnable {
 				connection.setConnectTimeout(60000);
 				connection.setDoOutput(false);
 				connection.connect();
-				log.severe("response code for /data is " + connection.getResponseCode());
+				connection.getResponseCode(); //404!
+//				log.severe("response code for /data is " + connection.getResponseCode());
 			} catch (Exception e){
 				log.severe(e.getMessage() + " " + e.getCause());
 			}

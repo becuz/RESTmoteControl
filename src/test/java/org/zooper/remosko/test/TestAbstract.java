@@ -53,9 +53,8 @@ public abstract class TestAbstract {
 		persistenceAbstract = PersistenceFactory.getPersistenceAbstract();
 		
 		if (persistenceAbstract instanceof PersistenceHibernate){
-			//Ensures to recreate the database at each session of test running
 			Properties p = new Properties();
-			p.put(Environment.HBM2DDL_AUTO, "create"); 	
+			p.put(Environment.HBM2DDL_AUTO, "create-drop"); //Ensures to recreate the database at each session of test running
 			HibernateUtil.setProperties(p);
 			HibernateUtil.setTest(true);
 		}
@@ -72,9 +71,6 @@ public abstract class TestAbstract {
 		paths.add(PATH_RESOURCES);
 		paths.add("path2"); 
 		settings.setPaths(paths);
-		
-//			settings.setKeyboardControls(keyboardControls)
-//			settings.setMouseControls(mouseControls);
 		
 		persistenceAbstract.beginTransaction();
 		persistenceAbstract.store(appMovies);

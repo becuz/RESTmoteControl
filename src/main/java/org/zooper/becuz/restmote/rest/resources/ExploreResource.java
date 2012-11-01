@@ -73,7 +73,7 @@ public class ExploreResource extends AbstractResource {
 		return PcControllerFactory.getPcController().getMedia(
 				filePath, 
 				extensions, 
-				depth == null ? getSettingsBusiness().get().getScanDepth() : depth,
+				depth,
 				filter);
 	}
 		
@@ -106,7 +106,7 @@ public class ExploreResource extends AbstractResource {
 		return PcControllerFactory.getPcController().getMedia(
 				filePath, 
 				mediaCategory == null ? null : new ArrayList<String>(mediaCategory.getExtensions()), 
-				depth == null ? getSettingsBusiness().get().getScanDepth() : depth,
+				depth,
 				filter);
 	}
 	

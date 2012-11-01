@@ -1,4 +1,4 @@
-package org.zooper.becuz.restmote.serverui.panels;
+package org.zooper.becuz.restmote.ui.panels;
 
 import java.awt.GridLayout;
 

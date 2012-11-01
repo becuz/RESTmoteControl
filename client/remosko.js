@@ -1,9 +1,7 @@
-//var remoteUrl = "http://192.168.205.1:9898/api/";
-var remoteUrl = "../api/";
+var remoteUrl = "../api/"; 	//using phonegap, it would be nice to be able to do use an absolute url, like: "http://192.168.205.1:9898/api/";
 var stackMedias = new Array();
 var data;
 
-//var currentId;
 var currentMediaCategory;
 var currentApp;
 var $activeApps;
@@ -11,10 +9,8 @@ var $activeApps;
 //var lastLiClickPoint;
 //var liTapHold;
 
-$( "#home" ).live( "pageinit",function(event){
-//$(document).bind('pageinit', function (){
-//$(document).ready(function () {
-//	alert( "pc-init" );
+$( "#home" ).live( "pageinit",function(event){ //$(document).bind('pageinit', function ()  //$(document).ready(function () {
+	console.log("#home.live()");
 	$.ajaxSetup({
 	      "error": function(jqXHR, textStatus, errorThrown) {
 	    	  alert( "Error ( " + jqXHR.status + " " + jqXHR.statusText + " ): " + jqXHR.responseText);
@@ -56,7 +52,7 @@ $( "#home" ).live( "pageinit",function(event){
 		if(e.keyCode == 8){
 			ajax_keyboardType( "$RES_BACK_SPACE" );
 		} else {
-			v = $( "#keyboard-input" ).val();
+			var v = $( "#keyboard-input" ).val();
 			if (v.length > 0){
 				ajax_keyboardType(v);
 				$( "#keyboard-input" ).val( "" );
@@ -201,10 +197,10 @@ function displayHome(){
 
 function displayMediaRoots(mediaRoots){
 	stackMedias = new Array();
-	m = new Object();
-	m.name = data.settings.name;
-	m.mediaChildren = mediaRoots;
-	displayMedia(m);
+	displayMedia({
+		name: data.settings.name,
+		mediaChildren: mediaRoots
+	});
 }
 
 function displayMedia(media){
@@ -216,7 +212,7 @@ function displayMedia(media){
 	var $content = $( "#home div[data-role='content']" );
 	var $ul = $( "#listMedia"); 
 	if ($ul.length == 0){	//Let's created it the first time
-		$divMediaTitle = $( "<div>" + //TODO btn disalign
+		var $divMediaTitle = $( "<div>" + //TODO btn disalign
 								"<a data-role='button' href='#' data-iconpos='notext' data-icon='refresh' " +
 										"data-inline='true' data-mini='true' id='btn-refresh'></a>" +
 								"<h4 id='media-title'></h4>" +
@@ -304,12 +300,12 @@ function displayMouseOrKeyboardRc(kind){
 			$( "#" + kind + "control > div" ).eq(1).find( "div" ),	//preeceding brother
 			kind, 												//"mouse" or "keyboard"
 			"",													//Title
-			data[kind+"ControlsManager"], 				//model ControlsManager
+			data[kind+"ControlsManager"], 						//model ControlsManager
 			"26",												//Icon size
 			10);												//paddingTop
 }
 
-//show or hide the div control, depending by the app. example, in winamp the control fullscreen is not active 
+//show or hide the div control, depending by the controls defined in controlsManager. 
 //$brotherDom preceeding sibling
 //idContainer
 //title
@@ -348,7 +344,7 @@ function displayRc($brotherDom, idContainer, title, controlsManager, iconSize, p
 	$divRcRows.empty();
 	var l=["a","b","c","d","e"];
 	for (j=1; j<=4; j++){
-		$row = $( "<div id='"+idContainer+"_row"+j+"' class='ui-grid-d'></div>" ).appendTo($divRcRows);
+		var $row = $( "<div id='"+idContainer+"_row"+j+"' class='ui-grid-d'></div>" ).appendTo($divRcRows);
 		for (i=0; i<=4; i++){
 			$( "<div align='center' class='ui-block-" + l[i] + " controls-row'></div>" ).appendTo($row);
 		}
@@ -357,12 +353,12 @@ function displayRc($brotherDom, idContainer, title, controlsManager, iconSize, p
 	for (j=0; j<controlsManager.controls.length; j++){
 		var control = controlsManager.controls[j];
 		var name = control.name;
-		$controlDiv = $( "<div align='center' class='control' id='" + name +"'></div>" )
+		var $controlDiv = $( "<div align='center' class='control' id='" + name +"'></div>" )
 			.appendTo($( "#"+idContainer+"_row"+control.row + " div.ui-block-"+l[(l.length-1)/2 + control.position]));
 		if (control.hideImg){
 			$controlDiv.html(control.text);
 		} else {
-			$img = $( "<img " 
+			var $img = $( "<img " 
 					+ "src='images/default/" + name + ".png'"
 					+ " class='control-img' style='margin-top:-" + iconSize/2 + "px;margin-left:-" + iconSize/2 + "px;'/>" ).appendTo($controlDiv);
 			$img.attr( "width", iconSize+"px" );
@@ -426,15 +422,4 @@ function getConfiguredApp(appName){
 		}
 	}
 	return 0;
-}
-
-//
-function supports_html5_storage() {
-	try {
-		localStorage["a"] = "b";
-		alert(localStorage["a"]);
-	    return 'localStorage' in window && window['localStorage'] !== null;
-	} catch (e) {
-		return false;
-	}
 }

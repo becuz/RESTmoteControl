@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
+import org.zooper.becuz.restmote.rest.exceptions.NotAcceptableException;
 import org.zooper.becuz.restmote.rest.exceptions.NotFoundException;
 import org.zooper.becuz.restmote.rest.exceptions.ServerException;
 
@@ -153,8 +154,10 @@ public class AppResource extends AbstractResource {
 		log.severe("controlByAppName appName: " + appName + ", control: " + control);
 		try {
 			getRemoteControlBusiness().control(appName, control, null);
+		} catch (IllegalArgumentException e) {
+			throw new NotAcceptableException(e.getMessage());
 		} catch (Exception e) {
-			log.severe(e.toString());
+			log.severe(e.getMessage() + " " + e.getCause());
 			throw new ServerException(e.getMessage());
 		}
 	}

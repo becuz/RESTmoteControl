@@ -11,7 +11,6 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.zooper.becuz.restmote.controller.PcControllerAbstract;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
-import org.zooper.becuz.restmote.utils.Constants;
 
 /**
  * Application settings
@@ -56,6 +55,22 @@ public class Settings implements Persistable{
 	 * Clients can override this specifying it as a parameter in the GET methods.
 	 */
 	private Integer scanDepth;
+	
+	
+	/**
+	 * Names of net interfaces the server should run on
+	 */
+	private String serverInetName;
+	
+	/**
+	 * Ip of {@link #serverInetName}
+	 */
+	private String serverLastIp;
+	
+	/**
+	 * Port the server should run on 
+	 */
+	private Integer serverPort;
 	
 	//****************************************************************************************
 	
@@ -165,9 +180,6 @@ public class Settings implements Persistable{
 	}
 
 	public Integer getScanDepth() {
-		if (scanDepth == null){
-			scanDepth = Constants.SCAN_DEPTH;
-		}
 		return scanDepth;
 	}
 
@@ -175,6 +187,28 @@ public class Settings implements Persistable{
 		this.scanDepth = scanDepth;
 	}
 
-	
-	
+	public String getServerInetName() {
+		return serverInetName;
+	}
+
+	public void setServerInetName(String serverInetName) {
+		this.serverInetName = serverInetName;
+	}
+
+	public String getServerLastIp() {
+		return serverLastIp;
+	}
+
+	public void setServerLastIp(String serverLastIp) {
+		this.serverLastIp = serverLastIp;
+	}
+
+	public Integer getServerPort() {
+		return serverPort;
+	}
+
+	public void setServerPort(Integer serverPort) {
+		this.serverPort = serverPort;
+	}
+
 }

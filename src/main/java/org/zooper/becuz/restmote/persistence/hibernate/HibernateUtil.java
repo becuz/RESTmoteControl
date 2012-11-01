@@ -28,7 +28,7 @@ public class HibernateUtil {
             Configuration configuration = new Configuration().configure();
             configuration.setProperty(
                     Environment.URL, 
-                    "jdbc:hsqldb:file:" + Utils.getRootDir() + "db/remoskodb" + (test ? "_test" : ""));
+                    "jdbc:hsqldb:file:" + getDbFile(test));
 	        if (properties != null){
 	        	for(Object k: properties.keySet()){
 	        		configuration.setProperty(k.toString(), properties.getProperty(k.toString()));	
@@ -40,6 +40,10 @@ public class HibernateUtil {
             log.severe("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
+    }
+    
+    public static String getDbFile(boolean test){
+    	return Utils.getRootDir() + "db/remoskodb" + (test ? "_test" : "");
     }
     
     public static void setTest(boolean test) {

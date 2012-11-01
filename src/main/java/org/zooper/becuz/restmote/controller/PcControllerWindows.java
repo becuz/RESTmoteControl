@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class PcControllerWindows extends PcControllerAbstract{
 	
 	protected PcControllerWindows() {
 		super();
-		rebuildActiveApps();
+		binDefaultPaths = Arrays.asList(new String[]{"%ProgramFiles%", "%CommonProgramFiles%"});
 	}
 	
 	@Override
@@ -168,16 +169,18 @@ public class PcControllerWindows extends PcControllerAbstract{
 	
 	//*****************************************************************************************
 	
-		private Process execute(String... commands) throws Exception{
-			return execute(false, commands);
-		}
+	private Process execute(String... commands) throws Exception{
+		return execute(false, commands);
+	}
 		
-		private Process execute(boolean waitFor, String... commands) throws Exception{
-			Process child = Runtime.getRuntime().exec(commands);
-		    if (waitFor){
-		    	child.waitFor();
-		    }
-		    return child;
-		}
+	private Process execute(boolean waitFor, String... commands) throws Exception{
+		Process child = Runtime.getRuntime().exec(commands);
+	    if (waitFor){
+	    	child.waitFor();
+	    }
+	    return child;
+	}
+
+		
 	
 }
