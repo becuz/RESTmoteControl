@@ -321,9 +321,14 @@ public abstract class PcControllerAbstract {
 		for(String path: paths){
 			File file = new File(path);
 			if (file.exists()){
+				MediaCategory mediaCategory = mediaRoot.getMediaCategory();
 				Media mediaPath = new Media(path);
 				mediaPath.setMediaChildren(
-						getMedia(mediaPath.getPath(), new ArrayList<String>(mediaRoot.getMediaCategory().getExtensions()), settings.getScanDepth(), null));
+						getMedia(
+								mediaPath.getPath(), 
+								new ArrayList<String>(mediaCategory.getExtensions()), 
+								mediaCategory.isRoot() ? 1 : settings.getScanDepth(),
+								null));
 				mediaRoot.addMediaChild(mediaPath);
 			}
 		}

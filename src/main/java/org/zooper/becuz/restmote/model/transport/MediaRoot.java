@@ -6,7 +6,6 @@ import org.zooper.becuz.restmote.model.MediaCategory;
 
 /**
  * A browsing entry point for {@link Media}s. 
- * It has an optional {@link App} associated to it, meaning the {@link #getMediaChildren()} should be opened with that app.
  * This class is never stored in db, it's used in memory and for transport (it's serialized to the client(s))
  * Specialized subclass of {@link Media}, holding a {@link MediaCategory}
  * @author bebo

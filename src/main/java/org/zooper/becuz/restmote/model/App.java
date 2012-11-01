@@ -8,10 +8,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import org.zooper.becuz.restmote.conf.ModelFactoryAbstract;
 import org.zooper.becuz.restmote.controller.PcControllerWindows;
 import org.zooper.becuz.restmote.model.interfaces.Editable;
 import org.zooper.becuz.restmote.rest.resources.PcResource;
-import org.zooper.remosko.conf.modelfactory.ModelFactoryAbstract;
 
 /**
  * Identifies an application installed on the server pc and configured by the user.

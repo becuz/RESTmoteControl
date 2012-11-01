@@ -1,5 +1,77 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="createApp" name="RES(T)moteControl">
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<!-- By default, only the Clean and Build commands use this build script. -->
+<!-- Commands such as Run, Debug, and Test only use this build script if -->
+<!-- the Compile on Save feature is turned off for the project. -->
+<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
+<!-- in the project's Project Properties dialog box.-->
+<project name="RES(T)moteControl" default="default" basedir=".">
+    <description>Builds, tests, and runs the project RES(T)moteControl.</description>
+    <import file="nbproject/build-impl.xml"/>
+    <!--
+
+    There exist several targets which are by default empty and which can be 
+    used for execution of your tasks. These targets are usually executed 
+    before and after some main targets. They are: 
+
+      -pre-init:                 called before initialization of project properties
+      -post-init:                called after initialization of project properties
+      -pre-compile:              called before javac compilation
+      -post-compile:             called after javac compilation
+      -pre-compile-single:       called before javac compilation of single file
+      -post-compile-single:      called after javac compilation of single file
+      -pre-compile-test:         called before javac compilation of JUnit tests
+      -post-compile-test:        called after javac compilation of JUnit tests
+      -pre-compile-test-single:  called before javac compilation of single JUnit test
+      -post-compile-test-single: called after javac compilation of single JUunit test
+      -pre-jar:                  called before JAR building
+      -post-jar:                 called after JAR building
+      -post-clean:               called after cleaning build products
+
+    (Targets beginning with '-' are not intended to be called on their own.)
+
+    Example of inserting an obfuscator after compilation could look like this:
+
+        <target name="-post-compile">
+            <obfuscate>
+                <fileset dir="${build.classes.dir}"/>
+            </obfuscate>
+        </target>
+
+    For list of available properties check the imported 
+    nbproject/build-impl.xml file. 
+
+
+    Another way to customize the build is by overriding existing main targets.
+    The targets of interest are: 
+
+      -init-macrodef-javac:     defines macro for javac compilation
+      -init-macrodef-junit:     defines macro for junit execution
+      -init-macrodef-debug:     defines macro for class debugging
+      -init-macrodef-java:      defines macro for class execution
+      -do-jar-with-manifest:    JAR building (if you are using a manifest)
+      -do-jar-without-manifest: JAR building (if you are not using a manifest)
+      run:                      execution of project 
+      -javadoc-build:           Javadoc generation
+      test-report:              JUnit report generation
+
+    An example of overriding the target for project execution could look like this:
+
+        <target name="run" depends="RES(T)moteControl-impl.jar">
+            <exec dir="bin" executable="launcher.exe">
+                <arg file="${dist.jar}"/>
+            </exec>
+        </target>
+
+    Notice that the overridden target depends on the jar target and not only on 
+    the compile target as the regular run target does. Again, for a list of available 
+    properties which you can use, check the target you are overriding in the
+    nbproject/build-impl.xml file. 
+
+    -->
+    
     <!-- Create a "distributable" app in export/ that can be run from the command line with "java .jar restmote.jar" -->
     <target name="createApp">
     	<delete dir="export"/>
@@ -11,6 +83,7 @@
                 <attribute name="Class-Path" value=". lib/grizzly-framework-2.2.1.jar lib/jsr311-api-1.1.1.jar lib/jettison-1.1.jar lib/activation-1.1.1.jar lib/jackson-core-asl-1.9.2.jar lib/jackson-jaxrs-1.9.2.jar lib/jackson-mapper-asl-1.9.2.jar lib/javax.servlet-3.1.jar lib/jaxb-api-2.2.4.jar lib/jaxb-impl-2.2.4-1.jar lib/stax-api-1.0-2.jar lib/commons-io-2.3.jar lib/junit-4.10.jar lib/grizzly-http-2.2.1.jar lib/grizzly-http-server-2.2.1.jar lib/grizzly-http-servlet-2.2.1.jar lib/jersey-grizzly2-1.12.jar lib/asm-3.3.1.jar lib/jersey-core-1.12.jar lib/jersey-grizzly2-servlet-1.12.jar lib/jersey-json-1.12.jar lib/jersey-server-1.12.jar lib/antlr-2.7.7.jar lib/dom4j-1.6.1.jar lib/hibernate-commons-annotations-4.0.1.Final.jar lib/hibernate-core-4.1.6.Final.jar lib/hibernate-jpa-2.0-api-1.0.1.Final.jar lib/javassist-3.15.0-GA.jar lib/jboss-logging-3.1.0.GA.jar lib/jboss-transaction-api_1.1_spec-1.0.0.Final.jar lib/hsqldb.jar"/>
             </manifest>
         	<fileset dir="./bin"/>
+        	<fileset dir="./src/main/resources"/>
         </jar>
         <mkdir dir="./export/client"/>
     	<copy todir="./export/client">
@@ -26,4 +99,7 @@
 	  		<fileset dir="./lib/"/>
 	  	</copy>
     </target>
+    
+    
+    
 </project>

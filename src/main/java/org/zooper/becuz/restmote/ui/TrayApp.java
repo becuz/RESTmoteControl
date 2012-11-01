@@ -20,12 +20,14 @@ import javax.swing.JOptionPane;
 
 public class TrayApp implements ActionListener, ItemListener {
     
-	private NewJFrame newJFrame = new NewJFrame();
+	private MainWindow newJFrame = new MainWindow();
 	
 	//**********************************************
     
 	private PopupMenu popup = new PopupMenu();
-    private TrayIcon trayIcon = new TrayIcon(UIConstants.createImage("resources/remosko.png", "remosko!!", false));
+    private TrayIcon trayIcon = new TrayIcon(
+    		UIConstants.createImage(
+    				MainWindow.class.getResource("images/remosko.png"), "remosko!!", false));
     private SystemTray tray = SystemTray.getSystemTray();
     private CheckboxMenuItem cb2 = new CheckboxMenuItem("Set tooltip");
     private MenuItem aboutItem = new MenuItem("About");

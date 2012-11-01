@@ -1,4 +1,4 @@
-package org.zooper.remosko.conf.modelfactory;
+package org.zooper.becuz.restmote.conf;
 
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.MediaCategory;
@@ -61,7 +61,6 @@ public abstract class ModelFactoryAbstract {
 	public MediaCategory getMediaCategoryRoot(){
 		if (mediaCategoryRoot == null){
 			mediaCategoryRoot = new MediaCategory(MediaCategory.ROOT_NAME);
-			mediaCategoryRoot.setEditable(false);
 		}
 		return mediaCategoryRoot;
 	}

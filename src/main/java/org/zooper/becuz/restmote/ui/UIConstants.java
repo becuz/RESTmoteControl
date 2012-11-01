@@ -1,36 +1,23 @@
 package org.zooper.becuz.restmote.ui;
 
 import java.awt.Image;
-import java.io.File;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 
 public class UIConstants {
 
-	public static ImageIcon createImageIcon(String path, String description, boolean checkPresence){
-		return createImageIcon(path, description, null, null, checkPresence);
-	}
 	
-	public static ImageIcon createImageIcon(String path, String description, Integer w, Integer h, boolean checkPresence){
-        String absolutePath = path;
-        if (checkPresence){
-			File f = new File(path);
-	        if (!f.exists()) {
-	            System.err.println("Resource not found: " + path);
-	            return null;
-	        }
-	        absolutePath = f.getAbsolutePath();
-        }
-        ImageIcon imageIcon = new ImageIcon(absolutePath, description);
+	public static ImageIcon createImageIcon(URL url, String description, Integer w, Integer h){
+        ImageIcon imageIcon = new ImageIcon(url, description);
         if (w != null && h != null){
         	imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH));
         }
         return imageIcon;
-        
     }
 	
-	public static Image createImage(String path, String description, boolean checkPresence){
-		return createImageIcon(path, description, null, null, checkPresence).getImage();
+	public static Image createImage(URL url, String description, boolean checkPresence){
+		return createImageIcon(url, description, null, null).getImage();
     }
 	
 }

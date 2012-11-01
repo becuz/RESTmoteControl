@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import org.hibernate.cfg.Environment;
 import org.zooper.becuz.restmote.RestmoteControl;
 import org.zooper.becuz.restmote.business.SettingsBusiness;
+import org.zooper.becuz.restmote.conf.ModelFactoryFactory;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.model.Settings;
@@ -16,7 +17,6 @@ import org.zooper.becuz.restmote.persistence.PersistenceAbstract;
 import org.zooper.becuz.restmote.persistence.PersistenceFactory;
 import org.zooper.becuz.restmote.persistence.PersistenceHibernate;
 import org.zooper.becuz.restmote.persistence.hibernate.HibernateUtil;
-import org.zooper.remosko.conf.modelfactory.ModelFactoryFactory;
 
 /**
  * Convenience class to recreate the db and populate with some data.
@@ -55,7 +55,8 @@ public class PopulateDb {
 			settings = new Settings();
 			settings.setName("Home");
 			settings.setNameRoot("My medias");
-			settings.setScanDepth(1);	
+			settings.setScanDepth(1);
+			settings.setServerPort(9898);
 			persistenceAbstract.store(settings);
 		} else {
 			//future updates

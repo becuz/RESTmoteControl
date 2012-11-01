@@ -18,6 +18,8 @@ import javax.ws.rs.core.UriBuilder;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.Response;
 import org.glassfish.grizzly.http.server.StaticHttpHandler;
+import org.zooper.becuz.restmote.business.SettingsBusiness;
+import org.zooper.becuz.restmote.model.Settings;
 import org.zooper.becuz.restmote.utils.Utils;
 
 import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
@@ -37,7 +39,6 @@ public class Server implements Runnable {
 	
 	private static Map<String, String> contentTypes = new HashMap<String, String>();
 	
-	private int port = 9898;
 	private HttpServer httpServer;
 	private String serverUrl = null;
 	
@@ -51,15 +52,6 @@ public class Server implements Runnable {
 	}
 	
 	//***************************************************************************
-	
-	/**
-	 * 
-	 * @param port
-	 */
-	public Server(int port) {
-		this();
-		this.port = port;
-	}
 	
 	/**
 	 * 
@@ -90,19 +82,27 @@ public class Server implements Runnable {
 	 */
 	private String getServerUrl() {
 		if (serverUrl == null){
-			String url = null;
+			Settings settings = new SettingsBusiness().get();
+			String ip = null;
 			Enumeration<NetworkInterface> nets;
 			try {
 				nets = NetworkInterface.getNetworkInterfaces();
-				while (url == null && nets.hasMoreElements()) {
+				while (ip == null && nets.hasMoreElements()) {
 					NetworkInterface netint = (NetworkInterface) nets.nextElement();
 					List<InetAddress> inetAddresses = Collections.list(netint.getInetAddresses());
 					if (!inetAddresses.isEmpty()) {
 						for (InetAddress inetAddress : inetAddresses) {
 							if (inetAddress.isSiteLocalAddress()) {
-								System.out.println(netint.getName());
-								url = getIpAsString(inetAddress);
-								//break;
+								String netName = netint.getName();
+								ip = getIpAsString(inetAddress);
+								log.info(netName + ": " + ip);
+								String serverInetName = settings.getServerInetName();
+								if (Utils.isEmpty(serverInetName) || serverInetName.equals(netName)){
+									settings.setServerInetName(serverInetName);
+									settings.setServerLastIp(ip);
+									break;
+								}
+								
 							}
 						}
 					}
@@ -110,10 +110,7 @@ public class Server implements Runnable {
 			} catch (SocketException e) {
 				log.severe(e.getMessage() + e.getCause());
 			}
-			if (url == null){
-				url = "http://192.168.1.11/";
-			}
-			serverUrl = UriBuilder.fromUri("http://" + url + "/").port(port).build().toString();
+			serverUrl = UriBuilder.fromUri("http://" + ip + "/").port(settings.getServerPort()).build().toString();
 		}
 		return serverUrl;
 	}

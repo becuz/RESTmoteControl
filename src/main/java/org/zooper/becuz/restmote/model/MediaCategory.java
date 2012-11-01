@@ -11,10 +11,11 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.zooper.becuz.restmote.model.interfaces.Editable;
+import org.zooper.becuz.restmote.model.transport.MediaRoot;
 
 /**
  * The class is a entry point for browsing files. It allows to specify paths and extensions to include.
- * It can have associated an {@link App}. 
+ * It has an optional {@link App} associated to it, meaning the {@link MediaRoot#getMediaChildren()} should be opened with that app.
  * @author bebo
  */
 @XmlRootElement
@@ -63,13 +64,6 @@ public class MediaCategory implements Editable{
 	 */
 	@JsonIgnore
 	private Boolean active;
-	
-	/**
-	 * 
-	 */
-	@JsonIgnore
-	private Boolean editable;
-	
 	
 	public MediaCategory() {
 	}
@@ -188,15 +182,15 @@ public class MediaCategory implements Editable{
 		this.active = active;
 	}
 
-	public Boolean getEditable() {
-		return editable;
+	@JsonIgnore
+	public Boolean isRoot() {
+		return ROOT_NAME.equals(getName());
+	}
+	
+	@JsonIgnore
+	public Boolean isEditable() {
+		return !isRoot();
 	}
 
-	public void setEditable(Boolean editable) {
-		this.editable = editable;
-	}
-	
-	
-	
 	
 }

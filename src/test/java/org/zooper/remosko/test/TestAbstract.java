@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import org.hibernate.cfg.Environment;
 import org.junit.AfterClass;
+import org.zooper.becuz.restmote.conf.ModelFactoryFactory;
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.MediaCategory;
@@ -24,7 +25,6 @@ import org.zooper.becuz.restmote.persistence.PersistenceFactory;
 import org.zooper.becuz.restmote.persistence.PersistenceHibernate;
 import org.zooper.becuz.restmote.persistence.hibernate.HibernateUtil;
 import org.zooper.becuz.restmote.utils.Utils;
-import org.zooper.remosko.conf.modelfactory.ModelFactoryFactory;
 
 /**
  * @author bebo
@@ -66,8 +66,10 @@ public abstract class TestAbstract {
 		Settings settings = new Settings();
 		settings.setName("settingsName");
 		settings.setNameRoot("settingsNameRoot");
-		Set<String> paths = new HashSet<String>();
+		settings.setScanDepth(-1);
+		settings.setServerPort(9896);
 		
+		Set<String> paths = new HashSet<String>();
 		paths.add(PATH_RESOURCES);
 		paths.add("path2"); 
 		settings.setPaths(paths);

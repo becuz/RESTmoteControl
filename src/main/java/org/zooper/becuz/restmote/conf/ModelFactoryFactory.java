@@ -1,4 +1,4 @@
-package org.zooper.remosko.conf.modelfactory;
+package org.zooper.becuz.restmote.conf;
 
 import org.zooper.becuz.restmote.exceptions.NotYetImplementedException;
 import org.zooper.becuz.restmote.utils.Utils;

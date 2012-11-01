@@ -1,4 +1,4 @@
-package org.zooper.remosko.conf.modelfactory;
+package org.zooper.becuz.restmote.conf;
 
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
