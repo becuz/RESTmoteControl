@@ -20,7 +20,7 @@ import org.zooper.becuz.restmote.utils.Utils;
 import org.zooper.remosko.conf.RestFactory;
 
 /**
- * TODO all tests
+ * TODO all tests, starting with the use of scanDepth parameter, and calling GETs that returns mp3 and avi medias..
  * @author bebo
  */
 public class TestExploreResource extends TestResourceAbstract {
@@ -29,8 +29,9 @@ public class TestExploreResource extends TestResourceAbstract {
 	
 	@Test
 	public void testGet() throws Exception {
-		String rootPath = Utils.getRootDir();
-		
+		List<Media> medias = null;
+		int sizeMedias = 0;
+		String rootPath = Utils.getRestmoteRootDirAbsolutePath();
 		//GET /medias/ 
 		invokeUrl(
 				server.getApiUrl() + "medias", "", 
@@ -43,13 +44,10 @@ public class TestExploreResource extends TestResourceAbstract {
 		myString = IOUtils.toString(result, "UTF-8");
 		log.severe("/get returned:" + myString);
 		objectMapper = RestFactory.getJson().getContext(List.class);
-		List<Media> medias = null;
-		int sizeMedias = 11;
-//		List<Media> medias = objectMapper.readValue(myString, new TypeReference<List<Media>>() {});
-//		int sizeMedias = medias.size();
-//		assertTrue(!medias.isEmpty());
+		medias = objectMapper.readValue(myString, new TypeReference<List<Media>>() {});
+		sizeMedias = medias.size();
+		assertTrue(!medias.isEmpty());
 		
-		if (2 == 1+1) return;
 		
 		//GET /medias/ 
 		result = invokeUrl(
@@ -103,7 +101,5 @@ public class TestExploreResource extends TestResourceAbstract {
 		objectMapper = RestFactory.getJson().getContext(List.class);
 		medias = objectMapper.readValue(myString, new TypeReference<List<Media>>() {});
 		assertTrue(medias.isEmpty());
-		
-		
 	}
 }

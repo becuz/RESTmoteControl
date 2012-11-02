@@ -39,7 +39,7 @@ public abstract class TestAbstract {
 	/**
 	 * Contains avi, mp3, jpg files
 	 */
-	protected static final String PATH_RESOURCES = Utils.getRootDir() + "src/test/resources";
+	protected static final String PATH_RESOURCES = Utils.getRestmoteRootDirAbsolutePath() + "src/test/resources";
 	
 	protected static MediaCategory mediaCategoryMovies = ModelFactoryFactory.getModelFactoryAbstract().getMediaCategoryMovies();
 	protected static MediaCategory mediaCategoryMusic = ModelFactoryFactory.getModelFactoryAbstract().getMediaCategoryMusic();
@@ -66,7 +66,7 @@ public abstract class TestAbstract {
 		Settings settings = new Settings();
 		settings.setName("settingsName");
 		settings.setNameRoot("settingsNameRoot");
-		settings.setScanDepth(-1);
+		settings.setScanDepth(2);  
 		settings.setServerPort(9896);
 		
 		Set<String> paths = new HashSet<String>();
