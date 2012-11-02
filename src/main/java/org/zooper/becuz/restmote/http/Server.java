@@ -100,6 +100,7 @@ public class Server implements Runnable {
 								if (Utils.isEmpty(serverInetName) || serverInetName.equals(netName)){
 									settings.setServerInetName(serverInetName);
 									settings.setServerLastIp(ip);
+									//TODO store settings, but ugly that is retreived inside this function
 									break;
 								}
 								
@@ -130,7 +131,7 @@ public class Server implements Runnable {
 		rc.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 		httpServer = GrizzlyServerFactory.createHttpServer(getApiUrl(), rc);
 		
-		StaticHttpHandler staticHttpHandler = new StaticHttpHandler(Utils.getRootDir() + "client/"){
+		StaticHttpHandler staticHttpHandler = new StaticHttpHandler(Utils.getRestmoteRootDirAbsolutePath() + "client/"){
 			@Override
 			public void service(
 					org.glassfish.grizzly.http.server.Request request,

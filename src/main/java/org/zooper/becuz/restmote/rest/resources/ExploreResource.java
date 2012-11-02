@@ -24,8 +24,8 @@ import org.zooper.becuz.restmote.utils.Utils;
  * APIs to work with files on the remote pc, so far just to browse and/or open them.
  *
  * GET  /medias/Music												//return List<Media>
- * GET  /medias/Music?path=path&depth=2&filter=*filter*				//return List<Media>
- * GET  /medias?path=path&ext=mp3-m3u&depth=2&filter=*filter*		//return List<Media>	ext and depth are optional
+ * GET  /medias/Music?path=path&depth=2&filter=*filter*				//return List<Media>    depth, filter are optional
+ * GET  /medias?path=path&ext=mp3-m3u&depth=2&filter=*filter*		//return List<Media>	ext, depth, filter are optional
  *
  * TODO not sure these calls for open a file are good. Maybe they need a fixed path with literal "open/"
  * POST /medias								JSON String path		//open file

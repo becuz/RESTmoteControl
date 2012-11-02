@@ -19,7 +19,7 @@ public class RestmoteControl {
 	public static String getDbVersion(){
 		if (dbVersion == null){
 			try {
-				BufferedReader br = new BufferedReader(new FileReader(new File(Utils.getRootDir() + "version")));
+				BufferedReader br = new BufferedReader(new FileReader(new File(Utils.getRestmoteRootDirAbsolutePath() + "version")));
 		        dbVersion = br.readLine();
 		        br.close();
 			} catch (Exception e){}
@@ -48,7 +48,7 @@ public class RestmoteControl {
 		server.start();
 
 		if (!getVersion().equals(getDbVersion())){
-			File f = new File(Utils.getRootDir() + "version");
+			File f = new File(Utils.getRestmoteRootDirAbsolutePath() + "version");
 			f.delete();
 			FileWriter fstream = new FileWriter(f);
 			BufferedWriter out = new BufferedWriter(fstream);

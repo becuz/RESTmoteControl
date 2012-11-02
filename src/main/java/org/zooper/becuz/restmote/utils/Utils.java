@@ -9,7 +9,7 @@ public class Utils {
 	/**
 	 * Runtime root path, parent of dirs db/, ui/, etc..
 	 */
-	private static String absoluteRootProjectPath;
+	private static String restmoteRootDirAbsolutePath;
 	
 	/**
 	 * Operating systems 
@@ -90,13 +90,13 @@ public class Utils {
 	 * Return the absolute root path of the project
 	 * @return
 	 */
-	public static String getRootDir() {
-		if (absoluteRootProjectPath == null){
-			absoluteRootProjectPath = Utils.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-			absoluteRootProjectPath = absoluteRootProjectPath.substring(1, absoluteRootProjectPath.length()-1);
-			absoluteRootProjectPath = absoluteRootProjectPath.substring(0, absoluteRootProjectPath.lastIndexOf("/")+1);
+	public static String getRestmoteRootDirAbsolutePath() {
+		if (restmoteRootDirAbsolutePath == null){
+			restmoteRootDirAbsolutePath = Utils.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+			restmoteRootDirAbsolutePath = restmoteRootDirAbsolutePath.substring(1, restmoteRootDirAbsolutePath.length()-1);
+			restmoteRootDirAbsolutePath = restmoteRootDirAbsolutePath.substring(0, restmoteRootDirAbsolutePath.lastIndexOf("/")+1);
 		}
-    	return absoluteRootProjectPath;
+    	return restmoteRootDirAbsolutePath;
 	}
 	
 	/**

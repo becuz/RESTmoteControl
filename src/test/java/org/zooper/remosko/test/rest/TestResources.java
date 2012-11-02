@@ -20,7 +20,7 @@ public class TestResources extends TestResourceAbstract {
 	
 	@Test
 	public void testMisc() throws Exception {
-		File f = new File(Utils.getRootDir() + "/db");
+		File f = new File(Utils.getRestmoteRootDirAbsolutePath() + "/db");
 		assertTrue(f.exists());
 	}
 	
