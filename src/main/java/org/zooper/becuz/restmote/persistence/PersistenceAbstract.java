@@ -167,7 +167,7 @@ public abstract class PersistenceAbstract {
 	 * @param id
 	 * @return
 	 */
-	public abstract Object getById(Class clazz, Long id);
+	public abstract Persistable getById(Class clazz, Long id);
 	
 	/**
 	 * 
@@ -175,7 +175,7 @@ public abstract class PersistenceAbstract {
 	 * @param name
 	 * @return
 	 */
-	public abstract Object getByName(Class clazz, String name);
+	public abstract Persistable getByName(Class clazz, String name);
 	
 	/**
 	 * 

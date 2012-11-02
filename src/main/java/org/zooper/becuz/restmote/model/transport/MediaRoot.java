@@ -25,7 +25,7 @@ public class MediaRoot extends Media {
 	}
 	
 	public void refresh(){
-		setMediaChildren(PcControllerFactory.getPcController().getMedia(this));
+		setMediaChildren(PcControllerFactory.getPcController().getMedias(this));
 	}
 	
 	public MediaCategory getMediaCategory() {

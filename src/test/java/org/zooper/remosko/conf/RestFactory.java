@@ -16,9 +16,7 @@ public final class RestFactory {
 	
     public static JacksonConfigurator getJson() {
     	if(confJsonInstance==null) {
-    		log.fine("JacksonConfigurator start");
     		confJsonInstance = new JacksonConfigurator();
-    		log.fine("JacksonConfigurator end");
     	}
         return confJsonInstance;
     }

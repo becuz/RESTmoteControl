@@ -70,10 +70,10 @@ public class ExploreResource extends AbstractResource {
 			throw new NotAcceptableException("path is mandatory");
 		}
 		log.severe("get path: " + filePath + ", extensions: " + extensions + ", depth: " + depth + ", filter: " + filter);
-		return PcControllerFactory.getPcController().getMedia(
+		return PcControllerFactory.getPcController().getMedias(
 				filePath, 
-				extensions, 
 				depth,
+				extensions, 
 				filter);
 	}
 		
@@ -97,16 +97,16 @@ public class ExploreResource extends AbstractResource {
 			){
 		log.severe("get path: " + filePath + ", mediaCategoryName: " + mediaCategoryName + ", depth: " + depth + ", filter: " + filter);
 		if (Utils.isEmpty(filePath)){
-			return PcControllerFactory.getPcController().getMedia(getMediaBusiness().getMediaRootByName(mediaCategoryName)); 
+			return PcControllerFactory.getPcController().getMedias(getMediaBusiness().getMediaRootByName(mediaCategoryName)); 
 		}
 		MediaCategory mediaCategory = null;
 		if (!Utils.isEmpty(mediaCategoryName)){
 			mediaCategory = getMediaCategoryBusiness().getByName(mediaCategoryName);
 		}
-		return PcControllerFactory.getPcController().getMedia(
+		return PcControllerFactory.getPcController().getMedias(
 				filePath, 
-				mediaCategory == null ? null : new ArrayList<String>(mediaCategory.getExtensions()), 
 				depth,
+				mediaCategory == null ? null : new ArrayList<String>(mediaCategory.getExtensions()), 
 				filter);
 	}
 	

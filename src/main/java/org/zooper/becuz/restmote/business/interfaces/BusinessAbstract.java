@@ -10,21 +10,22 @@ import org.zooper.becuz.restmote.persistence.PersistenceFactory;
 public class BusinessAbstract {
 	
 	private AppBusiness appBusiness;
-	private MediaBusiness mediaBusiness;
-	private MediaCategoryBusiness mediaCategoryBusiness;
+//	private MediaBusiness mediaBusiness;
+//	private MediaCategoryBusiness mediaCategoryBusiness;
 	private ActiveAppBusiness activeAppBusiness;
+	
 	protected PersistenceAbstract persistenceAbstract;
 	
 	protected BusinessAbstract() { 
 		persistenceAbstract = PersistenceFactory.getPersistenceAbstract();
 	}
 	
-	protected MediaCategoryBusiness getMediaCategoryBusiness() {
-		if (mediaCategoryBusiness == null){
-			mediaCategoryBusiness = new MediaCategoryBusiness();
-		}
-		return mediaCategoryBusiness;
-	}
+//	protected MediaCategoryBusiness getMediaCategoryBusiness() {
+//		if (mediaCategoryBusiness == null){
+//			mediaCategoryBusiness = new MediaCategoryBusiness();
+//		}
+//		return mediaCategoryBusiness;
+//	}
 	
 	protected AppBusiness getAppBusiness() {
 		if (appBusiness == null){
@@ -33,12 +34,12 @@ public class BusinessAbstract {
 		return appBusiness;
 	}
 
-	protected MediaBusiness getMediaBusiness() {
-		if (mediaBusiness == null){
-			mediaBusiness = new MediaBusiness();
-		}
-		return mediaBusiness;
-	}
+//	protected MediaBusiness getMediaBusiness() {
+//		if (mediaBusiness == null){
+//			mediaBusiness = new MediaBusiness();
+//		}
+//		return mediaBusiness;
+//	}
 
 	protected ActiveAppBusiness getActiveAppBusiness() {
 		if (activeAppBusiness == null){

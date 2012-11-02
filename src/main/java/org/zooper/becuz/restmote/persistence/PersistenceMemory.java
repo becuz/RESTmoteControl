@@ -23,12 +23,12 @@ public class PersistenceMemory extends PersistenceAbstract {
 	}
 
 	@Override
-	public Object getById(Class clazz, Long id) {
+	public Persistable getById(Class clazz, Long id) {
 		return getFromCache(clazz, id);
 	}
 
 	@Override
-	public Object getByName(Class clazz, String name) {
+	public Persistable getByName(Class clazz, String name) {
 		return getFromCacheByName(clazz, name);
 	}
 

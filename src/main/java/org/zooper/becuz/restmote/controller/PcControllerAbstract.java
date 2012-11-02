@@ -305,7 +305,7 @@ public abstract class PcControllerAbstract {
 			for(MediaCategory mediaCategory: mediaCategories){
 				if (!Boolean.FALSE.equals(mediaCategory.getActive())){
 					MediaRoot mediaRoot = new MediaRoot(mediaCategory);
-					getMedia(mediaRoot);
+					getMedias(mediaRoot);
 					mediaBusiness.addMediaRoot(mediaRoot);
 				}
 			}
@@ -314,7 +314,7 @@ public abstract class PcControllerAbstract {
 	}
 	
 	//TODO the staff to manage the medias has to be in the proper business class
-	public List<Media> getMedia(MediaRoot mediaRoot){
+	public List<Media> getMedias(MediaRoot mediaRoot){
 		mediaRoot.clearChildren();
 		Settings settings = settingsBusiness.get();
 		Set<String> paths = mediaRoot.getMediaCategory().getPaths().isEmpty() ? settings.getPaths() : mediaRoot.getMediaCategory().getPaths();
@@ -324,10 +324,10 @@ public abstract class PcControllerAbstract {
 				MediaCategory mediaCategory = mediaRoot.getMediaCategory();
 				Media mediaPath = new Media(path);
 				mediaPath.setMediaChildren(
-						getMedia(
+						getMedias(
 								mediaPath.getPath(), 
-								new ArrayList<String>(mediaCategory.getExtensions()), 
 								mediaCategory.isRoot() ? 1 : settings.getScanDepth(),
+								new ArrayList<String>(mediaCategory.getExtensions()), 
 								null));
 				mediaRoot.addMediaChild(mediaPath);
 			}
@@ -338,18 +338,20 @@ public abstract class PcControllerAbstract {
 	/**
 	 * 
 	 * @param path root path for the scan
+	 * @param depth negative to scan everything
 	 * @param extensions extensions allowed (null or empty to scan all files)
-	 * @param depth negative to scan everything 
+	 * @param pattern filter by this regex 
 	 * @return
 	 */
-	public List<Media> getMedia(String path, List<String> extensions, Integer depth, String pattern){
+	public List<Media> getMedias(String path, Integer depth, List<String> extensions, String pattern){
+		log.severe("getMedia() path: " + path + ", depth: " + depth + ", extensions: " + extensions + ", pattern: " + pattern);
 		Pattern p = null;
 		if (!Utils.isEmpty(pattern)){
 			p = Pattern.compile(pattern);
 		}
 		List<Media> results = new ArrayList<Media>();
 		depth = depth == null ? settingsBusiness.get().getScanDepth() : depth;
-		if (depth != 0) {
+		if (depth != 0) { //-1 is a valid value, means go deep indefinitely, as there are files.
 			File f = new File(path);
 			if (f.exists() && f.isDirectory()){
 				File[] children = f.listFiles();
@@ -368,14 +370,14 @@ public abstract class PcControllerAbstract {
 						if (fileAllowed){
 							Media mediaChild = new Media(childPath);
 							if (!child.isDirectory()){
-								mediaChild.setFile(true);	//let's leave it at null in case it's a directory
+								mediaChild.setFile(true);	//let's leave it at null in case it's a directory: less noise as we avoid serialize nulls
 							}
 							results.add(mediaChild);							
 						}
 					}
-					if (depth != 1){
+					if (depth != 1){ 
 						for (Media mediaChild: results){
-							mediaChild.setMediaChildren(getMedia(mediaChild.getPath(), extensions, depth-1, pattern));
+							mediaChild.setMediaChildren(getMedias(mediaChild.getPath(), depth-1, extensions, pattern));
 						}
 					}
 				}

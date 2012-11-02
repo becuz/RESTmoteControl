@@ -114,8 +114,12 @@ public class TestRemoteControlBusiness extends TestAbstract{
 			
 			//KillActiveApps
 			activeAppBusiness.killActiveApps(Collections.singletonList(pid));
-			Thread.sleep(2000);
-			pid = getActivePid(appMusic.getName(), false);
+			int retry = 5;
+			pid = "";
+			for (int i = 0; i < retry && pid != null; i++) {
+				Thread.sleep(2000);
+				pid = getActivePid(appMusic.getName(), false);	
+			}
 			assertNull(pid);
 			
 			remoteControlBusiness.openFile(m.getPath(), null);
