@@ -13,9 +13,20 @@ import org.zooper.becuz.restmote.utils.Utils;
 
 public class RestmoteControl {
 
+	/**
+	 * Version currently installed in the machine.
+	 * It's retrieved through the string written in the vile /version
+	 */
 	private static String dbVersion = null;
+	
+	/**
+	 * Version of the runtime system.
+	 */
 	private static String version = "0.1b";
 
+	/**
+	 * @return the version currently installed in the machine, accordingly to what is written in the file /version
+	 */
 	public static String getDbVersion(){
 		if (dbVersion == null){
 			try {
@@ -27,10 +38,18 @@ public class RestmoteControl {
         return dbVersion;
 	}
 	
+	/**
+	 * @return {@link #version}
+	 */
 	public static String getVersion() {
 		return version;
 	}
 	
+	/**
+	 * 
+	 * @param develop
+	 * @throws Exception
+	 */
 	public RestmoteControl(boolean develop) throws Exception {
 		new PopulateDb().createAndPopulate(develop);
 
@@ -41,10 +60,10 @@ public class RestmoteControl {
 //		persistenceAbstract.getAll(App.class);
 
 		// scan for medias
-		PcControllerFactory.getPcController().rootScan();
+		PcControllerFactory.getPcController().rootScan(); //TODO it slows down the UI. Should be done in a more smart way
 
 		// start http listener
-		Server server = new Server();
+		Server server = Server.getInstance();
 		server.start();
 
 		if (!getVersion().equals(getDbVersion())){

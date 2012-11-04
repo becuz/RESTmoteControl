@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -37,10 +38,15 @@ public class Server implements Runnable {
 
 	private static final Logger log = Logger.getLogger(Server.class.getName());
 	
-	private static Map<String, String> contentTypes = new HashMap<String, String>();
+	/**
+	 * Singleton instance
+	 */
+	private static volatile Server instance = null;
 	
-	private HttpServer httpServer;
-	private String serverUrl = null;
+	/**
+	 * Content types
+	 */
+	private static Map<String, String> contentTypes = new HashMap<String, String>();
 	
 	static {
 		contentTypes.put("png", "image/png");
@@ -52,80 +58,45 @@ public class Server implements Runnable {
 	}
 	
 	//***************************************************************************
+
+	private HttpServer httpServer;
 	
-	/**
-	 * 
-	 */
-	public Server() {}
+	private String serverUrl = null;
 	
 	//***************************************************************************
 	
 	/**
 	 * 
-	 * @param address
-	 * @return
 	 */
-	private String getIpAsString(InetAddress address) {
-		byte[] ipAddress = address.getAddress();
-		StringBuffer str = new StringBuffer();
-		for (int i = 0; i < ipAddress.length; i++) {
-			if (i > 0)
-				str.append('.');
-			str.append(ipAddress[i] & 0xFF);
-		}
-		return str.toString();
-	}
+	private Server() {}
 	
 	/**
-	 * 
+	 * Get the instance. Lazy initialization Singleton.
 	 * @return
 	 */
-	private String getServerUrl() {
-		if (serverUrl == null){
-			Settings settings = new SettingsBusiness().get();
-			String ip = null;
-			Enumeration<NetworkInterface> nets;
-			try {
-				nets = NetworkInterface.getNetworkInterfaces();
-				while (ip == null && nets.hasMoreElements()) {
-					NetworkInterface netint = (NetworkInterface) nets.nextElement();
-					List<InetAddress> inetAddresses = Collections.list(netint.getInetAddresses());
-					if (!inetAddresses.isEmpty()) {
-						for (InetAddress inetAddress : inetAddresses) {
-							if (inetAddress.isSiteLocalAddress()) {
-								String netName = netint.getName();
-								ip = getIpAsString(inetAddress);
-								log.info(netName + ": " + ip);
-								String serverInetName = settings.getServerInetName();
-								if (Utils.isEmpty(serverInetName) || serverInetName.equals(netName)){
-									settings.setServerInetName(serverInetName);
-									settings.setServerLastIp(ip);
-									//TODO store settings, but ugly that is retreived inside this function
-									break;
-								}
-								
-							}
-						}
-					}
+	public static Server getInstance() {
+		if (instance == null) {
+			synchronized (Server.class) {
+				if (instance == null) {
+					instance = new Server();
 				}
-			} catch (SocketException e) {
-				log.severe(e.getMessage() + e.getCause());
 			}
-			serverUrl = UriBuilder.fromUri("http://" + ip + "/").port(settings.getServerPort()).build().toString();
 		}
-		return serverUrl;
-	}
-
-	public String getApiUrl(){
-		return getServerUrl() + "api/";
+		return instance;
 	}
 	
-	private String getClientUrl(){
-		return getServerUrl() + "client/";
-	}
-
-	public void start() throws IOException {
+	//***************************************************************************
+	
+	/**
+	 * Start the {@link HttpServer}
+	 * @throws IOException
+	 */
+	public void start() throws Exception {
 		log.fine("Starting grizzly...");
+		
+		if (getServerUrl() == null){
+			throw new Exception("Impossible to find a local net address");
+		}
 		
 		ResourceConfig rc = new PackagesResourceConfig("org.zooper.becuz.restmote.rest.resources");
 		rc.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
@@ -153,18 +124,104 @@ public class Server implements Runnable {
 		callGetSettings();
 	}	
 	
+	/**
+	 * Stop the {@link HttpServer}
+	 * @throws IOException
+	 */
 	public void stop() throws IOException {
 		httpServer.stop();
 		httpServer = null;
 	}
+	
+	/**
+	 * @return true if the {@link HttpServer} is on and running
+	 */
+	public boolean isRunning(){
+		return httpServer != null && httpServer.isStarted();
+	}
+	
+	/**
+	 * @return
+	 */
+	public List<InetAddr> getLocalInetAddresses(){
+		List<InetAddr> inetAddres = new ArrayList<InetAddr>();
+		try {
+			Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
+			while (nets.hasMoreElements()) {
+				NetworkInterface netint = (NetworkInterface) nets.nextElement();
+				List<InetAddress> inetAddresses = Collections.list(netint.getInetAddresses());
+				if (!inetAddresses.isEmpty()) {
+					for (InetAddress inetAddress : inetAddresses) {
+						if (inetAddress.isSiteLocalAddress()) {
+							String netName = netint.getName();
+							String ip = getIpAsString(inetAddress);
+							inetAddres.add(new InetAddr(netName, ip));
+						}
+					}
+				}
+			}
+		} catch (SocketException e){
+			log.severe(e.toString());
+		}
+		return inetAddres;
+	}
+	
+	/**
+	 * 
+	 * @param address
+	 * @return
+	 */
+	private String getIpAsString(InetAddress address) {
+		byte[] ipAddress = address.getAddress();
+		StringBuffer str = new StringBuffer();
+		for (int i = 0; i < ipAddress.length; i++) {
+			if (i > 0)
+				str.append('.');
+			str.append(ipAddress[i] & 0xFF);
+		}
+		return str.toString();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws Exception 
+	 */
+	private String getServerUrl() {
+		if (serverUrl == null){
+			Settings settings = new SettingsBusiness().get();
+			String serverInetName = settings.getServerInetName();
+			for(InetAddr inetAddr: getLocalInetAddresses()){
+				if (Utils.isEmpty(serverInetName) || serverInetName.equals(inetAddr.getInetName())){
+					settings.setServerInetName(inetAddr.getInetName());
+					settings.setServerLastIp(inetAddr.getIp());
+					serverUrl = UriBuilder.fromUri("http://" + inetAddr.getIp() + "/").port(settings.getServerPort()).build().toString();
+					break;
+				}
+			}
+		}
+		return serverUrl;
+	}
 
+	public String getApiUrl(){
+		return getServerUrl() + "api/";
+	}
+	
+	private String getClientUrl(){
+		return getServerUrl() + "client/";
+	}
+
+
+	/**
+	 * 
+	 */
 	@Override
 	public void run() {
 		while(httpServer != null){
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				log.severe(e.toString());
 			}
 		}
 		log.info("Exiting thread");

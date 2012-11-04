@@ -36,7 +36,7 @@ public abstract class TestResourceAbstract extends TestAbstract{
 	@BeforeClass
 	public static void start() throws Exception {
 		if (server == null){
-			server = new Server();
+			server = Server.getInstance();
 			server.start();
 		}
 	}

@@ -6,58 +6,32 @@ import org.zooper.becuz.restmote.business.MediaBusiness;
 import org.zooper.becuz.restmote.business.MediaCategoryBusiness;
 import org.zooper.becuz.restmote.business.RemoteControlBusiness;
 import org.zooper.becuz.restmote.business.SettingsBusiness;
+import org.zooper.becuz.restmote.controller.PcControllerFactory;
 
 public class AbstractResource {
-
-	private RemoteControlBusiness remoteControlBusiness;
-	private MediaCategoryBusiness mediaCategoryBusiness;
-	private AppBusiness appBusiness;
-	private SettingsBusiness settingsBusiness;
-	private MediaBusiness mediaBusiness;
-	private ActiveAppBusiness activeAppBusiness;
-	
-	public AbstractResource() {}
 	
 	protected RemoteControlBusiness getRemoteControlBusiness() {
-		if (remoteControlBusiness == null){
-			remoteControlBusiness = new RemoteControlBusiness();
-		}
-		return remoteControlBusiness;
+		return PcControllerFactory.getPcController().getRemoteControlBusiness();
 	}
 	
 	protected MediaCategoryBusiness getMediaCategoryBusiness() {
-		if (mediaCategoryBusiness == null){
-			mediaCategoryBusiness = new MediaCategoryBusiness();
-		}
-		return mediaCategoryBusiness;
+		return PcControllerFactory.getPcController().getMediaCategoryBusiness();
 	}
 	
 	protected AppBusiness getAppBusiness() {
-		if (appBusiness == null){
-			appBusiness = new AppBusiness();
-		}
-		return appBusiness;
+		return PcControllerFactory.getPcController().getAppBusiness();
 	}
 
 	protected SettingsBusiness getSettingsBusiness() {
-		if (settingsBusiness == null){
-			settingsBusiness = new SettingsBusiness();
-		}
-		return settingsBusiness;
+		return PcControllerFactory.getPcController().getSettingsBusiness();
 	}
 
 	protected MediaBusiness getMediaBusiness() {
-		if (mediaBusiness == null){
-			mediaBusiness = new MediaBusiness();
-		}
-		return mediaBusiness;
+		return PcControllerFactory.getPcController().getMediaBusiness();
 	}
 	
 	protected ActiveAppBusiness getActiveAppBusiness() {
-		if (activeAppBusiness == null){
-			activeAppBusiness = new ActiveAppBusiness();
-		}
-		return activeAppBusiness;
+		return PcControllerFactory.getPcController().getActiveAppBusiness();
 	}
 	
 }

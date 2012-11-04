@@ -20,6 +20,7 @@ import org.zooper.becuz.restmote.business.ActiveAppBusiness;
 import org.zooper.becuz.restmote.business.AppBusiness;
 import org.zooper.becuz.restmote.business.MediaBusiness;
 import org.zooper.becuz.restmote.business.MediaCategoryBusiness;
+import org.zooper.becuz.restmote.business.RemoteControlBusiness;
 import org.zooper.becuz.restmote.business.SettingsBusiness;
 import org.zooper.becuz.restmote.controller.keyboards.Keyboard;
 import org.zooper.becuz.restmote.controller.keyboards.KeyboardClipboard;
@@ -51,6 +52,7 @@ public abstract class PcControllerAbstract {
 	protected MediaCategoryBusiness mediaCategoryBusiness = new MediaCategoryBusiness();
 	protected ActiveAppBusiness activeAppBusiness = new ActiveAppBusiness();
 	protected AppBusiness appBusiness = new AppBusiness();
+	protected RemoteControlBusiness remoteControlBusiness = new RemoteControlBusiness();
 	
 	/**
 	 * 
@@ -162,6 +164,30 @@ public abstract class PcControllerAbstract {
 	public abstract boolean suspend() throws Exception;
 	
 	//*****************************************************************************************
+	
+	public SettingsBusiness getSettingsBusiness() {
+		return settingsBusiness;
+	}
+
+	public MediaBusiness getMediaBusiness() {
+		return mediaBusiness;
+	}
+
+	public MediaCategoryBusiness getMediaCategoryBusiness() {
+		return mediaCategoryBusiness;
+	}
+
+	public ActiveAppBusiness getActiveAppBusiness() {
+		return activeAppBusiness;
+	}
+
+	public AppBusiness getAppBusiness() {
+		return appBusiness;
+	}
+
+	public RemoteControlBusiness getRemoteControlBusiness() {
+		return remoteControlBusiness;
+	}
 	
 	/**
 	 * 

@@ -4,8 +4,23 @@
  */
 package org.zooper.becuz.restmote.ui;
 
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+
+import javax.swing.DefaultListModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
+
+import org.zooper.becuz.restmote.business.SettingsBusiness;
+import org.zooper.becuz.restmote.controller.PcControllerFactory;
+import org.zooper.becuz.restmote.http.InetAddr;
+import org.zooper.becuz.restmote.http.Server;
+import org.zooper.becuz.restmote.model.Settings;
+import org.zooper.becuz.restmote.utils.Utils;
 
 /**
  *
@@ -13,13 +28,41 @@ import javax.swing.JOptionPane;
  */
 public class MainWindow extends javax.swing.JFrame {
 
-    Logger logger = java.util.logging.Logger.getLogger(MainWindow.class.getName());
+    private Logger logger = java.util.logging.Logger.getLogger(MainWindow.class.getName());
+    
+    /**
+     * Swing list model for {@link #listPaths} 
+     */
+    private DefaultListModel<String> listPathsModel;
+    
+    /**
+     * Swing list model for {@link #comboInetNames} 
+     */
+    private ListComboBoxModel<InetAddr> listInetNamesModel;
     
     /**
      * Creates new form MainWindow
      */
     public MainWindow() {
+    	Settings settings = PcControllerFactory.getPcController().getSettingsBusiness().get();
+    	listInetNamesModel = new ListComboBoxModel<InetAddr>(Server.getInstance().getLocalInetAddresses());
+    	if (!Utils.isEmpty(settings.getServerInetName())){
+    		for(InetAddr inetAddr: listInetNamesModel.getAll()){
+    			if(inetAddr.getInetName().equals(settings.getServerInetName())){
+    				listInetNamesModel.setSelectedItem(inetAddr);
+    				break;
+    			}
+    		}
+    	}
+    	listPathsModel = new DefaultListModel<String>();
+    	for(String path: settings.getPaths()){
+    		listPathsModel.addElement(path);
+    	}
         initComponents();
+        textFieldPort.setText(""+settings.getServerPort());
+        textFieldName.setText(settings.getName());
+        textFieldNameRoot.setText(settings.getNameRoot());
+        textFieldScanDepth.setText(""+settings.getScanDepth());
     }
 
     /**
@@ -31,178 +74,376 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jOptionPane1 = new javax.swing.JOptionPane();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jToolBar1 = new javax.swing.JToolBar();
-        jButton3 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        panelTabs = new javax.swing.JTabbedPane();
+        panelSettings = new javax.swing.JPanel();
+        panelSettingsPnlServer = new javax.swing.JPanel();
+        lblComboInetNames = new javax.swing.JLabel();
+        comboInetNames = new javax.swing.JComboBox();
+        lblComboPort = new javax.swing.JLabel();
+        textFieldPort = new javax.swing.JTextField();
+        lblStatusServer = new javax.swing.JLabel();
+        btnToggleServer = new javax.swing.JButton();
+        lblServerUrl = new javax.swing.JLabel();
+        panelSettingsPnlGeneral = new javax.swing.JPanel();
+        lblTextFieldName = new javax.swing.JLabel();
+        textFieldName = new javax.swing.JTextField();
+        lblTextFieldNameRoot = new javax.swing.JLabel();
+        textFieldNameRoot = new javax.swing.JTextField();
+        scrollPaneListPaths = new javax.swing.JScrollPane();
+        listPaths = new javax.swing.JList();
+        btnAddPath = new javax.swing.JButton();
+        textFieldPath = new javax.swing.JTextField();
+        btnDeletePath = new javax.swing.JButton();
+        lblPaths = new javax.swing.JLabel();
+        lblTextFieldScanDepth = new javax.swing.JLabel();
+        textFieldScanDepth = new javax.swing.JTextField();
+        panelApps = new javax.swing.JPanel();
+        scrollPaneListActiveApps = new javax.swing.JScrollPane();
+        listActiveApps = new javax.swing.JList();
+        panelCategories = new javax.swing.JPanel();
+        panelCategoriesPnlEdit = new javax.swing.JPanel();
+        lblTextFieldNameCategory = new javax.swing.JLabel();
+        textFieldNameCategory = new javax.swing.JTextField();
+        lblTextFieldDescriptionCategory = new javax.swing.JLabel();
+        textFieldDescriptionCategory = new javax.swing.JTextField();
+        lblTextFieldExtensionsCategory = new javax.swing.JLabel();
+        textFieldExtensionsCategory = new javax.swing.JTextField();
+        panelCategoriesPnlList = new javax.swing.JPanel();
+        lblCategories = new javax.swing.JLabel();
+        btnDeleteCategory = new javax.swing.JButton();
+        scrollPaneListCategories = new javax.swing.JScrollPane();
+        listCategories = new javax.swing.JList();
+        btnAddCategory = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         menuFileExit = new javax.swing.JMenuItem();
         menuAbout = new javax.swing.JMenu();
 
-        jOptionPane1.setMessage("bdfdbdbbxxb");
+        FormListener formListener = new FormListener();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Restmote Control");
         setResizable(false);
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Server"));
+        panelTabs.addChangeListener(formListener);
 
-        jLabel1.setText("Interface");
+        panelSettingsPnlServer.setBorder(javax.swing.BorderFactory.createTitledBorder("Server"));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
+        lblComboInetNames.setText("Interface");
 
-        jLabel2.setText("Port");
+        comboInetNames.setModel(listInetNamesModel);
+        comboInetNames.addActionListener(formListener);
 
-        jLabel3.setText("jLabel3");
+        lblComboPort.setText("Port");
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/build.png"))); // NOI18N
-        jButton1.setText("jButton1");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jButton1MousePressed(evt);
-            }
-        });
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        textFieldPort.addActionListener(formListener);
+        textFieldPort.addPropertyChangeListener(formListener);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addGap(12, 12, 12)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jTextField1)
-                                .addGap(2, 2, 2))))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        lblStatusServer.setText("lbl Server Status");
+
+        btnToggleServer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/build.png"))); // NOI18N
+        btnToggleServer.addMouseListener(formListener);
+        btnToggleServer.addActionListener(formListener);
+
+        lblServerUrl.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
+        lblServerUrl.setText("lbl Server Url");
+
+        javax.swing.GroupLayout panelSettingsPnlServerLayout = new javax.swing.GroupLayout(panelSettingsPnlServer);
+        panelSettingsPnlServer.setLayout(panelSettingsPnlServerLayout);
+        panelSettingsPnlServerLayout.setHorizontalGroup(
+            panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSettingsPnlServerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(107, Short.MAX_VALUE))
-        );
-
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("General"));
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 408, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(comboInetNames, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(panelSettingsPnlServerLayout.createSequentialGroup()
+                        .addComponent(lblComboPort)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                        .addComponent(textFieldPort, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelSettingsPnlServerLayout.createSequentialGroup()
+                        .addComponent(lblComboInetNames)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btnToggleServer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblStatusServer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblServerUrl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        panelSettingsPnlServerLayout.setVerticalGroup(
+            panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSettingsPnlServerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lblComboInetNames)
+                .addGap(5, 5, 5)
+                .addComponent(comboInetNames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textFieldPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblComboPort))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblServerUrl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblStatusServer)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnToggleServer, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39))
+        );
+
+        panelSettingsPnlGeneral.setBorder(javax.swing.BorderFactory.createTitledBorder("General"));
+
+        lblTextFieldName.setText("Name");
+
+        lblTextFieldNameRoot.setText("NameRoot");
+
+        listPaths.setModel(listPathsModel);
+        listPaths.addListSelectionListener(formListener);
+        scrollPaneListPaths.setViewportView(listPaths);
+
+        btnAddPath.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/accept.png"))); // NOI18N
+        btnAddPath.addActionListener(formListener);
+
+        btnDeletePath.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/delete.png"))); // NOI18N
+        btnDeletePath.setEnabled(false);
+        btnDeletePath.addActionListener(formListener);
+
+        lblPaths.setText("jLabel1");
+
+        lblTextFieldScanDepth.setText("ScanDepth");
+
+        javax.swing.GroupLayout panelSettingsPnlGeneralLayout = new javax.swing.GroupLayout(panelSettingsPnlGeneral);
+        panelSettingsPnlGeneral.setLayout(panelSettingsPnlGeneralLayout);
+        panelSettingsPnlGeneralLayout.setHorizontalGroup(
+            panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSettingsPnlGeneralLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelSettingsPnlGeneralLayout.createSequentialGroup()
+                        .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(textFieldPath, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(scrollPaneListPaths, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnAddPath, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnDeletePath, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(lblPaths)
+                    .addGroup(panelSettingsPnlGeneralLayout.createSequentialGroup()
+                        .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTextFieldNameRoot)
+                            .addComponent(lblTextFieldName)
+                            .addComponent(lblTextFieldScanDepth))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(textFieldName, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+                            .addComponent(textFieldNameRoot)
+                            .addComponent(textFieldScanDepth, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addContainerGap(131, Short.MAX_VALUE))
+        );
+        panelSettingsPnlGeneralLayout.setVerticalGroup(
+            panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSettingsPnlGeneralLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTextFieldName)
+                    .addComponent(textFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTextFieldNameRoot)
+                    .addComponent(textFieldNameRoot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTextFieldScanDepth)
+                    .addComponent(textFieldScanDepth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(lblPaths)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnAddPath, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(textFieldPath))
+                .addGap(11, 11, 11)
+                .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrollPaneListPaths, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDeletePath))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout panelSettingsLayout = new javax.swing.GroupLayout(panelSettings);
+        panelSettings.setLayout(panelSettingsLayout);
+        panelSettingsLayout.setHorizontalGroup(
+            panelSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSettingsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelSettingsPnlServer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelSettingsPnlGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        panelSettingsLayout.setVerticalGroup(
+            panelSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelSettingsPnlServer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelSettingsPnlGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        panelTabs.addTab("Settings", new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/build.png")), panelSettings); // NOI18N
+
+        listActiveApps.setModel(listPathsModel);
+        listActiveApps.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listActiveApps.addListSelectionListener(formListener);
+        scrollPaneListActiveApps.setViewportView(listActiveApps);
+
+        javax.swing.GroupLayout panelAppsLayout = new javax.swing.GroupLayout(panelApps);
+        panelApps.setLayout(panelAppsLayout);
+        panelAppsLayout.setHorizontalGroup(
+            panelAppsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 775, Short.MAX_VALUE)
+            .addGroup(panelAppsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelAppsLayout.createSequentialGroup()
+                    .addGap(237, 237, 237)
+                    .addComponent(scrollPaneListActiveApps, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(238, Short.MAX_VALUE)))
+        );
+        panelAppsLayout.setVerticalGroup(
+            panelAppsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 343, Short.MAX_VALUE)
+            .addGroup(panelAppsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelAppsLayout.createSequentialGroup()
+                    .addGap(101, 101, 101)
+                    .addComponent(scrollPaneListActiveApps, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(102, Short.MAX_VALUE)))
+        );
+
+        panelTabs.addTab("Apps", new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/chart.png")), panelApps); // NOI18N
+
+        panelCategoriesPnlEdit.setBorder(javax.swing.BorderFactory.createTitledBorder("Edit"));
+
+        lblTextFieldNameCategory.setText("Name");
+
+        lblTextFieldDescriptionCategory.setText("Description");
+
+        lblTextFieldExtensionsCategory.setText("Extensions");
+
+        javax.swing.GroupLayout panelCategoriesPnlEditLayout = new javax.swing.GroupLayout(panelCategoriesPnlEdit);
+        panelCategoriesPnlEdit.setLayout(panelCategoriesPnlEditLayout);
+        panelCategoriesPnlEditLayout.setHorizontalGroup(
+            panelCategoriesPnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCategoriesPnlEditLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelCategoriesPnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTextFieldDescriptionCategory)
+                    .addComponent(lblTextFieldNameCategory)
+                    .addComponent(lblTextFieldExtensionsCategory))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelCategoriesPnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(textFieldDescriptionCategory, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
+                    .addComponent(textFieldExtensionsCategory, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(textFieldNameCategory, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        jTabbedPane1.addTab("Settings", jPanel1);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 640, Short.MAX_VALUE)
+        panelCategoriesPnlEditLayout.setVerticalGroup(
+            panelCategoriesPnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCategoriesPnlEditLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelCategoriesPnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTextFieldNameCategory)
+                    .addComponent(textFieldNameCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelCategoriesPnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTextFieldDescriptionCategory)
+                    .addComponent(textFieldDescriptionCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelCategoriesPnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTextFieldExtensionsCategory)
+                    .addComponent(textFieldExtensionsCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(206, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 303, Short.MAX_VALUE)
+
+        panelCategoriesPnlList.setBorder(javax.swing.BorderFactory.createTitledBorder("List"));
+
+        lblCategories.setText("dasdasdasdasfdsfsd");
+
+        btnDeleteCategory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/delete.png"))); // NOI18N
+        btnDeleteCategory.setEnabled(false);
+        btnDeleteCategory.addActionListener(formListener);
+
+        listCategories.setModel(listPathsModel);
+        listCategories.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listCategories.addListSelectionListener(formListener);
+        scrollPaneListCategories.setViewportView(listCategories);
+
+        btnAddCategory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/accept.png"))); // NOI18N
+        btnAddCategory.setText("New");
+        btnAddCategory.addActionListener(formListener);
+
+        javax.swing.GroupLayout panelCategoriesPnlListLayout = new javax.swing.GroupLayout(panelCategoriesPnlList);
+        panelCategoriesPnlList.setLayout(panelCategoriesPnlListLayout);
+        panelCategoriesPnlListLayout.setHorizontalGroup(
+            panelCategoriesPnlListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCategoriesPnlListLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelCategoriesPnlListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelCategoriesPnlListLayout.createSequentialGroup()
+                        .addComponent(lblCategories)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAddCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelCategoriesPnlListLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnDeleteCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(89, 89, 89))
+            .addGroup(panelCategoriesPnlListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCategoriesPnlListLayout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(scrollPaneListCategories, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(90, 90, 90)))
+        );
+        panelCategoriesPnlListLayout.setVerticalGroup(
+            panelCategoriesPnlListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCategoriesPnlListLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelCategoriesPnlListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCategories)
+                    .addComponent(btnAddCategory))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnDeleteCategory))
+            .addGroup(panelCategoriesPnlListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelCategoriesPnlListLayout.createSequentialGroup()
+                    .addGap(105, 105, 105)
+                    .addComponent(scrollPaneListCategories, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(54, Short.MAX_VALUE)))
         );
 
-        jTabbedPane1.addTab("Apps", jPanel2);
+        javax.swing.GroupLayout panelCategoriesLayout = new javax.swing.GroupLayout(panelCategories);
+        panelCategories.setLayout(panelCategoriesLayout);
+        panelCategoriesLayout.setHorizontalGroup(
+            panelCategoriesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCategoriesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelCategoriesPnlList, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(panelCategoriesPnlEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        panelCategoriesLayout.setVerticalGroup(
+            panelCategoriesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCategoriesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelCategoriesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelCategoriesPnlEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelCategoriesPnlList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
 
-        jToolBar1.setRollover(true);
+        panelTabs.addTab("Categories", new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/accept.png")), panelCategories); // NOI18N
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/accept.png"))); // NOI18N
-        jButton3.setText("jButton3");
-        jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton3);
-
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/24/add.png"))); // NOI18N
-        jButton2.setText("jButton2");
-        jButton2.setIconTextGap(10);
+        btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/24/rss.png"))); // NOI18N
+        btnSave.setText("Save");
+        btnSave.setToolTipText("");
+        btnSave.setIconTextGap(10);
+        btnSave.addActionListener(formListener);
 
         menuFile.setText("File");
 
+        menuFileExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         menuFileExit.setText("Exit");
-        menuFileExit.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                menuFileExitMousePressed(evt);
-            }
-        });
-        menuFileExit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuFileExitActionPerformed(evt);
-            }
-        });
+        menuFileExit.addMouseListener(formListener);
+        menuFileExit.addActionListener(formListener);
         menuFile.add(menuFileExit);
 
         menuBar.add(menuFile);
@@ -216,28 +457,106 @@ public class MainWindow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1)
+                    .addComponent(panelTabs)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(panelTabs, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addComponent(btnSave)
                 .addContainerGap())
         );
 
         pack();
+    }
+
+    // Code for dispatching events from components to event handlers.
+
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.MouseListener, java.beans.PropertyChangeListener, javax.swing.event.ChangeListener, javax.swing.event.ListSelectionListener {
+        FormListener() {}
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            if (evt.getSource() == comboInetNames) {
+                MainWindow.this.comboInetNamesActionPerformed(evt);
+            }
+            else if (evt.getSource() == textFieldPort) {
+                MainWindow.this.textFieldPortActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnToggleServer) {
+                MainWindow.this.btnToggleServerActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnAddPath) {
+                MainWindow.this.btnAddPathActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnDeletePath) {
+                MainWindow.this.btnDeletePathActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnDeleteCategory) {
+                MainWindow.this.btnDeleteCategoryActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnSave) {
+                MainWindow.this.btnSaveActionPerformed(evt);
+            }
+            else if (evt.getSource() == menuFileExit) {
+                MainWindow.this.menuFileExitActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnAddCategory) {
+                MainWindow.this.btnAddCategoryActionPerformed(evt);
+            }
+        }
+
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mousePressed(java.awt.event.MouseEvent evt) {
+            if (evt.getSource() == btnToggleServer) {
+                MainWindow.this.btnToggleServerMousePressed(evt);
+            }
+            else if (evt.getSource() == menuFileExit) {
+                MainWindow.this.menuFileExitMousePressed(evt);
+            }
+        }
+
+        public void mouseReleased(java.awt.event.MouseEvent evt) {
+        }
+
+        public void propertyChange(java.beans.PropertyChangeEvent evt) {
+            if (evt.getSource() == textFieldPort) {
+                MainWindow.this.textFieldPortPropertyChange(evt);
+            }
+        }
+
+        public void stateChanged(javax.swing.event.ChangeEvent evt) {
+            if (evt.getSource() == panelTabs) {
+                MainWindow.this.panelTabsStateChanged(evt);
+            }
+        }
+
+        public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+            if (evt.getSource() == listPaths) {
+                MainWindow.this.listPathsValueChanged(evt);
+            }
+            else if (evt.getSource() == listActiveApps) {
+                MainWindow.this.listActiveAppsValueChanged(evt);
+            }
+            else if (evt.getSource() == listCategories) {
+                MainWindow.this.listCategoriesValueChanged(evt);
+            }
+        }
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuFileExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFileExitActionPerformed
@@ -245,42 +564,165 @@ public class MainWindow extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_menuFileExitActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        jOptionPane1.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnToggleServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnToggleServerActionPerformed
+        try {
+            if (Server.getInstance().isRunning()){
+                Server.getInstance().stop();
+                lblStatusServer.setText("Http Server is not running");
+                btnToggleServer.setText("Start");
+            } else {
+                Server.getInstance().start();
+                lblStatusServer.setText("Http Server is running!");
+                btnToggleServer.setText("Stop");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnToggleServerActionPerformed
     
-    private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
+    private void btnToggleServerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnToggleServerMousePressed
         
-    }//GEN-LAST:event_jButton1MousePressed
+    }//GEN-LAST:event_btnToggleServerMousePressed
 
     private void menuFileExitMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuFileExitMousePressed
         System.exit(0);
     }//GEN-LAST:event_menuFileExitMousePressed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    private void refreshLblServerUrl(){
+        InetAddr inetAddr = listInetNamesModel.getSelectedItem();
+        lblServerUrl.setText("http://" + inetAddr + ":" + textFieldPort.getText() + "/client/index.html");
+    }
+    
+    private void comboInetNamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboInetNamesActionPerformed
+        refreshLblServerUrl();
+    }//GEN-LAST:event_comboInetNamesActionPerformed
+
+    private void listPathsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listPathsValueChanged
+        if (evt.getValueIsAdjusting() == false) {
+            btnDeletePath.setEnabled(listPaths.getSelectedIndex() != -1);
+        }
+    }//GEN-LAST:event_listPathsValueChanged
+
+    private void btnDeletePathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletePathActionPerformed
+        int[] indexes = listPaths.getSelectedIndices();
+        for (int i = 0; i < indexes.length; i++) {
+            listPathsModel.remove(indexes[i] - i);
+        }
+        btnDeletePath.setEnabled(false);
+    }//GEN-LAST:event_btnDeletePathActionPerformed
+
+    private void btnAddPathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPathActionPerformed
+       String name = textFieldPath.getText();
+       if (name.equals("") || listPathsModel.contains(name)) {
+            Toolkit.getDefaultToolkit().beep();
+            textFieldPath.requestFocusInWindow();
+            textFieldPath.selectAll();
+            return;
+       }
+       int index = listPaths.getSelectedIndex() + 1;
+       listPathsModel.insertElementAt(name, index);
+       textFieldPath.requestFocusInWindow();
+       textFieldPath.setText("");
+       //listPaths.setSelectedIndex(index);
+       //listPaths.ensureIndexIsVisible(index);
+    }//GEN-LAST:event_btnAddPathActionPerformed
+
+    private void textFieldPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldPortActionPerformed
+        refreshLblServerUrl();
+    }//GEN-LAST:event_textFieldPortActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        SettingsBusiness settingsBusiness = PcControllerFactory.getPcController().getSettingsBusiness();
+        Settings settings = settingsBusiness.get();
+        settings.setServerPort(Integer.parseInt(textFieldPort.getText()));
+        InetAddr inetAddr = listInetNamesModel.getSelectedItem();
+        settings.setServerInetName(inetAddr.getInetName());
+        settings.setServerLastIp(inetAddr.getIp());
+        Set<String> paths = new HashSet<String>(); 
+        for (int i = 0; i < listPathsModel.size(); i++) {
+            paths.add(listPathsModel.get(i));
+        }
+        settings.setPaths(paths);
+        settings.setName(textFieldName.getText());
+        settings.setNameRoot(textFieldNameRoot.getText());
+        settings.setScanDepth(Integer.parseInt(textFieldScanDepth.getText()));
+        settingsBusiness.store(settings);
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnDeleteCategoryActionPerformed(ActionEvent evt) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+    
+    private void textFieldPortPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_textFieldPortPropertyChange
+        refreshLblServerUrl();
+    }//GEN-LAST:event_textFieldPortPropertyChange
+
+    private void panelTabsStateChanged(ChangeEvent evt) {
+       logger.info("Not yet implemented");
+    }
+
+    private void listActiveAppsValueChanged(ListSelectionEvent evt) {
+        logger.info("Not yet implemented");
+    }
+
+    private void listCategoriesValueChanged(ListSelectionEvent evt) {
+        logger.info("Not yet implemented");
+    }
+    
+    private void btnAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCategoryActionPerformed
+        logger.info("btnAddCategoryActionPerformed");
+    }//GEN-LAST:event_btnAddCategoryActionPerformed
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JOptionPane jOptionPane1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JButton btnAddCategory;
+    private javax.swing.JButton btnAddPath;
+    private javax.swing.JButton btnDeleteCategory;
+    private javax.swing.JButton btnDeletePath;
+    private javax.swing.JButton btnSave;
+    private javax.swing.JButton btnToggleServer;
+    private javax.swing.JComboBox comboInetNames;
+    private javax.swing.JLabel lblCategories;
+    private javax.swing.JLabel lblComboInetNames;
+    private javax.swing.JLabel lblComboPort;
+    private javax.swing.JLabel lblPaths;
+    private javax.swing.JLabel lblServerUrl;
+    private javax.swing.JLabel lblStatusServer;
+    private javax.swing.JLabel lblTextFieldDescriptionCategory;
+    private javax.swing.JLabel lblTextFieldExtensionsCategory;
+    private javax.swing.JLabel lblTextFieldName;
+    private javax.swing.JLabel lblTextFieldNameCategory;
+    private javax.swing.JLabel lblTextFieldNameRoot;
+    private javax.swing.JLabel lblTextFieldScanDepth;
+    private javax.swing.JList listActiveApps;
+    private javax.swing.JList listCategories;
+    private javax.swing.JList listPaths;
     private javax.swing.JMenu menuAbout;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu menuFile;
     private javax.swing.JMenuItem menuFileExit;
+    private javax.swing.JPanel panelApps;
+    private javax.swing.JPanel panelCategories;
+    private javax.swing.JPanel panelCategoriesPnlEdit;
+    private javax.swing.JPanel panelCategoriesPnlList;
+    private javax.swing.JPanel panelSettings;
+    private javax.swing.JPanel panelSettingsPnlGeneral;
+    private javax.swing.JPanel panelSettingsPnlServer;
+    private javax.swing.JTabbedPane panelTabs;
+    private javax.swing.JScrollPane scrollPaneListActiveApps;
+    private javax.swing.JScrollPane scrollPaneListCategories;
+    private javax.swing.JScrollPane scrollPaneListPaths;
+    private javax.swing.JTextField textFieldDescriptionCategory;
+    private javax.swing.JTextField textFieldExtensionsCategory;
+    private javax.swing.JTextField textFieldName;
+    private javax.swing.JTextField textFieldNameCategory;
+    private javax.swing.JTextField textFieldNameRoot;
+    private javax.swing.JTextField textFieldPath;
+    private javax.swing.JTextField textFieldPort;
+    private javax.swing.JTextField textFieldScanDepth;
     // End of variables declaration//GEN-END:variables
+
+  
+
+    
 }
