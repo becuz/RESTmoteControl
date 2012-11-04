@@ -84,6 +84,7 @@ public class MainWindow extends javax.swing.JFrame {
         lblStatusServer = new javax.swing.JLabel();
         btnToggleServer = new javax.swing.JButton();
         lblServerUrl = new javax.swing.JLabel();
+        btnRefreshInetNames = new javax.swing.JButton();
         panelSettingsPnlGeneral = new javax.swing.JPanel();
         lblTextFieldName = new javax.swing.JLabel();
         textFieldName = new javax.swing.JTextField();
@@ -122,6 +123,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         FormListener formListener = new FormListener();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Restmote Control");
         setResizable(false);
 
@@ -148,6 +150,9 @@ public class MainWindow extends javax.swing.JFrame {
         lblServerUrl.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
         lblServerUrl.setText("lbl Server Url");
 
+        btnRefreshInetNames.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/build.png"))); // NOI18N
+        btnRefreshInetNames.setEnabled(false);
+
         javax.swing.GroupLayout panelSettingsPnlServerLayout = new javax.swing.GroupLayout(panelSettingsPnlServer);
         panelSettingsPnlServer.setLayout(panelSettingsPnlServerLayout);
         panelSettingsPnlServerLayout.setHorizontalGroup(
@@ -155,17 +160,21 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(panelSettingsPnlServerLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(comboInetNames, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblStatusServer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblServerUrl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelSettingsPnlServerLayout.createSequentialGroup()
                         .addComponent(lblComboPort)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(textFieldPort, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelSettingsPnlServerLayout.createSequentialGroup()
-                        .addComponent(lblComboInetNames)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(btnToggleServer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblStatusServer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblServerUrl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(comboInetNames, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRefreshInetNames, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelSettingsPnlServerLayout.createSequentialGroup()
+                        .addGroup(panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnToggleServer, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblComboInetNames))
+                        .addGap(0, 34, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelSettingsPnlServerLayout.setVerticalGroup(
@@ -174,13 +183,15 @@ public class MainWindow extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblComboInetNames)
                 .addGap(5, 5, 5)
-                .addComponent(comboInetNames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(comboInetNames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRefreshInetNames))
                 .addGap(18, 18, 18)
                 .addGroup(panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(textFieldPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblComboPort))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblServerUrl)
+                .addComponent(lblServerUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblStatusServer)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -235,7 +246,7 @@ public class MainWindow extends javax.swing.JFrame {
                             .addComponent(textFieldName, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
                             .addComponent(textFieldNameRoot)
                             .addComponent(textFieldScanDepth, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addContainerGap(95, Short.MAX_VALUE))
         );
         panelSettingsPnlGeneralLayout.setVerticalGroup(
             panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -590,7 +601,8 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void refreshLblServerUrl(){
         InetAddr inetAddr = listInetNamesModel.getSelectedItem();
-        lblServerUrl.setText("http://" + inetAddr + ":" + textFieldPort.getText() + "/client/index.html");
+        String url = "http://" + inetAddr + ":" + textFieldPort.getText() + "/client/index.html";
+        lblServerUrl.setText("<html><a href=\"" + url + "\">" + url + "</a></html>");
     }
     
     private void comboInetNamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboInetNamesActionPerformed
@@ -679,6 +691,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton btnAddPath;
     private javax.swing.JButton btnDeleteCategory;
     private javax.swing.JButton btnDeletePath;
+    private javax.swing.JButton btnRefreshInetNames;
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnToggleServer;
     private javax.swing.JComboBox comboInetNames;
