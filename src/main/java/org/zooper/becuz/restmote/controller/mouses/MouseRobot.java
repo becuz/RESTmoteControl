@@ -4,7 +4,7 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import org.zooper.becuz.restmote.controller.PcControllerAbstract;
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
@@ -27,7 +27,7 @@ public class MouseRobot implements Mouse {
 		int[] screenSize = PcControllerFactory.getPcController().getScreenSizes()[0];
 		int screenWidth = screenSize[0];
 		int screenHeight = screenSize[1];
-		log.severe("mouse is in positions: " + x + " " + y);
+		log.debug("mouse is in positions: " + x + " " + y);
 		String[] coordinates = move.split("x");
 		for (int i = 0; i < coordinates.length; i++) {
 			if (Utils.isEmpty(coordinates[i])) continue;
@@ -56,7 +56,7 @@ public class MouseRobot implements Mouse {
 		}
 		x = Math.max(0, Math.min(x, screenWidth));
 		y = Math.max(0, Math.min(y, screenHeight));
-		log.severe("putting mouse in positions: " + x + " " + y);
+		log.debug("putting mouse in positions: " + x + " " + y);
 		PcControllerAbstract.getMyRobot().mouseMove(x, y);
 		return true;
 	}

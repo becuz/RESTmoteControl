@@ -12,7 +12,7 @@ import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.swing.JOptionPane;
 
@@ -85,7 +85,7 @@ public class TrayApp implements ActionListener {
 		getMainWindow().setVisible(true);
 		
         if (!SystemTray.isSupported()) {
-        	log.severe("SystemTray is not supported");
+        	log.warn("SystemTray is not supported");
         	JOptionPane.showMessageDialog(null, "SystemTray is not supported on your system!");
             //getMainWindow().setVisible(true);
         	return;
@@ -101,7 +101,7 @@ public class TrayApp implements ActionListener {
             tray.add(trayIcon);
         } catch (AWTException e) {
         	String error = "TrayIcon could not be added.";
-        	log.severe(error);
+        	log.error(error);
         	JOptionPane.showMessageDialog(null, error);
             getMainWindow().setVisible(true);
             return;

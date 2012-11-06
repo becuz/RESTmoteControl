@@ -2,7 +2,7 @@ package org.zooper.becuz.restmote.rest.resources;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -69,8 +69,8 @@ public class ExploreResource extends AbstractResource {
 		if (Utils.isEmpty(filePath)){
 			throw new NotAcceptableException("path is mandatory");
 		}
-		log.severe("get path: " + filePath + ", extensions: " + extensions + ", depth: " + depth + ", filter: " + filter);
-		return PcControllerFactory.getPcController().getMedias(
+		log.info("get path: " + filePath + ", extensions: " + extensions + ", depth: " + depth + ", filter: " + filter);
+		return getMediaBusiness().retrieveMedias(
 				filePath, 
 				depth,
 				extensions, 
@@ -95,15 +95,15 @@ public class ExploreResource extends AbstractResource {
 			@QueryParam("filter") String filter
 			//@QueryParam("mode") String mode TODO flat or tree
 			){
-		log.severe("get path: " + filePath + ", mediaCategoryName: " + mediaCategoryName + ", depth: " + depth + ", filter: " + filter);
+		log.info("get path: " + filePath + ", mediaCategoryName: " + mediaCategoryName + ", depth: " + depth + ", filter: " + filter);
 		if (Utils.isEmpty(filePath)){
-			return PcControllerFactory.getPcController().getMedias(getMediaBusiness().getMediaRootByName(mediaCategoryName)); 
+			return getMediaBusiness().retrieveMedias(mediaCategoryName); 
 		}
 		MediaCategory mediaCategory = null;
 		if (!Utils.isEmpty(mediaCategoryName)){
 			mediaCategory = getMediaCategoryBusiness().getByName(mediaCategoryName);
 		}
-		return PcControllerFactory.getPcController().getMedias(
+		return getMediaBusiness().retrieveMedias(
 				filePath, 
 				depth,
 				mediaCategory == null ? null : new ArrayList<String>(mediaCategory.getExtensions()), 
@@ -158,10 +158,10 @@ public class ExploreResource extends AbstractResource {
 			@PathParam("appName") String appName,
 			@QueryParam("path") String pathFile){
 		try {
-			log.severe("openFile pathFile:" + pathFile + ", appName:" + appName);
+			log.info("openFile pathFile:" + pathFile + ", appName:" + appName);
 			getRemoteControlBusiness().openFile(pathFile, getAppBusiness().getByName(appName));
 		} catch (Exception e) {
-			log.severe(e.getMessage() + " " + e.getCause());
+			log.error(e.getMessage() + " " + e.getCause());
 			throw new ServerException(e.getMessage());
 		}
 	}

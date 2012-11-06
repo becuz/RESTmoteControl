@@ -4,7 +4,7 @@
 package org.zooper.remosko.conf;
 
 
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
@@ -27,7 +27,7 @@ public class JacksonConfigurator implements ContextResolver<ObjectMapper> {
      */
     public JacksonConfigurator() {
     	log.info("starting jackson context ..");
-    	log.fine("initialize mapper");
+    	log.debug("initialize mapper");
     	mapper = new ObjectMapper();
     	SerializationConfig serConfig = mapper.getSerializationConfig();
 //        serConfig.setDateFormat(new SimpleDateFormat(Constants.dateFormat));
@@ -44,7 +44,7 @@ public class JacksonConfigurator implements ContextResolver<ObjectMapper> {
     }
 
     public ObjectMapper getContext(Class<?> arg0) {
-    	log.fine("class requested: "+arg0.getSimpleName());
+    	log.debug("class requested: "+arg0.getSimpleName());
         return mapper;
     }
 

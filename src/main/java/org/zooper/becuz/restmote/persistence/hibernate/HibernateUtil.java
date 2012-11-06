@@ -2,7 +2,7 @@ package org.zooper.becuz.restmote.persistence.hibernate;
 
 import java.util.Properties;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -23,7 +23,6 @@ public class HibernateUtil {
 	private static Properties properties;
     
     private static SessionFactory buildSessionFactory() {
-    	Logger.getLogger("org.hibernate").setLevel(Level.INFO);
         try {
             Configuration configuration = new Configuration().configure();
             configuration.setProperty(
@@ -37,7 +36,7 @@ public class HibernateUtil {
             return configuration.buildSessionFactory();
         }
         catch (Throwable ex) {
-            log.severe("Initial SessionFactory creation failed." + ex);
+            log.error("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
     }

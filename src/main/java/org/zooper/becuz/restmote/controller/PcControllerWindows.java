@@ -125,7 +125,7 @@ public class PcControllerWindows extends PcControllerAbstract{
 	 */
 	@Override
 	public void rebuildActiveApps(){
-		log.severe("rebuildActiveApps");
+		log.info("rebuildActiveApps");
 		activeApps.clear();
 		BufferedReader bri = null;
 		BufferedReader bre;
@@ -144,24 +144,24 @@ public class PcControllerWindows extends PcControllerAbstract{
 					windowName += (" " + infos[i]);
 				}
 				ActiveApp activeApp = new ActiveApp(handle, image, windowName, hasFocus);
-				log.info(activeApp.toString());
+				log.debug(activeApp.toString());
 				activeApps.add(activeApp);
 		      }
 			while ((line = bre.readLine()) != null) {	//errors
-				log.severe("Error: " + line);
+				log.error("Error: " + line);
 			}
 			//p.waitFor();
 			p.destroy();
 			java.util.Collections.sort(activeApps);
 		} catch (Exception e) {
-			log.severe(e.getMessage());
+			log.error(e.getMessage());
 	    } finally {
 	    	try {
 	    		if (bri != null){
 	    			bri.close();
 	    		}
 			} catch (IOException e) {
-				log.severe(e.getMessage());
+				log.error(e.getMessage());
 			}
 //		 bre.close();
 	    }

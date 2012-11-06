@@ -2,7 +2,7 @@ package org.zooper.becuz.restmote.rest.resources;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -54,7 +54,7 @@ public class ActiveAppResource extends AbstractResource {
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public List<ActiveApp> get(
 			@QueryParam("refresh") String refresh){
-		log.severe("ActiveAppResource get refresh: " + refresh);
+		log.info("ActiveAppResource get refresh: " + refresh);
 		return getActiveAppBusiness().getActiveApps("true".equals(refresh));
 	}
 	
@@ -69,7 +69,7 @@ public class ActiveAppResource extends AbstractResource {
 	public ActiveApp getActiveApp(
 			@PathParam("pid") String pid,
 			@QueryParam("refresh") String refresh){
-		log.severe("ActiveAppResource getActiveApp pid " + pid + ", refresh: " + refresh);
+		log.info("ActiveAppResource getActiveApp pid " + pid + ", refresh: " + refresh);
 		return getActiveAppBusiness().getActiveAppByPid(pid, "true".equals(refresh));
 	}
 	
@@ -82,7 +82,7 @@ public class ActiveAppResource extends AbstractResource {
 	@Path("{pid}")
 	@Consumes({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public void killApps(@PathParam("pid") String pid){
-		log.severe("killApps pid: " + pid);
+		log.info("killApps pid: " + pid);
 		try {
 			getActiveAppBusiness().killActiveApps(Collections.singletonList(pid));
 		} catch (Exception e) {
@@ -98,7 +98,7 @@ public class ActiveAppResource extends AbstractResource {
 	@DELETE
 	@Consumes({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public void killApps(List<String> pids){
-		log.severe("killApps pids: " + pids);
+		log.info("killApps pids: " + pids);
 		try {
 			getActiveAppBusiness().killActiveApps(pids);
 		} catch (Exception e) {
@@ -113,7 +113,7 @@ public class ActiveAppResource extends AbstractResource {
 	@POST
 	@Path("{pid}/focus")
 	public void focus(@PathParam("pid") String pid){
-		log.severe("focus pid: " + pid);
+		log.info("focus pid: " + pid);
 		try {
 			getActiveAppBusiness().focusActiveApp(pid);
 		} catch (Exception e) {

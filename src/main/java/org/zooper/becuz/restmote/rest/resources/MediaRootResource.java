@@ -1,7 +1,7 @@
 package org.zooper.becuz.restmote.rest.resources;
 
 import java.util.List;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -34,8 +34,8 @@ public class MediaRootResource extends AbstractResource{
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public List<MediaRoot> getMediaRoots(){
-		log.severe("getMediaRoots");
-		PcControllerFactory.getPcController().rootScan();
+		log.info("getMediaRoots");
+		getMediaBusiness().rootScan();
 		return getMediaBusiness().getMediaRoots();
 	}
 	

@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 import java.net.HttpURLConnection;
 import java.net.URLEncoder;
 import java.util.List;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.ws.rs.core.MediaType;
 
@@ -42,7 +42,7 @@ public class TestExploreResource extends TestResourceAbstract {
 				server.getApiUrl() + "medias", "?path=" + URLEncoder.encode(rootPath, "UTF-8"), 
 				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "GET", "", HttpURLConnection.HTTP_OK);
 		myString = IOUtils.toString(result, "UTF-8");
-		log.severe("/get returned:" + myString);
+		log.info("/get returned:" + myString);
 		objectMapper = RestFactory.getJson().getContext(List.class);
 		medias = objectMapper.readValue(myString, new TypeReference<List<Media>>() {});
 		sizeMedias = medias.size();
@@ -54,7 +54,7 @@ public class TestExploreResource extends TestResourceAbstract {
 				server.getApiUrl() + "medias", "?path=" + URLEncoder.encode(rootPath, "UTF-8") + "&extensions=mp3&extensions=mp2", 
 				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "GET", "", HttpURLConnection.HTTP_OK);
 		myString = IOUtils.toString(result, "UTF-8");
-		log.severe("/get returned:" + myString);
+		log.info("/get returned:" + myString);
 		objectMapper = RestFactory.getJson().getContext(List.class);
 		medias = objectMapper.readValue(myString, new TypeReference<List<Media>>() {});
 		assertTrue(!medias.isEmpty());
@@ -65,7 +65,7 @@ public class TestExploreResource extends TestResourceAbstract {
 				server.getApiUrl() + "medias", "?path=" + URLEncoder.encode(rootPath, "UTF-8") + "&extensions=uuuuu", 
 				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "GET", "", HttpURLConnection.HTTP_OK);
 		myString = IOUtils.toString(result, "UTF-8");
-		log.severe("/get returned:" + myString);
+		log.info("/get returned:" + myString);
 		objectMapper = RestFactory.getJson().getContext(List.class);
 		medias = objectMapper.readValue(myString, new TypeReference<List<Media>>() {});
 		Media m = findMediaFile(medias);
@@ -75,7 +75,7 @@ public class TestExploreResource extends TestResourceAbstract {
 				server.getApiUrl() + "medias", "?path=" + URLEncoder.encode(rootPath, "UTF-8") + "&filter=uuuuuuuuuuuuuu", 
 				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "GET", "", HttpURLConnection.HTTP_OK);
 		myString = IOUtils.toString(result, "UTF-8");
-		log.severe("/get returned:" + myString);
+		log.info("/get returned:" + myString);
 		objectMapper = RestFactory.getJson().getContext(List.class);
 		medias = objectMapper.readValue(myString, new TypeReference<List<Media>>() {});
 		m = findMediaFile(medias);
@@ -86,7 +86,7 @@ public class TestExploreResource extends TestResourceAbstract {
 				server.getApiUrl() + "medias/" + mediaCategoryMusic.getName() + "", "?path=" + URLEncoder.encode(rootPath, "UTF-8"), 
 				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "GET", "", HttpURLConnection.HTTP_OK);
 		myString = IOUtils.toString(result, "UTF-8");
-		log.severe("/get returned:" + myString);
+		log.info("/get returned:" + myString);
 		objectMapper = RestFactory.getJson().getContext(List.class);
 		medias = objectMapper.readValue(myString, new TypeReference<List<Media>>() {});
 		assertTrue(!medias.isEmpty());
@@ -97,7 +97,7 @@ public class TestExploreResource extends TestResourceAbstract {
 				server.getApiUrl() + "medias/" + mediaCategoryMusic.getName() + "", "?path=foo", 
 				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "GET", "", HttpURLConnection.HTTP_OK);
 		myString = IOUtils.toString(result, "UTF-8");
-		log.severe("/get returned:" + myString);
+		log.info("/get returned:" + myString);
 		objectMapper = RestFactory.getJson().getContext(List.class);
 		medias = objectMapper.readValue(myString, new TypeReference<List<Media>>() {});
 		assertTrue(medias.isEmpty());

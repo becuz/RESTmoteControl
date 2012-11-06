@@ -1,6 +1,6 @@
 package org.zooper.becuz.restmote.rest.resources;
 
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -29,7 +29,7 @@ public class DataResource extends AbstractResource{
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public Data get() {
-		log.severe("Data get");
+		log.info("Data get");
 		Data d = new Data();
 		d.setSettings(getSettingsBusiness().get());
 		d.setMediaRoots(getMediaBusiness().getMediaRoots());

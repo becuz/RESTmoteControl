@@ -37,10 +37,10 @@ public class TestRemoteControlBusiness extends TestAbstract{
 	private String getActivePid(String appName, boolean wait){
 		int attempts = 15;
 		while (attempts > 0){
-			log.severe("Looking for app " + appName + ". Waiting: " + wait + "");
+			log.info("Looking for app " + appName + ". Waiting: " + wait + "");
 			for(ActiveApp activeApp: activeAppBusiness.getActiveApps(true)){
 				if(activeApp.getName().equals(appName)){
-					log.severe("found..");
+					log.info("found..");
 					return activeApp.getPid();
 				}
 			}
@@ -50,11 +50,11 @@ public class TestRemoteControlBusiness extends TestAbstract{
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
-				log.severe(e.getMessage() + " " + e.getCause());
+				log.info(e.getMessage() + " " + e.getCause());
 			}
 			attempts--;
 		}
-		log.severe("not found..");
+		log.info("not found..");
 		return null;
 	}
 	
@@ -133,7 +133,7 @@ public class TestRemoteControlBusiness extends TestAbstract{
 			assertNull(pid);
 		} catch (Exception e){
 			e.printStackTrace();
-			log.severe(e.getMessage() + " " + e.getCause());
+			log.info(e.getMessage() + " " + e.getCause());
 			fail();
 		}
 	}
@@ -158,7 +158,7 @@ public class TestRemoteControlBusiness extends TestAbstract{
 			assertTrue(!activeApp.getPid().equals(activeApp2.getPid()));
 		} catch (Exception e){
 			e.printStackTrace();
-			log.severe(e.getMessage() + " " + e.getCause());
+			log.info(e.getMessage() + " " + e.getCause());
 			fail();
 		}
 	}
@@ -180,7 +180,7 @@ public class TestRemoteControlBusiness extends TestAbstract{
 			assertEquals(pidFocus, activeApp.getPid());
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.severe(e.getMessage() + " " + e.getCause());
+			log.info(e.getMessage() + " " + e.getCause());
 			fail();
 		}
 	}
@@ -194,7 +194,7 @@ public class TestRemoteControlBusiness extends TestAbstract{
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.severe(e.getMessage() + " " + e.getCause());
+			log.info(e.getMessage() + " " + e.getCause());
 			fail();
 		}
 	}
@@ -250,7 +250,7 @@ public class TestRemoteControlBusiness extends TestAbstract{
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.severe(e.getMessage() + " " + e.getCause());
+			log.info(e.getMessage() + " " + e.getCause());
 			fail();
 		}
 	}

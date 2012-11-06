@@ -5,7 +5,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
 

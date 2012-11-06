@@ -2,7 +2,7 @@ package org.zooper.becuz.restmote.business;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import org.zooper.becuz.restmote.business.interfaces.BusinessAbstract;
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
@@ -92,7 +92,7 @@ public class ActiveAppBusiness extends BusinessAbstract{
 				return activeApp;
 			}
 		}
-		log.warning("No activeApp found with focus");
+		log.warn("No activeApp found with focus");
 		return null;
 	}
 	

@@ -1,6 +1,6 @@
 package org.zooper.becuz.restmote.persistence;
 
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 public class PersistenceFactory {
 

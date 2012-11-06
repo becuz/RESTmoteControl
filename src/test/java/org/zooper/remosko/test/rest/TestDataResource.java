@@ -8,7 +8,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.net.HttpURLConnection;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.ws.rs.core.MediaType;
 
@@ -34,7 +34,7 @@ public class TestDataResource extends TestResourceAbstract {
 				server.getApiUrl() + "data", "", 
 				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "GET", "", HttpURLConnection.HTTP_OK);
 		myString = IOUtils.toString(result, "UTF-8");
-		log.severe("/data returned:" + myString);
+		log.info("/data returned:" + myString);
 		objectMapper = RestFactory.getJson().getContext(Data.class);
 		Data data = objectMapper.readValue(myString, new TypeReference<Data>() {});
 		assertNotNull(data.getSettings());

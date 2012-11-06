@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
+import org.zooper.becuz.restmote.business.MediaBusiness;
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
 import org.zooper.becuz.restmote.http.Server;
 import org.zooper.becuz.restmote.utils.PopulateDb;
@@ -60,7 +61,7 @@ public class RestmoteControl {
 //		persistenceAbstract.getAll(App.class);
 
 		// scan for medias
-		PcControllerFactory.getPcController().rootScan(); //TODO it slows down the UI. Should be done in a more smart way
+		new MediaBusiness().rootScan(); //TODO it slows down the UI. Should be done in a more smart way
 
 		// start http listener
 		Server server = Server.getInstance();

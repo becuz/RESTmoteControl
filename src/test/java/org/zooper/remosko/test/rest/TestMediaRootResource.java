@@ -7,7 +7,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.net.HttpURLConnection;
 import java.util.List;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.ws.rs.core.MediaType;
 
@@ -31,7 +31,7 @@ public class TestMediaRootResource extends TestResourceAbstract {
 				server.getApiUrl() + "mediaroots/", "", 
 				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "GET", "", HttpURLConnection.HTTP_OK);
 		myString = IOUtils.toString(result, "UTF-8");
-		log.severe("/get returned:" + myString);
+		log.info("/get returned:" + myString);
 		objectMapper = RestFactory.getJson().getContext(List.class);
 		List<MediaRoot> medias = objectMapper.readValue(myString, new TypeReference<List<MediaRoot>>() {});
 		assertEquals(4, medias.size());

@@ -1,6 +1,6 @@
 package org.zooper.becuz.restmote.rest.resources;
 
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -68,7 +68,7 @@ public class PcResource extends AbstractResource{
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public PcInfo getPcInfo() {
-		log.severe("getPcInfo");
+		log.info("getPcInfo");
 		int[][] screensSizes = PcControllerFactory.getPcController().getScreenSizes();
 		PcInfo pcInfo = new PcInfo();
 		pcInfo.setScreenSizes(screensSizes);
@@ -92,7 +92,7 @@ public class PcResource extends AbstractResource{
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public Response pcControl(@PathParam("control") String control){
 		try {
-			log.severe("pcControl control: " + control);
+			log.info("pcControl control: " + control);
 			if ("volmute".equals(control)){
 				getRemoteControlBusiness().mute();	
 			} else if (control.startsWith("vol-")){
@@ -105,7 +105,7 @@ public class PcResource extends AbstractResource{
 				ActiveApp activeApp = getActiveAppBusiness().next();
 				return Response.status(Response.Status.CREATED).entity(activeApp).build();
 			} else {
-				log.severe("pccontrol " + control + " not implemented!");
+				log.warn("pccontrol " + control + " not implemented!");
 			}
 			return Response.status(Response.Status.NO_CONTENT).build();
 		} catch (Exception e) {
@@ -121,7 +121,7 @@ public class PcResource extends AbstractResource{
 	@POST
 	@Path("/mouse/control/{controlName}")
 	public void mouseControl(@PathParam("controlName") String controlName) {
-		log.severe("mouseMoves controlName: " + controlName);
+		log.info("mouseMoves controlName: " + controlName);
 		try {
 			Control control = PcControllerFactory.getPcController().getMouseControlsManager().getControl(controlName);
 			if (control != null){
@@ -157,7 +157,7 @@ public class PcResource extends AbstractResource{
 	@PUT
 	@Path("/mouse/{mouseMoves}")
 	public void mouseMovements(@PathParam("mouseMoves") String mouseMoves) {
-		log.severe("mouseMoves mouseMoves: " + mouseMoves);
+		log.info("mouseMoves mouseMoves: " + mouseMoves);
 		try {
 			PcControllerFactory.getPcController().getMouse().mouseMove(mouseMoves);
 		} catch (Exception e) {
@@ -169,7 +169,7 @@ public class PcResource extends AbstractResource{
 	@PUT
 	@Path("/mouse/wheel/{mouseWheel}")
 	public void mouseWheel(@PathParam("mouseWheel") Integer mouseWheel) {
-		log.severe("mouseWheel mouseWheel: " + mouseWheel);
+		log.info("mouseWheel mouseWheel: " + mouseWheel);
 		try {
 			PcControllerFactory.getPcController().getMouse().mouseWheel(mouseWheel);
 		} catch (Exception e) {
@@ -182,7 +182,7 @@ public class PcResource extends AbstractResource{
 	public void mouseButtons(
 			@PathParam("btn") Integer button,
 			@PathParam("action") String action) {
-		log.severe("mouseWheel button: " + button + ", action: " + action);
+		log.info("mouseWheel button: " + button + ", action: " + action);
 		BTN_ACTION btnAction = BTN_ACTION.valueOf(action.toUpperCase());
 		try {
 			PcControllerFactory.getPcController().getMouse().mouseButtons(button, btnAction);
@@ -200,7 +200,7 @@ public class PcResource extends AbstractResource{
 	@POST
 	@Path("/keyboard/control/{controlName}")
 	public void keyboardControl(@PathParam("controlName") String controlName) {
-		log.severe("keyboardControl controlName: " + controlName);
+		log.info("keyboardControl controlName: " + controlName);
 		try {
 			getRemoteControlBusiness().control(PcControllerFactory.getPcController().getKeyboardControlsManager().getControl(controlName));
 		} catch (Exception e) {
@@ -216,7 +216,7 @@ public class PcResource extends AbstractResource{
 	@Path("/keyboard")
 	@Consumes({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public void keyboardTypeJSON(String s) {
-		log.severe("typeStringJSON s: " + s);
+		log.info("typeStringJSON s: " + s);
 		try {
 			PcControllerFactory.getPcController().getKeyboard().type(s);
 		} catch (Exception e) {
@@ -231,7 +231,7 @@ public class PcResource extends AbstractResource{
 	@POST
 	@Path("/keyboard/{type}")
 	public void keyboardType(@PathParam("type") String type) {
-		log.severe("typeString type: " + type);
+		log.info("typeString type: " + type);
 		keyboardType(type);
 	}
 	

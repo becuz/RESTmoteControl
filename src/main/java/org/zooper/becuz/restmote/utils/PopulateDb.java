@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.Properties;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import org.hibernate.cfg.Environment;
 import org.zooper.becuz.restmote.RestmoteControl;
@@ -82,13 +82,13 @@ public class PopulateDb {
 			        	if (new File(line).exists()){
 			        		settings.addPath(line);
 			        	} else {
-			        		log.warning("In file path, specified a non existing path: " + line);
+			        		log.warn("In file path, specified a non existing path: " + line);
 			        	}
 		        	}
 		        }
 		        br.close();
 			} catch (Exception e){
-				log.severe(e.toString());
+				log.error(e.toString());
 			}
 			
 			String userHome = Utils.getUserHome();

@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.swing.DefaultListModel;
 import javax.swing.event.ChangeEvent;
@@ -28,7 +28,7 @@ import org.zooper.becuz.restmote.utils.Utils;
  */
 public class MainWindow extends javax.swing.JFrame {
 
-    private Logger logger = java.util.logging.Logger.getLogger(MainWindow.class.getName());
+    private Logger logger = Logger.getLogger(MainWindow.class.getName());
     
     /**
      * Swing list model for {@link #listPaths} 
@@ -587,7 +587,7 @@ public class MainWindow extends javax.swing.JFrame {
                 btnToggleServer.setText("Stop");
             }
         } catch (Exception ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex);
         }
     }//GEN-LAST:event_btnToggleServerActionPerformed
     

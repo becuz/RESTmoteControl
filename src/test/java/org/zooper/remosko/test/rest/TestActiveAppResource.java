@@ -8,7 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.net.HttpURLConnection;
 import java.util.List;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.ws.rs.core.MediaType;
 
@@ -33,7 +33,7 @@ public class TestActiveAppResource extends TestResourceAbstract {
 				server.getApiUrl() + "activeapps/", "", 
 				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "GET", "", HttpURLConnection.HTTP_OK);
 		myString = IOUtils.toString(result, "UTF-8");
-		log.severe("/get returned:" + myString);
+		log.info("/get returned:" + myString);
 		objectMapper = RestFactory.getJson().getContext(List.class);
 		List<ActiveApp> activeApps = objectMapper.readValue(myString, new TypeReference<List<ActiveApp>>() {});
 		assertTrue(!activeApps.isEmpty());
@@ -58,7 +58,7 @@ public class TestActiveAppResource extends TestResourceAbstract {
 				server.getApiUrl() + "activeapps/" + pidOther, "?refresh=true", 
 				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "GET", "", HttpURLConnection.HTTP_OK);
 		myString = IOUtils.toString(result, "UTF-8");
-		log.severe("/get returned:" + myString);
+		log.info("/get returned:" + myString);
 		objectMapper = RestFactory.getJson().getContext(ActiveApp.class);
 		ActiveApp activeApp = objectMapper.readValue(myString, new TypeReference<ActiveApp>() {});
 		assertTrue(activeApp.isFocus());
@@ -72,7 +72,7 @@ public class TestActiveAppResource extends TestResourceAbstract {
 					server.getApiUrl() + "activeapps/" + pidOther, "?refresh=true", 
 					MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "GET", "", HttpURLConnection.HTTP_OK);
 			myString = IOUtils.toString(result, "UTF-8");
-			log.severe("/get returned:" + myString);
+			log.info("/get returned:" + myString);
 			objectMapper = RestFactory.getJson().getContext(ActiveApp.class);
 			activeApp = objectMapper.readValue(myString, new TypeReference<ActiveApp>() {});
 			assertTrue(!activeApp.isFocus());

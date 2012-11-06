@@ -3,7 +3,7 @@
  */
 package org.zooper.remosko.conf;
 
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 /**
  * <p>RestFactory class.</p>

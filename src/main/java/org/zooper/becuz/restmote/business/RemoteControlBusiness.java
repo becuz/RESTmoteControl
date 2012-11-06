@@ -3,7 +3,7 @@ package org.zooper.becuz.restmote.business;
 import java.awt.AWTException;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import org.zooper.becuz.restmote.business.interfaces.BusinessAbstract;
 import org.zooper.becuz.restmote.controller.PcControllerAbstract;

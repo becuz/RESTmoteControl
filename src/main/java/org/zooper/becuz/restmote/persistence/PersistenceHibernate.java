@@ -3,7 +3,7 @@ package org.zooper.becuz.restmote.persistence;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import org.hibernate.Session;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
@@ -26,7 +26,7 @@ public class PersistenceHibernate extends PersistenceAbstract{
 		try {
 			session.getTransaction().commit();
 		} catch (Exception e){
-			log.severe(e.getMessage() + " " + e.getCause());
+			log.error(e.getMessage() + " " + e.getCause());
 			e.printStackTrace();
 		}
 	}

@@ -1,7 +1,6 @@
 package org.zooper.becuz.restmote.model.transport;
 
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
-import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.MediaCategory;
 
 /**
@@ -25,7 +24,7 @@ public class MediaRoot extends Media {
 	}
 	
 	public void refresh(){
-		setMediaChildren(PcControllerFactory.getPcController().getMedias(this));
+		setMediaChildren(PcControllerFactory.getPcController().getMediaBusiness().retrieveMedias(this));
 	}
 	
 	public MediaCategory getMediaCategory() {

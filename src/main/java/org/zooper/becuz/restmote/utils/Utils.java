@@ -1,6 +1,6 @@
 package org.zooper.becuz.restmote.utils;
 
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 public class Utils {
 

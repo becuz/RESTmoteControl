@@ -79,17 +79,17 @@ public abstract class TestResourceAbstract extends TestAbstract{
 		}
 		connection.connect();
 		if (connection.getResponseCode() != returnCode) {
-			log.severe("=====================");
-			log.severe("BEGIN: url requested: "+method+" "+ completeUrl+queryParam);
-			log.severe("return code " + connection.getResponseCode());
-			log.severe("method " + method);
-			log.severe("message " + connection.getResponseMessage());
-			log.severe("END content ");
-			log.severe("=====================");
+			log.info("=====================");
+			log.info("BEGIN: url requested: "+method+" "+ completeUrl+queryParam);
+			log.info("return code " + connection.getResponseCode());
+			log.info("method " + method);
+			log.info("message " + connection.getResponseMessage());
+			log.info("END content ");
+			log.info("=====================");
 //			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 //			String line = null;
 //			while((line = in.readLine()) != null) {
-//				log.severe(line);
+//				log.info(line);
 //			}
 			fail();
 		}

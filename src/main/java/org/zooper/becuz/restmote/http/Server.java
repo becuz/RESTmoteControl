@@ -12,10 +12,10 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.ws.rs.core.UriBuilder;
 
+import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.Response;
 import org.glassfish.grizzly.http.server.StaticHttpHandler;
@@ -92,7 +92,7 @@ public class Server implements Runnable {
 	 * @throws IOException
 	 */
 	public void start() throws Exception {
-		log.fine("Starting grizzly...");
+		log.info("Starting grizzly...");
 		
 		if (getServerUrl() == null){
 			throw new Exception("Impossible to find a local net address");
@@ -117,9 +117,8 @@ public class Server implements Runnable {
 		};
 		httpServer.getServerConfiguration().addHttpHandler(staticHttpHandler, "/client");
 		
-		log.fine("Server started with WADL available at " + getServerUrl() + "application.wadl\n" +
+		log.info("Server started with WADL available at " + getServerUrl() + "application.wadl\n" +
 				"Try out " + getClientUrl() + "index.html or " + getApiUrl()  + "data\n");
-		
 		new Thread(this).start();
 		callGetSettings();
 	}	
@@ -161,7 +160,7 @@ public class Server implements Runnable {
 				}
 			}
 		} catch (SocketException e){
-			log.severe(e.toString());
+			log.error(e.toString());
 		}
 		return inetAddres;
 	}
@@ -221,7 +220,7 @@ public class Server implements Runnable {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				log.severe(e.toString());
+				log.error(e.toString());
 			}
 		}
 		log.info("Exiting thread");
@@ -244,9 +243,9 @@ public class Server implements Runnable {
 				connection.setDoOutput(false);
 				connection.connect();
 				connection.getResponseCode(); //404!
-//				log.severe("response code for /data is " + connection.getResponseCode());
+//				log.info("response code for /data is " + connection.getResponseCode());
 			} catch (Exception e){
-				log.severe(e.getMessage() + " " + e.getCause());
+				log.fatal(e.getMessage() + " " + e.getCause());
 			}
 		}
 	}

@@ -3,8 +3,9 @@ package org.zooper.becuz.restmote.controller.keyboards;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
+import org.zooper.becuz.restmote.controller.PcControllerAbstract;
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
 
 /**
@@ -163,12 +164,12 @@ public class KeyboardRobot extends Keyboard {
         if (length == 0) {
             return;
         }
-        Robot robot = PcControllerFactory.getPcController().getMyRobot();
+		Robot robot = PcControllerAbstract.getMyRobot();
         robot.keyPress(keyCodes[offset]);
         try {
         	doType(keyCodes, offset + 1, length - 1);
         } catch (IllegalArgumentException e){
-        	log.severe(e.getMessage());
+        	log.error(e.getMessage());
         	for (int j = offset; j >= 0; j--) {
         		robot.keyRelease(keyCodes[offset]);
 			}

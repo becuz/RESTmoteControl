@@ -2,7 +2,7 @@
  * 
  */
 package org.zooper.remosko.test.persistence;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import org.junit.After;
 import org.junit.Before;
@@ -33,7 +33,7 @@ public class TestPersistence extends TestAbstract {
 	
 	@Test
 	public void test() {
-		log.severe("Starting TestPersistence test");
+		log.info("Starting TestPersistence test");
 	}
 
 }

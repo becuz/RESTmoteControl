@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import java.util.regex.Pattern;
 
 import org.zooper.becuz.restmote.business.ActiveAppBusiness;
@@ -258,9 +258,9 @@ public abstract class PcControllerAbstract {
 		    int screenHeight = dm.getHeight();
 		    results[i][0] = screenWidth;
 		    results[i][1] = screenHeight;
-		    log.severe("Screen " + i + ": " + screenWidth + "x" + screenHeight);
+		    log.debug("Screen " + i + ": " + screenWidth + "x" + screenHeight);
 		}
-		log.severe("time to obtan screen size: " + (System.currentTimeMillis() - now));
+		log.debug("time to obtan screen size: " + (System.currentTimeMillis() - now));
 		return results;
 	}
 	
@@ -319,98 +319,7 @@ public abstract class PcControllerAbstract {
 	
 	//*****************************************************************************************
 	
-	/**
-	 * Scan the filesystem and call the persistence layer to store the {@link Media}s
-	 * @return
-	 */
-	public void rootScan() {
-		mediaBusiness.clearMediaRoots();
-		long startTime = System.currentTimeMillis();
-		Collection<MediaCategory> mediaCategories = mediaCategoryBusiness.getAll();
-		if (mediaCategories != null){
-			for(MediaCategory mediaCategory: mediaCategories){
-				if (!Boolean.FALSE.equals(mediaCategory.getActive())){
-					MediaRoot mediaRoot = new MediaRoot(mediaCategory);
-					getMedias(mediaRoot);
-					mediaBusiness.addMediaRoot(mediaRoot);
-				}
-			}
-		}
-		log.severe("Time to scan " + ((System.currentTimeMillis() - startTime)/1000));
-	}
 	
-	//TODO the staff to manage the medias has to be in the proper business class
-	public List<Media> getMedias(MediaRoot mediaRoot){
-		mediaRoot.clearChildren();
-		Settings settings = settingsBusiness.get();
-		Set<String> paths = mediaRoot.getMediaCategory().getPaths().isEmpty() ? settings.getPaths() : mediaRoot.getMediaCategory().getPaths();
-		for(String path: paths){
-			File file = new File(path);
-			if (file.exists()){
-				MediaCategory mediaCategory = mediaRoot.getMediaCategory();
-				Media mediaPath = new Media(path);
-				mediaPath.setMediaChildren(
-						getMedias(
-								mediaPath.getPath(), 
-								mediaCategory.isRoot() ? 1 : settings.getScanDepth(),
-								new ArrayList<String>(mediaCategory.getExtensions()), 
-								null));
-				mediaRoot.addMediaChild(mediaPath);
-			}
-		}
-		return mediaRoot.getMediaChildren();
-	}
-	
-	/**
-	 * 
-	 * @param path root path for the scan
-	 * @param depth negative to scan everything
-	 * @param extensions extensions allowed (null or empty to scan all files)
-	 * @param pattern filter by this regex 
-	 * @return
-	 */
-	public List<Media> getMedias(String path, Integer depth, List<String> extensions, String pattern){
-		log.severe("getMedia() path: " + path + ", depth: " + depth + ", extensions: " + extensions + ", pattern: " + pattern);
-		Pattern p = null;
-		if (!Utils.isEmpty(pattern)){
-			p = Pattern.compile(pattern);
-		}
-		List<Media> results = new ArrayList<Media>();
-		depth = depth == null ? settingsBusiness.get().getScanDepth() : depth;
-		if (depth != 0) { //-1 is a valid value, means go deep indefinitely, as there are files.
-			File f = new File(path);
-			if (f.exists() && f.isDirectory()){
-				File[] children = f.listFiles();
-				if (children != null){
-					for(File child: children){
-						String childPath = child.getAbsolutePath();
-						boolean fileAllowed = false;
-						if (child.isDirectory()){
-							fileAllowed = true;
-						} else {
-							if ((p == null || p.matcher(childPath).matches()) 
-									&& (extensions == null || extensions.isEmpty() || extensions.contains(Utils.getFileExtension(childPath).toLowerCase()))){
-								fileAllowed = true;
-							}
-						}
-						if (fileAllowed){
-							Media mediaChild = new Media(childPath);
-							if (!child.isDirectory()){
-								mediaChild.setFile(true);	//let's leave it at null in case it's a directory: less noise as we avoid serialize nulls
-							}
-							results.add(mediaChild);							
-						}
-					}
-					if (depth != 1){ 
-						for (Media mediaChild: results){
-							mediaChild.setMediaChildren(getMedias(mediaChild.getPath(), depth-1, extensions, pattern));
-						}
-					}
-				}
-			}
-		}
-		return results;
-	}
 	
 	/**
 	 * Put the user input focus on the argument App 

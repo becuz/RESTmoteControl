@@ -1,6 +1,6 @@
 package org.zooper.becuz.restmote.rest.resources;
 
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -47,7 +47,7 @@ public class TestResource extends AbstractResource{
 //			,@QueryParam("l") String l
 			@PathParam("p") String path
 			) {
-		log.severe("pars "  + path);
+		log.info("pars "  + path);
 		return "";
 	}
 	

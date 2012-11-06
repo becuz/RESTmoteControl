@@ -1,7 +1,7 @@
 package org.zooper.becuz.restmote.rest.resources;
 
 import java.util.Collection;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -58,7 +58,7 @@ public class AppResource extends AbstractResource {
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public Collection<App> get(){
-		log.severe("AppResource get");
+		log.info("AppResource get");
 		return getAppBusiness().getAll();
 	}
 	
@@ -70,7 +70,7 @@ public class AppResource extends AbstractResource {
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public App getByName(
 			@PathParam("appName") String appName){
-		log.severe("AppResource get, name: " + appName);
+		log.info("AppResource get, name: " + appName);
 		App app = getAppBusiness().getByName(appName);
 		if (app == null){ 
 			throw new NotFoundException("App " + appName + " not found");
@@ -86,7 +86,7 @@ public class AppResource extends AbstractResource {
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public App getByExtension(
 			@PathParam("extension") String extension){
-		log.severe("AppResource get, extension: " + extension);
+		log.info("AppResource get, extension: " + extension);
 		return getAppBusiness().getByExtension(extension);
 	}
 	
@@ -98,7 +98,7 @@ public class AppResource extends AbstractResource {
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public App getByPid(
 			@PathParam("pid") String pid){
-		log.severe("AppResource get, pid: " + pid);
+		log.info("AppResource get, pid: " + pid);
 		ActiveApp activeApp = getActiveAppBusiness().getActiveAppByPid(pid, false);
 		if (activeApp != null){
 			return getAppBusiness().getByName(activeApp.getName());
@@ -115,7 +115,7 @@ public class AppResource extends AbstractResource {
 	@Path("/{appName}")
 	public void closeByName(
 			@PathParam("appName") String appName){
-		log.severe("AppResource delete, name: " + appName);
+		log.info("AppResource delete, name: " + appName);
 		try {
 			getRemoteControlBusiness().closeMedia(getAppBusiness().getByName(appName));
 		} catch (Exception e) {
@@ -130,7 +130,7 @@ public class AppResource extends AbstractResource {
 	@Path("/ext/{extension}")
 	public void deleteByExtension(
 			@PathParam("extension") String extension){
-		log.severe("AppResource delete, extension: " + extension);
+		log.info("AppResource delete, extension: " + extension);
 		try {
 			getRemoteControlBusiness().closeMedia(getByExtension(extension));
 		} catch (Exception e) {
@@ -151,13 +151,13 @@ public class AppResource extends AbstractResource {
 	public void controlByAppName(
 			@PathParam("appName") String appName, 
 			@PathParam("control") String control){
-		log.severe("controlByAppName appName: " + appName + ", control: " + control);
+		log.info("controlByAppName appName: " + appName + ", control: " + control);
 		try {
 			getRemoteControlBusiness().control(appName, control, null);
 		} catch (IllegalArgumentException e) {
 			throw new NotAcceptableException(e.getMessage());
 		} catch (Exception e) {
-			log.severe(e.getMessage() + " " + e.getCause());
+			log.info(e.getMessage() + " " + e.getCause());
 			throw new ServerException(e.getMessage());
 		}
 	}
@@ -173,11 +173,11 @@ public class AppResource extends AbstractResource {
 	public void controlByAppNameAndShortcut(
 			@PathParam("appName") String appName, 
 			@PathParam("shortcut") String shortcut){
-		log.severe("controlByAppNameAndShortcut appName: " + appName + " shortcut: " + shortcut);
+		log.info("controlByAppNameAndShortcut appName: " + appName + " shortcut: " + shortcut);
 		try {
 			getRemoteControlBusiness().control(appName, null, shortcut.charAt(0));
 		} catch (Exception e) {
-			log.severe(e.toString());
+			log.error(e.toString());
 			throw new ServerException(e.getMessage());
 		}
 	}
@@ -193,7 +193,7 @@ public class AppResource extends AbstractResource {
 	public void controlByExtension(
 			@PathParam("extension") String extension, 
 			@PathParam("controlName") String controlName){
-		log.severe("controlByExtension extension: " + extension + " control: " + controlName);
+		log.info("controlByExtension extension: " + extension + " control: " + controlName);
 		MediaCategory mediaCategory = getMediaCategoryBusiness().getByExtension(extension);
 		App app = null;
 		if (mediaCategory != null){
@@ -205,7 +205,7 @@ public class AppResource extends AbstractResource {
 		try {
 			getRemoteControlBusiness().control(app, controlName, null);
 		} catch (Exception e) {
-			log.severe(e.toString());
+			log.error(e.toString());
 			throw new ServerException(e.getMessage());
 		}
 	}
@@ -222,11 +222,11 @@ public class AppResource extends AbstractResource {
 	public void controlByPid(
 			@PathParam("pid") String pid, 
 			@PathParam("control") String control){
-		log.severe("controlByPid pid: " + pid + " control: " + control);
+		log.info("controlByPid pid: " + pid + " control: " + control);
 		try {
 			getRemoteControlBusiness().controlByPid(pid, control, null);
 		} catch (Exception e) {
-			log.severe(e.toString());
+			log.error(e.toString());
 			throw new ServerException(e.getMessage());
 		}
 	}
@@ -239,11 +239,11 @@ public class AppResource extends AbstractResource {
 	@POST
 	@Path("/control/{control}")
 	public void control(@PathParam("control") String control){
-		log.severe("control control: " + control);
+		log.info("control control: " + control);
 		try {
 			getRemoteControlBusiness().controlByPid(null, control, null);
 		} catch (Exception e) {
-			log.severe(e.toString());
+			log.error(e.toString());
 			throw new ServerException(e.getMessage());
 		}
 	}
