@@ -7,8 +7,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 
 import org.zooper.becuz.restmote.business.MediaBusiness;
-import org.zooper.becuz.restmote.controller.PcControllerFactory;
+import org.zooper.becuz.restmote.business.SettingsBusiness;
+import org.zooper.becuz.restmote.http.InetAddr;
 import org.zooper.becuz.restmote.http.Server;
+import org.zooper.becuz.restmote.model.Settings;
 import org.zooper.becuz.restmote.utils.PopulateDb;
 import org.zooper.becuz.restmote.utils.Utils;
 
@@ -64,9 +66,13 @@ public class RestmoteControl {
 		new MediaBusiness().rootScan(); //TODO it slows down the UI. Should be done in a more smart way
 
 		// start http listener
-		Server server = Server.getInstance();
-		server.start();
-
+		SettingsBusiness settingsBusiness = new SettingsBusiness(); 
+		Settings settings = settingsBusiness.get();
+		InetAddr inetAddr = Server.getInstance().start(settings.getServerInetName(), settings.getServerPort());
+		settings.setServerInetName(inetAddr.getInetName());
+		settings.setServerLastIp(inetAddr.getIp());
+		settingsBusiness.store(settings);
+		
 		if (!getVersion().equals(getDbVersion())){
 			File f = new File(Utils.getRestmoteRootDirAbsolutePath() + "version");
 			f.delete();
