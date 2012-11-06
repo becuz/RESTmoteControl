@@ -19,8 +19,6 @@ import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.Response;
 import org.glassfish.grizzly.http.server.StaticHttpHandler;
-import org.zooper.becuz.restmote.business.SettingsBusiness;
-import org.zooper.becuz.restmote.model.Settings;
 import org.zooper.becuz.restmote.utils.Utils;
 
 import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
@@ -91,12 +89,13 @@ public class Server implements Runnable {
 	 * Start the {@link HttpServer}
 	 * @throws IOException
 	 */
-	public void start() throws Exception {
+	public InetAddr start(String inetName, int port) throws Exception {
 		log.info("Starting grizzly...");
-		
-		if (getServerUrl() == null){
-			throw new Exception("Impossible to find a local net address");
+		InetAddr inetAddr = getInetAddr(inetName);
+		if (inetAddr == null){
+			throw new Exception("Impossible to find a local net");
 		}
+		serverUrl = UriBuilder.fromUri("http://" + inetAddr.getIp() + "/").port(port).build().toString();
 		
 		ResourceConfig rc = new PackagesResourceConfig("org.zooper.becuz.restmote.rest.resources");
 		rc.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
@@ -117,10 +116,11 @@ public class Server implements Runnable {
 		};
 		httpServer.getServerConfiguration().addHttpHandler(staticHttpHandler, "/client");
 		
-		log.info("Server started with WADL available at " + getServerUrl() + "application.wadl\n" +
+		log.info("Server started with WADL available at " + serverUrl + "application.wadl\n" +
 				"Try out " + getClientUrl() + "index.html or " + getApiUrl()  + "data\n");
 		new Thread(this).start();
 		callGetSettings();
+		return inetAddr;
 	}	
 	
 	/**
@@ -186,28 +186,21 @@ public class Server implements Runnable {
 	 * @return
 	 * @throws Exception 
 	 */
-	private String getServerUrl() {
-		if (serverUrl == null){
-			Settings settings = new SettingsBusiness().get();
-			String serverInetName = settings.getServerInetName();
-			for(InetAddr inetAddr: getLocalInetAddresses()){
-				if (Utils.isEmpty(serverInetName) || serverInetName.equals(inetAddr.getInetName())){
-					settings.setServerInetName(inetAddr.getInetName());
-					settings.setServerLastIp(inetAddr.getIp());
-					serverUrl = UriBuilder.fromUri("http://" + inetAddr.getIp() + "/").port(settings.getServerPort()).build().toString();
-					break;
-				}
+	private InetAddr getInetAddr(String serverInetName) {
+		for(InetAddr inetAddr: getLocalInetAddresses()){
+			if (Utils.isEmpty(serverInetName) || serverInetName.equals(inetAddr.getInetName())){
+				return inetAddr;
 			}
 		}
-		return serverUrl;
+		return null;
 	}
 
 	public String getApiUrl(){
-		return getServerUrl() + "api/";
+		return serverUrl + "api/";
 	}
 	
 	private String getClientUrl(){
-		return getServerUrl() + "client/";
+		return serverUrl + "client/";
 	}
 
 

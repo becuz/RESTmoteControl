@@ -14,8 +14,10 @@ import java.net.URL;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.zooper.becuz.restmote.business.SettingsBusiness;
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
 import org.zooper.becuz.restmote.http.Server;
+import org.zooper.becuz.restmote.model.Settings;
 import org.zooper.becuz.restmote.utils.Utils;
 import org.zooper.remosko.test.TestAbstract;
 
@@ -37,7 +39,9 @@ public abstract class TestResourceAbstract extends TestAbstract{
 	public static void start() throws Exception {
 		if (server == null){
 			server = Server.getInstance();
-			server.start();
+			SettingsBusiness settingsBusiness = new SettingsBusiness(); 
+			Settings settings = settingsBusiness.get();
+			server.start(settings.getServerInetName(), settings.getServerPort());
 		}
 	}
 

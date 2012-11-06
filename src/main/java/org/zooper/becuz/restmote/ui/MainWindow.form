@@ -175,7 +175,7 @@
                               <Component id="lblComboPort" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="lblServerUrl" min="-2" pref="57" max="-2" attributes="0"/>
+                          <Component id="lblServerUrl" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="lblStatusServer" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -211,6 +211,9 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textFieldPortActionPerformed"/>
                     <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="textFieldPortPropertyChange"/>
                   </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new IntTextField(this)"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblStatusServer">
                   <Properties>
@@ -230,11 +233,11 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblServerUrl">
                   <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Tahoma" size="8" style="0"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="lbl Server Url"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new URLLabel()"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnRefreshInetNames">
                   <Properties>

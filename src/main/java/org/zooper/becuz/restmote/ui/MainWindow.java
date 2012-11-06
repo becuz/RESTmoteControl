@@ -8,18 +8,19 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
-import org.apache.log4j.Logger;
 
 import javax.swing.DefaultListModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 
+import org.apache.log4j.Logger;
 import org.zooper.becuz.restmote.business.SettingsBusiness;
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
 import org.zooper.becuz.restmote.http.InetAddr;
 import org.zooper.becuz.restmote.http.Server;
 import org.zooper.becuz.restmote.model.Settings;
+import org.zooper.becuz.restmote.ui.widgets.IntTextField;
+import org.zooper.becuz.restmote.ui.widgets.URLLabel;
 import org.zooper.becuz.restmote.utils.Utils;
 
 /**
@@ -80,10 +81,10 @@ public class MainWindow extends javax.swing.JFrame {
         lblComboInetNames = new javax.swing.JLabel();
         comboInetNames = new javax.swing.JComboBox();
         lblComboPort = new javax.swing.JLabel();
-        textFieldPort = new javax.swing.JTextField();
+        textFieldPort = new IntTextField(this);
         lblStatusServer = new javax.swing.JLabel();
         btnToggleServer = new javax.swing.JButton();
-        lblServerUrl = new javax.swing.JLabel();
+        lblServerUrl = new URLLabel();
         btnRefreshInetNames = new javax.swing.JButton();
         panelSettingsPnlGeneral = new javax.swing.JPanel();
         lblTextFieldName = new javax.swing.JLabel();
@@ -147,7 +148,6 @@ public class MainWindow extends javax.swing.JFrame {
         btnToggleServer.addMouseListener(formListener);
         btnToggleServer.addActionListener(formListener);
 
-        lblServerUrl.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
         lblServerUrl.setText("lbl Server Url");
 
         btnRefreshInetNames.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/build.png"))); // NOI18N
@@ -191,7 +191,7 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(textFieldPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblComboPort))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblServerUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblServerUrl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblStatusServer)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -513,14 +513,14 @@ public class MainWindow extends javax.swing.JFrame {
             else if (evt.getSource() == btnDeleteCategory) {
                 MainWindow.this.btnDeleteCategoryActionPerformed(evt);
             }
+            else if (evt.getSource() == btnAddCategory) {
+                MainWindow.this.btnAddCategoryActionPerformed(evt);
+            }
             else if (evt.getSource() == btnSave) {
                 MainWindow.this.btnSaveActionPerformed(evt);
             }
             else if (evt.getSource() == menuFileExit) {
                 MainWindow.this.menuFileExitActionPerformed(evt);
-            }
-            else if (evt.getSource() == btnAddCategory) {
-                MainWindow.this.btnAddCategoryActionPerformed(evt);
             }
         }
 
@@ -582,7 +582,7 @@ public class MainWindow extends javax.swing.JFrame {
                 lblStatusServer.setText("Http Server is not running");
                 btnToggleServer.setText("Start");
             } else {
-                Server.getInstance().start();
+                Server.getInstance().start(listInetNamesModel.getSelectedItem().getInetName(), ((IntTextField)textFieldPort).getValue());
                 lblStatusServer.setText("Http Server is running!");
                 btnToggleServer.setText("Stop");
             }
@@ -599,10 +599,11 @@ public class MainWindow extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_menuFileExitMousePressed
 
-    private void refreshLblServerUrl(){
+    public void refreshLblServerUrl(){
         InetAddr inetAddr = listInetNamesModel.getSelectedItem();
-        String url = "http://" + inetAddr + ":" + textFieldPort.getText() + "/client/index.html";
-        lblServerUrl.setText("<html><a href=\"" + url + "\">" + url + "</a></html>");
+        String url = "http://" + inetAddr.getIp() + ":" + ((IntTextField)textFieldPort).getValue() + "/client/index.html";
+        lblServerUrl.setText(url);
+        ((URLLabel)lblServerUrl).setURL(url);
     }
     
     private void comboInetNamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboInetNamesActionPerformed
