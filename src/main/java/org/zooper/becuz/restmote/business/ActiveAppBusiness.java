@@ -2,6 +2,7 @@ package org.zooper.becuz.restmote.business;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.zooper.becuz.restmote.business.interfaces.BusinessAbstract;
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
@@ -9,6 +10,8 @@ import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
 
 public class ActiveAppBusiness extends BusinessAbstract{
+	
+	protected static final Logger log = Logger.getLogger(ActiveAppBusiness.class.getName());
 
 	public ActiveAppBusiness() {}
 	
@@ -41,7 +44,9 @@ public class ActiveAppBusiness extends BusinessAbstract{
 		List<ActiveApp> activeApps = PcControllerFactory.getPcController().getActiveApps();
 		ActiveApp nextActiveApp = activeApps.get((activeApps.indexOf(previousFocusedActiveApp)+1) % activeApps.size()); 
 		PcControllerFactory.getPcController().focusApp(nextActiveApp.getPid());
-		previousFocusedActiveApp.setFocus(false);
+		if (previousFocusedActiveApp != null){
+			previousFocusedActiveApp.setFocus(false);
+		}
 		nextActiveApp.setFocus(true);
 		return nextActiveApp;
 	}
@@ -87,6 +92,7 @@ public class ActiveAppBusiness extends BusinessAbstract{
 				return activeApp;
 			}
 		}
+		log.warning("No activeApp found with focus");
 		return null;
 	}
 	

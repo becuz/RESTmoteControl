@@ -1,8 +1,5 @@
 package org.zooper.becuz.restmote.rest.resources;
 
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.PointerInfo;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
@@ -43,7 +40,7 @@ import org.zooper.becuz.restmote.utils.Constants;
  * PUT		/pc/mouse/-22
  * PUT		/pc/mouse/wheel/+12    	?
  * POST		/pc/mouse/buttons/1/click	?
- * POST		/pc/mouse/buttons/1/hold	?
+ * POST		/pc/mouse/buttons/1/press	?
  * POST		/pc/mouse/buttons/1/release	?
  * 
  * TODO resource volume/
@@ -128,12 +125,6 @@ public class PcResource extends AbstractResource{
 		try {
 			Control control = PcControllerFactory.getPcController().getMouseControlsManager().getControl(controlName);
 			if (control != null){
-				int step = 8;
-				int stepWheel = 10;
-				PointerInfo a = MouseInfo.getPointerInfo();
-				Point b = a.getLocation();
-				int x = (int) b.getX();
-				int y = (int) b.getY();
 				Mouse mouse = PcControllerFactory.getPcController().getMouse();
 				if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_CENTER.toString())){
 					mouse.mouseMove("50%x50%");

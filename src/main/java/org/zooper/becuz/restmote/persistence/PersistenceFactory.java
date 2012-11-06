@@ -4,7 +4,7 @@ import java.util.logging.Logger;
 
 public class PersistenceFactory {
 
-private static PersistenceAbstract persistenceAbstract;
+	private static PersistenceAbstract persistenceAbstract;
 	
 	protected static final Logger log = Logger.getLogger(PersistenceAbstract.class.getName());
 

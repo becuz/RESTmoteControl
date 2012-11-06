@@ -55,6 +55,9 @@ public class RemoteControlBusiness extends BusinessAbstract{
 		} else {
 			activeApp = getActiveAppBusiness().getActiveAppFocused(true);	//let's try with the app that has focus
 		}
+		if (activeApp == null){
+			throw new IllegalArgumentException("ActiveApp not found!");
+		}
 		App app = getAppBusiness().getByName(activeApp.getName());
 		if (app == null){
 			throw new IllegalArgumentException("App " + activeApp.getName() + " not configured");
@@ -76,7 +79,8 @@ public class RemoteControlBusiness extends BusinessAbstract{
 		if (Utils.isEmpty(controlName) && c == null){
 			throw new IllegalArgumentException("No control specified");
 		}
-		if (!getActiveAppBusiness().getActiveAppFocused(true).getName().equals(app.getName())){ //if a window of this App type is not already focused
+		ActiveApp activeAppFocused = getActiveAppBusiness().getActiveAppFocused(true);
+		if (activeAppFocused == null || !activeAppFocused.getName().equals(app.getName())){ //if a window of this App type is not already focused
 			if (PcControllerFactory.getPcController().focusApp(app) == null){
 				throw new IllegalArgumentException("No running instance of App " + app.getName());
 			}
