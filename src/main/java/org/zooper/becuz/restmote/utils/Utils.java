@@ -1,5 +1,8 @@
 package org.zooper.becuz.restmote.utils;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
 
 public class Utils {
@@ -111,5 +114,17 @@ public class Utils {
 		}
 	}
 
+	public static String join(Set<String> set, String j){
+		StringBuffer stringBuffer = new StringBuffer();
+		Iterator<String> it = set.iterator();
+		while (it.hasNext()) {
+			String s = it.next();
+			stringBuffer.append(s);
+			if (it.hasNext()){
+				stringBuffer.append(j);
+			}
+		}
+		return stringBuffer.toString();
+	}
 	
 }

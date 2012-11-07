@@ -1,5 +1,7 @@
 package org.zooper.becuz.restmote.ui;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -14,10 +16,18 @@ public class ListComboBoxModel<E> extends AbstractListModel<E>
 
 	private List<E> list;
 
-	public ListComboBoxModel(List<E> arrayList) {
-		list = arrayList;
+	public ListComboBoxModel(List<E> list) {
+		this.list = list;
+	}
+	
+	public ListComboBoxModel(Collection<E> col) {
+		this.list = new ArrayList<E>(col);
 	}
 
+    public void insertElementAt(E e, int i){
+        list.add(i, e);
+    }
+        
 	public E getSelectedItem() {
 		return selectedItem;
 	}

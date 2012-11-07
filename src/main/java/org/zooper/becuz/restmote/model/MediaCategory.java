@@ -95,7 +95,7 @@ public class MediaCategory implements Editable{
 
 	@Override
 	public String toString() {
-		return "MediaCategory; " + getId() + "_-_" + getName();
+		return getName();
 	}
 	
 	public String getName() {
