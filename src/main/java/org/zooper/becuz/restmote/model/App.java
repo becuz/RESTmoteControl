@@ -125,7 +125,7 @@ public class App implements Editable{
 	
 	@Override
 	public String toString() {
-		return "App; " + getId() + "_-_" + getName();
+		return getName();
 	}
 	
 	public String getName() {

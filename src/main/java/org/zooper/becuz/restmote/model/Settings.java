@@ -72,6 +72,11 @@ public class Settings implements Persistable{
 	 */
 	private Integer serverPort;
 	
+	/**
+	 * Port the server should run on 
+	 */
+	private String iconTheme;
+	
 	//****************************************************************************************
 	
 	public Settings() {
@@ -209,6 +214,14 @@ public class Settings implements Persistable{
 
 	public void setServerPort(Integer serverPort) {
 		this.serverPort = serverPort;
+	}
+
+	public String getIconTheme() {
+		return iconTheme;
+	}
+
+	public void setIconTheme(String iconTheme) {
+		this.iconTheme = iconTheme;
 	}
 
 }

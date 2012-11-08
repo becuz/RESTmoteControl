@@ -7,6 +7,8 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
+import org.zooper.becuz.restmote.model.App;
+
 public class ListComboBoxModel<E> extends AbstractListModel<E>
 		implements ComboBoxModel<E> {
 
@@ -16,14 +18,31 @@ public class ListComboBoxModel<E> extends AbstractListModel<E>
 
 	private List<E> list;
 
-	public ListComboBoxModel(List<E> list) {
-		this.list = list;
+	public ListComboBoxModel() {
+		list = new ArrayList<E>();
 	}
 	
-	public ListComboBoxModel(Collection<E> col) {
-		this.list = new ArrayList<E>(col);
-	}
+//	public ListComboBoxModel(List<E> list) {
+//		this.list = list;
+//	}
+//	
+//	public ListComboBoxModel(Collection<E> col) {
+//		this.list = new ArrayList<E>(col);
+//	}
 
+	public void addAll(Collection<E> list){
+        if (this.list == null){
+        	this.list = new ArrayList<E>();
+        }
+        this.list.addAll(list);
+    }
+	
+	public void clear(){
+        if (this.list != null){
+        	this.list.clear();
+        }
+    }
+	
     public void insertElementAt(E e, int i){
         list.add(i, e);
     }
@@ -46,6 +65,11 @@ public class ListComboBoxModel<E> extends AbstractListModel<E>
 	
 	public List<E> getAll() {
 		return list;
+	}
+
+	public void addElement(E e) {
+		this.list.add(e);
+		
 	}
 
 }

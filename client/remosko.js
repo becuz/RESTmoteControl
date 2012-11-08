@@ -359,7 +359,7 @@ function displayRc($brotherDom, idContainer, title, controlsManager, iconSize, p
 			$controlDiv.html(control.text);
 		} else {
 			var $img = $( "<img " 
-					+ "src='images/default/" + name + ".png'"
+					+ "src='images/" + data.settings.iconTheme + "/" + name + ".png'"
 					+ " class='control-img' style='margin-top:-" + iconSize/2 + "px;margin-left:-" + iconSize/2 + "px;'/>" ).appendTo($controlDiv);
 			$img.attr( "width", iconSize+"px" );
 			$img.attr( "height", iconSize+"px" );			

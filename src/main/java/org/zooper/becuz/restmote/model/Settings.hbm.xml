@@ -18,7 +18,8 @@
         </set>
         <property name="serverInetName" />  
         <property name="serverLastIp" />  
-        <property name="serverPort" />  
+        <property name="serverPort" />
+        <property name="iconTheme" />    
 	</class>
 
 </hibernate-mapping>

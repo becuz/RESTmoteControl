@@ -128,6 +128,7 @@ public class MediaBusiness extends BusinessAbstract{
 	 * @return
 	 */
 	public List<Media> retrieveMedias(String path, Integer depth, List<String> extensions, String pattern){
+		//TODO, use FileFilter and FilenameFilter
 		log.debug("getMedia() path: " + path + ", depth: " + depth + ", extensions: " + extensions + ", pattern: " + pattern);
 		Pattern p = null;
 		if (!Utils.isEmpty(pattern)){

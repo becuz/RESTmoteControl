@@ -32,7 +32,6 @@
     </Menu>
   </NonVisualComponents>
   <Properties>
-    <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="title" type="java.lang.String" value="Restmote Control"/>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
@@ -61,6 +60,8 @@
                   <Component id="panelTabs" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="btnCancel" min="-2" pref="131" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnSave" min="-2" pref="131" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -74,7 +75,10 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="panelTabs" min="-2" pref="370" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="btnSave" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="btnSave" max="32767" attributes="0"/>
+                  <Component id="btnCancel" max="32767" attributes="0"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -82,9 +86,6 @@
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JTabbedPane" name="panelTabs">
-      <Events>
-        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="panelTabsStateChanged"/>
-      </Events>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
@@ -94,7 +95,7 @@
               <JTabbedPaneConstraints tabName="Settings">
                 <Property name="tabTitle" type="java.lang.String" value="Settings"/>
                 <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/build.png"/>
+                  <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/wrench.png"/>
                 </Property>
               </JTabbedPaneConstraints>
             </Constraint>
@@ -138,11 +139,6 @@
                               <Component id="lblStatusServer" alignment="0" max="32767" attributes="0"/>
                               <Component id="lblServerUrl" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lblComboPort" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="textFieldPort" min="-2" pref="69" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
                                   <Component id="comboInetNames" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnRefreshInetNames" min="-2" pref="28" max="-2" attributes="0"/>
@@ -153,6 +149,11 @@
                                       <Component id="lblComboInetNames" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="0" pref="83" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="lblComboPort" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="textFieldPort" min="-2" pref="69" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -167,7 +168,7 @@
                           <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="comboInetNames" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnRefreshInetNames" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnRefreshInetNames" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -176,7 +177,7 @@
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="lblServerUrl" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="104" max="32767" attributes="0"/>
+                          <EmptySpace pref="107" max="32767" attributes="0"/>
                           <Component id="lblStatusServer" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="btnToggleServer" min="-2" pref="35" max="-2" attributes="0"/>
@@ -219,7 +220,7 @@
                 <Component class="javax.swing.JButton" name="btnToggleServer">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/build.png"/>
+                      <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/user_green.png"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -238,7 +239,7 @@
                 <Component class="javax.swing.JButton" name="btnRefreshInetNames">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/build.png"/>
+                      <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/refresh.png"/>
                     </Property>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
@@ -258,35 +259,40 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                          <EmptySpace min="22" pref="22" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblPaths" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblPaths" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="lblTextFieldNameRoot" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="lblTextFieldName" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="lblTextFieldScanDepth" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="textFieldName" pref="146" max="32767" attributes="0"/>
-                                      <Component id="textFieldNameRoot" max="32767" attributes="0"/>
-                                      <Component id="textFieldScanDepth" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="textFieldNameRoot" alignment="1" pref="134" max="32767" attributes="0"/>
+                                      <Component id="textFieldScanDepth" max="32767" attributes="0"/>
+                                      <Component id="textFieldName" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
+                                  <Component id="lblComboIconTheme" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="comboIconTheme" min="-2" pref="138" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="textFieldPath" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="scrollPaneListPaths" alignment="0" pref="325" max="32767" attributes="0"/>
+                                      <Component id="textFieldPath" max="32767" attributes="0"/>
+                                      <Component id="scrollPaneListPaths" pref="325" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="btnDeletePath" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
                                       <Group type="102" attributes="0">
-                                          <Component id="btnBrowsePath" pref="49" max="32767" attributes="0"/>
+                                          <Component id="btnBrowsePath" pref="0" max="32767" attributes="0"/>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                           <Component id="btnAddPath" min="-2" pref="49" max="-2" attributes="0"/>
                                       </Group>
-                                      <Component id="btnDeletePath" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -312,20 +318,25 @@
                               <Component id="lblTextFieldScanDepth" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="textFieldScanDepth" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="23" max="32767" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblComboIconTheme" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="comboIconTheme" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="20" max="32767" attributes="0"/>
                           <Component id="lblPaths" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="btnAddPath" pref="0" max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="textFieldPath" alignment="3" max="32767" attributes="0"/>
-                                  <Component id="btnBrowsePath" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                  <Component id="textFieldPath" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnBrowsePath" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="scrollPaneListPaths" min="-2" pref="140" max="-2" attributes="0"/>
-                              <Component id="btnDeletePath" min="-2" max="-2" attributes="0"/>
+                              <Component id="scrollPaneListPaths" min="-2" pref="118" max="-2" attributes="0"/>
+                              <Component id="btnDeletePath" min="-2" pref="24" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -335,6 +346,9 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="lblTextFieldName">
                   <Properties>
+                    <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="lblTextFieldName"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Name"/>
                   </Properties>
                 </Component>
@@ -342,6 +356,9 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblTextFieldNameRoot">
                   <Properties>
+                    <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="textFieldNameRoot"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="NameRoot"/>
                   </Properties>
                 </Component>
@@ -369,7 +386,7 @@
                 <Component class="javax.swing.JButton" name="btnAddPath">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/accept.png"/>
+                      <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/add.png"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -396,6 +413,9 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblTextFieldScanDepth">
                   <Properties>
+                    <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="lblTextFieldScanDepth"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="ScanDepth"/>
                   </Properties>
                 </Component>
@@ -404,12 +424,27 @@
                 <Component class="javax.swing.JButton" name="btnBrowsePath">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/search.png"/>
+                      <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/folder.png"/>
                     </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBrowsePathActionPerformed"/>
                   </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblComboIconTheme">
+                  <Properties>
+                    <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="comboIconTheme"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Icon Theme"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="comboIconTheme">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="listIconThemesModel" type="code"/>
+                    </Property>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
@@ -421,7 +456,7 @@
               <JTabbedPaneConstraints tabName="Categories">
                 <Property name="tabTitle" type="java.lang.String" value="Categories"/>
                 <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/accept.png"/>
+                  <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/user_green.png"/>
                 </Property>
               </JTabbedPaneConstraints>
             </Constraint>
@@ -466,15 +501,9 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="btnEditCategoryCancel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="btnEditCategorySave" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="lblTextFieldDescriptionCategory" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="lblTextFieldNameCategory" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -486,6 +515,11 @@
                                       <Component id="textFieldExtensionsCategory" alignment="1" max="32767" attributes="0"/>
                                       <Component id="textFieldNameCategory" alignment="1" min="-2" pref="165" max="-2" attributes="0"/>
                                   </Group>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="btnEditCategoryCancel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="btnEditCategorySave" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace pref="37" max="32767" attributes="0"/>
@@ -510,12 +544,12 @@
                               <Component id="lblTextFieldDescriptionCategory" min="-2" max="-2" attributes="0"/>
                               <Component id="textFieldDescriptionCategory" min="-2" pref="68" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="btnEditCategoryCancel" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnEditCategorySave" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnEditCategoryCancel" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace pref="127" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -648,7 +682,7 @@
                 <Component class="javax.swing.JButton" name="btnAddCategory">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/accept.png"/>
+                      <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/add.png"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -665,7 +699,7 @@
               <JTabbedPaneConstraints tabName="Apps">
                 <Property name="tabTitle" type="java.lang.String" value="Apps"/>
                 <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/chart.png"/>
+                  <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/user_orange.png"/>
                 </Property>
               </JTabbedPaneConstraints>
             </Constraint>
@@ -674,41 +708,103 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="scrollPaneListActiveApps" min="-2" pref="300" max="-2" attributes="0"/>
-                      <EmptySpace pref="492" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="89" max="-2" attributes="0"/>
+                                      <Component id="jToggleButton1" min="-2" pref="153" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                                      <Component id="jScrollPane1" min="-2" pref="270" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="jSeparator1" min="-2" pref="50" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+                              <Component id="jScrollPane2" min="-2" pref="189" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="141" max="-2" attributes="0"/>
+                              <Component id="jSlider1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace pref="191" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="106" max="32767" attributes="0"/>
-                      <Component id="scrollPaneListActiveApps" min="-2" pref="140" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="97" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                              <Component id="jScrollPane2" min="-2" pref="233" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="jToggleButton1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jScrollPane1" alignment="1" min="-2" pref="171" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace pref="37" max="32767" attributes="0"/>
+                      <Component id="jSlider1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Container class="javax.swing.JScrollPane" name="scrollPaneListActiveApps">
+            <Container class="javax.swing.JScrollPane" name="jScrollPane1">
               <AuxValues>
                 <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
               </AuxValues>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JList" name="listActiveApps">
+                <Component class="javax.swing.JList" name="listApps">
                   <Properties>
-                    <Property name="selectionMode" type="int" value="0"/>
+                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="listAppsModel" type="code"/>
+                    </Property>
                   </Properties>
-                  <Events>
-                    <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="listActiveAppsValueChanged"/>
-                  </Events>
                 </Component>
               </SubComponents>
             </Container>
+            <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JList" name="jList1">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="listPathsModel" type="code"/>
+                    </Property>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JToggleButton" name="jToggleButton1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jToggleButton1"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JSlider" name="jSlider1">
+            </Component>
+            <Component class="javax.swing.JSeparator" name="jSeparator1">
+            </Component>
           </SubComponents>
         </Container>
       </SubComponents>
@@ -724,6 +820,19 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSaveActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnCancel">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/cancel.png"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Cancel"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+        <Property name="iconTextGap" type="int" value="10"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

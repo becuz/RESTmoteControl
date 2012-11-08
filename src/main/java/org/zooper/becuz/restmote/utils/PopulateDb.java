@@ -57,6 +57,7 @@ public class PopulateDb {
 			settings.setNameRoot("My medias");
 			settings.setScanDepth(1);
 			settings.setServerPort(9898);
+			settings.setIconTheme("iconic");
 			persistenceAbstract.store(settings);
 		} else {
 			//future updates
