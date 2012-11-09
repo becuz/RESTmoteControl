@@ -25,7 +25,7 @@ public class RestmoteControl {
 	/**
 	 * Version of the runtime system.
 	 */
-	private static String version = "0.1b";
+	private static String version = "0.02b";
 
 	/**
 	 * @return the version currently installed in the machine, accordingly to what is written in the file /version
