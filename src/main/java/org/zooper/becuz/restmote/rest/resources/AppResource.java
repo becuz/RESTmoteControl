@@ -27,7 +27,12 @@ import org.zooper.becuz.restmote.rest.exceptions.ServerException;
  * GET		/apps/ext/mp3					//get App
  * GET		/apps/pid/1234					//get App
  * 
- * DELETE	/apps/winamp 
+ * The admin managment of the apps isn't needed yet
+ * 
+ * TODO The following APIs, to control ActiveApps, have to be moved in a ActiveAppResource. T
+ * The API in this class be just for the App entity itself
+ * 
+ * DELETE	/apps/winamp 					//close the ActiveApp
  * DELETE   /apps/ext/mp3
  * 
  * POST		/apps/winamp/control/PAUSE								//send the command PAUSE to one instance of winamp

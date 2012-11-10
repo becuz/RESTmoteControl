@@ -20,6 +20,8 @@ import org.zooper.becuz.restmote.model.transport.ActiveApp;
 
 /**
  * 
+ * TODO GET	/activeapps/{name}?refresh=true						//name is an App name
+ * 
  * GET		/activeapps?refresh=true							//get List<ActiveApp>
  * GET		/activeapps/{pid}?refresh=true						//get ActiveApp
  * 

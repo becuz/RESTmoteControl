@@ -2,7 +2,6 @@ package org.zooper.becuz.restmote.rest.resources;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -13,7 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.zooper.becuz.restmote.controller.PcControllerFactory;
+import org.apache.log4j.Logger;
 import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.model.transport.Media;
 import org.zooper.becuz.restmote.rest.exceptions.NotAcceptableException;
@@ -27,7 +26,7 @@ import org.zooper.becuz.restmote.utils.Utils;
  * GET  /medias/Music?path=path&depth=2&filter=*filter*				//return List<Media>    depth, filter are optional
  * GET  /medias?path=path&ext=mp3-m3u&depth=2&filter=*filter*		//return List<Media>	ext, depth, filter are optional
  *
- * TODO not sure these calls for open a file are good. Maybe they need a fixed path with literal "open/"
+ * TODO not sure these calls for open a file are good. Maybe they need a fixed path action with literal "open/"
  * POST /medias								JSON String path		//open file
  * POST	/medias?path=path											//open file
  * POST /medias/{appName}					JSON String path		//open file with the specified app

@@ -14,6 +14,7 @@ $( "#home" ).live( "pageinit",function(event){ //$(document).bind('pageinit', fu
 	$.ajaxSetup({
 	      "error": function(jqXHR, textStatus, errorThrown) {
 	    	  alert( "Error ( " + jqXHR.status + " " + jqXHR.statusText + " ): " + jqXHR.responseText);
+	    	  console.log(errorThrown);
 	      }
 	});
 	ajax_getData();	

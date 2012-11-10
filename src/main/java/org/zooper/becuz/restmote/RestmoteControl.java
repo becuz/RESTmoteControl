@@ -69,8 +69,10 @@ public class RestmoteControl {
 		SettingsBusiness settingsBusiness = new SettingsBusiness(); 
 		Settings settings = settingsBusiness.get();
 		InetAddr inetAddr = Server.getInstance().start(settings.getServerInetName(), settings.getServerPort());
-		settings.setServerInetName(inetAddr.getInetName());
-		settings.setServerLastIp(inetAddr.getIp());
+		if (inetAddr != null){
+			settings.setServerInetName(inetAddr.getInetName());
+			settings.setServerLastIp(inetAddr.getIp());
+		}
 		settingsBusiness.store(settings);
 		
 		if (!getVersion().equals(getDbVersion())){

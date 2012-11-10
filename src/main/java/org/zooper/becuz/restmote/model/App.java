@@ -93,9 +93,13 @@ public class App implements Editable{
 	public App() {
 	}
 	
-	public App(String name, String path, String argumentsFile) {
+	public App(String name) {
 		this();
 		this.name = name;
+	}
+	
+	public App(String name, String path, String argumentsFile) {
+		this(name);
 		this.path = path;
 		this.argumentsFile = argumentsFile;
 	}

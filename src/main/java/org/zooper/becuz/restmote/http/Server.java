@@ -93,15 +93,18 @@ public class Server implements Runnable {
 		log.info("Starting grizzly...");
 		InetAddr inetAddr = getInetAddr(inetName);
 		if (inetAddr == null){
-			throw new Exception("Impossible to find a local net");
+			serverUrl = UriBuilder.fromUri("http://128.131.199.13/").port(port).build().toString();
+//			throw new Exception("Impossible to find a local net");
+		} else {
+			serverUrl = UriBuilder.fromUri("http://" + inetAddr.getIp() + "/").port(port).build().toString();
 		}
-		serverUrl = UriBuilder.fromUri("http://" + inetAddr.getIp() + "/").port(port).build().toString();
+		
 		
 		ResourceConfig rc = new PackagesResourceConfig("org.zooper.becuz.restmote.rest.resources");
 		rc.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 		httpServer = GrizzlyServerFactory.createHttpServer(getApiUrl(), rc);
 		
-		StaticHttpHandler staticHttpHandler = new StaticHttpHandler(Utils.getRestmoteRootDirAbsolutePath() + "client/"){
+		StaticHttpHandler staticHttpHandler = new StaticHttpHandler(Utils.getRestmoteRootDirAbsolutePath() + "client"){
 			@Override
 			public void service(
 					org.glassfish.grizzly.http.server.Request request,
@@ -111,10 +114,14 @@ public class Server implements Runnable {
 				if (contentType != null){
 					response.setContentType(contentType);
 				}
+//				request.getInputStream().close();
 				super.service(request, response);
 			}
 		};
 		httpServer.getServerConfiguration().addHttpHandler(staticHttpHandler, "/client");
+//		for (NetworkListener l : httpServer.getListeners()) {
+//			   l.getFileCache().setEnabled(true);
+//		}
 		
 		log.info("Server started with WADL available at " + serverUrl + "application.wadl\n" +
 				"Try out " + getClientUrl() + "index.html or " + getApiUrl()  + "data\n");

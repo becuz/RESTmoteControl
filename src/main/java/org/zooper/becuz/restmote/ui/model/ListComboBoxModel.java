@@ -1,4 +1,4 @@
-package org.zooper.becuz.restmote.ui;
+package org.zooper.becuz.restmote.ui.model;
 
 import java.util.ArrayList;
 import java.util.Collection;

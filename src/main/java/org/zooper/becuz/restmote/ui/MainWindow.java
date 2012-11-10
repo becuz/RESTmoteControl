@@ -4,6 +4,7 @@
  */
 package org.zooper.becuz.restmote.ui;
 
+import org.zooper.becuz.restmote.ui.model.ListComboBoxModel;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -17,6 +18,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 
 import org.apache.log4j.Logger;
+import org.zooper.becuz.restmote.business.AppBusiness;
 import org.zooper.becuz.restmote.business.MediaCategoryBusiness;
 import org.zooper.becuz.restmote.business.SettingsBusiness;
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
@@ -136,6 +138,7 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         panelTabs = new javax.swing.JTabbedPane();
         panelSettings = new javax.swing.JPanel();
         panelSettingsPnlServer = new javax.swing.JPanel();
@@ -180,13 +183,6 @@ public class MainWindow extends javax.swing.JFrame {
         listCategories = new javax.swing.JList();
         btnAddCategory = new javax.swing.JButton();
         panelApps = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        listApps = new javax.swing.JList();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
-        jToggleButton1 = new javax.swing.JToggleButton();
-        jSlider1 = new javax.swing.JSlider();
-        jSeparator1 = new javax.swing.JSeparator();
         btnSave = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
@@ -195,6 +191,17 @@ public class MainWindow extends javax.swing.JFrame {
         menuAbout = new javax.swing.JMenu();
 
         FormListener formListener = new FormListener();
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         setTitle("Restmote Control");
         setResizable(false);
@@ -389,6 +396,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         lblTextFieldNameCategory.setText("Name");
 
+        lblTextFieldDescriptionCategory.setLabelFor(lblTextFieldDescriptionCategory);
         lblTextFieldDescriptionCategory.setText("Description");
 
         lblTextFieldExtensionsCategory.setText("Extensions");
@@ -412,10 +420,10 @@ public class MainWindow extends javax.swing.JFrame {
                             .addComponent(lblTextFieldNameCategory)
                             .addComponent(lblTextFieldExtensionsCategory))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panelCategoriesPnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(textFieldDescriptionCategory, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
-                            .addComponent(textFieldExtensionsCategory, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(textFieldNameCategory, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(panelCategoriesPnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textFieldDescriptionCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textFieldNameCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textFieldExtensionsCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelCategoriesPnlEditLayout.createSequentialGroup()
                         .addComponent(btnEditCategoryCancel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -434,9 +442,9 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(lblTextFieldExtensionsCategory)
                     .addComponent(textFieldExtensionsCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelCategoriesPnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTextFieldDescriptionCategory)
-                    .addComponent(textFieldDescriptionCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(panelCategoriesPnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textFieldDescriptionCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTextFieldDescriptionCategory))
                 .addGap(18, 18, 18)
                 .addGroup(panelCategoriesPnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditCategorySave)
@@ -482,9 +490,9 @@ public class MainWindow extends javax.swing.JFrame {
             panelCategoriesPnlListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCategoriesPnlListLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelCategoriesPnlListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblCategories)
-                    .addComponent(btnAddCategory))
+                .addGroup(panelCategoriesPnlListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnAddCategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblCategories, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(scrollPaneListCategories, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -515,56 +523,15 @@ public class MainWindow extends javax.swing.JFrame {
 
         panelTabs.addTab("Categories", new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/user_green.png")), panelCategories); // NOI18N
 
-        listApps.setModel(listAppsModel);
-        jScrollPane1.setViewportView(listApps);
-
-        jList1.setModel(listPathsModel);
-        jScrollPane2.setViewportView(jList1);
-
-        jToggleButton1.setText("jToggleButton1");
-
         javax.swing.GroupLayout panelAppsLayout = new javax.swing.GroupLayout(panelApps);
         panelApps.setLayout(panelAppsLayout);
         panelAppsLayout.setHorizontalGroup(
             panelAppsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelAppsLayout.createSequentialGroup()
-                .addGroup(panelAppsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelAppsLayout.createSequentialGroup()
-                        .addGroup(panelAppsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelAppsLayout.createSequentialGroup()
-                                .addGap(89, 89, 89)
-                                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelAppsLayout.createSequentialGroup()
-                                .addGap(43, 43, 43)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(41, 41, 41)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelAppsLayout.createSequentialGroup()
-                        .addGap(141, 141, 141)
-                        .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(191, Short.MAX_VALUE))
+            .addGap(0, 802, Short.MAX_VALUE)
         );
         panelAppsLayout.setVerticalGroup(
             panelAppsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelAppsLayout.createSequentialGroup()
-                .addGroup(panelAppsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(panelAppsLayout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelAppsLayout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jToggleButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(panelAppsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAppsLayout.createSequentialGroup()
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(33, 33, 33)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
+            .addGap(0, 343, Short.MAX_VALUE)
         );
 
         panelTabs.addTab("Apps", new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/user_orange.png")), panelApps); // NOI18N
@@ -731,7 +698,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     public void refreshLblServerUrl(){
         InetAddr inetAddr = listInetNamesModel.getSelectedItem();
-        String url = "http://" + inetAddr.getIp() + ":" + ((IntTextField)textFieldPort).getValue() + "/client/index.html";
+        String url = inetAddr == null ? "" : "http://" + inetAddr.getIp() + ":" + ((IntTextField)textFieldPort).getValue() + "/client/index.html";
         lblServerUrl.setText(url);
         ((URLLabel)lblServerUrl).setURL(url);
     }
@@ -854,6 +821,22 @@ public class MainWindow extends javax.swing.JFrame {
 		copyToView();
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    
+    
+    public javax.swing.JTextField getTextFieldDescriptionCategory() {
+		return textFieldDescriptionCategory;
+	}
+
+	public javax.swing.JTextField getTextFieldExtensionsCategory() {
+		return textFieldExtensionsCategory;
+	}
+
+	public javax.swing.JTextField getTextFieldNameCategory() {
+		return textFieldNameCategory;
+	}
+
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddCategory;
     private javax.swing.JButton btnAddPath;
@@ -868,12 +851,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton btnToggleServer;
     private javax.swing.JComboBox comboIconTheme;
     private javax.swing.JComboBox comboInetNames;
-    private javax.swing.JList jList1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSlider jSlider1;
-    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblCategories;
     private javax.swing.JLabel lblComboIconTheme;
     private javax.swing.JLabel lblComboInetNames;
@@ -887,7 +865,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel lblTextFieldNameCategory;
     private javax.swing.JLabel lblTextFieldNameRoot;
     private javax.swing.JLabel lblTextFieldScanDepth;
-    private javax.swing.JList listApps;
     private javax.swing.JList listCategories;
     private javax.swing.JList listPaths;
     private javax.swing.JMenu menuAbout;
