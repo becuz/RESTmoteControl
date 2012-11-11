@@ -27,7 +27,7 @@ public class Hackathon extends PApplet {
 	int MAX_BALOON_DX = 50;
 	int MAX_BALOON_DY = 50;
 	int NUM_BALOONS = 5;
-	int MAX_BALOON_SPEED = 5;
+	int MAX_BALOON_SPEED = 1;
 	String[] colors = {"red", "white", "blue"};
 	int[] colorsr = {255, 255, 0};
 	int[] colorsg = {0, 255, 0};
@@ -123,7 +123,7 @@ public class Hackathon extends PApplet {
 			fill(0);        // Step 5: Specify font color
 			color(255);
 			text(scores, 20, 20); 
-			println(scores);
+//			println(scores);
 		}
 	}
 	
@@ -156,6 +156,7 @@ public class Hackathon extends PApplet {
 		boolean intersect(int x, int y){
 			if (x > this.x - dx && x < this.x + dx && 
 					y > this.y - dy && y < this.y + dy){
+				println("intersect true");
 				return true;
 			}
 			return false;
