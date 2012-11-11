@@ -10,7 +10,7 @@
       if (id == null)
         $.getJSON('http://' + window.location.hostname + ':' + window.location.port + '/api/baloon', function(data) {
           if (data == null)
-            $('#angles').text('All slots occupied!');
+            $('#info').text('All slots occupied!');
         
           console.log(data);
           
@@ -26,17 +26,17 @@
 				window.addEventListener('deviceorientation', function(e) {
 					beta = e.beta;
 					gamma = e.gamma;
-				    $('#angles').text(beta + ' ' + gamma);
+				    $('#info').text(beta + '° ' + gamma + '°');
 				}, false);
 			} else if (window.OrientationEvent) {
 				window.addEventListener('MozOrientation', function(e) {
 					beta = e.x * 90;
 					gamma = e.y * -90;
-				    $('#angles').text(beta + ' ' + gamma);
+				    $('#info').text(beta + '° ' + gamma + '°');
 				}, false);
 			}
 			else {
-				$('#angles').text('Orientation is not supported! :(');
+				$('#info').text('Orientation is not supported! :(');
 				return;
 			}
 
@@ -65,7 +65,7 @@
 		}
     </script>
   </head>
-  <body onload="installHandler();">
-  	<span style="font-family: monospace; visibility: hidden;" id="angles">No data :(</span>
+  <body onload="installHandler();" style="text-align: center; padding: 5%;">
+  	<span style="font-family: monospace; font-size: 200%;" id="info">No data :(</span>
   </body>
 </html>
