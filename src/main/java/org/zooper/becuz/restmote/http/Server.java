@@ -99,7 +99,6 @@ public class Server implements Runnable {
 			serverUrl = UriBuilder.fromUri("http://" + inetAddr.getIp() + "/").port(port).build().toString();
 		}
 		
-		
 		ResourceConfig rc = new PackagesResourceConfig("org.zooper.becuz.restmote.rest.resources");
 		rc.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 		httpServer = GrizzlyServerFactory.createHttpServer(getApiUrl(), rc);
