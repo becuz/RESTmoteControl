@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Balloonathon</title>
+   	<script type="text/javascript" src="jquery-1.8.2.min.js"></script>
+    <script type="text/javascript">
+    	var beta = 0, gamma = 0, range = 100, frequency = 75;
+
+		window.onclick = function() {
+			$.ajax({ type: 'POST', url: 'http://' + window.location.hostname + ':' + window.location.port + '/api/pc/mouse/buttons/1/click' });
+		}
+    
+	   	function installHandler() {
+	   		if (window.DeviceOrientationEvent) {
+				$('#angles').text('DeviceOrientation is supported :)');
+				window.addEventListener('deviceorientation', function(e) {
+					beta = e.beta;
+					gamma = e.gamma;
+				    $('#angles').text(beta + ' ' + gamma);
+				}, false);
+			} else if (window.OrientationEvent) {
+				$('#angles').text('MozOrientation is supported :)');
+				window.addEventListener('MozOrientation', function(e) {
+					beta = e.x * 90;
+					gamma = e.y * -90;
+				    $('#angles').text(beta + ' ' + gamma);
+				}, false);
+			}
+			else {
+				$('#angles').text('Orientation is not supported! :(');
+				return;
+			}
+
+	        window.setInterval(push, frequency);
+	    }
+	    
+	    function push() {
+	    	beta = Math.abs(beta) < 3 ? 0 : parseInt(Math.round(beta));
+	    	gamma = Math.abs(gamma) < 3 ? 0 : parseInt(Math.round(gamma));
+	    	
+	    	if (beta == 0 && gamma == 0)
+	    		return;
+	    	
+			$.ajax({
+	        	type: 'PUT',
+	        	url: 'http://' + window.location.hostname + ':' + window.location.port + '/api/pc/mouse/' + map(-gamma) + 'x' + map(-beta)
+	        })
+	    }
+	    
+		function map(angle) {
+			var value = parseInt(Math.pow(1.5, angle / 10));
+		    //var value = parseInt((angle + 90) * (2 * range) / 180 - range);
+		    return value >= 0 ? '+' + value : value;
+		}
+    </script>
+  </head>
+  <body onload="installHandler();">
+  	<div style="text-align: center;"><button onclick="join();" id="join">Join!</button></div>
+  	<span style="font-family: monospace;" id="angles">No data :(</span>
+  </body>
+</html>
