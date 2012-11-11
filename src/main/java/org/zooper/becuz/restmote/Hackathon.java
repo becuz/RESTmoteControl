@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import processing.core.PApplet;
 import processing.core.PFont;
 
@@ -53,7 +55,7 @@ public class Hackathon extends PApplet {
 	public void startGame(){
 		startGame = !startGame;
 		if (startGame){
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < 2; i++) {
 				addPlayer();
 			}
 		}
@@ -69,7 +71,7 @@ public class Hackathon extends PApplet {
 		int index = players.size();
 		if (index < colors.length){
 			int color = color(colorsr[index],colorsg[index],colorsb[index]);
-			Player p = new Player(index, color);
+			Player p = new Player(index, color, colors[i]);
 			int xP = randomGenerator.nextInt(W);
 			int yP = randomGenerator.nextInt(H);
 			p.setPosition(xP, yP);
@@ -97,6 +99,7 @@ public class Hackathon extends PApplet {
 		if (p != null){
 			for(Baloon b: p.getBaloons()){
 				if (b.intersect(p.getX(), p.getY())){
+					println("addScore");
 					p.addScore();
 				}
 			}
@@ -153,14 +156,23 @@ public class Hackathon extends PApplet {
 			this.dy = dy;
 			this.color = color;
 		}
+		
 		boolean intersect(int x, int y){
-			if (x > this.x - dx && x < this.x + dx && 
-					y > this.y - dy && y < this.y + dy){
+			println("x :" + x + "y :" + y);
+			println("dx :" + dx + "dy :" + dy);
+			int xM = this.x - dx/2;
+			int xP = this.x + dx/2;
+			int yM = this.y - dy/2;
+			int yP = this.y + dy/2;
+			if (x > xM && x < this.x + dx/2 && 
+					y > this.y - dy/2 && y < this.y + dy/2){
 				println("intersect true");
 				return true;
 			}
+			println("intersect false");
 			return false;
 		}
+		
 		void display() {
 			stroke(1);
 			fill(color);
@@ -181,16 +193,29 @@ public class Hackathon extends PApplet {
 	}
 
 	public class Player {
+		@JsonIgnore
 		int x;
+		
+		@JsonIgnore
 		int y;
+		
 		int index;
+		
 		int color;
+		
+		String colorS;
+		
+		@JsonIgnore
 		int score = 0;
+		
+		@JsonIgnore
 		List<Baloon> baloons = new ArrayList<Baloon>();
-		public Player(int index, int color) {
+		
+		public Player(int index, int color, String colorS) {
 			super();
 			this.index = index;
 			this.color = color;
+			this.colorS = colorS;
 		}
 		public void deltaPosition(int xA, int yA) {
 			x += xA;
@@ -210,6 +235,12 @@ public class Hackathon extends PApplet {
 		}
 		public int getIndex() {
 			return index;
+		}
+		public int getColor() {
+			return color;
+		}
+		public String getColorS() {
+			return colorS;
 		}
 		public List<Baloon> getBaloons() {
 			return baloons;

@@ -18,7 +18,7 @@ import org.zooper.becuz.restmote.utils.Utils;
  * 
  * GET 	/baloon
  * POST	/baloon/click/1
- * PUT	/baloon/click/+5x-5
+ * PUT	/baloon/click/1/+5x-5
  * 
  * 
  * @author bebo
