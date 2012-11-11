@@ -1,6 +1,7 @@
 package org.zooper.becuz.restmote;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Random;
 
@@ -30,15 +31,14 @@ public class Hackathon extends PApplet {
 	int MAX_BALOON_DY = 50;
 	int NUM_BALOONS = 5;
 	int MAX_BALOON_SPEED = 1;
-	String[] colors = {"red", "white", "blue"};
-	int[] colorsr = {255, 255, 0};
-	int[] colorsg = {0, 255, 0};
-	int[] colorsb = {0, 255, 255};
+	
+	String[] colors = {"red", "green", "blue", "yellow", "violet"};
+	int[] colorsr = {255, 0, 0, 255, 143};
+	int[] colorsg = {0, 255, 0, 255, 0};
+	int[] colorsb = {0, 0, 255, 0, 255};
 	
 	List<Player> players = new ArrayList<Player>();
 	
-	int i = 0;
-
 	private boolean startGame = false;
 	
 	public void setup() {
@@ -71,7 +71,7 @@ public class Hackathon extends PApplet {
 		int index = players.size();
 		if (index < colors.length){
 			int color = color(colorsr[index],colorsg[index],colorsb[index]);
-			Player p = new Player(index, color, colors[i]);
+			Player p = new Player(index, color, colors[index]);
 			int xP = randomGenerator.nextInt(W);
 			int yP = randomGenerator.nextInt(H);
 			p.setPosition(xP, yP);
@@ -99,7 +99,7 @@ public class Hackathon extends PApplet {
 		if (p != null){
 			for(Baloon b: p.getBaloons()){
 				if (b.intersect(p.getX(), p.getY())){
-					println("addScore");
+//					println("addScore");
 					p.addScore();
 				}
 			}
@@ -118,9 +118,13 @@ public class Hackathon extends PApplet {
 		background(102);
 		if (startGame){
 			String scores = "";
-			for(Player p: players){
-				p.display();
-				scores += colors[p.getIndex()] + ": " + p.getScore() + "  ";
+			try {
+				for(Player p: players){
+					p.display();
+					scores += colors[p.getIndex()] + ": " + p.getScore() + "  ";
+				}
+			} catch (ConcurrentModificationException e){
+				e.printStackTrace();
 			}
 			textFont(f,16); // Step 4: Specify font to be used
 			fill(0);        // Step 5: Specify font color
@@ -132,6 +136,8 @@ public class Hackathon extends PApplet {
 	
 	public void mousePressed() {
 		println(mouseX + " " + mouseY);
+		Player p = players.get(0);
+		p.setPosition(mouseX, mouseY);
 		playerClick(0);
 	}
 
@@ -158,14 +164,14 @@ public class Hackathon extends PApplet {
 		}
 		
 		boolean intersect(int x, int y){
-			println("x :" + x + "y :" + y);
-			println("dx :" + dx + "dy :" + dy);
+//			println("x :" + x + "y :" + y);
 			int xM = this.x - dx/2;
 			int xP = this.x + dx/2;
 			int yM = this.y - dy/2;
 			int yP = this.y + dy/2;
-			if (x > xM && x < this.x + dx/2 && 
-					y > this.y - dy/2 && y < this.y + dy/2){
+//			println("xM :" + xM + "xP :" + xP + "yM :" + yM + "yM :" + yM);
+			if (x > xM && x < xP && 
+					y > yM && y < yP){
 				println("intersect true");
 				return true;
 			}
@@ -220,6 +226,7 @@ public class Hackathon extends PApplet {
 		public void deltaPosition(int xA, int yA) {
 			x += xA;
 			y += yA;
+			setPosition(x, y);
 		}
 		public int getX() {
 			return x;
@@ -259,8 +266,10 @@ public class Hackathon extends PApplet {
 			}
 		}
 		public void setPosition(int x, int y){
-			this.x = x;
-			this.y = y;
+			if (x > W) this.x = W;
+			if (x < 0) this.x = 0;
+			if (y > H) this.y = H;
+			if (y < 0) this.y = 0;
 		}
 	}
 

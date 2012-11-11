@@ -18,7 +18,7 @@ import org.zooper.becuz.restmote.utils.Utils;
  * 
  * GET 	/baloon
  * POST	/baloon/click/1
- * PUT	/baloon/click/1/+5x-5
+ * PUT	/baloon/pos1/+5x-5
  * 
  * 
  * @author bebo
@@ -44,6 +44,9 @@ public class BaloonResource extends AbstractResource{
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public Player get() {
 		Player p = Hackathon.getInstance().addPlayer();
+		if (p != null){
+			log.info("Created player " + p.getColor());
+		}
 		return p;
 	}
 	
@@ -55,7 +58,7 @@ public class BaloonResource extends AbstractResource{
 	public void move(
 			@PathParam("index") Integer index,
 			@PathParam("mouseMoves") String mouseMoves) {
-		log.info("mouseMoves mouseMoves: " + mouseMoves);
+//		log.info("mouseMoves mouseMoves: " + mouseMoves);
 		String[] coordinates = mouseMoves.split("x");
 		int xA = 0;
 		int yA = 0;
