@@ -36,5 +36,11 @@
 	<classpathentry kind="lib" path="lib/grizzly-http-2.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/grizzly-http-server-2.2.1.jar" sourcepath="C:/Users/admin/.m2/repository/org/glassfish/grizzly/grizzly-http-server/2.2.1/grizzly-http-server-2.2.1-sources.jar"/>
 	<classpathentry kind="lib" path="lib/grizzly-http-servlet-2.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/core.jar"/>
+	<classpathentry kind="lib" path="lib/gluegen-rt-natives-windows-i586.jar"/>
+	<classpathentry kind="lib" path="lib/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="lib/hackathon.jar"/>
+	<classpathentry kind="lib" path="lib/jogl-all-natives-windows-i586.jar"/>
+	<classpathentry kind="lib" path="lib/jogl-all.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
