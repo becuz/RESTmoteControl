@@ -56,9 +56,9 @@ public class Hackathon extends PApplet {
 	public void startGame(){
 		startGame = !startGame;
 		if (startGame){
-			for (int i = 0; i < 2; i++) {
-				addPlayer();
-			}
+//			for (int i = 0; i < 2; i++) {
+//				addPlayer();
+//			}
 		}
 	}
 	
