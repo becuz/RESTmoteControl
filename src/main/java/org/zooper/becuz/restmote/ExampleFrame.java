@@ -5,11 +5,7 @@ import java.awt.Frame;
 
 public class ExampleFrame extends Frame {
 	
-	
-	
-	
-	
-	public ExampleFrame() {
+	public ExampleFrame() throws Exception {
 		super("Embedded PApplet");
 		setSize(1124, 868);
 		setLayout(new BorderLayout());

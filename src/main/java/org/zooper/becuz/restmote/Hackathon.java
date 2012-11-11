@@ -67,21 +67,24 @@ public class Hackathon extends PApplet {
 	public Player addPlayer(){
 		Random randomGenerator = new Random();
 		int index = players.size();
-		int color = color(colorsr[index],colorsg[index],colorsb[index]);
-		Player p = new Player(index, color);
-		int xP = randomGenerator.nextInt(W);
-		int yP = randomGenerator.nextInt(H);
-		p.setPosition(xP, yP);
-		players.add(p);
-		for (int j = 0; j < NUM_BALOONS; j++) {
-			int x = randomGenerator.nextInt(W);
-			int y = randomGenerator.nextInt(H);
-			int dx = 80;//randomGenerator.nextInt(MAX_BALOON_DX);
-			int dy = 80;//randomGenerator.nextInt(MAX_BALOON_DY);
-			Baloon b = new Baloon(x, y, dx, dy, color);
-			p.addBaloon(b);
+		if (index < colors.length){
+			int color = color(colorsr[index],colorsg[index],colorsb[index]);
+			Player p = new Player(index, color);
+			int xP = randomGenerator.nextInt(W);
+			int yP = randomGenerator.nextInt(H);
+			p.setPosition(xP, yP);
+			players.add(p);
+			for (int j = 0; j < NUM_BALOONS; j++) {
+				int x = randomGenerator.nextInt(W);
+				int y = randomGenerator.nextInt(H);
+				int dx = 80;//randomGenerator.nextInt(MAX_BALOON_DX);
+				int dy = 80;//randomGenerator.nextInt(MAX_BALOON_DY);
+				Baloon b = new Baloon(x, y, dx, dy, color);
+				p.addBaloon(b);
+			}
+			return p;
 		}
-		return p;
+		return null;
 	}
 	
 	public void setPlayerPosition(int indexPlayer, int x, int y){
