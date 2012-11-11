@@ -21,6 +21,7 @@ public class Hackathon extends PApplet {
 		return embed;
 	}
 	
+	Random randomGenerator = new Random();
 	
 	PFont f;  
 	
@@ -30,7 +31,7 @@ public class Hackathon extends PApplet {
 	int MAX_BALOON_DX = 50;
 	int MAX_BALOON_DY = 50;
 	int NUM_BALOONS = 5;
-	int MAX_BALOON_SPEED = 1;
+	int MAX_BALOON_SPEED = 3;
 	
 	String[] colors = {"red", "green", "blue", "yellow", "violet"};
 	int[] colorsr = {255, 0, 0, 255, 143};
@@ -55,9 +56,9 @@ public class Hackathon extends PApplet {
 	public void startGame(){
 		startGame = !startGame;
 		if (startGame){
-			for (int i = 0; i < 2; i++) {
-				addPlayer();
-			}
+//			for (int i = 0; i < 2; i++) {
+//				addPlayer();
+//			}
 		}
 	}
 	
@@ -67,7 +68,6 @@ public class Hackathon extends PApplet {
 	}
 	
 	public Player addPlayer(){
-		Random randomGenerator = new Random();
 		int index = players.size();
 		if (index < colors.length){
 			int color = color(colorsr[index],colorsg[index],colorsb[index]);
@@ -101,6 +101,8 @@ public class Hackathon extends PApplet {
 				if (b.intersect(p.getX(), p.getY())){
 //					println("addScore");
 					p.addScore();
+					b.reset();
+					break;
 				}
 			}
 		}
@@ -150,9 +152,13 @@ public class Hackathon extends PApplet {
 		int y;
 		int dx;
 		int dy;
+		int dpx = 10;
+		int dpy = 10;
 		int color;
 		int directionX = 1; //1 or -1
 		int directionY = 1; //1 or -1
+		int speedX = randomGenerator.nextInt(MAX_BALOON_SPEED) + 1;
+		int speedY = randomGenerator.nextInt(MAX_BALOON_SPEED) + 1;
 
 		public Baloon(int x, int y, int dx, int dy, int color) {
 			super();
@@ -179,15 +185,34 @@ public class Hackathon extends PApplet {
 			return false;
 		}
 		
+		void reset(){
+			x = randomGenerator.nextInt(W);
+			y = randomGenerator.nextInt(H);
+			speedX = randomGenerator.nextInt(MAX_BALOON_SPEED) + 1;
+			speedY = randomGenerator.nextInt(MAX_BALOON_SPEED) + 1;
+		}
+		
 		void display() {
 			stroke(1);
 			fill(color);
 			ellipse(x, y, dx, dy);
+			ellipse(
+					x,//x + dx/2 + dpx/2 , 
+					y + dy/2 + dpy/2, 
+					dpx, 
+					dpy);
+			line(
+					x,// + dx/2 + dpx, 
+					y + dy/2 + dpy, 
+					x,// + dx/2 + dpx, 
+					y + dy/2 + dpy + 25);
 		}
 
+		
+		
 		void move() {
-			x+= (directionX * MAX_BALOON_SPEED);
-			y+= (directionY * MAX_BALOON_SPEED);
+			x+= (directionX * speedX);
+			y+= (directionY * speedY);
 			if (x > W || x < 0) {
 				directionX *= -1;
 			}
