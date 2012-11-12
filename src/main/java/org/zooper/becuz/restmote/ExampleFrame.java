@@ -6,7 +6,7 @@ import java.awt.Frame;
 public class ExampleFrame extends Frame {
 	
 	public ExampleFrame() throws Exception {
-		super("Embedded PApplet");
+		super("Baloonathon");
 		setSize(1124, 868);
 		setLayout(new BorderLayout());
 		add(Hackathon.getInstance(), BorderLayout.CENTER);

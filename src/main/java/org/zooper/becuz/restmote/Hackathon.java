@@ -28,15 +28,15 @@ public class Hackathon extends PApplet {
 	// Constants
 	int W = 1024;
 	int H = 768;
-	int MAX_BALOON_DX = 50;
-	int MAX_BALOON_DY = 50;
+	int MAX_BALOON_DX = 110;
+	int MAX_BALOON_DY = 110;
 	int NUM_BALOONS = 5;
-	int MAX_BALOON_SPEED = 3;
+	int MAX_BALOON_SPEED = 2;
 	
-	String[] colors = {"red", "green", "blue", "yellow", "violet"};
-	int[] colorsr = {255, 0, 0, 255, 143};
-	int[] colorsg = {0, 255, 0, 255, 0};
-	int[] colorsb = {0, 0, 255, 0, 255};
+	String[] colors = {"red", "green", "blue", "yellow", "violet", "#00BCFF"};
+	int[] colorsr = {255, 0, 0, 255, 143, 0};
+	int[] colorsg = {0, 255, 0, 255, 0, 188};
+	int[] colorsb = {0, 0, 255, 0, 255, 255};
 	
 	List<Player> players = new ArrayList<Player>();
 	
@@ -45,6 +45,7 @@ public class Hackathon extends PApplet {
 	public void setup() {
 		size(W, H);
 		f = loadFont( "Verdana-16.vlw" );
+		strokeWeight(5);
 		initGame();
 		startGame();
 	}
@@ -56,7 +57,7 @@ public class Hackathon extends PApplet {
 	public void startGame(){
 		startGame = !startGame;
 		if (startGame){
-//			for (int i = 0; i < 2; i++) {
+//			for (int i = 0; i < 1; i++) {
 //				addPlayer();
 //			}
 		}
@@ -64,7 +65,11 @@ public class Hackathon extends PApplet {
 	
 	public void movePlayer(Integer index, int xA, int yA) {
 		Player p = players.get(index);
-		p.deltaPosition(xA, yA);
+		if (p != null){
+			p.deltaPosition(xA, yA);
+		} else {
+			println("Reload your browser!!!");
+		}
 	}
 	
 	public Player addPlayer(){
@@ -79,8 +84,8 @@ public class Hackathon extends PApplet {
 			for (int j = 0; j < NUM_BALOONS; j++) {
 				int x = randomGenerator.nextInt(W);
 				int y = randomGenerator.nextInt(H);
-				int dx = 80;//randomGenerator.nextInt(MAX_BALOON_DX);
-				int dy = 80;//randomGenerator.nextInt(MAX_BALOON_DY);
+				int dx = MAX_BALOON_DX;//randomGenerator.nextInt(MAX_BALOON_DX);
+				int dy = MAX_BALOON_DY;//randomGenerator.nextInt(MAX_BALOON_DY);
 				Baloon b = new Baloon(x, y, dx, dy, color);
 				p.addBaloon(b);
 			}
@@ -96,6 +101,7 @@ public class Hackathon extends PApplet {
 	
 	public void playerClick(int indexPlayer){
 		Player p = players.get(indexPlayer);
+		println("playerClick: " + p.getX() + " " + p.getY());
 		if (p != null){
 			for(Baloon b: p.getBaloons()){
 				if (b.intersect(p.getX(), p.getY())){
@@ -117,7 +123,7 @@ public class Hackathon extends PApplet {
 		    	startGame();
 		    }
 		}
-		background(102);
+		background(80);
 		if (startGame){
 			String scores = "";
 			try {
@@ -137,10 +143,12 @@ public class Hackathon extends PApplet {
 	}
 	
 	public void mousePressed() {
-		println(mouseX + " " + mouseY);
-		Player p = players.get(0);
-		p.setPosition(mouseX, mouseY);
-		playerClick(0);
+//		println("mouse: " + mouseX + " " + mouseY);
+		if (!players.isEmpty()){
+			Player p = players.get(0);
+			p.setPosition(mouseX, mouseY);
+			playerClick(0);
+		}
 	}
 
 //	public void createEllipse(int xx, int yy, int dx, int dy) {
@@ -170,12 +178,12 @@ public class Hackathon extends PApplet {
 		}
 		
 		boolean intersect(int x, int y){
-//			println("x :" + x + "y :" + y);
+			println("x :" + x + "y :" + y);
 			int xM = this.x - dx/2;
 			int xP = this.x + dx/2;
 			int yM = this.y - dy/2;
 			int yP = this.y + dy/2;
-//			println("xM :" + xM + "xP :" + xP + "yM :" + yM + "yM :" + yM);
+			println("xM :" + xM + "xP :" + xP + "yM :" + yM + "yM :" + yM);
 			if (x > xM && x < xP && 
 					y > yM && y < yP){
 				println("intersect true");
@@ -291,6 +299,8 @@ public class Hackathon extends PApplet {
 			}
 		}
 		public void setPosition(int x, int y){
+			this.x = x;
+			this.y = y;
 			if (x > W) this.x = W;
 			if (x < 0) this.x = 0;
 			if (y > H) this.y = H;
