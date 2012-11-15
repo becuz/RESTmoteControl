@@ -16,6 +16,16 @@ public class Constants {
 	/**
 	 * 
 	 */
+	public static final String NAME_DIR_ICON_SYSTEM = "system";
+	
+	/**
+	 * 
+	 */
+	public static final String DEFAULT_THEME = "iconic";
+	
+	/**
+	 * 
+	 */
 	public static final int SCAN_DEPTH = 2;
 	
 	/**

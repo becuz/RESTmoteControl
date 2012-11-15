@@ -19,7 +19,8 @@
         <property name="serverInetName" />  
         <property name="serverLastIp" />  
         <property name="serverPort" />
-        <property name="iconTheme" />    
+        <property name="iconControlsTheme" />
+        <property name="iconSystemTheme" />    
 	</class>
 
 </hibernate-mapping>

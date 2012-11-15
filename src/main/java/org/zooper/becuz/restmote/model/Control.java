@@ -20,9 +20,9 @@ import org.zooper.becuz.restmote.model.interfaces.Persistable;
  */
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class Control implements Persistable{
-	
-	private static final int POSITION_NUM_ROWS = 4;
-//	private static final int POSITION_NUM_COLS = 5;
+
+	public static final int MAX_NUM_ROWS = 4;
+	public static final int MAX_NUM_COLS = 5; //odd number is nicer!
 	
 	public static enum ControlDefaultTypeApp {
 		PLAY, PAUSE, STOP,
@@ -129,11 +129,12 @@ public class Control implements Persistable{
 	}
 	
 	public void validate() throws IllegalArgumentException {
-		if (row == null || row < 1 || row > POSITION_NUM_ROWS){
+		if (row == null || row < 1 || row > MAX_NUM_ROWS){
 			throw new IllegalArgumentException("Control " + name + ". Row can't be null and has to be between 1 and 4");
 		}
-		if (position == null || position < -2 || position > 2){
-			throw new IllegalArgumentException("Control " + name + ". Position can't be null and has to be between -2 and 2");
+		int m = (MAX_NUM_COLS-1)/2;
+		if (position == null || position < -m || position > m){
+			throw new IllegalArgumentException("Control " + name + ". Position can't be null and has to be between -" + m + " and " + m);
 		}
 	}
 	

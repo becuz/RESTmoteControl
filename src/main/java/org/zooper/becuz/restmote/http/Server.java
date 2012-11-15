@@ -17,6 +17,7 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.grizzly.http.server.NetworkListener;
 import org.glassfish.grizzly.http.server.Response;
 import org.glassfish.grizzly.http.server.StaticHttpHandler;
 import org.zooper.becuz.restmote.utils.Utils;
@@ -61,6 +62,8 @@ public class Server implements Runnable {
 	
 	private String serverUrl = null;
 	
+	private List<ServerStatusListener> serverStatusListeners;
+	
 	//***************************************************************************
 	
 	/**
@@ -84,6 +87,13 @@ public class Server implements Runnable {
 	}
 	
 	//***************************************************************************
+	
+	public void addServerStatusListeners(ServerStatusListener serverStatusListener) {
+		if (serverStatusListeners == null){
+			serverStatusListeners = new ArrayList<ServerStatusListener>();
+		}
+		serverStatusListeners.add(serverStatusListener);
+	}
 	
 	/**
 	 * Start the {@link HttpServer}
@@ -120,9 +130,9 @@ public class Server implements Runnable {
 		};
 		httpServer.getServerConfiguration().addHttpHandler(staticHttpHandler, "/client");
 //		for (NetworkListener l : httpServer.getListeners()) {
-//			   l.getFileCache().setEnabled(true);
+//			log.info("Listener " + l.getName());
+//			l.getFileCache().setEnabled(false);
 //		}
-		
 		log.info("Server started with WADL available at " + serverUrl + "application.wadl\n" +
 				"Try out " + getClientUrl() + "index.html or " + getApiUrl()  + "data\n");
 		new Thread(this).start();
@@ -216,11 +226,21 @@ public class Server implements Runnable {
 	 */
 	@Override
 	public void run() {
+		if (serverStatusListeners != null){
+			for(ServerStatusListener serverStatusListener: serverStatusListeners){
+				serverStatusListener.statusChanged(true);
+			}
+		}
 		while(httpServer != null){
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				log.error(e.toString());
+			}
+		}
+		if (serverStatusListeners != null){
+			for(ServerStatusListener serverStatusListener: serverStatusListeners){
+				serverStatusListener.statusChanged(false);
 			}
 		}
 		log.info("Exiting thread");

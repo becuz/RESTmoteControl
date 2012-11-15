@@ -90,8 +90,7 @@ public class Utils {
 	}
 	
 	/**
-	 * Return the absolute root path of the project
-	 * @return
+	 * @return the absolute root path of the project
 	 */
 	public static String getRestmoteRootDirAbsolutePath() {
 		if (restmoteRootDirAbsolutePath == null){
@@ -100,6 +99,15 @@ public class Utils {
 			restmoteRootDirAbsolutePath = restmoteRootDirAbsolutePath.substring(0, restmoteRootDirAbsolutePath.lastIndexOf("/")+1);
 		}
     	return restmoteRootDirAbsolutePath;
+	}
+	
+	/**
+	 * @return the absolute path of the client images
+	 */
+	public static String getRestmoteDirClientImages() {
+		return getRestmoteRootDirAbsolutePath() + System.getProperty("file.separator") 
+				+ "client" + System.getProperty("file.separator") 
+				+ "images" + System.getProperty("file.separator");
 	}
 	
 	/**

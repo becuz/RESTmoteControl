@@ -7,8 +7,6 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
-import org.zooper.becuz.restmote.model.App;
-
 public class ListComboBoxModel<E> extends AbstractListModel<E>
 		implements ComboBoxModel<E> {
 

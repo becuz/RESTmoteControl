@@ -18,14 +18,14 @@ public class RestmoteControl {
 
 	/**
 	 * Version currently installed in the machine.
-	 * It's retrieved through the string written in the vile /version
+	 * It's retrieved through the string written in the file /version
 	 */
 	private static String dbVersion = null;
 	
 	/**
-	 * Version of the runtime system.
+	 * Version of the runtime system. Has to be changed when the are updates in the persistence model layer. 
 	 */
-	private static String version = "0.02b";
+	private static String version = "0.03b";
 
 	/**
 	 * @return the version currently installed in the machine, accordingly to what is written in the file /version
@@ -48,12 +48,14 @@ public class RestmoteControl {
 		return version;
 	}
 	
+	public RestmoteControl() {}
+	
 	/**
 	 * 
 	 * @param develop
 	 * @throws Exception
 	 */
-	public RestmoteControl(boolean develop) throws Exception {
+	public void run(boolean develop) throws Exception {
 		new PopulateDb().createAndPopulate(develop);
 
 		// to cache everything, let's do several getAll

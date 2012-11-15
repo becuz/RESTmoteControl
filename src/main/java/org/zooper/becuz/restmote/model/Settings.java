@@ -1,5 +1,6 @@
 package org.zooper.becuz.restmote.model;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,6 +12,8 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.zooper.becuz.restmote.controller.PcControllerAbstract;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
+import org.zooper.becuz.restmote.utils.Constants;
+import org.zooper.becuz.restmote.utils.Utils;
 
 /**
  * Application settings
@@ -73,9 +76,14 @@ public class Settings implements Persistable{
 	private Integer serverPort;
 	
 	/**
-	 * Port the server should run on 
+	 * icon theme name of controls 
 	 */
-	private String iconTheme;
+	private String iconControlsTheme;
+	
+	/**
+	 * icon theme name of system 
+	 */
+	private String iconSystemTheme;
 	
 	//****************************************************************************************
 	
@@ -216,12 +224,29 @@ public class Settings implements Persistable{
 		this.serverPort = serverPort;
 	}
 
-	public String getIconTheme() {
-		return iconTheme;
+	public void setTheme(String theme){
+		setIconControlsTheme(theme);
+		if (new File(Utils.getRestmoteDirClientImages() + theme + System.getProperty("file.separator") + Constants.NAME_DIR_ICON_SYSTEM).exists()){
+			setIconSystemTheme(theme);
+		} else {
+			setIconSystemTheme(Constants.DEFAULT_THEME);
+		}
+	}
+	
+	public String getIconControlsTheme() {
+		return iconControlsTheme;
 	}
 
-	public void setIconTheme(String iconTheme) {
-		this.iconTheme = iconTheme;
+	public void setIconControlsTheme(String iconControlsTheme) {
+		this.iconControlsTheme = iconControlsTheme;
+	}
+
+	public String getIconSystemTheme() {
+		return iconSystemTheme;
+	}
+
+	public void setIconSystemTheme(String iconSystemTheme) {
+		this.iconSystemTheme = iconSystemTheme;
 	}
 
 }

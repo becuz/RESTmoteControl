@@ -11,15 +11,12 @@ import javax.swing.text.PlainDocument;
 import org.zooper.becuz.restmote.ui.MainWindow;
 import org.zooper.becuz.restmote.utils.Utils;
 
-public class IntTextField extends JTextField implements DocumentListener {
+public class IntTextField extends JTextField  {
 	
 	private static final long serialVersionUID = 1L;
 
-	private MainWindow mainWindow;
-	
-    public IntTextField(MainWindow mainWindow) {
+    public IntTextField() {
 		super();
-		this.mainWindow = mainWindow;
 	}
         
 //	public IntTextField(int defval, int size) {
@@ -27,9 +24,7 @@ public class IntTextField extends JTextField implements DocumentListener {
 //	}
 
 	protected Document createDefaultModel() {
-		Document doc = new IntTextDocument();
-		doc.addDocumentListener(this);
-		return doc;
+		return new IntTextDocument();
 	}
 
 	public boolean isValid() {
@@ -70,19 +65,5 @@ public class IntTextField extends JTextField implements DocumentListener {
 		
 	}
 
-	@Override
-	public void insertUpdate(DocumentEvent e) {
-		mainWindow.refreshLblServerUrl();
-	}
-
-	@Override
-	public void removeUpdate(DocumentEvent e) {
-		mainWindow.refreshLblServerUrl();
-	}
-
-	@Override
-	public void changedUpdate(DocumentEvent e) {
-		mainWindow.refreshLblServerUrl();		
-	}
 
 }
