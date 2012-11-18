@@ -37,7 +37,7 @@ import org.zooper.becuz.restmote.utils.Constants;
  * PUT		/pc/mouse/x22
  * PUT		/pc/mouse/912
  * PUT		/pc/mouse/32%x22%
- * PUT		/pc/mouse/-22
+ * PUT		/pc/mouse/+22x-22
  * PUT		/pc/mouse/wheel/+12    	?
  * POST		/pc/mouse/buttons/1/click	?
  * POST		/pc/mouse/buttons/1/press	?

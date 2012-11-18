@@ -97,6 +97,9 @@ public class Utils {
 			restmoteRootDirAbsolutePath = Utils.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 			restmoteRootDirAbsolutePath = restmoteRootDirAbsolutePath.substring(1, restmoteRootDirAbsolutePath.length()-1);
 			restmoteRootDirAbsolutePath = restmoteRootDirAbsolutePath.substring(0, restmoteRootDirAbsolutePath.lastIndexOf("/")+1);
+			if (restmoteRootDirAbsolutePath.endsWith("build/")){ //netbeans bin dir is build/
+				restmoteRootDirAbsolutePath = restmoteRootDirAbsolutePath.substring(0, restmoteRootDirAbsolutePath.length()-"build/".length());
+			}
 		}
     	return restmoteRootDirAbsolutePath;
 	}

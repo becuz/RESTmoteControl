@@ -7,17 +7,17 @@ import org.zooper.becuz.restmote.model.ControlsManager;
 
 public class AppTableModel extends AbstractTableModel{
 
-    private String[][] data;
+    private Control[][] data;
 
     public AppTableModel() {
-    	data = new String[Control.MAX_NUM_ROWS][Control.MAX_NUM_COLS];
+    	data = new Control[Control.MAX_NUM_ROWS][Control.MAX_NUM_COLS];
 	}
     
 	public void setData(ControlsManager controlsManager){
-		data = new String[Control.MAX_NUM_ROWS][Control.MAX_NUM_COLS];
+		data = new Control[Control.MAX_NUM_ROWS][Control.MAX_NUM_COLS];
 		int delta = (Control.MAX_NUM_COLS-1)/2;
 		for(Control control: controlsManager.getControls()){
-			data[control.getRow()][control.getPosition()+delta] = (control == null ? "null" : control.getName());
+			data[control.getRow()][control.getPosition()+delta] = control;//(control == null ? "null" : control.getName());
 		}
 		fireTableDataChanged();
 	}
@@ -34,7 +34,7 @@ public class AppTableModel extends AbstractTableModel{
 	
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		return String.class;
+		return Control.class;
 	}
 	
 	@Override

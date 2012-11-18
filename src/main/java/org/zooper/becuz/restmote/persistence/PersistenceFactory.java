@@ -10,8 +10,8 @@ public class PersistenceFactory {
 
 	public static PersistenceAbstract getPersistenceAbstract(){
 		if (persistenceAbstract == null){
-			persistenceAbstract = new PersistenceMemory();       //use memory
-//			persistenceAbstract = new PersistenceHibernate();	 //use a db through hibernate
+//			persistenceAbstract = new PersistenceMemory();       //use memory
+			persistenceAbstract = new PersistenceHibernate();	 //use a db through hibernate
 		}
 		return persistenceAbstract;
 	}

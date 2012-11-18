@@ -7,8 +7,7 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
-public class ListComboBoxModel<E> extends AbstractListModel<E>
-		implements ComboBoxModel<E> {
+public class ListComboBoxModel<E> extends AbstractListModel<E> implements ComboBoxModel<E> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -20,14 +19,6 @@ public class ListComboBoxModel<E> extends AbstractListModel<E>
 		list = new ArrayList<E>();
 	}
 	
-//	public ListComboBoxModel(List<E> list) {
-//		this.list = list;
-//	}
-//	
-//	public ListComboBoxModel(Collection<E> col) {
-//		this.list = new ArrayList<E>(col);
-//	}
-
 	public void addAll(Collection<E> list){
         if (this.list == null){
         	this.list = new ArrayList<E>();

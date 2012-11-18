@@ -12,11 +12,13 @@ import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.apache.log4j.Logger;
 
 import javax.swing.JOptionPane;
 
-public class TrayApp implements ActionListener {
+import org.apache.log4j.Logger;
+import org.zooper.becuz.restmote.http.ServerStatusListener;
+
+public class TrayApp implements ActionListener, ServerStatusListener {
     
 	protected static final Logger log = Logger.getLogger(TrayApp.class.getName());
 	
@@ -31,32 +33,28 @@ public class TrayApp implements ActionListener {
 	private SystemTray tray;
     
 	private MenuItem aboutItem;
-	
 	private MenuItem settingsItem;
-    
 	private MenuItem exitItem;
+	private MenuItem startStopItem;
+	private MenuItem restartItem;
 	
     //**********************************************
     
-	public MainWindow getMainWindow() {
-		if (mainWindow == null){
+	private MainWindow getMainWindow(boolean create) {
+		if (create && mainWindow == null){
 			mainWindow = new MainWindow();
 		}
 		return mainWindow;
 	}
 	
-    public PopupMenu getPopup() {
+	private PopupMenu getPopup() {
     	if (popup == null){
     		popup = new PopupMenu();
-    		Menu displayMenu = new Menu("Display");
-            MenuItem errorItem = new MenuItem("Error");
-            MenuItem warningItem = new MenuItem("Warning");
-            MenuItem infoItem = new MenuItem("Info");
-            MenuItem noneItem = new MenuItem("None");
-            displayMenu.add(errorItem);
-            displayMenu.add(warningItem);
-            displayMenu.add(infoItem);
-            displayMenu.add(noneItem);
+    		Menu displayMenu = new Menu("Server");
+            startStopItem = new MenuItem("Stop");
+            restartItem = new MenuItem("Restart");
+            displayMenu.add(startStopItem);
+            displayMenu.add(restartItem);
             
             aboutItem = new MenuItem("About");
         	settingsItem = new MenuItem("Settings");
@@ -65,8 +63,8 @@ public class TrayApp implements ActionListener {
             popup.add(aboutItem);
             popup.addSeparator();
             popup.add(settingsItem);
-//            popup.addSeparator();
-//            popup.add(displayMenu);
+            popup.addSeparator();
+           // popup.add(displayMenu);
             popup.add(exitItem);
     	}
 		return popup;
@@ -75,35 +73,32 @@ public class TrayApp implements ActionListener {
 	public TrayIcon getTrayIcon() {
 		if (trayIcon == null){
 			trayIcon = new TrayIcon(
-		    		UIUtils.createImage(
-		    				MainWindow.class.getResource("images/remosko.png"), "remosko!!", false));
+		    		UIUtils.createImage(MainWindow.class.getResource("images/remosko.png"), null, false));
+			trayIcon.setImageAutoSize(true);
+	        trayIcon.setPopupMenu(getPopup());
+	        trayIcon.setToolTip(UIConstants.TRAY_TOOLTIP);
 		}
 		return trayIcon;
 	}
 
 	public void createAndShowGUI() {
-		getMainWindow().setVisible(true);
+		getMainWindow(true).setVisible(true);
 		
         if (!SystemTray.isSupported()) {
         	log.warn("SystemTray is not supported");
         	JOptionPane.showMessageDialog(null, "SystemTray is not supported on your system!");
-            //getMainWindow().setVisible(true);
+            //getMainWindow(true).setVisible(true);
         	return;
         }
         
-        getTrayIcon().setImageAutoSize(true);
-        
-        trayIcon.setPopupMenu(getPopup());
-        trayIcon.setToolTip(UIConstants.TRAY_TOOLTIP);
-        
         try {
         	tray = SystemTray.getSystemTray();
-            tray.add(trayIcon);
+            tray.add(getTrayIcon());
         } catch (AWTException e) {
         	String error = "TrayIcon could not be added.";
         	log.error(error);
         	JOptionPane.showMessageDialog(null, error);
-            getMainWindow().setVisible(true);
+            //getMainWindow(true).setVisible(true);
             return;
         }
         
@@ -148,12 +143,21 @@ public class TrayApp implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == trayIcon || e.getSource() == settingsItem){
-			getMainWindow().setVisible(!mainWindow.isVisible());
+			getMainWindow(true).setVisible(!mainWindow.isVisible());
 		} else if (e.getSource() == aboutItem){
 			JOptionPane.showMessageDialog(null, "Res(t)mote Control rocks. That's it.");
 		} else if (e.getSource() == exitItem){
 			 tray.remove(trayIcon);
              System.exit(0);
 		}
+	}
+
+	@Override
+	public void statusChanged(boolean running) {
+		MainWindow mainWindow = getMainWindow(false);
+		if (mainWindow != null){
+			mainWindow.updateViewStatusServer();
+		}
+		
 	}
 }
