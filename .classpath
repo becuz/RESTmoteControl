@@ -36,5 +36,8 @@
 	<classpathentry kind="lib" path="lib/grizzly-http-server-2.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/grizzly-http-servlet-2.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/grizzly-framework-2.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/zxing-core-1.7.jar"/>
+	<classpathentry kind="lib" path="lib/zxing-j2se-1.7.jar"/>
+	<classpathentry kind="lib" path="lib/qrgen-1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

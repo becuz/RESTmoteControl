@@ -6,16 +6,13 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.apache.log4j.Logger;
-import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.zooper.becuz.restmote.business.ActiveAppBusiness;
 import org.zooper.becuz.restmote.business.AppBusiness;
 import org.zooper.becuz.restmote.business.MediaBusiness;
@@ -31,12 +28,7 @@ import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeKeyboard;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeMouse;
 import org.zooper.becuz.restmote.model.ControlsManager;
-import org.zooper.becuz.restmote.model.MediaCategory;
-import org.zooper.becuz.restmote.model.Settings;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
-import org.zooper.becuz.restmote.model.transport.Media;
-import org.zooper.becuz.restmote.model.transport.MediaRoot;
-import org.zooper.becuz.restmote.utils.Utils;
 
 public abstract class PcControllerAbstract {
 

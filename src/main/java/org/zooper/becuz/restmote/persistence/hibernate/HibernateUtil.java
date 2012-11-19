@@ -1,9 +1,8 @@
 package org.zooper.becuz.restmote.persistence.hibernate;
 
 import java.util.Properties;
-import java.util.logging.Level;
-import org.apache.log4j.Logger;
 
+import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;

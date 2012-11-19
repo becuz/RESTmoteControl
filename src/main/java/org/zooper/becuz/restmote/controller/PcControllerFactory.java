@@ -1,7 +1,6 @@
 package org.zooper.becuz.restmote.controller;
 
 import org.apache.log4j.Logger;
-
 import org.zooper.becuz.restmote.utils.Utils;
 import org.zooper.becuz.restmote.utils.Utils.OS;
 

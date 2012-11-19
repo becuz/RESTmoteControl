@@ -5,6 +5,7 @@
 package org.zooper.becuz.restmote.ui;
 
 import java.awt.Toolkit;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,8 +14,12 @@ import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import net.glxn.qrgen.QRCode;
+import net.glxn.qrgen.image.ImageType;
 
 import org.apache.log4j.Logger;
 import org.zooper.becuz.restmote.business.AppBusiness;
@@ -168,8 +173,9 @@ public class MainWindow extends javax.swing.JFrame {
 		
 		panelEditCategories.setEnabled(false);
 		panelEditApps.setEnabled(false);
+		lblQrCode.setHorizontalAlignment(JLabel.CENTER);
+		//lblServerUrl.setHorizontalAlignment(JLabel.CENTER);
 		updateViewStatusServer();
-		
 	}
 	
     /**
@@ -192,6 +198,7 @@ public class MainWindow extends javax.swing.JFrame {
         btnToggleServer = new javax.swing.JButton();
         lblServerUrl = new URLLabel();
         btnRefreshInetNames = new javax.swing.JButton();
+        lblQrCode = new javax.swing.JLabel();
         panelSettingsPnlGeneral = new javax.swing.JPanel();
         lblTextFieldName = new javax.swing.JLabel();
         textFieldName = new javax.swing.JTextField();
@@ -226,7 +233,7 @@ public class MainWindow extends javax.swing.JFrame {
         scrollPaneListApps = new javax.swing.JScrollPane();
         listApps = new javax.swing.JList();
         btnAddApp = new javax.swing.JButton();
-        panelEditApps = new org.zooper.becuz.restmote.ui.panels.PanelEditApps();
+        panelEditApps = new org.zooper.becuz.restmote.ui.panels.PanelEditApps(listApps, listAppsModel);
         btnSave = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         lblStatus = new javax.swing.JLabel();
@@ -249,16 +256,20 @@ public class MainWindow extends javax.swing.JFrame {
 
         lblComboPort.setText("Port");
 
+        textFieldPort.addActionListener(formListener);
+
         lblStatusServer.setText("Checking server status..");
 
         btnToggleServer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/user_green.png"))); // NOI18N
         btnToggleServer.addMouseListener(formListener);
         btnToggleServer.addActionListener(formListener);
 
-        lblServerUrl.setText("lbl Server Url");
+        lblServerUrl.setText("server URL");
 
         btnRefreshInetNames.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/refresh.png"))); // NOI18N
         btnRefreshInetNames.setEnabled(false);
+
+        lblQrCode.setText("qrCode");
 
         javax.swing.GroupLayout panelSettingsPnlServerLayout = new javax.swing.GroupLayout(panelSettingsPnlServer);
         panelSettingsPnlServer.setLayout(panelSettingsPnlServerLayout);
@@ -267,20 +278,26 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(panelSettingsPnlServerLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblStatusServer, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
-                    .addComponent(lblServerUrl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelSettingsPnlServerLayout.createSequentialGroup()
-                        .addComponent(comboInetNames, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(52, 52, 52)
+                        .addComponent(lblStatusServer, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnRefreshInetNames, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelSettingsPnlServerLayout.createSequentialGroup()
-                        .addComponent(lblComboPort)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(textFieldPort, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnToggleServer))
+                    .addComponent(lblServerUrl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelSettingsPnlServerLayout.createSequentialGroup()
                         .addComponent(lblComboInetNames)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(btnToggleServer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelSettingsPnlServerLayout.createSequentialGroup()
+                        .addGroup(panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(comboInetNames, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(panelSettingsPnlServerLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(lblComboPort)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(textFieldPort, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRefreshInetNames, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblQrCode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelSettingsPnlServerLayout.setVerticalGroup(
@@ -292,17 +309,21 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGroup(panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboInetNames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRefreshInetNames, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(textFieldPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblComboPort))
+                .addGap(36, 36, 36)
+                .addGroup(panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnToggleServer, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelSettingsPnlServerLayout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(lblStatusServer)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblQrCode, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblServerUrl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 273, Short.MAX_VALUE)
-                .addComponent(lblStatusServer)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnToggleServer, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44))
+                .addGap(26, 26, 26))
         );
 
         panelSettingsPnlGeneral.setBorder(javax.swing.BorderFactory.createTitledBorder("General"));
@@ -357,27 +378,29 @@ public class MainWindow extends javax.swing.JFrame {
                                     .addComponent(textFieldPath))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnDeletePath, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(panelSettingsPnlGeneralLayout.createSequentialGroup()
-                                        .addComponent(btnBrowsePath, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                                        .addComponent(btnBrowsePath, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btnAddPath, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(btnAddPath, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnDeletePath, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(panelSettingsPnlGeneralLayout.createSequentialGroup()
                                 .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblTextFieldName)
-                                    .addComponent(lblTextFieldNameRoot)
-                                    .addComponent(lblTextFieldScanDepth))
-                                .addGap(28, 28, 28)
-                                .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(textFieldNameRoot, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                                    .addComponent(textFieldScanDepth, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(textFieldName)))
-                            .addGroup(panelSettingsPnlGeneralLayout.createSequentialGroup()
-                                .addComponent(lblComboIconTheme, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(comboIconTheme, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(panelSettingsPnlGeneralLayout.createSequentialGroup()
+                                        .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblTextFieldName)
+                                            .addComponent(lblTextFieldNameRoot)
+                                            .addComponent(lblTextFieldScanDepth))
+                                        .addGap(28, 28, 28)
+                                        .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(textFieldNameRoot, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                                            .addComponent(textFieldScanDepth, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(textFieldName)))
+                                    .addGroup(panelSettingsPnlGeneralLayout.createSequentialGroup()
+                                        .addComponent(lblComboIconTheme, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(comboIconTheme, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap(74, Short.MAX_VALUE))
+                        .addGap(74, 74, 74))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelSettingsPnlGeneralLayout.createSequentialGroup()
                         .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblPaths, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -405,7 +428,7 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(comboIconTheme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addComponent(lblPaths)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -502,7 +525,7 @@ public class MainWindow extends javax.swing.JFrame {
                     .addGroup(panelCategoriesLayout.createSequentialGroup()
                         .addComponent(panelCategoriesPnlList, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(panelEditCategories, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE))
+                        .addComponent(panelEditCategories, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE))
                     .addGroup(panelCategoriesLayout.createSequentialGroup()
                         .addComponent(lblCategoriesSummary)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -576,7 +599,7 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(lblAppsSummary)
                     .addComponent(panelAppsPnlList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(panelEditApps, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelEditApps, javax.swing.GroupLayout.PREFERRED_SIZE, 605, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelAppsLayout.setVerticalGroup(
@@ -605,8 +628,6 @@ public class MainWindow extends javax.swing.JFrame {
         btnCancel.setToolTipText("");
         btnCancel.setIconTextGap(10);
         btnCancel.addActionListener(formListener);
-
-        lblStatus.setText("Initializing..");
 
         menuFile.setText("File");
 
@@ -698,6 +719,9 @@ public class MainWindow extends javax.swing.JFrame {
             }
             else if (evt.getSource() == menuFileExit) {
                 MainWindow.this.menuFileExitActionPerformed(evt);
+            }
+            else if (evt.getSource() == textFieldPort) {
+                MainWindow.this.textFieldPortActionPerformed(evt);
             }
         }
 
@@ -791,6 +815,10 @@ public class MainWindow extends javax.swing.JFrame {
         String url = inetAddr == null ? "" : "http://" + inetAddr.getIp() + ":" + ((IntTextField)textFieldPort).getValue() + "/client/index.html";
         lblServerUrl.setText(url);
         ((URLLabel)lblServerUrl).setURL(url);
+		ByteArrayOutputStream out = QRCode.from(url).to(ImageType.PNG).withSize(220, 220).stream();
+		ImageIcon imageIcon = new ImageIcon(out.toByteArray());
+		lblQrCode.setIcon(imageIcon);
+		lblQrCode.setText("");
     }
     
     private void comboInetNamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboInetNamesActionPerformed
@@ -929,6 +957,10 @@ public class MainWindow extends javax.swing.JFrame {
         changedIconTheme();
     }//GEN-LAST:event_comboIconThemeActionPerformed
 
+    private void textFieldPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldPortActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textFieldPortActionPerformed
+
 	private void changedIconTheme(){
 		ImageList.getImageListModel().setTheme((String)listIconThemesModel.getSelectedItem()); //There's no 
 	}
@@ -960,6 +992,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel lblComboPort;
     private javax.swing.JLabel lblListCategories;
     private javax.swing.JLabel lblPaths;
+    private javax.swing.JLabel lblQrCode;
     private javax.swing.JLabel lblServerUrl;
     private javax.swing.JLabel lblStatus;
     private javax.swing.JLabel lblStatusServer;

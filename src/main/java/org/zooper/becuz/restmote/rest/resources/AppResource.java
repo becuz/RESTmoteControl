@@ -1,7 +1,6 @@
 package org.zooper.becuz.restmote.rest.resources;
 
 import java.util.Collection;
-import org.apache.log4j.Logger;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -13,6 +12,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;

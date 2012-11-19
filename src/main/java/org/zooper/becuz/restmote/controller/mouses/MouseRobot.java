@@ -4,8 +4,8 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
-import org.apache.log4j.Logger;
 
+import org.apache.log4j.Logger;
 import org.zooper.becuz.restmote.controller.PcControllerAbstract;
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
 import org.zooper.becuz.restmote.utils.Utils;

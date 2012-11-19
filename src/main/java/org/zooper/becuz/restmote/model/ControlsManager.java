@@ -52,7 +52,7 @@ public class ControlsManager implements Persistable{
 		}
 	}
 	
-	public void addControl(Control control) {
+	public Control addControl(Control control) {
 		if (controls == null){
 			controls = new HashSet<Control>();
 		}
@@ -62,6 +62,7 @@ public class ControlsManager implements Persistable{
 //			}
 //		}
 		controls.add(control);
+		return control;
 	}
 	
 	public Control getControl(String controlName) {
