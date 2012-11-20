@@ -25,6 +25,7 @@ import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.api.core.ResourceConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
+import java.net.Inet4Address;
 
 /**
  * HttpServer
@@ -102,12 +103,10 @@ public class Server implements Runnable {
 		log.info("Starting grizzly...");
 		InetAddr inetAddr = getInetAddr(inetName);
 		if (inetAddr == null){
-			serverUrl = UriBuilder.fromUri("http://128.131.194.14/").port(port).build().toString();
-//			throw new Exception("Impossible to find a local net");
-		} else {
-			serverUrl = UriBuilder.fromUri("http://" + inetAddr.getIp() + "/").port(port).build().toString();
-		}
-		
+			//serverUrl = UriBuilder.fromUri("http://128.131.193.124/").port(port).build().toString();
+			throw new Exception("Impossible to find a local net");
+		} 
+		serverUrl = UriBuilder.fromUri("http://" + inetAddr.getIp() + "/").port(port).build().toString();
 		
 		ResourceConfig rc = new PackagesResourceConfig("org.zooper.becuz.restmote.rest.resources");
 		rc.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
@@ -133,7 +132,7 @@ public class Server implements Runnable {
 //			l.getFileCache().setEnabled(false);
 //		}
 		log.info("Server started with WADL available at " + serverUrl + "application.wadl\n" +
-				"Try out " + getClientUrl() + "index.html or " + getApiUrl()  + "data\n");
+				"Try out " + getClientUrl() + " or " + getApiUrl()  + "data\n");
 		new Thread(this).start();
 		callGetSettings();
 		return inetAddr;
@@ -164,14 +163,16 @@ public class Server implements Runnable {
 			Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
 			while (nets.hasMoreElements()) {
 				NetworkInterface netint = (NetworkInterface) nets.nextElement();
+				//if (netint.isLoopback()) continue;
 				List<InetAddress> inetAddresses = Collections.list(netint.getInetAddresses());
 				if (!inetAddresses.isEmpty()) {
 					for (InetAddress inetAddress : inetAddresses) {
-						if (inetAddress.isSiteLocalAddress()) {
+						if (!(inetAddress instanceof Inet4Address)) continue;
+						//if (inetAddress.isSiteLocalAddress()) {
 							String netName = netint.getName();
 							String ip = getIpAsString(inetAddress);
 							inetAddres.add(new InetAddr(netName, ip));
-						}
+						//}
 					}
 				}
 			}
@@ -215,8 +216,8 @@ public class Server implements Runnable {
 		return serverUrl + "api/";
 	}
 	
-	private String getClientUrl(){
-		return serverUrl + "client/";
+	public String getClientUrl(){
+		return serverUrl + "client/index.html";
 	}
 
 

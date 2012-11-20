@@ -18,16 +18,15 @@ import javax.swing.JLabel;
 public class URLLabel extends JLabel {
 
 	private static final long serialVersionUID = 1L;
-
+	private static final String TEMPLATE = "<html><a href=\"URL\" >URL</a></html>";
 	private String url;
 
 	public URLLabel() {
-		this("", "");
+		this("");
 	}
 
-	public URLLabel(String label, String url) {
-		super(label);
-
+	public URLLabel(String url) {
+		super(TEMPLATE.replaceAll("URL", url));
 		this.url = url;
 		setForeground(Color.BLUE.darker());
 		setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -38,27 +37,7 @@ public class URLLabel extends JLabel {
 		this.url = url;
 	}
 
-	// this is used to underline the text
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-
-		g.setColor(Color.blue);
-
-		Insets insets = getInsets();
-
-		int left = insets.left;
-		if (getIcon() != null) {
-			left += getIcon().getIconWidth() + getIconTextGap();
-		}
-
-		g.drawLine(left, getHeight() - 1 - insets.bottom,
-				(int) getPreferredSize().getWidth() - insets.right, getHeight()
-						- 1 - insets.bottom);
-	}
-
 	private class URLOpenAdapter extends MouseAdapter {
-
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (Desktop.isDesktopSupported()) {
