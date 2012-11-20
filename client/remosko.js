@@ -250,7 +250,8 @@ function displayMedia(media){
 	if (media.mediaChildren.length){
 		$.each(media.mediaChildren, function(i, mediaChild){
 			var name = mediaChild.name;
-			var img = "<img class='ui-li-icon' src='images/" + (mediaChild.file ? "file" : "dir" ) + ".png'/>";
+			var img = "<img class='ui-li-icon' src='images/" 
+				+ data.settings.iconSystemTheme + "/system/" + (mediaChild.file ? "file" : "dir" ) + ".png'/>";
 			if (!mediaChild.file){
 				name += "<span class=ui-li-count>"+(mediaChild.mediaChildrenSize > -1 ? mediaChild.mediaChildrenSize : "?" ) +"</span>";
 			}
