@@ -334,7 +334,7 @@ function displayRc($brotherDom, idContainer, title, controlsManager, iconSize, p
 		//TODO btns in the div of control
 		//Mouse Pad
 		if(idContainer == 'mouse'){			
-			var $divPad = $( '<div id="pad" style="min-height:100px; width:100%; border:1px solid #ccc;"></div>').insertAfter($divRc);		
+			var $divPad = $( '<div id="pad"></div>').insertAfter($divRc);		
 			var mx = my = 0;
 			
 			$divPad.bind('vmouseup',function(ev){
@@ -350,10 +350,6 @@ function displayRc($brotherDom, idContainer, title, controlsManager, iconSize, p
 				});
 				
 			});		
-			/*$divPad.bind('vclick',function(ev){
-				mx = ev.pageX;
-				my = ev.pageY;
-			});*/
 		}
 		$divTitle = $( "<div class='rc-title' id='" + idContainer + "_title'>" +
 //							"<a class='float-left' data-role='button' href='#' data-iconpos='notext' data-icon='refresh' " +
