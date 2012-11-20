@@ -3,10 +3,9 @@ package org.zooper.becuz.restmote.controller.keyboards;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
-import org.apache.log4j.Logger;
 
+import org.apache.log4j.Logger;
 import org.zooper.becuz.restmote.controller.PcControllerAbstract;
-import org.zooper.becuz.restmote.controller.PcControllerFactory;
 
 /**
  * Implementation of {@link Keyboard} using {@link Robot}

@@ -3,8 +3,8 @@ package org.zooper.becuz.restmote.persistence;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
 import org.zooper.becuz.restmote.persistence.hibernate.HibernateUtil;

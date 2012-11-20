@@ -101,13 +101,19 @@ public class Control implements Persistable{
 		this.position = position;
 	}
 
+	public static Control getControl(String name, Integer row, Integer position){
+		return getControl(name, null, row, position);
+	}
+	
 	public static Control getControl(String name, Integer key, Integer row, Integer position){
 		return getControl(name, 1, key, row, position);
 	}
 	
 	public static Control getControl(String name, Integer repeat, Integer key, Integer row, Integer position){
 		Set<Integer> keysInner = new HashSet<Integer>();
-		keysInner.add(key);
+		if (key != null){
+			keysInner.add(key);
+		}
 		return getControl(name, repeat, keysInner, row, position);
 	}
 	

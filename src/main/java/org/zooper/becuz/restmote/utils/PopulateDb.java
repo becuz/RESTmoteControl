@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.Properties;
-import org.apache.log4j.Logger;
 
+import org.apache.log4j.Logger;
 import org.hibernate.cfg.Environment;
 import org.zooper.becuz.restmote.RestmoteControl;
 import org.zooper.becuz.restmote.business.SettingsBusiness;

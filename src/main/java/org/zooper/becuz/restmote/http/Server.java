@@ -17,7 +17,6 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.grizzly.http.server.NetworkListener;
 import org.glassfish.grizzly.http.server.Response;
 import org.glassfish.grizzly.http.server.StaticHttpHandler;
 import org.zooper.becuz.restmote.utils.Utils;
@@ -124,7 +123,7 @@ public class Server implements Runnable {
 				if (contentType != null){
 					response.setContentType(contentType);
 				}
-//				request.getInputStream().close();
+				request.getInputStream().close();
 				super.service(request, response);
 			}
 		};

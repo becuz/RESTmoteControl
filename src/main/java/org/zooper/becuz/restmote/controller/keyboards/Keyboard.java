@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.zooper.becuz.restmote.controller.PcControllerAbstract;
-import org.zooper.becuz.restmote.controller.PcControllerFactory;
 
 /**
  * Class used to type characters on the screen 

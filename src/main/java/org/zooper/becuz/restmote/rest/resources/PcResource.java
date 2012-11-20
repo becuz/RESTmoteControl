@@ -1,7 +1,5 @@
 package org.zooper.becuz.restmote.rest.resources;
 
-import org.apache.log4j.Logger;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -13,6 +11,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
 import org.zooper.becuz.restmote.controller.mouses.Mouse;
 import org.zooper.becuz.restmote.controller.mouses.Mouse.BTN_ACTION;

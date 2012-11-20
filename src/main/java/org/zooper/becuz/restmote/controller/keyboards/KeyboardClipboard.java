@@ -5,9 +5,9 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
-import org.apache.log4j.Logger;
 
-import org.zooper.becuz.restmote.controller.PcControllerFactory;
+import org.apache.log4j.Logger;
+import org.zooper.becuz.restmote.controller.PcControllerAbstract;
 
 /**
  * Implementation of {@link Keyboard} using {@link Clipboard} 
@@ -24,7 +24,7 @@ public class KeyboardClipboard extends Keyboard{
 	    	Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 	        StringSelection stringSelection = new StringSelection( characters );
 	        clipboard.setContents(stringSelection, stringSelection);
-	        Robot robot = PcControllerFactory.getPcController().getMyRobot();
+			Robot robot = PcControllerAbstract.getMyRobot();
 	        robot.keyPress(KeyEvent.VK_CONTROL);
 	        robot.keyPress(KeyEvent.VK_V);
 	        robot.keyRelease(KeyEvent.VK_V);
