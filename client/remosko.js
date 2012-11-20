@@ -142,6 +142,18 @@ function ajax_control(kind, command) {
 	});
 }
 
+function ajax_mouseDelta(deltaX, deltaY) {
+	var u = remoteUrl + "pc/mouse/";
+	u += (deltaX >= 0 ? '+' : '')+deltaX;
+	u += 'x'
+	u += (deltaY >= 0 ? '+' : '')+deltaY;
+	//console.log(u);
+	$.ajax({
+		type: "PUT",
+		url: u
+	});
+}
+
 function ajax_controlPc(command) {
 	$.ajax({
 		type: "POST",
@@ -213,7 +225,7 @@ function displayMedia(media){
 	var $content = $( "#home div[data-role='content']" );
 	var $ul = $( "#listMedia"); 
 	if ($ul.length == 0){	//Let's created it the first time
-		var $divMediaTitle = $( "<div>" + //TODO btn disalign
+		var $divMediaTitle = $( "<div style='min-height:50px;'>" + //TODO btn disalign //DIRTY Solution implemented
 								"<a data-role='button' href='#' data-iconpos='notext' data-icon='refresh' " +
 										"data-inline='true' data-mini='true' id='btn-refresh'></a>" +
 								"<h4 id='media-title'></h4>" +
@@ -238,9 +250,7 @@ function displayMedia(media){
 	if (media.mediaChildren.length){
 		$.each(media.mediaChildren, function(i, mediaChild){
 			var name = mediaChild.name;
-			+ "src='images/" + data.settings.iconControlsTheme + "/" + name + ".png'"
-			var img = "<img class='ui-li-icon' src='images/" 
-				+ data.settings.iconSystemTheme + "/system/" + (mediaChild.file ? "file" : "dir" ) + ".png'/>";
+			var img = "<img class='ui-li-icon' src='images/" + (mediaChild.file ? "file" : "dir" ) + ".png'/>";
 			if (!mediaChild.file){
 				name += "<span class=ui-li-count>"+(mediaChild.mediaChildrenSize > -1 ? mediaChild.mediaChildrenSize : "?" ) +"</span>";
 			}
@@ -305,7 +315,7 @@ function displayMouseOrKeyboardRc(kind){
 			"",													//Title
 			data[kind+"ControlsManager"], 						//model ControlsManager
 			"26",												//Icon size
-			10);												//paddingTop
+			10);												//paddingTop	
 }
 
 //show or hide the div control, depending by the controls defined in controlsManager. 
@@ -320,8 +330,31 @@ function displayRc($brotherDom, idContainer, title, controlsManager, iconSize, p
 	var $divTitle;
 	if ($( "#"+idContainer).length == 0){	//Let's created it the first time
 		var $divRc = $( "<div id='" + idContainer + "' class='rc-controls' style='padding-top:" + paddingTop + "px;'></div>" )
-			.insertAfter($brotherDom);
+			.insertAfter($brotherDom);		
 		//TODO btns in the div of control
+		//Mouse Pad
+		if(idContainer == 'mouse'){			
+			var $divPad = $( '<div id="pad" style="min-height:100px; width:100%; border:1px solid #ccc;"></div>').insertAfter($divRc);		
+			var mx = my = 0;
+			
+			$divPad.bind('vmouseup',function(ev){
+				$divPad.unbind('vmousemove');
+			});
+			$divPad.bind('vmousedown',function(ev){
+				mx = ev.pageX;
+				my = ev.pageY;
+				$divPad.bind('vmousemove',function(ev){
+					var deltaX = ev.pageX - mx;
+					var deltaY = ev.pageY - my;
+					ajax_mouseDelta(deltaX, deltaY);
+				});
+				
+			});		
+			/*$divPad.bind('vclick',function(ev){
+				mx = ev.pageX;
+				my = ev.pageY;
+			});*/
+		}
 		$divTitle = $( "<div class='rc-title' id='" + idContainer + "_title'>" +
 //							"<a class='float-left' data-role='button' href='#' data-iconpos='notext' data-icon='refresh' " +
 //								"data-inline='true' data-mini='true' id='btn-hide'></a>" +
@@ -370,7 +403,7 @@ function displayRc($brotherDom, idContainer, title, controlsManager, iconSize, p
 		$controlDiv.bind( "vmousedown", function(event) {
 	    	ajax_control(idContainer, $(this).attr( "id" ))
 		});
-	}
+	}	
 }
 
 function displayApps(apps){
