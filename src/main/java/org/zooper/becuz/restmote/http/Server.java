@@ -103,7 +103,7 @@ public class Server implements Runnable {
 		log.info("Starting grizzly...");
 		InetAddr inetAddr = getInetAddr(inetName);
 		if (inetAddr == null){
-			serverUrl = UriBuilder.fromUri("http://128.131.199.13/").port(port).build().toString();
+			serverUrl = UriBuilder.fromUri("http://128.131.194.14/").port(port).build().toString();
 //			throw new Exception("Impossible to find a local net");
 		} else {
 			serverUrl = UriBuilder.fromUri("http://" + inetAddr.getIp() + "/").port(port).build().toString();

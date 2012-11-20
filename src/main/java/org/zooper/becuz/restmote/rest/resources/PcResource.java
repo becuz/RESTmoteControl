@@ -32,12 +32,12 @@ import org.zooper.becuz.restmote.utils.Constants;
  * POST		/pc/keyboard/{type}							//type on keyboard the string s
  * POST		/pc/keyboard			JSON String			//type on keyboard the string s
  * 
- * POST		/pc/mouse/control/{control}					//es MOUSE_LEFT
+ * POST		/pc/mouse/control/{control}  				//es MOUSE_LEFT
  * PUT		/pc/mouse/912x22
  * PUT		/pc/mouse/x22
  * PUT		/pc/mouse/912
  * PUT		/pc/mouse/32%x22%
- * PUT		/pc/mouse/-22
+ * PUT		/pc/mouse/+22x+0
  * PUT		/pc/mouse/wheel/+12    	?
  * POST		/pc/mouse/buttons/1/click	?
  * POST		/pc/mouse/buttons/1/press	?
