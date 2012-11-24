@@ -125,23 +125,23 @@ public class PcResource extends AbstractResource{
 			Control control = PcControllerFactory.getPcController().getMouseControlsManager().getControl(controlName);
 			if (control != null){
 				Mouse mouse = PcControllerFactory.getPcController().getMouse();
-				if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_CENTER.toString())){
+				if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_CENTER.toString().toLowerCase())){
 					mouse.mouseMove("50%x50%");
-				} else if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_LEFT.toString())){
+				} else if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_LEFT.toString().toLowerCase())){
 					mouse.mouseMove("-"+Constants.DEFAULT_MOUSE_DELTA_MOVE);
-				} else if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_RIGHT.toString())){
+				} else if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_RIGHT.toString().toLowerCase())){
 					mouse.mouseMove("+"+Constants.DEFAULT_MOUSE_DELTA_MOVE);
-				} else if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_UP.toString())){
+				} else if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_UP.toString().toLowerCase())){
 					mouse.mouseMove("x-"+Constants.DEFAULT_MOUSE_DELTA_MOVE);
-				} else if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_DOWN.toString())){
+				} else if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_DOWN.toString().toLowerCase())){
 					mouse.mouseMove("x+"+Constants.DEFAULT_MOUSE_DELTA_MOVE);
-				} else if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_CLICK1.toString())){
+				} else if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_CLICK1.toString().toLowerCase())){
 					mouse.mouseButtons(1, BTN_ACTION.CLICK);
-				} else if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_CLICK3.toString())){
+				} else if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_CLICK3.toString().toLowerCase())){
 					mouse.mouseButtons(3, BTN_ACTION.CLICK);
-				} else if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_WHEELUP.toString())){
+				} else if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_WHEELUP.toString().toLowerCase())){
 					mouse.mouseWheel(-Constants.DEFAULT_MOUSE_DELTA_MOVE);
-				} else if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_WHEELDOWN.toString())){
+				} else if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_WHEELDOWN.toString().toLowerCase())){
 					mouse.mouseWheel(Constants.DEFAULT_MOUSE_DELTA_MOVE);
 				}
 			}

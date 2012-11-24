@@ -51,8 +51,8 @@ public class TestAppBusiness extends TestAbstract{
 		app.addExtension("avi");
 		app.setForceOneInstance(true);
 		ControlsManager controlAppMovies = new ControlsManager();
-		Control control1 = controlAppMovies.addControl(Control.getControl(ControlDefaultTypeApp.VOLUP.toString(), KeyEvent.VK_0, 1, 0));
-		Control control2 = controlAppMovies.addControl(Control.getControl(ControlDefaultTypeApp.FULLSCREEN.toString(), KeyEvent.VK_F, 2, -2));
+		Control control1 = controlAppMovies.addControl(Control.getControl(ControlDefaultTypeApp.VOLUP, KeyEvent.VK_0, 1, 0));
+		Control control2 = controlAppMovies.addControl(Control.getControl(ControlDefaultTypeApp.FULLSCREEN, KeyEvent.VK_F, 2, -2));
 		app.setControlsManager(controlAppMovies);
 		appBusiness.store(app);
 		control1.setName("name");

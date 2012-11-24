@@ -260,16 +260,16 @@ public abstract class PcControllerAbstract {
 		if (keyboardControlsManager == null){
 			keyboardControlsManager = new ControlsManager();
 			//first line
-			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_UP.toString(), 1, KeyEvent.VK_UP, 1, 0));
+			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_UP, KeyEvent.VK_UP, 1, 0));
 			//second line center
-			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_LEFT.toString(), 1, KeyEvent.VK_LEFT, 2, -1));
-			Control cntrlEnter = Control.getControl(ControlDefaultTypeKeyboard.KBD_ENTER.toString(), 1, KeyEvent.VK_ENTER, 2, 0);
+			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_LEFT, KeyEvent.VK_LEFT, 2, -1));
+			Control cntrlEnter = Control.getControl(ControlDefaultTypeKeyboard.KBD_ENTER, KeyEvent.VK_ENTER, 2, 0);
 			//cntrlEnter.setHideImg(true);
 			//cntrlEnter.setText("Enter");
 			keyboardControlsManager.addControl(cntrlEnter);
-			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_RIGHT.toString(), 1, KeyEvent.VK_RIGHT, 2, 1));
+			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_RIGHT, KeyEvent.VK_RIGHT, 2, 1));
 			//third line		
-			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_DOWN.toString(), 1, KeyEvent.VK_DOWN, 3, 0));
+			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_DOWN, KeyEvent.VK_DOWN, 3, 0));
 			//fourth line
 			Control cntrlAlt = Control.getControl("Alt", 1, KeyEvent.VK_ALT, 4, -2);
 			cntrlAlt.setHideImg(true);
@@ -296,15 +296,15 @@ public abstract class PcControllerAbstract {
 	public ControlsManager getMouseControlsManager() {
 		if (mouseControlsManager == null){
 			mouseControlsManager = new ControlsManager();
-			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_CLICK1.toString(), 1, -1));
-			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_UP.toString(), 1, 0));
-			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_CLICK3.toString(), 1, 1));
-			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_LEFT.toString(), 2, -1));
-			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_CENTER.toString(), 2, 0));
-			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_RIGHT.toString(), 2, 1));
-			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_WHEELUP.toString(), 3, -1));
-			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_DOWN.toString(), 3, 0));
-			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_WHEELDOWN.toString(), 3, 1));
+			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_CLICK1, 1, -1));
+			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_UP, 1, 0));
+			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_CLICK3, 1, 1));
+			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_LEFT, 2, -1));
+			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_CENTER, 2, 0));
+			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_RIGHT, 2, 1));
+			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_WHEELUP, 3, -1));
+			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_DOWN, 3, 0));
+			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_WHEELDOWN, 3, 1));
 		}
 		return mouseControlsManager;
 	}

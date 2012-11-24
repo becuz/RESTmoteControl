@@ -18,7 +18,11 @@ public class ModelFactoryLinux extends ModelFactoryAbstract{
 	 */
 	@Override
 	public App getAppMovies(){
-		throw new NotYetImplementedException();
+		if (appMovies == null){
+			appMovies = (new ModelFactoryWindows()).getAppMovies();
+			appMovies.setPath("smplayer");
+		}
+		return appMovies;
 	}
 	
 	/**

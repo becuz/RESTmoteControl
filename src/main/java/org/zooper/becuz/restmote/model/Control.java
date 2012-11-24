@@ -103,8 +103,16 @@ public class Control implements Persistable{
 		this.position = position;
 	}
 
+	public static Control getControl(ControlDefaultTypeMouse c, Integer row, Integer position){
+		return getControl(c.toString().toLowerCase(), null, row, position);
+	}
+	
 	public static Control getControl(String name, Integer row, Integer position){
 		return getControl(name, null, row, position);
+	}
+	
+	public static Control getControl(ControlDefaultTypeKeyboard c, Integer key, Integer row, Integer position){
+		return getControl(c.toString().toLowerCase(), 1, key, row, position);
 	}
 	
 	public static Control getControl(String name, Integer key, Integer row, Integer position){

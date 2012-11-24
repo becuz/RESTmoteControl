@@ -40,7 +40,6 @@ public class PcControllerWindows extends PcControllerAbstract{
 		    		argumentMedia.replace("%f", filePath)};
 			process = execute(commands);
 			appProcesses.put(app, process);
-			
 		} else {
 			process = execute("explorer", filePath);
 		}

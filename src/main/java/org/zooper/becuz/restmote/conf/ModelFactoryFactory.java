@@ -16,9 +16,9 @@ public class ModelFactoryFactory {
 			case MAC:
 				modelFactoryAbstract = new ModelFactoryMac();
 				break;
-//			case LINUX:
-//				modelFactoryAbstract = new ModelFactoryLinux();
-//				break;
+			case LINUX:
+				modelFactoryAbstract = new ModelFactoryLinux();
+				break;
 			default:
 				throw new NotYetImplementedException("ModelFactory " + Utils.getOs() + " not implemented");
 			}
