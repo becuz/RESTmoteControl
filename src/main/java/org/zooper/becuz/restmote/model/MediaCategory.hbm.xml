@@ -19,11 +19,10 @@
             <key column="mediaCategoryId"/>
             <element type="string" column="path"/>
         </set>
-        <!--  TODO not sure if is unique and in general if this association is fine -->
 		<many-to-one name="app" 
 	        lazy="false"
 	        column="appId" 
-	        unique="true"			
+	        unique="false"			
 	        not-null="false"/>	
 	</class>
 

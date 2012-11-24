@@ -1,5 +1,6 @@
 package org.zooper.becuz.restmote.model;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,8 +11,10 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.zooper.becuz.restmote.conf.ModelFactoryAbstract;
 import org.zooper.becuz.restmote.controller.PcControllerWindows;
+import org.zooper.becuz.restmote.model.interfaces.Completable;
 import org.zooper.becuz.restmote.model.interfaces.Editable;
 import org.zooper.becuz.restmote.rest.resources.PcResource;
+import org.zooper.becuz.restmote.utils.Utils;
 
 /**
  * Identifies an application installed on the server pc and configured by the user.
@@ -22,7 +25,7 @@ import org.zooper.becuz.restmote.rest.resources.PcResource;
  */
 @XmlRootElement
 @JsonSerialize(include = Inclusion.NON_NULL)
-public class App implements Editable{
+public class App implements Editable, Completable{
 
 	@JsonIgnore
 	private Long id;
@@ -40,12 +43,12 @@ public class App implements Editable{
 	/**
 	 * meta arguments for file opening
 	 */
-	private String argumentsFile;
+	private String argumentsFile = "%f";
 	
 	/**
 	 * meta arguments for directory opening
 	 */
-	private String argumentsDir;
+	private String argumentsDir = "%f";
 	
 	/**
 	 * 
@@ -98,15 +101,26 @@ public class App implements Editable{
 		this.name = name;
 	}
 	
-	public App(String name, String path, String argumentsFile) {
+	public App(String name, String path) {
 		this(name);
 		this.path = path;
-		this.argumentsFile = argumentsFile;
 	}
-
-	public App(String name, String path, String argumentsFile,String argumentsDir) {
-		this(name, path, argumentsFile);
-		this.argumentsDir = argumentsDir;
+	
+	@Override
+	public void validate() throws IllegalArgumentException {}
+	
+	@Override
+	public boolean isComplete() {
+		if (Utils.isEmpty(getPath())){
+			return false;
+		}
+		if (!new File(getPath()).exists()){
+			return false;
+		}
+		if (controlsManager == null || controlsManager.getControls() == null || controlsManager.getControls().isEmpty()){
+			return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -166,6 +180,9 @@ public class App implements Editable{
 	}
 
 	public ControlsManager getControlsManager() {
+		if (controlsManager == null){
+			controlsManager = new ControlsManager();
+		}
 		return controlsManager;
 	}
 

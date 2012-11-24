@@ -30,15 +30,23 @@ public class ControlsManager implements Persistable{
 	public ControlsManager() {
 	}
 	
+	@Override
+	public void validate() throws IllegalArgumentException {}
+	
+	@Override
 	public Long getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(Long id) {
 		this.id = id;
 	}
 
 	public Set<Control> getControls() {
+		if (controls == null){
+			controls = new HashSet<Control>();
+		}
 		return controls;
 	}
 
@@ -53,22 +61,19 @@ public class ControlsManager implements Persistable{
 	}
 	
 	public Control addControl(Control control) {
-		if (controls == null){
-			controls = new HashSet<Control>();
-		}
 //		for(Control c: controls){
 //			if (c.getName().equals(control.getName())){
 //				throw new IllegalArgumentException("Control " + control.getName() + " already present");
 //			}
 //		}
-		controls.add(control);
+		getControls().add(control);
 		return control;
 	}
 	
 	public Control getControl(String controlName) {
 		if (controls != null){
 			for(Control c: controls){
-				if (c.getName().equals(controlName)){
+				if (c.getName().toLowerCase().equals(controlName.toLowerCase())){
 					return c;
 				}
 			}

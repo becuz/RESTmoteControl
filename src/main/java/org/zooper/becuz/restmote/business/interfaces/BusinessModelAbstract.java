@@ -1,6 +1,7 @@
 package org.zooper.becuz.restmote.business.interfaces;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
 
@@ -23,15 +24,15 @@ public class BusinessModelAbstract<E extends Persistable> extends BusinessAbstra
 		return (E) persistenceAbstract.getByName(type, name);
 	}
 	
-	public Collection<E> getAll(){
-		return (Collection<E>) persistenceAbstract.getAll(type);
+	public List<E> getAll(){
+		return (List<E>) persistenceAbstract.getAll(type);
 	}
 
-	public Persistable store(Persistable p){
+	public E store(Persistable p){
 		persistenceAbstract.beginTransaction();
 		p = persistenceAbstract.store(p);
 		persistenceAbstract.commit();
-		return p;
+		return (E) p;
 	}
 
 	public void delete(Persistable p){

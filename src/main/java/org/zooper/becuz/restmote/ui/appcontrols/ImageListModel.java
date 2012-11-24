@@ -35,7 +35,7 @@ public class ImageListModel extends DefaultListModel<ImageIcon>{
 	public void setTheme(String theme) {
 		clear();
 		imgs.clear();
-		File f = new File(Utils.getRestmoteRootDirAbsolutePath() + "/client/images/" + theme);		
+		File f = new File(Utils.getThemeDir(theme));		
 		FilenameFilter filenameFilter = new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {

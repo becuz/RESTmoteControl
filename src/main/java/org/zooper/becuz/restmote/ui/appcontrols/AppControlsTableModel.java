@@ -4,13 +4,14 @@ import javax.swing.table.AbstractTableModel;
 
 import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.ControlsManager;
+import org.zooper.becuz.restmote.model.KeysEvent;
 
 @SuppressWarnings("serial")
-public class AppTableModel extends AbstractTableModel{
+public class AppControlsTableModel extends AbstractTableModel{
 
     private Control[][] data;
 
-    public AppTableModel() {
+    public AppControlsTableModel() {
     	data = new Control[Control.MAX_NUM_ROWS][Control.MAX_NUM_COLS];
 	}
     
@@ -32,16 +33,25 @@ public class AppTableModel extends AbstractTableModel{
 	
 	public void setImageAt(String imgName, int rowIndex, int columnIndex){
 		Object o = getValueAt(rowIndex, columnIndex);
-		Control control = null;
+		Control control;
 		if (o == null){
-			int delta = (Control.MAX_NUM_COLS-1)/2;
-			control = Control.getControl(imgName, rowIndex+1, columnIndex - delta);
-			setValueAt(control, rowIndex, columnIndex);
+			control = createDefaultControlAt(imgName, rowIndex, columnIndex, true);
 		} else {
 			control = (Control) o;
 			control.setName(imgName);
 		}
+		control.setHideImg(false);
 		fireTableCellUpdated(rowIndex, columnIndex);
+	}
+	
+	public Control createDefaultControlAt(String name, int rowIndex, int columnIndex, boolean add){
+		int delta = (Control.MAX_NUM_COLS-1)/2;
+		Control control = Control.getControl(name, rowIndex+1, columnIndex - delta);
+		control.addKeysEvent(new KeysEvent());
+		if (add){
+			setValueAt(control, rowIndex, columnIndex);
+		}
+		return control;
 	}
 	
 	@Override
@@ -72,6 +82,7 @@ public class AppTableModel extends AbstractTableModel{
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		data[rowIndex][columnIndex] = (Control)aValue;
+		fireTableCellUpdated(rowIndex, columnIndex);
 	}
 
 }

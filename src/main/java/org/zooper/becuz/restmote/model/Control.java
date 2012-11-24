@@ -3,6 +3,7 @@ package org.zooper.becuz.restmote.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -12,6 +13,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
+import org.zooper.becuz.restmote.utils.Utils;
 
 /**
  * A control identifies an action to perform on a {@link App} through a series of keyboard shortcuts specified in {@link #keysEvents}.
@@ -33,8 +35,8 @@ public class Control implements Persistable{
 	}
 	
 	public static enum ControlDefaultTypeKeyboard {
-		KBD_LEFT, KBD_RIGHT, KBD_UP, KBD_DOWN,
-		KBD_TAB, KBD_ANTITAB, KBD_ENTER, KBD_ESC, KBD_ALT
+		KBD_LEFT, KBD_RIGHT, KBD_UP, KBD_DOWN, KBD_ENTER
+		//KBD_TAB, KBD_ANTITAB,  KBD_ESC, KBD_ALT
 	}
 	
 	public static enum ControlDefaultTypeMouse {
@@ -89,7 +91,7 @@ public class Control implements Persistable{
 	/**
 	 * Human readable text for this control, ex. "Esc","Enter" 
 	 */
-	private String text;
+	//private String text;
 	
 	public Control() {
 	}
@@ -109,6 +111,14 @@ public class Control implements Persistable{
 		return getControl(name, 1, key, row, position);
 	}
 	
+	public static Control getControl(ControlDefaultTypeApp c, Integer key, Integer row, Integer position){
+		return getControl(c, 1, key, row, position);
+	}
+	
+	public static Control getControl(ControlDefaultTypeApp c, Integer repeat, Integer key, Integer row, Integer position){
+		return getControl(c.toString().toLowerCase(), repeat, key, row, position);
+	}
+	
 	public static Control getControl(String name, Integer repeat, Integer key, Integer row, Integer position){
 		Set<Integer> keysInner = new HashSet<Integer>();
 		if (key != null){
@@ -117,10 +127,14 @@ public class Control implements Persistable{
 		return getControl(name, repeat, keysInner, row, position);
 	}
 	
-	public static Control getControl(String name, Integer repeat, Set<Integer> keysInner, Integer row, Integer position){
-		List<Set<Integer>> keys = new ArrayList<Set<Integer>>();
-		keys.add(keysInner);
-		return getControlMultiCommand(name, Collections.singletonList(repeat), keys, row, position);
+	public static Control getControl(ControlDefaultTypeApp c, Integer repeat, Set<Integer> keys, Integer row, Integer position){
+		return getControl(c.toString().toLowerCase(), repeat, keys, row, position);
+	}
+	
+	public static Control getControl(String name, Integer repeat, Set<Integer> keys, Integer row, Integer position){
+		List<Set<Integer>> sequenceKeys = new ArrayList<Set<Integer>>();
+		sequenceKeys.add(keys);
+		return getControlMultiCommand(name, Collections.singletonList(repeat), sequenceKeys, row, position);
 	}
 	
 	public static Control getControlMultiCommand(String name, List<Integer> repeat, List<Set<Integer>> keys, Integer row, Integer position){
@@ -134,7 +148,12 @@ public class Control implements Persistable{
 		return c;
 	}
 	
+	@Override
 	public void validate() throws IllegalArgumentException {
+		clean();
+		if (Utils.isEmpty(name)){
+			throw new IllegalArgumentException("Control has no name");
+		}
 		if (row == null || row < 1 || row > MAX_NUM_ROWS){
 			throw new IllegalArgumentException("Control " + name + ". Row can't be null and has to be between 1 and 4");
 		}
@@ -142,6 +161,9 @@ public class Control implements Persistable{
 		if (position == null || position < -m || position > m){
 			throw new IllegalArgumentException("Control " + name + ". Position can't be null and has to be between -" + m + " and " + m);
 		}
+//		if (!name.startsWith("MOUSE") && isEmpty()){ //mouse controls have no keys
+//			throw new IllegalArgumentException("Control without shortcuts is pretty useless");
+//		}
 	}
 	
 	@Override
@@ -159,6 +181,23 @@ public class Control implements Persistable{
         hash = 31 * hash + getName().hashCode();
         return hash;
     }
+	
+	public void clean(){
+		if (keysEvents != null){
+			Iterator<KeysEvent> it = keysEvents.iterator();
+			while (it.hasNext()) {
+				KeysEvent keysEvent = it.next();
+				keysEvent.clean();
+				if (keysEvent.isEmpty()){
+					it.remove();
+				}
+			}
+		}
+	}
+	
+	public boolean isEmpty(){
+		return keysEvents == null || keysEvents.isEmpty();
+	}
 
 	public String getName() {
 		return name;
@@ -177,13 +216,16 @@ public class Control implements Persistable{
 	}
 
 	public SortedSet<KeysEvent> getKeysEvents() {
+		if (keysEvents == null){
+			keysEvents = new TreeSet<KeysEvent>();
+		}
 		return keysEvents;
 	}
 
 	public void setKeysEvents(SortedSet<KeysEvent> keysEvent) {
 		this.keysEvents = keysEvent;
 	}
-
+	
 	public String getImgSrc() {
 		return imgSrc;
 	}
@@ -229,20 +271,17 @@ public class Control implements Persistable{
 //		return this.getLogicOrder().compareTo(o.getLogicOrder());
 //	}
 
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
+//	public String getText() {
+//		return text;
+//	}
+//
+//	public void setText(String text) {
+//		this.text = text;
+//	}
 
 	public void addKeysEvent(KeysEvent keysEvent) {
-		if (keysEvents == null){
-			keysEvents = new TreeSet<KeysEvent>();
-		}
-		keysEvent.setLogicOrder(keysEvents.size());
-		keysEvents.add(keysEvent);
+		keysEvent.setLogicOrder(getKeysEvents().size());
+		getKeysEvents().add(keysEvent);
 	}
 	
 	public void removeKeysEvent(KeysEvent keysEvent) {

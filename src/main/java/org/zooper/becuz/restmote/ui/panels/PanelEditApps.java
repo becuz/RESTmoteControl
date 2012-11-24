@@ -4,20 +4,23 @@
  */
 package org.zooper.becuz.restmote.ui.panels;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.ui.MainWindow;
+import org.zooper.becuz.restmote.ui.UIConstants;
 import org.zooper.becuz.restmote.ui.UIUtils;
-import org.zooper.becuz.restmote.ui.appcontrols.AppTableModel;
+import org.zooper.becuz.restmote.ui.appcontrols.AppControlsTableModel;
 import org.zooper.becuz.restmote.ui.appcontrols.ControlRenderer;
-import org.zooper.becuz.restmote.ui.appcontrols.ControlSelectionListener;
 import org.zooper.becuz.restmote.ui.appcontrols.ControlsTable;
 import org.zooper.becuz.restmote.ui.appcontrols.ImageList;
 import org.zooper.becuz.restmote.ui.appcontrols.ImageListTransferHandler;
@@ -30,15 +33,16 @@ import org.zooper.becuz.restmote.utils.Utils;
 @SuppressWarnings("serial")
 public class PanelEditApps extends javax.swing.JPanel {
 
-	
+	private boolean modified = false;
 	
 	private JList listApps;
+	
 	private DefaultListModel<App> listAppsModel;
 	
 	 /**
      * 
      */
-    private AppTableModel appTableModel = new AppTableModel();
+    private AppControlsTableModel appTableModel = new AppControlsTableModel();
 	
 	
 	public PanelEditApps(JList listApps, DefaultListModel<App> listAppsModel) {
@@ -53,31 +57,16 @@ public class PanelEditApps extends javax.swing.JPanel {
 	 */
 	public PanelEditApps() {
 		initComponents();
-		lblImgSelectedControl.setHorizontalAlignment(JLabel.CENTER);
-		lblImgSelectedControl.setTransferHandler(new ImageListTransferHandler());
-		tableControls.setDefaultRenderer(Control.class, new ControlRenderer(ImageList.getImageListModel()));
+		tableControls.setDefaultRenderer(Control.class, new ControlRenderer());
 		tableControls.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		ControlSelectionListener controlSelectionlistener = new ControlSelectionListener(this);
-//		controlSelectionlistener.addControlSelectionChangedListener(new ControlSelectionChanged() {
-//			@Override
-//			public void selectionChanged(Control control) {
-//				
-//			}
-//		});
-		tableControls.getSelectionModel().addListSelectionListener(controlSelectionlistener);
-		tableControls.getColumnModel().getSelectionModel().addListSelectionListener(controlSelectionlistener);
 	}
 	
 	public void editControl(Control control){
-		textFieldSelectedControl.setText(control == null ? "" : control.getName());
-		lblImgSelectedControl.setIcon(control == null ? null : ImageList.getImageListModel().getImageIcon(control.getName()));
-		//lblImgSelectedControl.repaint();
 		panelControlKeys.setControl(control);
 	}
 	
 	public void editApp(App app){
         textFieldNameApp.setText(app == null ? "" : app.getName());
-        //textFieldDescriptionApp.setText(app == null ? "" : app.getDescription());
         textFieldExtensionsApp.setText(app == null ? "" : Utils.join(app.getExtensions(), ","));
 		checkInstanceApp.setSelected(app == null ? false : app.isForceOneInstance());
 		textFieldArgFileApp.setText(app == null ? "" : app.getArgumentsFile());
@@ -91,10 +80,6 @@ public class PanelEditApps extends javax.swing.JPanel {
     }
 	
 
-	public javax.swing.JTable getTableControls() {
-		return tableControls;
-	}
-
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -107,13 +92,10 @@ public class PanelEditApps extends javax.swing.JPanel {
 
         btnEditAppCancel = new javax.swing.JButton();
         btnEditAppSave = new javax.swing.JButton();
-        btnEdirAppTest = new javax.swing.JButton();
         jTabbedPane = new javax.swing.JTabbedPane();
         panelConfiguration = new javax.swing.JPanel();
         lblTextFieldNameApp = new javax.swing.JLabel();
         textFieldNameApp = new javax.swing.JTextField();
-        lblTextFieldDescriptionApp = new javax.swing.JLabel();
-        textFieldDescriptionApp = new javax.swing.JTextField();
         lblTextFieldExtensionsApp = new javax.swing.JLabel();
         textFieldExtensionsApp = new javax.swing.JTextField();
         checkInstanceApp = new javax.swing.JCheckBox();
@@ -125,16 +107,14 @@ public class PanelEditApps extends javax.swing.JPanel {
         textFieldPathApp = new javax.swing.JTextField();
         btnBrowsePath1 = new javax.swing.JButton();
         panelControls = new javax.swing.JPanel();
-        panelControlKeys = new org.zooper.becuz.restmote.ui.appcontrols.PanelControlKeys();
         scrollPaneTableControls = new javax.swing.JScrollPane();
         tableControls = new ControlsTable();
+        tableControls.setModel(appTableModel);
         jScrollPane1 = new javax.swing.JScrollPane();
         listImages = new ImageList(false);
-        textFieldSelectedControl = new javax.swing.JTextField();
-        lblImgSelectedControl = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        btnDeleteControl = new javax.swing.JButton();
+        panelControlKeys = new org.zooper.becuz.restmote.ui.appcontrols.PanelControl(tableControls);
+        lblHelpIcons = new javax.swing.JLabel();
+        lblHelpTable = new javax.swing.JLabel();
 
         btnEditAppCancel.setText("Cancel");
         btnEditAppCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -150,14 +130,14 @@ public class PanelEditApps extends javax.swing.JPanel {
             }
         });
 
-        btnEdirAppTest.setText("Test");
-
+        lblTextFieldNameApp.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblTextFieldNameApp.setText("Name");
 
-        lblTextFieldDescriptionApp.setText("Description");
-        lblTextFieldDescriptionApp.setEnabled(false);
-
-        textFieldDescriptionApp.setEnabled(false);
+        textFieldNameApp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldNameAppActionPerformed(evt);
+            }
+        });
 
         lblTextFieldExtensionsApp.setText("Extensions");
 
@@ -165,10 +145,16 @@ public class PanelEditApps extends javax.swing.JPanel {
 
         checkInstanceApp.setText("One Instance");
 
+        lblTextFieldArgFileApp.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblTextFieldArgFileApp.setText("Arg file");
+
+        textFieldArgFileApp.setToolTipText(UIConstants.TOOLTIP_APP_ARGFILE);
+
+        textFieldArgDirApp.setToolTipText(UIConstants.TOOLTIP_APP_ARGFILE);
 
         lblTextFieldArgDirApp.setText("Arg dir");
 
+        lblTextFieldPathApp.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblTextFieldPathApp.setText("Path");
 
         btnBrowsePath1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/folder.png"))); // NOI18N
@@ -182,53 +168,58 @@ public class PanelEditApps extends javax.swing.JPanel {
         panelConfiguration.setLayout(panelConfigurationLayout);
         panelConfigurationLayout.setHorizontalGroup(
             panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 592, Short.MAX_VALUE)
+            .addGroup(panelConfigurationLayout.createSequentialGroup()
+                .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelConfigurationLayout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addComponent(lblTextFieldPathApp))
+                    .addGroup(panelConfigurationLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(lblTextFieldArgFileApp)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(textFieldArgFileApp, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addComponent(lblTextFieldArgDirApp)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(textFieldArgDirApp, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(58, 58, 58)
+                        .addComponent(checkInstanceApp, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(107, Short.MAX_VALUE))
             .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelConfigurationLayout.createSequentialGroup()
-                    .addGap(13, 13, 13)
+                    .addGap(39, 39, 39)
+                    .addComponent(lblTextFieldNameApp)
+                    .addGap(171, 171, 171)
+                    .addComponent(lblTextFieldExtensionsApp)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(textFieldExtensionsApp, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(75, 75, 75))
+                .addGroup(panelConfigurationLayout.createSequentialGroup()
+                    .addGap(80, 80, 80)
                     .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(panelConfigurationLayout.createSequentialGroup()
-                            .addGap(31, 31, 31)
-                            .addComponent(lblTextFieldPathApp)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(panelConfigurationLayout.createSequentialGroup()
-                                    .addComponent(textFieldNameApp, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(panelConfigurationLayout.createSequentialGroup()
-                                    .addComponent(textFieldPathApp, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnBrowsePath1, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE))))
+                            .addComponent(textFieldNameApp, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(panelConfigurationLayout.createSequentialGroup()
-                            .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(panelConfigurationLayout.createSequentialGroup()
-                                    .addGap(26, 26, 26)
-                                    .addComponent(lblTextFieldNameApp)
-                                    .addGap(171, 171, 171)
-                                    .addComponent(lblTextFieldExtensionsApp)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(textFieldExtensionsApp, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(panelConfigurationLayout.createSequentialGroup()
-                                    .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(lblTextFieldDescriptionApp)
-                                        .addComponent(lblTextFieldArgFileApp))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(textFieldDescriptionApp, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(panelConfigurationLayout.createSequentialGroup()
-                                            .addComponent(textFieldArgFileApp, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(31, 31, 31)
-                                            .addComponent(lblTextFieldArgDirApp)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(textFieldArgDirApp, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(checkInstanceApp, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                            .addGap(61, 61, 61)))
+                            .addComponent(textFieldPathApp, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(btnBrowsePath1, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)))
                     .addGap(14, 14, 14)))
         );
         panelConfigurationLayout.setVerticalGroup(
             panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 416, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelConfigurationLayout.createSequentialGroup()
+                .addContainerGap(194, Short.MAX_VALUE)
+                .addComponent(lblTextFieldPathApp)
+                .addGap(11, 11, 11)
+                .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(textFieldArgFileApp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblTextFieldArgDirApp)
+                        .addComponent(lblTextFieldArgFileApp))
+                    .addComponent(textFieldArgDirApp, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkInstanceApp))
+                .addGap(174, 174, 174))
             .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelConfigurationLayout.createSequentialGroup()
                     .addGap(164, 164, 164)
@@ -239,28 +230,13 @@ public class PanelEditApps extends javax.swing.JPanel {
                         .addComponent(textFieldExtensionsApp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblTextFieldPathApp)
-                            .addComponent(textFieldPathApp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(textFieldPathApp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnBrowsePath1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(textFieldDescriptionApp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblTextFieldDescriptionApp))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblTextFieldArgFileApp)
-                            .addComponent(textFieldArgFileApp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblTextFieldArgDirApp))
-                        .addComponent(textFieldArgDirApp, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(checkInstanceApp))
-                    .addContainerGap(151, Short.MAX_VALUE)))
+                    .addContainerGap(206, Short.MAX_VALUE)))
         );
 
         jTabbedPane.addTab("Configuration", panelConfiguration);
 
-        tableControls.setModel(appTableModel);
         tableControls.setCellSelectionEnabled(true);
         tableControls.setRowHeight(32);
         tableControls.setSelectionBackground(new java.awt.Color(204, 255, 204));
@@ -271,95 +247,62 @@ public class PanelEditApps extends javax.swing.JPanel {
         listImages.setLayoutOrientation(javax.swing.JList.HORIZONTAL_WRAP);
         jScrollPane1.setViewportView(listImages);
 
-        lblImgSelectedControl.setToolTipText("");
-        lblImgSelectedControl.setBorder(new javax.swing.border.MatteBorder(null));
+        lblHelpIcons.setText("Drag'n'drop the icons on the table below to add a Control");
 
-        jRadioButton1.setText("jRadioButton1");
-
-        jRadioButton2.setText("jRadioButton1");
+        lblHelpTable.setText("Select a Control in the table to edit his shortcut(s)");
 
         javax.swing.GroupLayout panelControlsLayout = new javax.swing.GroupLayout(panelControls);
         panelControls.setLayout(panelControlsLayout);
         panelControlsLayout.setHorizontalGroup(
             panelControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelControlsLayout.createSequentialGroup()
+            .addGroup(panelControlsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelControlsLayout.createSequentialGroup()
-                        .addGroup(panelControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1)
-                            .addComponent(scrollPaneTableControls, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE))
-                        .addContainerGap())
-                    .addGroup(panelControlsLayout.createSequentialGroup()
-                        .addGap(0, 41, Short.MAX_VALUE)
-                        .addGroup(panelControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButton1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jRadioButton2, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panelControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblImgSelectedControl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(textFieldSelectedControl, javax.swing.GroupLayout.DEFAULT_SIZE, 68, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelControlKeys, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jScrollPane1)
+                    .addComponent(scrollPaneTableControls, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
+                    .addComponent(lblHelpIcons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelControlKeys, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblHelpTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         panelControlsLayout.setVerticalGroup(
             panelControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelControlsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelControlsLayout.createSequentialGroup()
-                        .addGroup(panelControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(textFieldSelectedControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jRadioButton1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblImgSelectedControl, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
-                            .addComponent(jRadioButton2)))
-                    .addComponent(panelControlKeys, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(scrollPaneTableControls, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblHelpIcons)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(lblHelpTable)
+                .addGap(3, 3, 3)
+                .addComponent(scrollPaneTableControls, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelControlKeys, javax.swing.GroupLayout.PREFERRED_SIZE, 98, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jTabbedPane.addTab("Controls", panelControls);
-
-        btnDeleteControl.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/delete.png"))); // NOI18N
-        btnDeleteControl.setEnabled(false);
-        btnDeleteControl.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteControlActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnEdirAppTest)
-                .addGap(30, 30, 30)
-                .addComponent(btnDeleteControl, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 233, Short.MAX_VALUE)
+                .addContainerGap(455, Short.MAX_VALUE)
                 .addComponent(btnEditAppSave)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEditAppCancel)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE))
+                .addComponent(jTabbedPane))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(446, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnEditAppCancel)
-                        .addComponent(btnEditAppSave)
-                        .addComponent(btnEdirAppTest))
-                    .addComponent(btnDeleteControl, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap(448, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
+                    .addComponent(btnEditAppCancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEditAppSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -376,7 +319,14 @@ public class PanelEditApps extends javax.swing.JPanel {
 	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
-		UIUtils.setEnabledRecursive(this, enabled);
+		UIUtils.setEnabledRecursive(panelConfiguration, enabled);
+		listImages.setEnabled(enabled);
+		tableControls.setEnabled(enabled);
+		lblHelpIcons.setEnabled(enabled);
+		lblHelpTable.setEnabled(enabled);
+		if (!enabled){
+			UIUtils.setEnabledRecursive(panelControlKeys, false);
+		}
 	}
 	
 	
@@ -398,7 +348,15 @@ public class PanelEditApps extends javax.swing.JPanel {
 				for (int j = 0; j < tableControls.getColumnCount(); j++) {
 					Control c = (Control) tableControls.getModel().getValueAt(i, j);
 					if (c != null){
-						app.getControlsManager().addControl(c);
+						c.clean();
+						if (!c.isEmpty()){
+							try {
+								c.validate();
+							} catch (IllegalArgumentException e){
+								//TODO 
+							}
+							app.getControlsManager().addControl(c);
+						}
 					}
 				}
 			}
@@ -407,43 +365,43 @@ public class PanelEditApps extends javax.swing.JPanel {
     }//GEN-LAST:event_btnEditAppSaveActionPerformed
 
     private void btnBrowsePath1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowsePath1ActionPerformed
-        // TODO add your handling code here:
+        JFileChooser fc = MainWindow.getFc();
+		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		int returnVal = fc.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+			textFieldPathApp.setText(file.getPath());
+        }
     }//GEN-LAST:event_btnBrowsePath1ActionPerformed
 
-    private void btnDeleteControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteControlActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDeleteControlActionPerformed
+    private void textFieldNameAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldNameAppActionPerformed
+        modified = false;
+    }//GEN-LAST:event_textFieldNameAppActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBrowsePath1;
-    private javax.swing.JButton btnDeleteControl;
-    private javax.swing.JButton btnEdirAppTest;
     private javax.swing.JButton btnEditAppCancel;
     private javax.swing.JButton btnEditAppSave;
     private javax.swing.JCheckBox checkInstanceApp;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane;
-    private javax.swing.JLabel lblImgSelectedControl;
+    private javax.swing.JLabel lblHelpIcons;
+    private javax.swing.JLabel lblHelpTable;
     private javax.swing.JLabel lblTextFieldArgDirApp;
     private javax.swing.JLabel lblTextFieldArgFileApp;
-    private javax.swing.JLabel lblTextFieldDescriptionApp;
     private javax.swing.JLabel lblTextFieldExtensionsApp;
     private javax.swing.JLabel lblTextFieldNameApp;
     private javax.swing.JLabel lblTextFieldPathApp;
     private javax.swing.JList listImages;
     private javax.swing.JPanel panelConfiguration;
-    private org.zooper.becuz.restmote.ui.appcontrols.PanelControlKeys panelControlKeys;
+    private org.zooper.becuz.restmote.ui.appcontrols.PanelControl panelControlKeys;
     private javax.swing.JPanel panelControls;
     private javax.swing.JScrollPane scrollPaneTableControls;
     private javax.swing.JTable tableControls;
     private javax.swing.JTextField textFieldArgDirApp;
     private javax.swing.JTextField textFieldArgFileApp;
-    private javax.swing.JTextField textFieldDescriptionApp;
     private javax.swing.JTextField textFieldExtensionsApp;
     private javax.swing.JTextField textFieldNameApp;
     private javax.swing.JTextField textFieldPathApp;
-    private javax.swing.JTextField textFieldSelectedControl;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,10 +1,11 @@
 package org.zooper.becuz.restmote;
 
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 
 import org.zooper.becuz.restmote.http.Server;
-import org.zooper.becuz.restmote.ui.TrayApp;
+import org.zooper.becuz.restmote.ui.Tray;
 
 public class MainUI {
 
@@ -14,14 +15,16 @@ public class MainUI {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-		final TrayApp trayApp = new TrayApp();
-		Server.getInstance().addServerStatusListeners(trayApp);
+		final Tray tray = new Tray();
+		Server.getInstance().addServerStatusListeners(tray);
 		new RestmoteControl().run(false);
 		SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-            	trayApp.createAndShowGUI();
+            	tray.createAndShowGUI();
             }
         });
+        //ToolTipManager.sharedInstance().setInitialDelay(0);
+
 	}
 
 }

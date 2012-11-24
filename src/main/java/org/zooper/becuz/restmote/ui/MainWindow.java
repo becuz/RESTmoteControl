@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.zooper.becuz.restmote.ui;
 
 import java.awt.Toolkit;
@@ -15,9 +11,11 @@ import java.util.Set;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+
 import net.glxn.qrgen.QRCode;
 import net.glxn.qrgen.image.ImageType;
 
@@ -33,6 +31,8 @@ import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.model.Settings;
 import org.zooper.becuz.restmote.ui.appcontrols.ImageList;
 import org.zooper.becuz.restmote.ui.model.ListComboBoxModel;
+import org.zooper.becuz.restmote.ui.panels.PanelEditCategories;
+import org.zooper.becuz.restmote.ui.widgets.CompletableListRenderer;
 import org.zooper.becuz.restmote.ui.widgets.IntTextField;
 import org.zooper.becuz.restmote.ui.widgets.URLLabel;
 import org.zooper.becuz.restmote.utils.Utils;
@@ -49,6 +49,11 @@ public class MainWindow extends javax.swing.JFrame {
 	
     private Logger logger = Logger.getLogger(MainWindow.class.getName());
     
+	/**
+	 * File chooser used in several points
+	 */
+	private static JFileChooser fc;
+	
     /**
      * Swing list model for {@link #listPaths} 
      */
@@ -67,7 +72,7 @@ public class MainWindow extends javax.swing.JFrame {
     /**
      * Swing list model for {@link #listCategories} 
      */
-    private DefaultListModel<MediaCategory> listMediaCategoryModel;
+    private DefaultListModel<MediaCategory> listMediaCategoriesModel;
     
 	 /**
      * Swing list model for {@link #listApps} 
@@ -89,12 +94,42 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
 		listInetNamesModel = new ListComboBoxModel<InetAddr>();
-		listMediaCategoryModel = new DefaultListModel<MediaCategory>();
+		listMediaCategoriesModel = new DefaultListModel<MediaCategory>();
     	listPathsModel = new DefaultListModel<String>();
 		listIconThemesModel = new DefaultComboBoxModel<String>();
 		listAppsModel = new DefaultListModel<App>();
+		listAppsModel.addListDataListener(new ListDataListener() {
+			
+			@Override
+			public void intervalRemoved(ListDataEvent e) {
+				panelEditCategories.setModelAppData(listAppsModel.elements());
+			}
+			
+			@Override
+			public void intervalAdded(ListDataEvent e) {
+				panelEditCategories.setModelAppData(listAppsModel.elements());
+			}
+			
+			@Override
+			public void contentsChanged(ListDataEvent e) {
+				panelEditCategories.setModelAppData(listAppsModel.elements());
+			}
+		});
+		
 		initComponents();
 		postInitComponents();
+		
+		File f = new File(Utils.getThemeDir(""));
+		File[] children = f.listFiles();
+		if (children != null){
+			for(File child: children){
+				if (child.isDirectory()){
+					String dirIcon = child.getPath().substring(child.getPath().lastIndexOf(System.getProperty("file.separator"))+1);
+					listIconThemesModel.addElement(dirIcon);
+				}
+			}
+		}
+		
 		copyToView();
     }
 
@@ -116,37 +151,22 @@ public class MainWindow extends javax.swing.JFrame {
      */
 	private void copyToView(){
 		logger.info("copyToView()");
-		Settings settings = PcControllerFactory.getPcController().getSettingsBusiness().get();
 		
 		listPathsModel.clear();
-		listIconThemesModel.removeAllElements();
-		listMediaCategoryModel.clear();
+		listMediaCategoriesModel.clear();
 		listAppsModel.clear();
 		
+		Settings settings = PcControllerFactory.getPcController().getSettingsBusiness().get();
 		buildListInetNamesModel(settings.getServerInetName());
     	
+		listIconThemesModel.setSelectedItem(settings.getIconControlsTheme());
+		
     	for(String path: settings.getPaths()){
     		listPathsModel.addElement(path);
     	}
 		
-		File f = new File(Utils.getRestmoteDirClientImages());
-		if (f.exists() && f.isDirectory()){
-			File[] children = f.listFiles();
-			if (children != null){
-				for(File child: children){
-					if (child.isDirectory()){
-						String dirIcon = child.getPath().substring(child.getPath().lastIndexOf(System.getProperty("file.separator"))+1);
-						listIconThemesModel.addElement(dirIcon);
-						if (dirIcon.equals(settings.getIconControlsTheme())){
-							listIconThemesModel.setSelectedItem(dirIcon);
-						}
-					}
-				}
-			}
-		}
-		
 		for(MediaCategory mediaCategory: PcControllerFactory.getPcController().getMediaCategoryBusiness().getAll()){
-			listMediaCategoryModel.addElement(mediaCategory);
+			listMediaCategoriesModel.addElement(mediaCategory);
 		}
 		
 		for(App app: PcControllerFactory.getPcController().getAppBusiness().getAll()){
@@ -163,30 +183,24 @@ public class MainWindow extends javax.swing.JFrame {
 	 * called after {@link #initComponents()}
 	 */
 	private void postInitComponents(){
-		/*textFieldPort.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				refreshLblServerUrl();
-			}
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				refreshLblServerUrl();
-			}
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				refreshLblServerUrl();		
-			}
-		});*/
-		
 		panelEditCategories.setEnabled(false);
 		panelEditApps.setEnabled(false);
+		listApps.setCellRenderer(new CompletableListRenderer());
+		listCategories.setCellRenderer(new CompletableListRenderer());
 		lblQrCode.setHorizontalAlignment(JLabel.CENTER);
-		lblIconsCredits.setText("<html><a href=\"www.samteksystems.com\" >samteksystems</a></html>");
 		lblServerUrl.setHorizontalAlignment(JLabel.CENTER);
 		updateViewStatusServer();
 	}
 	
-    /**
+
+	public static JFileChooser getFc() {
+		if (fc == null){
+			fc = new JFileChooser();
+		}
+		return fc;
+	}
+
+	/**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
@@ -226,6 +240,7 @@ public class MainWindow extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         listImages = new ImageList(true);
         lblIconsCredits = new javax.swing.JLabel();
+        lblTooltip1 = new org.zooper.becuz.restmote.ui.widgets.LblTooltip();
         panelApps = new javax.swing.JPanel();
         lblAppsSummary = new javax.swing.JLabel();
         panelAppsPnlList = new javax.swing.JPanel();
@@ -242,7 +257,7 @@ public class MainWindow extends javax.swing.JFrame {
         listCategories = new javax.swing.JList();
         btnAddCategory = new javax.swing.JButton();
         lblCategoriesSummary = new javax.swing.JLabel();
-        panelEditCategories = new org.zooper.becuz.restmote.ui.panels.PanelEditCategories(listCategories, listMediaCategoryModel);
+        panelEditCategories = new PanelEditCategories(listCategories, listMediaCategoriesModel);
         btnSave = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         lblStatus = new javax.swing.JLabel();
@@ -369,7 +384,9 @@ public class MainWindow extends javax.swing.JFrame {
         listImages.setLayoutOrientation(javax.swing.JList.HORIZONTAL_WRAP);
         jScrollPane1.setViewportView(listImages);
 
-        lblIconsCredits.setText("jLabel1");
+        lblIconsCredits.setText("credits");
+
+        lblTooltip1.setToolTipText(UIConstants.TOOLTIP_STNGS_NAME);
 
         javax.swing.GroupLayout panelSettingsPnlGeneralLayout = new javax.swing.GroupLayout(panelSettingsPnlGeneral);
         panelSettingsPnlGeneral.setLayout(panelSettingsPnlGeneralLayout);
@@ -387,12 +404,16 @@ public class MainWindow extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(panelSettingsPnlGeneralLayout.createSequentialGroup()
-                                        .addComponent(btnBrowsePath, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btnAddPath, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(btnDeletePath, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addComponent(btnBrowsePath, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnAddPath, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(btnDeletePath, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)))
                             .addGroup(panelSettingsPnlGeneralLayout.createSequentialGroup()
                                 .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panelSettingsPnlGeneralLayout.createSequentialGroup()
+                                        .addComponent(lblComboIconTheme, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(comboIconTheme, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(panelSettingsPnlGeneralLayout.createSequentialGroup()
                                         .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(lblTextFieldName)
@@ -402,11 +423,9 @@ public class MainWindow extends javax.swing.JFrame {
                                         .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(textFieldNameRoot, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
                                             .addComponent(textFieldScanDepth, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(textFieldName)))
-                                    .addGroup(panelSettingsPnlGeneralLayout.createSequentialGroup()
-                                        .addComponent(lblComboIconTheme, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(comboIconTheme, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addComponent(textFieldName))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lblTooltip1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(74, 74, 74))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelSettingsPnlGeneralLayout.createSequentialGroup()
@@ -422,7 +441,8 @@ public class MainWindow extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTextFieldName)
-                    .addComponent(textFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTooltip1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTextFieldNameRoot)
@@ -556,8 +576,9 @@ public class MainWindow extends javax.swing.JFrame {
         btnDeleteCategory.setEnabled(false);
         btnDeleteCategory.addActionListener(formListener);
 
-        listCategories.setModel(listMediaCategoryModel);
+        listCategories.setModel(listMediaCategoriesModel);
         listCategories.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listCategories.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         listCategories.addListSelectionListener(formListener);
         scrollPaneListCategories.setViewportView(listCategories);
 
@@ -716,17 +737,17 @@ public class MainWindow extends javax.swing.JFrame {
             else if (evt.getSource() == comboIconTheme) {
                 MainWindow.this.comboIconThemeActionPerformed(evt);
             }
-            else if (evt.getSource() == btnDeleteCategory) {
-                MainWindow.this.btnDeleteCategoryActionPerformed(evt);
-            }
-            else if (evt.getSource() == btnAddCategory) {
-                MainWindow.this.btnAddCategoryActionPerformed(evt);
-            }
             else if (evt.getSource() == btnDeleteApp) {
                 MainWindow.this.btnDeleteAppActionPerformed(evt);
             }
             else if (evt.getSource() == btnAddApp) {
                 MainWindow.this.btnAddAppActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnDeleteCategory) {
+                MainWindow.this.btnDeleteCategoryActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnAddCategory) {
+                MainWindow.this.btnAddCategoryActionPerformed(evt);
             }
             else if (evt.getSource() == btnSave) {
                 MainWindow.this.btnSaveActionPerformed(evt);
@@ -764,11 +785,11 @@ public class MainWindow extends javax.swing.JFrame {
             if (evt.getSource() == listPaths) {
                 MainWindow.this.listPathsValueChanged(evt);
             }
-            else if (evt.getSource() == listCategories) {
-                MainWindow.this.listCategoriesValueChanged(evt);
-            }
             else if (evt.getSource() == listApps) {
                 MainWindow.this.listAppsValueChanged(evt);
+            }
+            else if (evt.getSource() == listCategories) {
+                MainWindow.this.listCategoriesValueChanged(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -894,8 +915,8 @@ public class MainWindow extends javax.swing.JFrame {
         settingsBusiness.store(settings);
 		
         MediaCategoryBusiness mediaCategoryBusiness = PcControllerFactory.getPcController().getMediaCategoryBusiness();
-        for (int i = 0; i < listMediaCategoryModel.size(); i++) {
-        	mediaCategoryBusiness.store(listMediaCategoryModel.get(i));
+        for (int i = 0; i < listMediaCategoriesModel.size(); i++) {
+        	mediaCategoryBusiness.store(listMediaCategoriesModel.get(i));
 		}
 		
 		AppBusiness appBusiness = PcControllerFactory.getPcController().getAppBusiness();
@@ -915,12 +936,17 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void btnAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCategoryActionPerformed
         MediaCategory mediaCategory = new MediaCategory("name");
-        listMediaCategoryModel.insertElementAt(mediaCategory, 0);
+        listMediaCategoriesModel.insertElementAt(mediaCategory, 0);
         listCategories.setSelectedIndex(0);
     }//GEN-LAST:event_btnAddCategoryActionPerformed
 
     private void btnBrowsePathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowsePathActionPerformed
-        // TODO dire chooser dialog box
+        getFc().setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		int returnVal = fc.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+			textFieldPath.setText(file.getPath());
+        }
     }//GEN-LAST:event_btnBrowsePathActionPerformed
 
     private void listCategoriesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listCategoriesValueChanged
@@ -933,7 +959,7 @@ public class MainWindow extends javax.swing.JFrame {
 				//btnEditCategorySave.setEnabled(false);
 			//}
         }
-        MediaCategory mediaCategory = selectedIndex == -1 ? null : listMediaCategoryModel.getElementAt(selectedIndex);
+        MediaCategory mediaCategory = selectedIndex == -1 ? null : listMediaCategoriesModel.getElementAt(selectedIndex);
         panelEditCategories.editMediaCategory(mediaCategory);
     }//GEN-LAST:event_listCategoriesValueChanged
 
@@ -968,13 +994,13 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void btnDeleteCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteCategoryActionPerformed
         int selectedIndex = listCategories.getSelectedIndex();
-        MediaCategory mediaCategory = selectedIndex == -1 ? null : listMediaCategoryModel.getElementAt(selectedIndex);
+        MediaCategory mediaCategory = selectedIndex == -1 ? null : listMediaCategoriesModel.getElementAt(selectedIndex);
         binMediaCateogories.add(mediaCategory);
-		listMediaCategoryModel.remove(selectedIndex);
+		listMediaCategoriesModel.remove(selectedIndex);
     }//GEN-LAST:event_btnDeleteCategoryActionPerformed
 
     private void comboIconThemeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboIconThemeActionPerformed
-        changedIconTheme();
+    	changedIconTheme();
     }//GEN-LAST:event_comboIconThemeActionPerformed
 
     private void textFieldPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldPortActionPerformed
@@ -986,7 +1012,14 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRefreshInetNamesActionPerformed
 
 	private void changedIconTheme(){
-		ImageList.getImageListModel().setTheme((String)listIconThemesModel.getSelectedItem()); //There's no 
+		String theme = (String)listIconThemesModel.getSelectedItem();
+		ImageList.getImageListModel().setTheme(theme);
+		File creditsFile = new File(Utils.getThemeDir(theme) + "/credits");
+		if (creditsFile.exists()){
+			lblIconsCredits.setText("Credits: " + Utils.getContents(creditsFile));
+		} else {
+			lblIconsCredits.setText("");
+		}
 	}
     
     
@@ -1024,6 +1057,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel lblTextFieldName;
     private javax.swing.JLabel lblTextFieldNameRoot;
     private javax.swing.JLabel lblTextFieldScanDepth;
+    private org.zooper.becuz.restmote.ui.widgets.LblTooltip lblTooltip1;
     private javax.swing.JList listApps;
     private javax.swing.JList listCategories;
     private javax.swing.JList listImages;

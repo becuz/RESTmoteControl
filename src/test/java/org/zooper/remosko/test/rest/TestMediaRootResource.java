@@ -34,7 +34,7 @@ public class TestMediaRootResource extends TestResourceAbstract {
 		log.info("/get returned:" + myString);
 		objectMapper = RestFactory.getJson().getContext(List.class);
 		List<MediaRoot> medias = objectMapper.readValue(myString, new TypeReference<List<MediaRoot>>() {});
-		assertEquals(4, medias.size());
+		assertEquals(5, medias.size()); 
 	}
 	
 	

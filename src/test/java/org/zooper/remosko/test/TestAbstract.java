@@ -40,7 +40,7 @@ public abstract class TestAbstract {
 	/**
 	 * Contains avi, mp3, jpg files
 	 */
-	protected static final String PATH_RESOURCES = Utils.getRestmoteRootDirAbsolutePath() + "src/test/resources";
+	protected static final String PATH_RESOURCES = Utils.getRootDir() + "src/test/resources";
 	
 	protected static MediaCategory mediaCategoryMovies = ModelFactoryFactory.getModelFactoryAbstract().getMediaCategoryMovies();
 	protected static MediaCategory mediaCategoryMusic = ModelFactoryFactory.getModelFactoryAbstract().getMediaCategoryMusic();

@@ -86,7 +86,7 @@ public class RemoteControlBusiness extends BusinessAbstract{
 			}
 		}
 		if (!Utils.isEmpty(controlName)){
-			Control control = app.getControlsManager().getControl(controlName.toUpperCase());
+			Control control = app.getControlsManager().getControl(controlName);
 			if (control == null){
 				throw new IllegalArgumentException("No control " + controlName + " found for app " + app.getName());
 			}

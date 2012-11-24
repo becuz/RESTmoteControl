@@ -112,7 +112,7 @@ public class Server implements Runnable {
 		rc.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 		httpServer = GrizzlyServerFactory.createHttpServer(getApiUrl(), rc);
 		
-		StaticHttpHandler staticHttpHandler = new StaticHttpHandler(Utils.getRestmoteRootDirAbsolutePath() + "client"){
+		StaticHttpHandler staticHttpHandler = new StaticHttpHandler(Utils.getRootDir() + "client"){
 			@Override
 			public void service(
 					org.glassfish.grizzly.http.server.Request request,

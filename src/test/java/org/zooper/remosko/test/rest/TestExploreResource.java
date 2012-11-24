@@ -31,7 +31,7 @@ public class TestExploreResource extends TestResourceAbstract {
 	public void testGet() throws Exception {
 		List<Media> medias = null;
 		int sizeMedias = 0;
-		String rootPath = Utils.getRestmoteRootDirAbsolutePath();
+		String rootPath = Utils.getRootDir();
 		//GET /medias/ 
 		invokeUrl(
 				server.getApiUrl() + "medias", "", 

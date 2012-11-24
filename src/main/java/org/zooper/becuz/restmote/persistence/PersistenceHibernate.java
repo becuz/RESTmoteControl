@@ -1,6 +1,8 @@
 package org.zooper.becuz.restmote.persistence;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -73,10 +75,10 @@ public class PersistenceHibernate extends PersistenceAbstract{
 	}
 	
 	@Override
-	public Collection<Persistable> getAll(Class clazz){
+	public List<Persistable> getAll(Class clazz){
 		if (cacheContainsAllOfAKind.containsKey(clazz) && cacheContainsAllOfAKind.get(clazz).equals(Boolean.TRUE)){ 
 			Map<Long, Persistable> persistables = cache.get(clazz); 
-			return persistables == null ? null : persistables.values();
+			return persistables == null ? null : new ArrayList<Persistable>(persistables.values());
 		}
 		boolean sessionWasOpen = sessionIsOpen(); 
 		if (!sessionWasOpen){

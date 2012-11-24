@@ -14,7 +14,7 @@
 		<property name="row" />
 		<!-- <property name="imgSrc" /> -->
 		<property name="hideImg" />
-		<property name="text" />
+		<!-- <property name="text" /> -->
 		<set name="keysEvents" table="Control_KeysEvents" sort="natural" cascade="all" lazy="false">
 	        <key column="controlId"/>
 	        <many-to-many column="keysEventId" class="KeysEvent"/>

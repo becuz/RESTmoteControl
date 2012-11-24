@@ -1,6 +1,9 @@
 package org.zooper.becuz.restmote.model;
 
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -52,6 +55,9 @@ public class KeysEvent implements Comparable<KeysEvent>, Persistable{
 	}
 	
 	@Override
+	public void validate() throws IllegalArgumentException {}
+	
+	@Override
 	public boolean equals(Object other) {
         if (this == other) return true;
         if (!(other instanceof KeysEvent)) return false;
@@ -74,6 +80,22 @@ public class KeysEvent implements Comparable<KeysEvent>, Persistable{
 		return this.getLogicOrder().compareTo(o.getLogicOrder());
 	}
 	
+	public void clean(){
+		if (keys != null){
+			Iterator<Integer> it = keys.iterator();
+			while (it.hasNext()) {
+				Integer i = it.next();
+				if (i == null){
+					it.remove();
+				}
+			}
+		}
+	}
+	
+	public boolean isEmpty(){
+		return keys == null || keys.isEmpty();
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -87,6 +109,9 @@ public class KeysEvent implements Comparable<KeysEvent>, Persistable{
 		this.repeat = repeat;
 	}
 	public Set<Integer> getKeys() {
+		if (keys == null){
+			keys = new HashSet<Integer>();
+		}
 		return keys;
 	}
 	public void setKeys(Set<Integer> keys) {

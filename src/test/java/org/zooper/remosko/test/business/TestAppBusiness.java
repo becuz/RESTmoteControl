@@ -27,7 +27,7 @@ public class TestAppBusiness extends TestAbstract{
 	public void testBasicOps() {
 		int sizeApps = appBusiness.getAll().size();
 		assertTrue(sizeApps > 0);
-		App app = new App("name", "p", "f");
+		App app = new App("name", "p");
 		appBusiness.store(app);
 		assertTrue(appBusiness.getAll().size() == sizeApps+1);
 		appBusiness.delete(app);
@@ -47,7 +47,7 @@ public class TestAppBusiness extends TestAbstract{
 	
 	@Test
 	public void testCascade() {
-		App app = new App("smplayer", "path", "%f");
+		App app = new App("smplayer", "path");
 		app.addExtension("avi");
 		app.setForceOneInstance(true);
 		ControlsManager controlAppMovies = new ControlsManager();

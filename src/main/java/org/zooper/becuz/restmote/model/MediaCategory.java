@@ -10,8 +10,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import org.zooper.becuz.restmote.model.interfaces.Completable;
 import org.zooper.becuz.restmote.model.interfaces.Editable;
 import org.zooper.becuz.restmote.model.transport.MediaRoot;
+import org.zooper.becuz.restmote.utils.Utils;
 
 /**
  * The class is a entry point for browsing files. It allows to specify paths and extensions to include.
@@ -20,7 +22,7 @@ import org.zooper.becuz.restmote.model.transport.MediaRoot;
  */
 @XmlRootElement
 @JsonSerialize(include = Inclusion.NON_NULL)
-public class MediaCategory implements Editable{
+public class MediaCategory implements Editable, Completable{
 
 	@JsonIgnore
 	public static final String ROOT_NAME = "root"; 
@@ -71,6 +73,21 @@ public class MediaCategory implements Editable{
 	public MediaCategory(String name) {
 		this();
 		this.name = name;
+	}
+	
+	@Override
+	public void validate() throws IllegalArgumentException {
+		if (Utils.isEmpty(name)){
+			throw new IllegalArgumentException("Name is mandatory");
+		}
+	}
+	
+	@Override
+	public boolean isComplete() {
+		if (extensions == null || extensions.isEmpty()){
+			return false;
+		}
+		return true;
 	}
 	
 	@Override

@@ -54,54 +54,15 @@ public class ControlsTable extends JTable implements DropTargetListener {
 		int col = columnAtPoint(p);
 		try {
 			String imgName = (String) t.getTransferData(d[0]);
-			((AppTableModel)getModel()).setImageAt(imgName, row, col);
+			//TODO can't add two pictures'
+			((AppControlsTableModel)getModel()).setImageAt(imgName, row, col);
+			changeSelection(row, col, false, false);
 		} catch (UnsupportedFlavorException ex) {
-			Logger.getLogger(ControlsTable.class.getName()).log(Level.SEVERE,
-					null, ex);
+			Logger.getLogger(ControlsTable.class.getName()).log(Level.SEVERE, null, ex);
 		} catch (IOException ex) {
-			Logger.getLogger(ControlsTable.class.getName()).log(Level.SEVERE,
-					null, ex);
+			Logger.getLogger(ControlsTable.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
 	}
-
-//	class MyTransferHandler extends TransferHandler {
-//
-//		// tests for a valid JButton DataFlavor
-//		public boolean canImport(JComponent c, DataFlavor[] f) {
-//			// DataFlavor temp = new DataFlavor(DnDButton.class, "JButton");
-//			// for(DataFlavor d:f){
-//			// if(d.equals(temp))
-//			// return true;
-//			//
-//			// }
-//			// return false;
-//			return true;
-//		}
-//
-//		// add the data into the JTable
-//		public boolean importData(JComponent comp, Transferable t, Point p) {
-//			int row = rowAtPoint(p);
-//			int col = columnAtPoint(p);
-//
-//			// //if a value is in the JTable cell, do nothing
-//			// if(model.getValueAt(row, col) != null) return false;
-//			//
-//			// try {
-//			// DnDButton tempButton = (DnDButton)t.getTransferData(new
-//			// DataFlavor(DnDButton.class, "JButton"));
-//			// rows[row][col] = tempButton;
-//			//
-//			// } catch (UnsupportedFlavorException ex) {
-//			// Logger.getLogger(DnDTable.class.getName()).log(Level.SEVERE,
-//			// null, ex);
-//			// } catch (IOException ex) {
-//			// Logger.getLogger(DnDTable.class.getName()).log(Level.SEVERE,
-//			// null, ex);
-//			// }
-//			return true;
-//		}
-//
-//	}
 
 }

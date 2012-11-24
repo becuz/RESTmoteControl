@@ -1,7 +1,9 @@
 package org.zooper.becuz.restmote.persistence;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
 
@@ -33,11 +35,11 @@ public class PersistenceMemory extends PersistenceAbstract {
 	}
 
 	@Override
-	public Collection getAll(Class clazz) {
+	public List<Persistable> getAll(Class clazz) {
 		if (cache.containsKey(clazz)){
-			return cache.get(clazz).values();
+			return new ArrayList<Persistable>(cache.get(clazz).values());
 		}
-		return new HashSet<Persistable>();
+		return new ArrayList<Persistable>();
 	}
 
 	@Override

@@ -91,6 +91,9 @@ public class Settings implements Persistable{
 	}
 	
 	@Override
+	public void validate() throws IllegalArgumentException {}
+	
+	@Override
 	public String toString() {
 		return "Settings: " + getId() + "_-_" + getName();
 	}
@@ -226,7 +229,7 @@ public class Settings implements Persistable{
 
 	public void setTheme(String theme){
 		setIconControlsTheme(theme);
-		if (new File(Utils.getRestmoteDirClientImages() + theme + System.getProperty("file.separator") + Constants.NAME_DIR_ICON_SYSTEM).exists()){
+		if (new File(Utils.getThemeDir(theme) + "/" + Constants.NAME_DIR_ICON_SYSTEM).exists()){
 			setIconSystemTheme(theme);
 		} else {
 			setIconSystemTheme(Constants.DEFAULT_THEME);

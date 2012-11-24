@@ -182,7 +182,7 @@ public abstract class PersistenceAbstract {
 	 * @param clazz
 	 * @return
 	 */
-	public abstract Collection getAll(Class clazz);
+	public abstract List<Persistable> getAll(Class clazz);
 	
 	/**
 	 * 

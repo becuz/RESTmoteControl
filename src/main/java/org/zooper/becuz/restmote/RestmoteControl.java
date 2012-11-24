@@ -25,7 +25,7 @@ public class RestmoteControl {
 	/**
 	 * Version of the runtime system. Has to be changed when the are updates in the persistence model layer. 
 	 */
-	private static String version = "0.03b";
+	private static String version = "0.031b";
 
 	/**
 	 * @return the version currently installed in the machine, accordingly to what is written in the file /version
@@ -33,7 +33,7 @@ public class RestmoteControl {
 	public static String getDbVersion(){
 		if (dbVersion == null){
 			try {
-				BufferedReader br = new BufferedReader(new FileReader(new File(Utils.getRestmoteRootDirAbsolutePath() + "version")));
+				BufferedReader br = new BufferedReader(new FileReader(new File(Utils.getRootDir() + "version")));
 		        dbVersion = br.readLine();
 		        br.close();
 			} catch (Exception e){}
@@ -78,7 +78,7 @@ public class RestmoteControl {
 		settingsBusiness.store(settings);
 		
 		if (!getVersion().equals(getDbVersion())){
-			File f = new File(Utils.getRestmoteRootDirAbsolutePath() + "version");
+			File f = new File(Utils.getRootDir() + "version");
 			f.delete();
 			FileWriter fstream = new FileWriter(f);
 			BufferedWriter out = new BufferedWriter(fstream);

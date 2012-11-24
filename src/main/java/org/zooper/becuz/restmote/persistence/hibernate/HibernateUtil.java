@@ -41,7 +41,7 @@ public class HibernateUtil {
     }
     
     public static String getDbFile(boolean test){
-    	return Utils.getRestmoteRootDirAbsolutePath() + "db/remoskodb" + (test ? "_test" : "");
+    	return Utils.getRootDir() + "db/remoskodb" + (test ? "_test" : "");
     }
     
     public static void setTest(boolean test) {

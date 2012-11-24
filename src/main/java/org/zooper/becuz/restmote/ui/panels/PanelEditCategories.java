@@ -5,10 +5,14 @@
 package org.zooper.becuz.restmote.ui.panels;
 
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.HashSet;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import org.zooper.becuz.restmote.model.App;
 
 import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.ui.UIUtils;
@@ -22,15 +26,28 @@ import org.zooper.becuz.restmote.utils.Utils;
 public class PanelEditCategories extends javax.swing.JPanel {
 
 	private JList listCategories;
-	private DefaultListModel<MediaCategory> listMediaCategoryModel;
+	private DefaultListModel<MediaCategory> listMediaCategoriesModel;
+	private DefaultComboBoxModel<App> comboAppsModel = new DefaultComboBoxModel<App>();
 	
 	
 	public PanelEditCategories(
 			JList listCategories,
-			DefaultListModel<MediaCategory> listMediaCategoryModel) {
+			DefaultListModel<MediaCategory> listMediaCategoriesModel){
 		this();
 		this.listCategories = listCategories;
-		this.listMediaCategoryModel = listMediaCategoryModel;
+		this.listMediaCategoriesModel = listMediaCategoriesModel;
+	}
+	
+	public void setModelAppData(Enumeration<App> apps){
+		App prevSelectedApp = (App) comboAppsModel.getSelectedItem(); 
+		comboAppsModel.removeAllElements();
+		while (apps.hasMoreElements()) {
+			App app = (App) apps.nextElement();
+			comboAppsModel.addElement(app);
+		}
+		if (prevSelectedApp != null){
+			comboAppsModel.setSelectedItem(prevSelectedApp);
+		}
 	}
 
 	/**
@@ -44,6 +61,7 @@ public class PanelEditCategories extends javax.swing.JPanel {
         textFieldNameCategory.setText(mediaCategory == null ? "" : mediaCategory.getName());
         textFieldDescriptionCategory.setText(mediaCategory == null ? "" : mediaCategory.getDescription());
         textFieldExtensionsCategory.setText(mediaCategory == null ? "" : Utils.join(mediaCategory.getExtensions(), ","));
+		comboCategoryApp.setSelectedItem(mediaCategory == null ? null : mediaCategory.getApp());
     }
 
 	@Override
@@ -69,13 +87,17 @@ public class PanelEditCategories extends javax.swing.JPanel {
         textFieldExtensionsCategory = new javax.swing.JTextField();
         btnEditCategoryCancel = new javax.swing.JButton();
         btnEditCategorySave = new javax.swing.JButton();
+        comboCategoryApp = new javax.swing.JComboBox<App>();
+        lblCategoryApp = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Edit"));
 
+        lblTextFieldNameCategory.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblTextFieldNameCategory.setText("Name");
 
         lblTextFieldDescriptionCategory.setText("Description");
 
+        lblTextFieldExtensionsCategory.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblTextFieldExtensionsCategory.setText("Extensions");
 
         btnEditCategoryCancel.setText("Cancel");
@@ -92,6 +114,10 @@ public class PanelEditCategories extends javax.swing.JPanel {
             }
         });
 
+        comboCategoryApp.setModel(comboAppsModel);
+
+        lblCategoryApp.setText("App");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -100,20 +126,22 @@ public class PanelEditCategories extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 224, Short.MAX_VALUE)
+                        .addComponent(btnEditCategorySave)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEditCategoryCancel))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTextFieldDescriptionCategory)
                             .addComponent(lblTextFieldNameCategory, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblTextFieldExtensionsCategory, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(lblTextFieldExtensionsCategory)
+                            .addComponent(lblTextFieldDescriptionCategory, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblCategoryApp, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(textFieldDescriptionCategory)
                             .addComponent(textFieldExtensionsCategory)
-                            .addComponent(textFieldNameCategory)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 224, Short.MAX_VALUE)
-                        .addComponent(btnEditCategorySave)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEditCategoryCancel)))
+                            .addComponent(textFieldNameCategory)
+                            .addComponent(comboCategoryApp, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -131,11 +159,15 @@ public class PanelEditCategories extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(textFieldDescriptionCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTextFieldDescriptionCategory))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(comboCategoryApp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCategoryApp))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditCategorySave)
                     .addComponent(btnEditCategoryCancel))
-                .addContainerGap(154, Short.MAX_VALUE))
+                .addContainerGap(126, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -145,11 +177,12 @@ public class PanelEditCategories extends javax.swing.JPanel {
 
     private void btnEditCategorySaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditCategorySaveActionPerformed
         int selectedIndex = listCategories.getSelectedIndex();
-        MediaCategory mediaCategory = selectedIndex == -1 ? null : listMediaCategoryModel.getElementAt(selectedIndex);
+        MediaCategory mediaCategory = selectedIndex == -1 ? null : listMediaCategoriesModel.getElementAt(selectedIndex);
         if (mediaCategory != null){
             mediaCategory.setName(textFieldNameCategory.getText());
             mediaCategory.setDescription(textFieldDescriptionCategory.getText());
             mediaCategory.setExtensions(new HashSet<>(Arrays.asList(textFieldExtensionsCategory.getText().split(","))));
+			mediaCategory.setApp(comboAppsModel.getSelectedItem() == null ? null : (App) comboAppsModel.getSelectedItem());
         }
         listCategories.clearSelection();
     }//GEN-LAST:event_btnEditCategorySaveActionPerformed
@@ -157,6 +190,8 @@ public class PanelEditCategories extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditCategoryCancel;
     private javax.swing.JButton btnEditCategorySave;
+    private javax.swing.JComboBox comboCategoryApp;
+    private javax.swing.JLabel lblCategoryApp;
     private javax.swing.JLabel lblTextFieldDescriptionCategory;
     private javax.swing.JLabel lblTextFieldExtensionsCategory;
     private javax.swing.JLabel lblTextFieldNameCategory;

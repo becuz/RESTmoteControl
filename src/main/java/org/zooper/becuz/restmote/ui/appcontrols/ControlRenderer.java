@@ -1,6 +1,7 @@
 package org.zooper.becuz.restmote.ui.appcontrols;
 
 import java.awt.Component;
+import javax.swing.ImageIcon;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -11,15 +12,10 @@ import org.zooper.becuz.restmote.model.Control;
 @SuppressWarnings("serial")
 public class ControlRenderer extends JLabel implements TableCellRenderer {
 
-	private ImageListModel imageListModel;
-	
-	public ControlRenderer(ImageListModel imageListModel) {
-		this.imageListModel = imageListModel;
+	public ControlRenderer() {
+		setOpaque(true);
 		setHorizontalAlignment(JLabel.CENTER);
 //		setBorder(new BevelBorder(BevelBorder.LOWERED));
-//		setPreferredSize(new Dimension(40, 16));
-//		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-//		setOpaque(true);
 	}
 
 	@Override
@@ -33,15 +29,16 @@ public class ControlRenderer extends JLabel implements TableCellRenderer {
 		} else {
 			Control control = (Control) value;
 			if (Boolean.TRUE.equals(control.getHideImg())){
-				setText(control.getText());
+				setText(control.getName());
 				setIcon(null);
 			} else {
-				//setIcon(getImageIcon(control.getName()));
-				setIcon(imageListModel.getImageIcon(control.getName().toLowerCase()));
+				ImageIcon imageIcon = ImageList.getImageListModel().getImageIcon(control.getName().toLowerCase());
+				setIcon(imageIcon);
+				setText(imageIcon != null ? null : control.getName());
 			}
 		}
 		if (isSelected){
-			setBackground(new java.awt.Color(204, 255, 255));
+			setBackground(new java.awt.Color(102, 255, 255));
 			setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 		} else {
 			setBackground(null);
