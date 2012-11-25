@@ -91,12 +91,12 @@ public class PanelEditCategories extends javax.swing.JPanel {
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Edit"));
 
-        lblTextFieldNameCategory.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblTextFieldNameCategory.setFont(lblTextFieldNameCategory.getFont().deriveFont(lblTextFieldNameCategory.getFont().getStyle() | java.awt.Font.BOLD));
         lblTextFieldNameCategory.setText("Name");
 
         lblTextFieldDescriptionCategory.setText("Description");
 
-        lblTextFieldExtensionsCategory.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblTextFieldExtensionsCategory.setFont(lblTextFieldExtensionsCategory.getFont().deriveFont(lblTextFieldExtensionsCategory.getFont().getStyle() | java.awt.Font.BOLD));
         lblTextFieldExtensionsCategory.setText("Extensions");
 
         btnEditCategoryCancel.setText("Cancel");

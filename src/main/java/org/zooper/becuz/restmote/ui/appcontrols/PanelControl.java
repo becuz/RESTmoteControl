@@ -115,6 +115,8 @@ public class PanelControl extends javax.swing.JPanel {
 		//private void updateView(){}
 	}
 	
+        public PanelControl(){}
+        
 	/**
 	 * Creates new form PanelControl
 	 */

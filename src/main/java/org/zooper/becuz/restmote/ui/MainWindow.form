@@ -153,11 +153,11 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnRefreshInetNames" min="-2" pref="28" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="lblStatusServer" alignment="0" pref="157" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="lblComboInetNames" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="btnToggleServer" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="btnToggleServer" alignment="0" min="-2" pref="157" max="-2" attributes="0"/>
+                                      <Component id="lblStatusServer" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
@@ -292,25 +292,21 @@
                                               <Group type="102" attributes="0">
                                                   <Component id="btnBrowsePath" min="-2" pref="62" max="-2" attributes="0"/>
                                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                  <Component id="btnAddPath" max="32767" attributes="0"/>
+                                                  <Component id="btnAddPath" pref="110" max="32767" attributes="0"/>
                                               </Group>
                                               <Component id="btnDeletePath" pref="137" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <Group type="102" attributes="0">
                                           <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="lblTextFieldName" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="lblTextFieldNameRoot" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="lblTextFieldScanDepth" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="lblComboIconTheme" min="-2" pref="93" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
                                               <Group type="102" attributes="0">
-                                                  <Component id="lblComboIconTheme" min="-2" pref="62" max="-2" attributes="0"/>
-                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                  <Component id="comboIconTheme" min="-2" pref="140" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Component id="lblTextFieldName" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="lblTextFieldNameRoot" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="lblTextFieldScanDepth" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  </Group>
-                                                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                                       <Component id="textFieldNameRoot" alignment="1" pref="140" max="32767" attributes="0"/>
                                                       <Component id="textFieldScanDepth" alignment="1" max="32767" attributes="0"/>
@@ -319,6 +315,7 @@
                                                   <EmptySpace max="-2" attributes="0"/>
                                                   <Component id="lblTooltip1" min="-2" max="-2" attributes="0"/>
                                               </Group>
+                                              <Component id="comboIconTheme" min="-2" pref="140" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                       </Group>
@@ -365,7 +362,7 @@
                           <Component id="jScrollPane1" min="-2" pref="111" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="lblIconsCredits" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="28" max="32767" attributes="0"/>
+                          <EmptySpace pref="26" max="32767" attributes="0"/>
                           <Component id="lblPaths" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -560,7 +557,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="panelEditApps" max="32767" attributes="0"/>
+                          <Component id="panelEditApps" pref="530" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="lblAppsSummary" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -693,7 +690,7 @@
                           <Group type="102" attributes="0">
                               <Component id="panelCategoriesPnlList" min="-2" pref="286" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="panelEditCategories" pref="546" max="32767" attributes="0"/>
+                              <Component id="panelEditCategories" pref="621" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Component id="lblCategoriesSummary" min="-2" max="-2" attributes="0"/>
@@ -711,8 +708,8 @@
                       <Component id="lblCategoriesSummary" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="panelEditCategories" max="32767" attributes="0"/>
-                          <Component id="panelCategoriesPnlList" pref="455" max="32767" attributes="0"/>
+                          <Component id="panelEditCategories" pref="495" max="32767" attributes="0"/>
+                          <Component id="panelCategoriesPnlList" pref="495" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -740,16 +737,16 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="lblListCategories" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="9" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Component id="lblListCategories" min="-2" pref="250" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
-                              <Component id="scrollPaneListCategories" alignment="1" pref="0" max="32767" attributes="0"/>
                               <Group type="102" alignment="1" attributes="0">
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="btnAddCategory" alignment="1" min="-2" pref="65" max="-2" attributes="0"/>
                                       <Component id="btnDeleteCategory" alignment="1" min="-2" pref="49" max="-2" attributes="0"/>
+                                      <Component id="scrollPaneListCategories" alignment="1" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -760,13 +757,13 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="lblListCategories" min="-2" pref="25" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                          <Component id="lblListCategories" min="-2" pref="64" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnAddCategory" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
-                          <Component id="scrollPaneListCategories" min="-2" pref="167" max="-2" attributes="0"/>
-                          <EmptySpace pref="144" max="32767" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="scrollPaneListCategories" min="-2" pref="240" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="btnDeleteCategory" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -776,7 +773,7 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="lblListCategories">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Edit one category from below or create a new one:"/>
+                    <Property name="text" type="java.lang.String" value="&lt;html&gt;Edit one category from below &lt;br/&gt;or create a new one:&lt;/html&gt;"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnDeleteCategory">
@@ -804,7 +801,7 @@
                         </Property>
                         <Property name="selectionMode" type="int" value="0"/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                          <Color id="Cursore mano"/>
+                          <Color id="Default Cursor"/>
                         </Property>
                       </Properties>
                       <Events>
