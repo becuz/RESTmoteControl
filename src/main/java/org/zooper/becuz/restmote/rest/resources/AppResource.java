@@ -25,7 +25,7 @@ import org.zooper.becuz.restmote.rest.exceptions.ServerException;
  * GET		/apps							//get Collection<App>
  * GET		/apps/winamp					//get App
  * GET		/apps/ext/mp3					//get App
- * GET		/apps/pid/1234					//get App
+ * GET		/apps/handle/1234					//get App
  * 
  * The admin managment of the apps isn't needed yet
  * 
@@ -38,7 +38,7 @@ import org.zooper.becuz.restmote.rest.exceptions.ServerException;
  * POST		/apps/winamp/control/PAUSE								//send the command PAUSE to one instance of winamp
  * POST		/apps/winamp/k/c										//send the keyboard char to one instance of winamp
  * POST		/apps/ext/mp3/control/PAUSE								//whatever application is configured on the server to manage mp3 files
- * POST		/apps/pid/1234/control/PAUSE							//specific window
+ * POST		/apps/handle/1234/control/PAUSE							//specific window
  * POST		/apps/control/PAUSE										//currently on focus
  * 
  * @author bebo
@@ -99,12 +99,12 @@ public class AppResource extends AbstractResource {
 	 * @return
 	 */
 	@GET
-	@Path("/pid/{pid}")
+	@Path("/handle/{handle}")
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
-	public App getByPid(
-			@PathParam("pid") String pid){
-		log.info("AppResource get, pid: " + pid);
-		ActiveApp activeApp = getActiveAppBusiness().getActiveAppByPid(pid, false);
+	public App getByHandle(
+			@PathParam("handle") String handle){
+		log.info("AppResource get, handle: " + handle);
+		ActiveApp activeApp = getActiveAppBusiness().getActiveAppByHandle(handle, false);
 		if (activeApp != null){
 			return getAppBusiness().getByName(activeApp.getName());
 		}
@@ -216,20 +216,20 @@ public class AppResource extends AbstractResource {
 	}
 	
 	/**
-	 * Send the specified control to the application with the specified pid.
+	 * Send the specified control to the application with the specified handle.
 	 * On the server that configured App must exists. 
-	 * @param pid
+	 * @param handle
 	 * @param control, example: "PAUSE"
 	 * @see PcResource#listApps(boolean)
 	 */
 	@POST
-	@Path("/pid/{pid}/control/{control}")
-	public void controlByPid(
-			@PathParam("pid") String pid, 
+	@Path("/handle/{handle}/control/{control}")
+	public void controlByHandle(
+			@PathParam("handle") String handle, 
 			@PathParam("control") String control){
-		log.info("controlByPid pid: " + pid + " control: " + control);
+		log.info("controlByHandle handle: " + handle + " control: " + control);
 		try {
-			getRemoteControlBusiness().controlByPid(pid, control, null);
+			getRemoteControlBusiness().controlByHandle(handle, control, null);
 		} catch (Exception e) {
 			log.error(e.toString());
 			throw new ServerException(e.getMessage());
@@ -246,7 +246,7 @@ public class AppResource extends AbstractResource {
 	public void control(@PathParam("control") String control){
 		log.info("control control: " + control);
 		try {
-			getRemoteControlBusiness().controlByPid(null, control, null);
+			getRemoteControlBusiness().controlByHandle(null, control, null);
 		} catch (Exception e) {
 			log.error(e.toString());
 			throw new ServerException(e.getMessage());

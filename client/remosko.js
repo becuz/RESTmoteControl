@@ -186,20 +186,20 @@ function ajax_getActiveApps(refresh) {
 	});
 }
 
-function ajax_focusApp(pid) {
+function ajax_focusApp(handle) {
 	$.ajax({
 		type: "POST",
-		url: remoteUrl + "activeapps/"+pid + "/focus"
+		url: remoteUrl + "activeapps/"+handle + "/focus"
 	});
 }
 
-function ajax_killApps(pids) {
+function ajax_killApps(handles) {
 	$.ajax({
 		type: "DELETE",
 		url: remoteUrl + "activeapps",
 		dataType: 'json',
 		contentType:"application/json; charset=utf-8",
-		data: JSON.stringify(pids)
+		data: JSON.stringify(handles)
 	});
 }
 
@@ -411,7 +411,7 @@ function displayApps(apps){
 			try {
 				var handles = new Array();
 				$( "#active-apps input:checked" ).each(function(i) {
-					handles.push($(this).attr( "id" ).substr(3)); //omit prefix "pid".length
+					handles.push($(this).attr( "id" ).substr(6)); //omit prefix "handle".length
 				});
 				ajax_killApps(handles);
 				$.mobile.changePage( "#home" );
@@ -426,8 +426,8 @@ function displayApps(apps){
 	var $fieldset = $( "<fieldset data-role='controlgroup'></fieldset>" ).appendTo($activeApps);
 	$.each(apps, function(i, app){
 		$fieldset.append(
-				"<input type='checkbox' id='pid" + app.pid + "'></input>" + 
-				"<label for='pid" + app.pid + "' class='checkbox-app' data-appname='" + app.name + "'>" +
+				"<input type='checkbox' id='handle" + app.handle + "'></input>" + 
+				"<label for='handle" + app.handle + "' class='checkbox-app' data-appname='" + app.name + "'>" +
 					"<span data-role='use' class='use-app" + (getConfiguredApp(app.name) ? "" : "-disabled" ) + "'>" + app.name + "</span>" +
 					"<span class='checkbox-app-winlbl'>" + app.windowLbl + "</span>" +
 				"</label>" );

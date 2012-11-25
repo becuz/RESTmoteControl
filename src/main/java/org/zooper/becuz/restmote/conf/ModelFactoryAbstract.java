@@ -1,6 +1,9 @@
 package org.zooper.becuz.restmote.conf;
 
+import java.awt.event.KeyEvent;
+
 import org.zooper.becuz.restmote.model.App;
+import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeApp;
 import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.utils.PopulateDb;
 
@@ -23,7 +26,6 @@ public abstract class ModelFactoryAbstract {
 	public abstract App getAppMovies();
 	public abstract App getAppMusic();
 	public abstract App getAppPics();
-	public abstract Character getAppMusicPauseChar();
 	
 	public MediaCategory getMediaCategoryMovies(){
 		if (mediaCategoryMovies == null){
@@ -63,6 +65,10 @@ public abstract class ModelFactoryAbstract {
 			mediaCategoryRoot = new MediaCategory(MediaCategory.ROOT_NAME);
 		}
 		return mediaCategoryRoot;
+	}
+	
+	public Character getAppMusicPauseChar(){
+		return KeyEvent.getKeyText(getAppMusic().getControlsManager().getControl(ControlDefaultTypeApp.PAUSE.toString().toLowerCase()).getKeysEvents().iterator().next().getKeys().iterator().next()).charAt(0);
 	}
 	
 }

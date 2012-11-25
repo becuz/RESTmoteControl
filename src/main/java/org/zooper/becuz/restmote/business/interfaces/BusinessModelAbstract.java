@@ -1,6 +1,5 @@
 package org.zooper.becuz.restmote.business.interfaces;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.zooper.becuz.restmote.model.interfaces.Persistable;

@@ -1,17 +1,17 @@
 package org.zooper.becuz.restmote.conf;
 
-import org.zooper.becuz.restmote.exceptions.NotYetImplementedException;
+import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.zooper.becuz.restmote.model.App;
+import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeApp;
+import org.zooper.becuz.restmote.model.ControlsManager;
 
 public class ModelFactoryLinux extends ModelFactoryAbstract{
 
-	/**
-	 * @see ModelFactoryWindows#getAppMusicPauseChar()
-	 */
-	@Override
-	public Character getAppMusicPauseChar(){
-		throw new NotYetImplementedException();
-	}
 	
 	/**
 	 * @see ModelFactoryWindows#getAppMovies()
@@ -30,7 +30,30 @@ public class ModelFactoryLinux extends ModelFactoryAbstract{
 	 */
 	@Override
 	public App getAppMusic(){
-		throw new NotYetImplementedException();
+		if (appMusic == null){
+			appMusic = new App("rhythmbox", "rhythmbox");
+			appMusic.addExtension("mp3");
+			//appMusic.addExtension("ogg");
+			appMusic.setForceOneInstance(false);
+			ControlsManager controlAppMusic = new ControlsManager();
+			controlAppMusic.addControl(Control.getControl(
+					ControlDefaultTypeApp.VOLUP, 1, new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_ALT, KeyEvent.VK_UP})), 1, 0));
+			controlAppMusic.addControl(Control.getControl(
+					ControlDefaultTypeApp.PREV, 1, new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_ALT, KeyEvent.VK_LEFT})), 2, -2));
+			Set<Integer> l = new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_CONTROL, KeyEvent.VK_SPACE}));
+			controlAppMusic.addControl(Control.getControl(
+					ControlDefaultTypeApp.PLAY, 1, l, 2, -1));
+			controlAppMusic.addControl(Control.getControl(
+					ControlDefaultTypeApp.PAUSE, 1, l, 2, -1));
+			controlAppMusic.addControl(Control.getControl(
+					ControlDefaultTypeApp.NEXT, 1, new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_ALT, KeyEvent.VK_RIGHT})), 2, 2));
+			//controlAppMusic.addControl(Control.getControl(ControlDefaultTypeApp.BACKWARD, 3, KeyEvent.VK_LEFT, 3, -1));
+			controlAppMusic.addControl(Control.getControl(
+					ControlDefaultTypeApp.VOLDOWN, 1, new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_ALT, KeyEvent.VK_DOWN})), 3, 0));
+			//controlAppMusic.addControl(Control.getControl(ControlDefaultTypeApp.FORWARD, 3, KeyEvent.VK_RIGHT, 3, 1));
+			appMusic.setControlsManager(controlAppMusic);
+		}
+		return appMusic;
 	}
 	
 	/**
@@ -38,6 +61,19 @@ public class ModelFactoryLinux extends ModelFactoryAbstract{
 	 */
 	@Override
 	public App getAppPics(){
-		throw new NotYetImplementedException();
+		if (appPics == null){
+			appPics = new App("eog", "eog");
+			appPics.addExtension("jpg");
+			appPics.addExtension("gif");
+			appPics.addExtension("png");
+			appPics.setForceOneInstance(true);
+			ControlsManager controlAppPics = new ControlsManager();
+			controlAppPics.addControl(Control.getControl(ControlDefaultTypeApp.FULLSCREEN, KeyEvent.VK_F11, 1, 0));
+			controlAppPics.addControl(Control.getControl(ControlDefaultTypeApp.BACKWARD, KeyEvent.VK_LEFT, 2, -1));
+			controlAppPics.addControl(Control.getControl(ControlDefaultTypeApp.PLAY, KeyEvent.VK_F5, 2, 0));
+			controlAppPics.addControl(Control.getControl(ControlDefaultTypeApp.FORWARD, KeyEvent.VK_RIGHT, 2, 1));
+			appPics.setControlsManager(controlAppPics);
+		}
+		return appPics;
 	}
 }

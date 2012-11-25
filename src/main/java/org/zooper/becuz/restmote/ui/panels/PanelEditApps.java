@@ -10,7 +10,6 @@ import java.util.HashSet;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 
@@ -23,7 +22,6 @@ import org.zooper.becuz.restmote.ui.appcontrols.AppControlsTableModel;
 import org.zooper.becuz.restmote.ui.appcontrols.ControlRenderer;
 import org.zooper.becuz.restmote.ui.appcontrols.ControlsTable;
 import org.zooper.becuz.restmote.ui.appcontrols.ImageList;
-import org.zooper.becuz.restmote.ui.appcontrols.ImageListTransferHandler;
 import org.zooper.becuz.restmote.utils.Utils;
 
 /**

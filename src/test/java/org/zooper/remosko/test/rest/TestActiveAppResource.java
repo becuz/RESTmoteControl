@@ -37,25 +37,25 @@ public class TestActiveAppResource extends TestResourceAbstract {
 		objectMapper = RestFactory.getJson().getContext(List.class);
 		List<ActiveApp> activeApps = objectMapper.readValue(myString, new TypeReference<List<ActiveApp>>() {});
 		assertTrue(!activeApps.isEmpty());
-		String pidEclipse = null;
-		String pidOther = null;
+		String handleEclipse = null;
+		String handleOther = null;
 		for(ActiveApp activeApp: activeApps){
-			assertNotNull(activeApp.getPid());
+			assertNotNull(activeApp.getHandle());
 			assertNotNull(activeApp.getName());
 			if (activeApp.getName().equalsIgnoreCase("eclipse")){
-				pidEclipse = activeApp.getPid();
+				handleEclipse = activeApp.getHandle();
 			} else if (!activeApp.isFocus()){
-				pidOther = activeApp.getPid();
+				handleOther = activeApp.getHandle();
 			}
 		}
 		
-		//POST /activeapps/pid/focus
+		//POST /activeapps/handleOther/focus
 		invokeUrl(
-				server.getApiUrl() + "activeapps/" + pidOther + "/focus", "", 
+				server.getApiUrl() + "activeapps/" + handleOther + "/focus", "", 
 				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "POST", "", HttpURLConnection.HTTP_NO_CONTENT);
-		//GET /activeapps/pidOther
+		//GET /activeapps/handleOther
 		result = invokeUrl(
-				server.getApiUrl() + "activeapps/" + pidOther, "?refresh=true", 
+				server.getApiUrl() + "activeapps/" + handleOther, "?refresh=true", 
 				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "GET", "", HttpURLConnection.HTTP_OK);
 		myString = IOUtils.toString(result, "UTF-8");
 		log.info("/get returned:" + myString);
@@ -63,13 +63,13 @@ public class TestActiveAppResource extends TestResourceAbstract {
 		ActiveApp activeApp = objectMapper.readValue(myString, new TypeReference<ActiveApp>() {});
 		assertTrue(activeApp.isFocus());
 		
-		if (pidEclipse != null){
+		if (handleEclipse != null){
 			invokeUrl(
-					server.getApiUrl() + "activeapps/" + pidEclipse + "/focus", "", 
+					server.getApiUrl() + "activeapps/" + handleEclipse + "/focus", "", 
 					MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "POST", "", HttpURLConnection.HTTP_NO_CONTENT);
-			//GET /activeapps/pidOther
+			//GET /activeapps/handleOther
 			result = invokeUrl(
-					server.getApiUrl() + "activeapps/" + pidOther, "?refresh=true", 
+					server.getApiUrl() + "activeapps/" + handleOther, "?refresh=true", 
 					MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "GET", "", HttpURLConnection.HTTP_OK);
 			myString = IOUtils.toString(result, "UTF-8");
 			log.info("/get returned:" + myString);

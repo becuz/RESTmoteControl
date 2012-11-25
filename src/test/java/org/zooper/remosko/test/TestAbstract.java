@@ -94,7 +94,7 @@ public abstract class TestAbstract {
 	 */
 	@AfterClass
 	public static void clean() throws Exception {
-		PcControllerFactory.getPcController().clean();
+		PcControllerFactory.getPcController().cleanProcesses();
 	}
 	
 	protected Media findMediaByExtensionInMediaRoots(List<MediaRoot> medias, String extension){

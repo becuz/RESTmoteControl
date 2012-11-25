@@ -161,16 +161,24 @@ public class MainWindow extends javax.swing.JFrame {
     	
 		listIconThemesModel.setSelectedItem(settings.getIconControlsTheme());
 		
-    	for(String path: settings.getPaths()){
-    		listPathsModel.addElement(path);
-    	}
-		
-		for(MediaCategory mediaCategory: PcControllerFactory.getPcController().getMediaCategoryBusiness().getAll()){
-			listMediaCategoriesModel.addElement(mediaCategory);
+		if (settings.getPaths() != null){
+	    	for(String path: settings.getPaths()){
+	    		listPathsModel.addElement(path);
+	    	}
 		}
 		
-		for(App app: PcControllerFactory.getPcController().getAppBusiness().getAll()){
-			listAppsModel.addElement(app);
+		List<MediaCategory> mediaCategories = PcControllerFactory.getPcController().getMediaCategoryBusiness().getAll();
+		if (mediaCategories != null){
+			for(MediaCategory mediaCategory: mediaCategories){
+				listMediaCategoriesModel.addElement(mediaCategory);
+			}
+		}
+		
+		List<App> apps = PcControllerFactory.getPcController().getAppBusiness().getAll();
+		if (apps != null){
+			for(App app: apps){
+				listAppsModel.addElement(app);
+			}
 		}
 		
 		textFieldPort.setText(""+settings.getServerPort());

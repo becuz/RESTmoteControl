@@ -146,7 +146,7 @@ public class Control implements Persistable{
 	}
 	
 	public static Control getControlMultiCommand(String name, List<Integer> repeat, List<Set<Integer>> keys, Integer row, Integer position){
-		Control c = new Control(name, row, position);
+		Control c = new Control(name.toLowerCase(), row, position);
 		int i = 0;
 		for(Set<Integer> k: keys){
 			KeysEvent keysEvent = new KeysEvent(k, repeat.get(i++));

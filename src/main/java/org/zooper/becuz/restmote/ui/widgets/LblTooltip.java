@@ -1,6 +1,7 @@
 package org.zooper.becuz.restmote.ui.widgets;
 
 import javax.swing.JLabel;
+
 import org.zooper.becuz.restmote.ui.UIUtils;
 
 /**

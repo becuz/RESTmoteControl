@@ -18,7 +18,7 @@ public class ActiveApp implements Comparable<ActiveApp>{
 	/**
 	 * 
 	 */
-	private String pid;
+	private String handle;
 	
 	/**
 	 * 
@@ -37,21 +37,21 @@ public class ActiveApp implements Comparable<ActiveApp>{
 	
 	public ActiveApp() {}
 	
-	public ActiveApp(String pid, String name, String windowLbl, boolean hasFocus) {
-		this.pid = pid;
+	public ActiveApp(String handle, String name, String windowLbl, boolean hasFocus) {
+		this.handle = handle;
 		this.name = name;
 		this.windowLbl = windowLbl;
 		this.focus = hasFocus;
 	}
 	
-	public String getPid() {
-		return pid;
+	public String getHandle() {
+		return handle;
 	}
-	
-	public void setPid(String pid) {
-		this.pid = pid;
+
+	public void setHandle(String handle) {
+		this.handle = handle;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -81,25 +81,30 @@ public class ActiveApp implements Comparable<ActiveApp>{
         if (this == other) return true;
         if (!(other instanceof ActiveApp)) return false;
         final ActiveApp app = (ActiveApp) other;
-        if (!app.getPid().equals(getPid())) return false;
+        if (!app.getHandle().equals(getHandle())) return false;
         return true;
     }
 
 	@Override
     public int hashCode() {
         int hash = 7;
-        hash = 31 * hash + getPid().hashCode();
+        hash = 31 * hash + getHandle().hashCode();
         return hash;
     }
 	
 	@Override
 	public String toString() {
-		return "ActiveApp: " + getPid() + "_-_" + getName() + "_-_" + getWindowLbl();
+		return "ActiveApp: " + getHandle() + "_-_" + getName() + "_-_" + getWindowLbl();
 	}
 
 	@Override
 	public int compareTo(ActiveApp o) {
-		return getPid().compareTo(o.getPid());
+		return getHandle().compareTo(o.getHandle());
+	}
+
+	public boolean isInstanceOf(App app) {
+		if (app == null) return false;
+		return getName().toLowerCase().equals(app.getName().toLowerCase());
 	}
 	
 	

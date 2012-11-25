@@ -6,14 +6,6 @@ import org.zooper.becuz.restmote.model.App;
 public class ModelFactoryMac extends ModelFactoryAbstract{
 
 	/**
-	 * @see ModelFactoryWindows#getAppMusicPauseChar()
-	 */
-	@Override
-	public Character getAppMusicPauseChar(){
-		throw new NotYetImplementedException();
-	}
-	
-	/**
 	 * @see ModelFactoryWindows#getAppMovies()
 	 */
 	@Override

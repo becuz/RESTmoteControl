@@ -52,7 +52,7 @@ public abstract class TestResourceAbstract extends TestAbstract{
 	public static void stop() throws Exception {
 		server.stop();
 		server = null;
-		PcControllerFactory.getPcController().clean();
+		PcControllerFactory.getPcController().cleanProcesses();
 	}
 
 	protected InputStream invokeUrl(String completeUrl, String queryParam, String accept, String contentType, String method, String body, int returnCode) throws Exception{

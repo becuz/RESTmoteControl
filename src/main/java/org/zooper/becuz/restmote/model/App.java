@@ -14,6 +14,7 @@ import org.zooper.becuz.restmote.controller.PcControllerWindows;
 import org.zooper.becuz.restmote.model.interfaces.Completable;
 import org.zooper.becuz.restmote.model.interfaces.Editable;
 import org.zooper.becuz.restmote.rest.resources.PcResource;
+import org.zooper.becuz.restmote.utils.Constants;
 import org.zooper.becuz.restmote.utils.Utils;
 
 /**
@@ -36,19 +37,20 @@ public class App implements Editable, Completable{
 	private String name;
 	
 	/**
-	 * Full path of the executable
+	 * Full path of the executable. The name of the executable is enough if its path is in the system bin variable.
+	 * Ie this string is a command that the system console has to able to run. 
 	 */
 	private String path;
 	
 	/**
 	 * meta arguments for file opening
 	 */
-	private String argumentsFile = "%f";
+	private String argumentsFile = Constants.APP_ARGUMENT_FILE;
 	
 	/**
 	 * meta arguments for directory opening
 	 */
-	private String argumentsDir = "%f";
+	private String argumentsDir = null;
 	
 	/**
 	 * 
@@ -57,8 +59,8 @@ public class App implements Editable, Completable{
 	
 	/**
 	 * if true, the system makes this app runs always in just one instance.
-	 * @see PcControllerWindows#open(String, App)
-	 * @see PcControllerWindows#close(App)
+	 * @see PcControllerWindows#openFile(String, App)
+	 * @see PcControllerWindows#closeApp(App)
 	 */
 	private Boolean forceOneInstance = true;
 	

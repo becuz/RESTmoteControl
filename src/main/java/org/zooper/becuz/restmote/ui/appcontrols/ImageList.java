@@ -1,18 +1,10 @@
 package org.zooper.becuz.restmote.ui.appcontrols;
 
 import java.awt.Component;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.net.MalformedURLException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import javax.swing.DefaultListCellRenderer;
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
-import org.zooper.becuz.restmote.ui.UIUtils;
-import org.zooper.becuz.restmote.utils.Utils;
 
 /**
  * 

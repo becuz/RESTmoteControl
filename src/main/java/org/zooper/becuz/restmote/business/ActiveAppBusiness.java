@@ -15,8 +15,8 @@ public class ActiveAppBusiness extends BusinessAbstract{
 
 	public ActiveAppBusiness() {}
 	
-	public ActiveApp focusActiveApp(String pid) throws Exception{
-		return PcControllerFactory.getPcController().focusApp(pid);
+	public ActiveApp focusActiveApp(String hande) throws Exception{
+		return PcControllerFactory.getPcController().focusApp(hande);
 	}
 	
 	public void killActiveApps(List<String> handles) throws Exception{
@@ -43,7 +43,7 @@ public class ActiveAppBusiness extends BusinessAbstract{
 		ActiveApp previousFocusedActiveApp = getActiveAppFocused(true);
 		List<ActiveApp> activeApps = PcControllerFactory.getPcController().getActiveApps();
 		ActiveApp nextActiveApp = activeApps.get((activeApps.indexOf(previousFocusedActiveApp)+1) % activeApps.size()); 
-		PcControllerFactory.getPcController().focusApp(nextActiveApp.getPid());
+		PcControllerFactory.getPcController().focusApp(nextActiveApp.getHandle());
 		if (previousFocusedActiveApp != null){
 			previousFocusedActiveApp.setFocus(false);
 		}
@@ -52,16 +52,16 @@ public class ActiveAppBusiness extends BusinessAbstract{
 	}
 	
 	/**
-	 * Return the list of pids of running processes of the argument app (name match)
+	 * Return the list of handes of running processes of the argument app (name match)
 	 * @param app
 	 * @param refresh re-retrieve running apps
 	 * @return
 	 */
-	public List<String> getActivePidsOfApp(App app, boolean refresh){
+	public List<String> getActiveHandlesOfApp(App app, boolean refresh){
 		List<String> result = new ArrayList<String>();
 		for(ActiveApp activeApp: getActiveApps(refresh)){
-			if (activeApp.getName().equals(app.getName())){
-				result.add(activeApp.getPid());
+			if (activeApp.isInstanceOf(app)){
+				result.add(activeApp.getHandle());
 			}
 		}
 		return result;
@@ -69,13 +69,13 @@ public class ActiveAppBusiness extends BusinessAbstract{
 	
 	/**
 	 * 
-	 * @param pid
+	 * @param hande
 	 * @param refresh
 	 * @return
 	 */
-	public ActiveApp getActiveAppByPid(String pid, boolean refresh){
+	public ActiveApp getActiveAppByHandle(String hande, boolean refresh){
 		for(ActiveApp activeApp: getActiveApps(refresh)){
-			if (activeApp.getPid().equals(pid)){
+			if (activeApp.getHandle().equals(hande)){
 				return activeApp;
 			}
 		}
@@ -92,7 +92,7 @@ public class ActiveAppBusiness extends BusinessAbstract{
 				return activeApp;
 			}
 		}
-		log.warn("No activeApp found with focus");
+		log.warn("No active activeApp found");
 		return null;
 	}
 	

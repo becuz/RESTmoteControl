@@ -1,7 +1,6 @@
 package org.zooper.becuz.restmote;
 
 import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 
 import org.zooper.becuz.restmote.http.Server;

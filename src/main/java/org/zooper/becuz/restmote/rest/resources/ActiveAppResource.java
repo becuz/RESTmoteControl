@@ -23,12 +23,12 @@ import org.zooper.becuz.restmote.model.transport.ActiveApp;
  * TODO GET	/activeapps/{name}?refresh=true						//name is an App name
  * 
  * GET		/activeapps?refresh=true							//get List<ActiveApp>
- * GET		/activeapps/{pid}?refresh=true						//get ActiveApp
+ * GET		/activeapps/{handle}?refresh=true					//get ActiveApp
  * 
- * POST		/activeapps/{pid}/focus								//put the pid application on focus
+ * POST		/activeapps/{handle}/focus							//put the handle application on focus
  * 
- * DELETE	/activeapps/{pid}									//close the application by single pid
- * DELETE	/activeapps/					JSON List<String>	//close the applications by pids
+ * DELETE	/activeapps/{handle}								//close the application by single handle
+ * DELETE	/activeapps/					JSON List<String>	//close the applications by handles
  * 
  * 
  * @author bebo
@@ -66,58 +66,58 @@ public class ActiveAppResource extends AbstractResource {
 	 * @return
 	 */
 	@GET
-	@Path("{pid}")
+	@Path("{handle}")
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public ActiveApp getActiveApp(
-			@PathParam("pid") String pid,
+			@PathParam("handle") String handle,
 			@QueryParam("refresh") String refresh){
-		log.info("ActiveAppResource getActiveApp pid " + pid + ", refresh: " + refresh);
-		return getActiveAppBusiness().getActiveAppByPid(pid, "true".equals(refresh));
+		log.info("ActiveAppResource getActiveApp handle " + handle + ", refresh: " + refresh);
+		return getActiveAppBusiness().getActiveAppByHandle(handle, "true".equals(refresh));
 	}
 	
 	/**
-	 * Close the running applications with the specified pids
-	 * @param pids
+	 * Close the running applications with the specified handles
+	 * @param handles
 	 * @see #listApps(boolean)
 	 */
 	@DELETE
-	@Path("{pid}")
+	@Path("{handle}")
 	@Consumes({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
-	public void killApps(@PathParam("pid") String pid){
-		log.info("killApps pid: " + pid);
+	public void killApps(@PathParam("handle") String handle){
+		log.info("killApps handle: " + handle);
 		try {
-			getActiveAppBusiness().killActiveApps(Collections.singletonList(pid));
+			getActiveAppBusiness().killActiveApps(Collections.singletonList(handle));
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());
 		}
 	}
 	
 	/**
-	 * Close the running applications with the specified pids
-	 * @param pids
+	 * Close the running applications with the specified handles
+	 * @param handles
 	 * @see #listApps(boolean)
 	 */
 	@DELETE
 	@Consumes({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
-	public void killApps(List<String> pids){
-		log.info("killApps pids: " + pids);
+	public void killApps(List<String> handles){
+		log.info("killApps handles: " + handles);
 		try {
-			getActiveAppBusiness().killActiveApps(pids);
+			getActiveAppBusiness().killActiveApps(handles);
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());
 		}
 	}
 	
 	/**
-	 * Gives the focus and bring to front the application with the specified pid
-	 * @param pid
+	 * Gives the focus and bring to front the application with the specified handle
+	 * @param handle
 	 */
 	@POST
-	@Path("{pid}/focus")
-	public void focus(@PathParam("pid") String pid){
-		log.info("focus pid: " + pid);
+	@Path("{handle}/focus")
+	public void focus(@PathParam("handle") String handle){
+		log.info("focus handle: " + handle);
 		try {
-			getActiveAppBusiness().focusActiveApp(pid);
+			getActiveAppBusiness().focusActiveApp(handle);
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());
 		}

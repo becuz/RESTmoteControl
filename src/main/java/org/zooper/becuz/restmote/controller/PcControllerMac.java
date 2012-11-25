@@ -1,45 +1,17 @@
 package org.zooper.becuz.restmote.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.List;
 
 import org.zooper.becuz.restmote.exceptions.NotYetImplementedException;
-import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
 
 public class PcControllerMac extends PcControllerAbstract{
 
 	@Override
-	public boolean open(String filePath, App app) throws Exception {
+	public String getCommandOpenFile() {
 		throw new NotYetImplementedException();
-		
-	}
-
-	@Override
-	public boolean close(App app) throws Exception {
-		throw new NotYetImplementedException();
-		
-	}
-
-	@Override
-	public boolean clean() {
-		throw new NotYetImplementedException();
-		
-	}
-
-	@Override
-	public ActiveApp focusApp(String pid) throws Exception {
-		throw new NotYetImplementedException();
-	}
-
-	@Override
-	public void rebuildActiveApps() {
-		throw new NotYetImplementedException();
-	}
-
-	@Override
-	public void killApps(List<String> pids) throws Exception {
-		throw new NotYetImplementedException();
-		
 	}
 
 	@Override
@@ -59,6 +31,27 @@ public class PcControllerMac extends PcControllerAbstract{
 
 	@Override
 	public boolean suspend() throws Exception {
+		throw new NotYetImplementedException();
+	}
+
+	@Override
+	public String getCommandFocusApp(String handle) {
+		throw new NotYetImplementedException();
+	}
+
+	@Override
+	public String getCommandKillApp(String handle) {
+		throw new NotYetImplementedException();
+	}
+
+	@Override
+	public String getCommandListApps() {
+		throw new NotYetImplementedException();
+	}
+
+	@Override
+	public List<ActiveApp> getRunningApps(BufferedReader brInput,
+			BufferedReader brError) throws IOException {
 		throw new NotYetImplementedException();
 	}
 

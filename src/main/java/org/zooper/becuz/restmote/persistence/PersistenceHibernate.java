@@ -1,8 +1,6 @@
 package org.zooper.becuz.restmote.persistence;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -61,8 +59,8 @@ public class PersistenceHibernate extends PersistenceAbstract{
 				beginTransaction();
 			}
 			p = (Persistable) session.createQuery(
-				    "select a from " + clazz.getSimpleName() + " as a where a.name = :name")
-				    .setString("name", name)
+				    "select a from " + clazz.getSimpleName() + " as a where lower(a.name) = :name")
+				    .setString("name", name.toLowerCase())
 				    .uniqueResult();
 			if (p != null){
 				addInCache(p);

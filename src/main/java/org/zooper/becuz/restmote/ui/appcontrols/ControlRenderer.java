@@ -1,8 +1,8 @@
 package org.zooper.becuz.restmote.ui.appcontrols;
 
 import java.awt.Component;
-import javax.swing.ImageIcon;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;

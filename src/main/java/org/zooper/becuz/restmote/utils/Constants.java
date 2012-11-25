@@ -38,4 +38,7 @@ public class Constants {
 	 */
 	public static final int DEFAULT_MOUSE_WHEEL = 10;
 	
+	public static final String APP_ARGUMENT_FILE = "%f";
+	public static final String APP_ARGUMENT_DIR = "%f";
+	
 }

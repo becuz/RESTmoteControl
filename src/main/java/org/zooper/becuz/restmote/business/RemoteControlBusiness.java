@@ -29,14 +29,14 @@ public class RemoteControlBusiness extends BusinessAbstract{
 	public boolean openFile(String filePath, App app) throws Exception{
 		if (app != null){
 			if (app.isForceOneInstance()){
-				PcControllerFactory.getPcController().close(app);
+				PcControllerFactory.getPcController().closeApp(app);
 			}
 		}
-		return PcControllerFactory.getPcController().open(filePath, app);
+		return PcControllerFactory.getPcController().openFile(filePath, app);
 	}
 	
 	public boolean closeMedia(App app) throws Exception{
-		return PcControllerFactory.getPcController().close(app);
+		return PcControllerFactory.getPcController().closeApp(app);
 	}
 	
 	
@@ -45,13 +45,13 @@ public class RemoteControlBusiness extends BusinessAbstract{
 	}
 	
 	public void control(String controlName, Character c)  throws Exception {
-		controlByPid(null, controlName, c);
+		controlByHandle(null, controlName, c);
 	}
 	
-	public void controlByPid(String pid, String controlName, Character c)  throws Exception {
+	public void controlByHandle(String handle, String controlName, Character c)  throws Exception {
 		ActiveApp activeApp = null;
-		if (!Utils.isEmpty(pid)){
-			activeApp = PcControllerFactory.getPcController().focusApp(pid);
+		if (!Utils.isEmpty(handle)){
+			activeApp = PcControllerFactory.getPcController().focusApp(handle);
 		} else {
 			activeApp = getActiveAppBusiness().getActiveAppFocused(true);	//let's try with the app that has focus
 		}
@@ -71,7 +71,7 @@ public class RemoteControlBusiness extends BusinessAbstract{
 	 * If it's a ControlDefaultTypeApp, this method focus on the corresponding app, if available, or in the current one with focus. 
 	 * If exists a mapping for the control for the app, send the mapped shortvut.
 	 * @param controlName name, of the control, ex: KBD_ESC, MOUSE_CLICK1, or FULLSCREEN
-	 * @param pid
+	 * @param handle
 	 * @param app
 	 * @throws Exception 
 	 */
@@ -80,7 +80,7 @@ public class RemoteControlBusiness extends BusinessAbstract{
 			throw new IllegalArgumentException("No control specified");
 		}
 		ActiveApp activeAppFocused = getActiveAppBusiness().getActiveAppFocused(true);
-		if (activeAppFocused == null || !activeAppFocused.getName().equals(app.getName())){ //if a window of this App type is not already focused
+		if (activeAppFocused == null || !activeAppFocused.isInstanceOf(app)){ //if a window of this App type is not already focused
 			if (PcControllerFactory.getPcController().focusApp(app) == null){
 				throw new IllegalArgumentException("No running instance of App " + app.getName());
 			}

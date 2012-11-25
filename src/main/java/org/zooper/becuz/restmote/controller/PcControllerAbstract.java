@@ -6,10 +6,16 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -29,15 +35,22 @@ import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeKeyboard;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeMouse;
 import org.zooper.becuz.restmote.model.ControlsManager;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
+import org.zooper.becuz.restmote.utils.Constants;
+import org.zooper.becuz.restmote.utils.Utils;
 
 public abstract class PcControllerAbstract {
 
 	protected static final Logger log = Logger.getLogger(PcControllerAbstract.class.getName());
 	
 	/**
-	 * TODO
+	 * TODO use them
 	 */
 	protected List<String> binDefaultPaths;
+	
+	/**
+	 * Active {@link Process}es
+	 */
+	protected Map<App, Process> appProcesses = new HashMap<App, Process>();
 	
 	protected SettingsBusiness settingsBusiness = new SettingsBusiness();
 	protected MediaBusiness mediaBusiness = new MediaBusiness();
@@ -84,47 +97,35 @@ public abstract class PcControllerAbstract {
 	//*****************************************************************************************
 	
 	/**
-	 * Open the {@link filePath} through the {@link App}, if not null, with the default system application otherwise
-	 * @param app
-	 * @param filePath
-	 * @return
-	 * @throws Exception 
+	 * @return the executable that open a file with its default application.
 	 */
-	public abstract boolean open(String filePath, App app) throws Exception;
+	public abstract String getCommandOpenFile();
 	
 	/**
-	 * Closes the {@link App}
-	 * @param app
-	 * @return
-	 * @throws Exception 
+	 * @param handle of the app to put on focus (active)
+	 * @return the full command to executes to make the app with the handle argument active
 	 */
-	public abstract boolean close(App app) throws Exception;
+	public abstract String getCommandFocusApp(String handle);
 	
 	/**
-	 * Should release all the resources, ex destroy all created {@link Process}es. 
-	 * @return
+	 * @param handle of the app to put on focus (active)
+	 * @return the full command to executes to close the app with the handle argument
 	 */
-	public abstract boolean clean();
+	public abstract String getCommandKillApp(String handle);
 	
 	/**
-	 * Put the user input focus on the {@link ActiveApp} with the given pid
-	 * @param pid
-	 * @return true if the operation had success
-	 * @throws Exception 
+	 * 
+	 * @return the full command to executes to list running window apps 
 	 */
-	public abstract ActiveApp focusApp(String pid) throws Exception;
+	public abstract String getCommandListApps();	
 	
 	/**
-	 * rebuilds {@link #activeApps}
+	 * @param brInput
+	 * @param brOutput
+	 * @return list of running apps
+	 * @throws IOException 
 	 */
-	public abstract void rebuildActiveApps();
-	
-	/**
-	 * Kill the running applications on the pc with the given pids
-	 * @param pids
-	 * @throws Exception 
-	 */
-	public abstract void killApps(List<String> pids) throws Exception;
+	public abstract List<ActiveApp> getRunningApps(BufferedReader brInput, BufferedReader brError) throws IOException;
 	
 	/**
 	 * Mute the pc volume
@@ -261,7 +262,7 @@ public abstract class PcControllerAbstract {
 			keyboardControlsManager = new ControlsManager();
 			//first line
 			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_UP, KeyEvent.VK_UP, 1, 0));
-			//second line center
+			//second line
 			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_LEFT, KeyEvent.VK_LEFT, 2, -1));
 			Control cntrlEnter = Control.getControl(ControlDefaultTypeKeyboard.KBD_ENTER, KeyEvent.VK_ENTER, 2, 0);
 			//cntrlEnter.setHideImg(true);
@@ -311,7 +312,158 @@ public abstract class PcControllerAbstract {
 	
 	//*****************************************************************************************
 	
+	/**
+	 * Open the {@link filePath} through the {@link App}, if not null, with the default system application otherwise
+	 * @param app
+	 * @param filePath
+	 * @return
+	 * @throws Exception 
+	 */
+	public boolean openFile(String filePath, App app) throws Exception {
+		File f = new File(filePath);
+		if (!f.exists()){
+			throw new IllegalArgumentException("File " + filePath + " doesn't exist.");
+		}
+		Process process;
+		if (app != null){
+			String argumentMedia = 
+					f.isDirectory() ? app.getArgumentsDir().replace(Constants.APP_ARGUMENT_DIR, filePath) 
+							: app.getArgumentsFile().replace(Constants.APP_ARGUMENT_FILE, filePath); 
+		    String[] commands = new String[]{app.getPath(), argumentMedia};
+			process = execute(commands);
+			appProcesses.put(app, process);
+		} else {
+			String openFileCommand = getCommandOpenFile();
+			if (Utils.isEmpty(openFileCommand)){
+				throw new Exception("In this system is impossible to open files with their default application");
+			}
+			process = execute(openFileCommand, filePath);
+		}
+		return process != null;
+	}
 	
+	/**
+	 * Closes the {@link App}
+	 * @param app
+	 * @return
+	 * @throws Exception 
+	 */
+	public boolean closeApp(App app) throws Exception {
+		killApps(activeAppBusiness.getActiveHandlesOfApp(app, true));
+		Process process = appProcesses.get(app); //Alternative way to close the app: return execute(new String[]{".\\lib\\win\\cmdow.exe", getHandleApp(mediaCategory.getApp(), "/CLS"}) != null;
+		if (process != null){
+			process.destroy();
+		}
+		rebuildActiveApps();
+		return process != null;
+	}
+	
+	/**
+	 * rebuilds {@link #activeApps}
+	 */
+	public void rebuildActiveApps(){
+		log.info("rebuildActiveApps");
+		activeApps.clear();
+		BufferedReader brInput = null;
+		BufferedReader brError = null;
+		try {
+			Process p = execute(getCommandListApps().split("\\s+"));
+			brInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			brError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+			activeApps.addAll(getRunningApps(brInput, brError));
+			//p.waitFor();
+			p.destroy();
+			java.util.Collections.sort(activeApps);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+	    } finally {
+	    	try {
+	    		if (brInput != null){
+	    			brInput.close();
+	    		}
+	    		if (brError != null){
+	    			brError.close();
+	    		}
+			} catch (IOException e) {
+				log.error(e.getMessage());
+			}
+	    }
+	}
+	
+	/**
+	 * Put the user input focus on the {@link ActiveApp} with the given handle
+	 * @param handle
+	 * @return true if the operation had success
+	 * @throws Exception 
+	 */
+	public ActiveApp focusApp(String handle) throws Exception {
+		if (!Utils.isEmpty(handle)){
+			if (execute(true, getCommandFocusApp(handle).split("\\s+")) != null){ //TODO waitFor?
+				return activeAppBusiness.getActiveAppByHandle(handle, false);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Kill the running applications on the pc with the given handles
+	 * @param handles
+	 * @throws Exception 
+	 */
+	public void killApps(List<String> handles) throws Exception { //TODO argument boolean gracefully?
+		if (handles != null){
+			for(String handle: handles){
+				execute(getCommandKillApp(handle).split("\\s+"));
+			}
+		}
+	}
+	
+	/**
+	 * It destroys all created {@link Process}es. 
+	 * @return
+	 */
+	public boolean cleanProcesses(){
+		for(Process process: appProcesses.values()){
+			process.destroy();
+		}
+		appProcesses.clear();
+		return true;
+	}
+	
+	/**
+	 * Execute an operating system process without waiting it
+	 * @param commands
+	 * @return
+	 * @throws Exception
+	 */
+	protected Process execute(String... commands) throws Exception{
+		return execute(false, commands);
+	}
+	
+	/**
+	 * Execute an operating system process
+	 * @param waitFor
+	 * @param commands
+	 * @return
+	 * @throws Exception
+	 */
+	protected Process execute(boolean waitFor, String... commands) throws Exception{
+		ProcessBuilder processBuilder = new ProcessBuilder(commands);
+		Process process = processBuilder.start();
+//		BufferedReader bri = new BufferedReader(new InputStreamReader(process.getInputStream()));
+//		BufferedReader bre = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+//		String line = bri.readLine();
+//		while ((line = bri.readLine()) != null) {
+//			System.out.println(line);
+//	      }
+//		while ((line = bre.readLine()) != null) {	//errors
+//			System.err.println(line);
+//		}
+	    if (waitFor){
+	    	process.waitFor();
+	    }
+	    return process;
+	}
 	
 	/**
 	 * Put the user input focus on the argument App 
@@ -320,9 +472,9 @@ public abstract class PcControllerAbstract {
 	 * @throws Exception 
 	 */
 	public ActiveApp focusApp(App app) throws Exception{
-		List<String> pids = activeAppBusiness.getActivePidsOfApp(app, true);
-		if (pids != null && pids.size() > 0){
-			return focusApp(pids.get(0));
+		List<String> handles = activeAppBusiness.getActiveHandlesOfApp(app, true);
+		if (handles != null && handles.size() > 0){
+			return focusApp(handles.get(0));
 		}
 		return null;
 	}

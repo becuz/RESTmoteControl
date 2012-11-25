@@ -10,8 +10,6 @@ import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -20,7 +18,6 @@ import javax.swing.event.TableModelListener;
 import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.KeysEvent;
 import org.zooper.becuz.restmote.ui.UIUtils;
-import org.zooper.becuz.restmote.utils.Utils;
 
 /**
  * Panel to view and edit the shortcut of a {@link Control}

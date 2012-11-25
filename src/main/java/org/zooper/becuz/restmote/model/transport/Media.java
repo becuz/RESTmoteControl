@@ -94,7 +94,9 @@ public class Media {
 		this.path = path;
 		if (path != null){
 			String[] p = path.split("\\"+System.getProperty("file.separator"));
-			setName(p[p.length-1]);
+			if (p.length > 0){ // case linux root path "/"
+				setName(p[p.length-1]);
+			}
 		}
 	}
 
