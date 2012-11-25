@@ -1,6 +1,8 @@
 package org.zooper.becuz.restmote.business;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -13,7 +15,21 @@ public class ActiveAppBusiness extends BusinessAbstract{
 	
 	protected static final Logger log = Logger.getLogger(ActiveAppBusiness.class.getName());
 
+	/**
+	 * 
+	 */
+	protected static List<ActiveApp> activeApps = new ArrayList<ActiveApp>();
+	
 	public ActiveAppBusiness() {}
+	
+	public void clearActiveApps() {
+		activeApps.clear();
+	}
+
+	public void addActiveApps(Collection<ActiveApp> c) {
+		activeApps.addAll(c);
+		Collections.sort(activeApps);
+	}
 	
 	public ActiveApp focusActiveApp(String hande) throws Exception{
 		return PcControllerFactory.getPcController().focusApp(hande);
@@ -28,10 +44,10 @@ public class ActiveAppBusiness extends BusinessAbstract{
 	 * @return running applications on the pc.
 	 */
 	public List<ActiveApp> getActiveApps(boolean refresh) {
-		if (refresh || PcControllerFactory.getPcController().getActiveApps().isEmpty()){
+		if (refresh || activeApps.isEmpty()){
 			PcControllerFactory.getPcController().rebuildActiveApps();
 		}
-		return PcControllerFactory.getPcController().getActiveApps();
+		return activeApps;
 	}
 	
 	/**
@@ -41,7 +57,6 @@ public class ActiveAppBusiness extends BusinessAbstract{
 	 */
 	public ActiveApp next() throws Exception{
 		ActiveApp previousFocusedActiveApp = getActiveAppFocused(true);
-		List<ActiveApp> activeApps = PcControllerFactory.getPcController().getActiveApps();
 		ActiveApp nextActiveApp = activeApps.get((activeApps.indexOf(previousFocusedActiveApp)+1) % activeApps.size()); 
 		PcControllerFactory.getPcController().focusApp(nextActiveApp.getHandle());
 		if (previousFocusedActiveApp != null){

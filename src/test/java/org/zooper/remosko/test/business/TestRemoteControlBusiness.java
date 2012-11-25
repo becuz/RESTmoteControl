@@ -151,26 +151,23 @@ public class TestRemoteControlBusiness extends TestAbstract{
 		handle = listApps.iterator().next().getHandle();
 	}
 	
-	@Test
-	public void testNextActiveApp(){
-		try {
-			ActiveApp activeApp = activeAppBusiness.next();
-			ActiveApp activeApp2 = activeAppBusiness.next();
-			assertTrue(!activeApp.getHandle().equals(activeApp2.getHandle()));
-		} catch (Exception e){
-			e.printStackTrace();
-			log.info(e.getMessage() + " " + e.getCause());
-			fail();
-		}
-	}
 	
 	@Test
 	public void testFocusActiveApp(){
 		try {
+			String prevHandle = activeAppBusiness.getActiveAppFocused(true).getHandle();
+					
 			ActiveApp activeApp = activeAppBusiness.next();
-			String prevHandle = activeApp.getHandle();
-//			ActiveApp activeApp2 = 
-					activeAppBusiness.next();
+			Thread.sleep(1000);
+			assertTrue(!activeApp.getHandle().equals(prevHandle));
+			
+			ActiveApp activeApp2 = activeAppBusiness.next();
+			Thread.sleep(1000);
+			assertTrue(!activeApp2.getHandle().equals(prevHandle));
+			assertTrue(!activeApp2.getHandle().equals(activeApp.getHandle()));
+			assertEquals(activeAppBusiness.getActiveAppFocused(false).getHandle(), activeApp2.getHandle());
+			assertEquals(activeAppBusiness.getActiveAppFocused(true).getHandle(), activeApp2.getHandle());
+			
 			activeAppBusiness.focusActiveApp(prevHandle);
 			String nextHandle = null;
 			for(ActiveApp a: activeAppBusiness.getActiveApps(true)){

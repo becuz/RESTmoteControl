@@ -10,12 +10,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -58,11 +59,6 @@ public abstract class PcControllerAbstract {
 	protected ActiveAppBusiness activeAppBusiness = new ActiveAppBusiness();
 	protected AppBusiness appBusiness = new AppBusiness();
 	protected RemoteControlBusiness remoteControlBusiness = new RemoteControlBusiness();
-	
-	/**
-	 * 
-	 */
-	protected List<ActiveApp> activeApps = new ArrayList<ActiveApp>();
 	
 	/**
 	 * Used to send keyStrokes and mouse movements
@@ -218,13 +214,6 @@ public abstract class PcControllerAbstract {
 		return mouse;
 	}
 	
-	/**
-	 * 
-	 * @return all currently {@link ActiveApp}s
-	 */
-	public List<ActiveApp> getActiveApps() {
-		return activeApps;
-	}
 	
 	/**
 	 * @return paths where executable application are usually installed
@@ -350,30 +339,51 @@ public abstract class PcControllerAbstract {
 	 */
 	public boolean closeApp(App app) throws Exception {
 		killApps(activeAppBusiness.getActiveHandlesOfApp(app, true));
-		Process process = appProcesses.get(app); //Alternative way to close the app: return execute(new String[]{".\\lib\\win\\cmdow.exe", getHandleApp(mediaCategory.getApp(), "/CLS"}) != null;
+		Process process = appProcesses.get(app);
 		if (process != null){
 			process.destroy();
+			appProcesses.remove(app);
 		}
 		rebuildActiveApps();
 		return process != null;
 	}
 	
 	/**
+	 * 
+	 * @param handles
+	 * @throws Exception
+	 */
+	public void killActiveApps(List<String> handles) throws Exception{
+		killApps(handles);
+		for(String handle: handles){
+			ActiveApp activeApp = getActiveAppBusiness().getActiveAppByHandle(handle, false);
+			Iterator<Entry<App, Process>> it = appProcesses.entrySet().iterator();
+			while (it.hasNext()) {
+				Entry<App, Process> entry = it.next();
+				if (activeApp.isInstanceOf(entry.getKey())){
+					entry.getValue().destroy();
+					it.remove();
+				}
+			}
+		}
+	}
+	
+	
+	/**
 	 * rebuilds {@link #activeApps}
 	 */
 	public void rebuildActiveApps(){
 		log.info("rebuildActiveApps");
-		activeApps.clear();
+		getActiveAppBusiness().clearActiveApps();
 		BufferedReader brInput = null;
 		BufferedReader brError = null;
 		try {
 			Process p = execute(getCommandListApps().split("\\s+"));
 			brInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			brError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-			activeApps.addAll(getRunningApps(brInput, brError));
+			getActiveAppBusiness().addActiveApps(getRunningApps(brInput, brError));
 			//p.waitFor();
 			p.destroy();
-			java.util.Collections.sort(activeApps);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 	    } finally {

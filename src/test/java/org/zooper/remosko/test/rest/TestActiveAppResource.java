@@ -67,6 +67,7 @@ public class TestActiveAppResource extends TestResourceAbstract {
 			invokeUrl(
 					server.getApiUrl() + "activeapps/" + handleEclipse + "/focus", "", 
 					MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "POST", "", HttpURLConnection.HTTP_NO_CONTENT);
+			Thread.sleep(100);
 			//GET /activeapps/handleOther
 			result = invokeUrl(
 					server.getApiUrl() + "activeapps/" + handleOther, "?refresh=true", 

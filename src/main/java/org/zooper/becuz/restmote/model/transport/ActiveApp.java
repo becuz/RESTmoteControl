@@ -94,7 +94,7 @@ public class ActiveApp implements Comparable<ActiveApp>{
 	
 	@Override
 	public String toString() {
-		return "ActiveApp: " + getHandle() + "_-_" + getName() + "_-_" + getWindowLbl();
+		return "ActiveApp: " + getHandle() + "_-_" + getName() + "_-_" + getWindowLbl() + "(" + isFocus() + ")";
 	}
 
 	@Override
