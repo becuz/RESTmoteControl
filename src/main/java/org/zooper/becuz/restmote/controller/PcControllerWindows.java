@@ -23,12 +23,12 @@ public class PcControllerWindows extends PcControllerAbstract{
 	
 	@Override
 	public String getCommandFocusApp(String handle) {
-		return ".\\lib\\win\\cmdow.exe" + handle + "/ACT";
+		return ".\\lib\\win\\cmdow.exe " + handle + " /ACT";
 	}
 	
 	@Override
 	public String getCommandKillApp(String handle) {
-		return ".\\lib\\win\\cmdow.exe" + handle + "/CLS";
+		return ".\\lib\\win\\cmdow.exe " + handle + " /CLS";
 	}
 	
 	@Override
