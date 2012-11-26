@@ -804,22 +804,18 @@ public class MainWindow extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_menuFileExitActionPerformed
 
-    private void btnToggleServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnToggleServerActionPerformed
-    	try {
-            if (Server.getInstance().isRunning()){
-                Server.getInstance().stop();
-            } else {
-				if (listInetNamesModel.getSelectedItem() == null){
-					lblStatus.setText(UIConstants.ERR_NO_INET);
-				} else {
-					Server.getInstance().start(listInetNamesModel.getSelectedItem().getInetName(), ((IntTextField)textFieldPort).getValue());
-				}
-            }
-        } catch (Exception ex) {
-            logger.error(ex);
-        }
-    	updateViewStatusServer();
+    public void btnToggleServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnToggleServerActionPerformed
+    	toggleServer();
     }//GEN-LAST:event_btnToggleServerActionPerformed
+  
+    public void toggleServer(){
+    	try {
+			Server.getInstance().toggle(listInetNamesModel.getSelectedItem().getInetName(), ((IntTextField)textFieldPort).getValue());
+			updateViewStatusServer();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+    }
     
 	private void setStatus(String message){
 		lblStatus.setText(message);

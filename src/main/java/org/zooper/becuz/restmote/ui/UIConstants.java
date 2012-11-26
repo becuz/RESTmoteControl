@@ -5,6 +5,9 @@ import org.zooper.becuz.restmote.utils.Constants;
 
 public class UIConstants {
 
+	public static final String TEXT_ABOUT = "<html>Res(t)mote Control rocks.<br/>http://restmote.com</html>";
+	public static final String TEXT_ERROR_SERVER_FROM_TRAY = "There was a problem in controlling the server";
+	
 	public static final String TRAY_TOOLTIP = "Res(T)mote Control";
 	public static final String ERR_NO_INET = "Please specify a network interface";
 	

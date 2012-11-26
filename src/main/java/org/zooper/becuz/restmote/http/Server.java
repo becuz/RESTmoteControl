@@ -95,6 +95,14 @@ public class Server implements Runnable {
 		serverStatusListeners.add(serverStatusListener);
 	}
 	
+	public void toggle(String inetName, int port) throws Exception{
+        if (isRunning()){
+            stop();
+        } else {
+			Server.getInstance().start(inetName, port);
+        }
+    }
+	
 	/**
 	 * Start the {@link HttpServer}
 	 * @throws IOException
@@ -228,7 +236,7 @@ public class Server implements Runnable {
 	public void run() {
 		if (serverStatusListeners != null){
 			for(ServerStatusListener serverStatusListener: serverStatusListeners){
-				serverStatusListener.statusChanged(true);
+				serverStatusListener.serverStatusChanged(true);
 			}
 		}
 		while(httpServer != null){
@@ -240,7 +248,7 @@ public class Server implements Runnable {
 		}
 		if (serverStatusListeners != null){
 			for(ServerStatusListener serverStatusListener: serverStatusListeners){
-				serverStatusListener.statusChanged(false);
+				serverStatusListener.serverStatusChanged(false);
 			}
 		}
 		log.info("Exiting thread");

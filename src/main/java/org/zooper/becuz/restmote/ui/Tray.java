@@ -16,7 +16,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
+import org.zooper.becuz.restmote.business.SettingsBusiness;
+import org.zooper.becuz.restmote.http.Server;
 import org.zooper.becuz.restmote.http.ServerStatusListener;
+import org.zooper.becuz.restmote.model.Settings;
 
 public class Tray implements ActionListener, ServerStatusListener {
 
@@ -36,7 +39,7 @@ public class Tray implements ActionListener, ServerStatusListener {
 	private MenuItem settingsItem;
 	private MenuItem exitItem;
 	private MenuItem startStopItem;
-	private MenuItem restartItem;
+//	private MenuItem restartItem;
 
 	// **********************************************
 
@@ -51,16 +54,17 @@ public class Tray implements ActionListener, ServerStatusListener {
 		if (popup == null) {
 			popup = new PopupMenu();
 			Menu displayMenu = new Menu("Server");
-			startStopItem = new MenuItem("Stop");
-			restartItem = new MenuItem("Restart");
+			startStopItem = new MenuItem(Server.getInstance().isRunning() ? "Stop" : "Start");
+			//restartItem = new MenuItem("Restart");
 			displayMenu.add(startStopItem);
-			displayMenu.add(restartItem);
+			//displayMenu.add(restartItem);
 
 			aboutItem = new MenuItem("About");
-			settingsItem = new MenuItem("Settings");
+			settingsItem = new MenuItem("Open");
 			exitItem = new MenuItem("Exit");
 
 			aboutItem.addActionListener(this);
+			startStopItem.addActionListener(this);
 			settingsItem.addActionListener(this);
 			exitItem.addActionListener(this);
 
@@ -68,7 +72,7 @@ public class Tray implements ActionListener, ServerStatusListener {
 			popup.addSeparator();
 			popup.add(settingsItem);
 			popup.addSeparator();
-			// popup.add(displayMenu);
+			popup.add(displayMenu);
 			popup.add(exitItem);
 		}
 		return popup;
@@ -87,29 +91,29 @@ public class Tray implements ActionListener, ServerStatusListener {
 	}
 
 	public void createAndShowGUI() {
-		getMainWindow(true).setVisible(true);
 
 		if (!SystemTray.isSupported()) {
 			log.warn("SystemTray is not supported");
 			JOptionPane.showMessageDialog(null,
 					"SystemTray is not supported on your system!");
-			// getMainWindow(true).setVisible(true);
+			getMainWindow(true).setVisible(true);
 			return;
 		}
 
 		try {
 			tray = SystemTray.getSystemTray();
 			tray.add(getTrayIcon());
+			trayIcon.addActionListener(this);
 		} catch (AWTException e) {
 			String error = "TrayIcon could not be added.";
 			log.error(error);
 			JOptionPane.showMessageDialog(null, error);
-			// getMainWindow(true).setVisible(true);
+			getMainWindow(true).setVisible(true);
 			return;
 		}
 
-		trayIcon.addActionListener(this);
-
+		//getMainWindow(true).setVisible(true);
+		
 		// ActionListener listener = new ActionListener() {
 		// public void actionPerformed(ActionEvent e) {
 		// MenuItem item = (MenuItem)e.getSource();
@@ -149,8 +153,19 @@ public class Tray implements ActionListener, ServerStatusListener {
 		if (e.getSource() == trayIcon || e.getSource() == settingsItem) {
 			getMainWindow(true).setVisible(!mainWindow.isVisible());
 		} else if (e.getSource() == aboutItem) {
-			JOptionPane.showMessageDialog(null,
-					"Res(t)mote Control rocks. That's it.");
+			JOptionPane.showMessageDialog(null, UIConstants.TEXT_ABOUT);
+		} else if (e.getSource() == startStopItem) {
+			MainWindow mainWindow = getMainWindow(false);
+			if (mainWindow != null) {
+				mainWindow.toggleServer();
+			} else {
+				try {
+					Settings settings = new SettingsBusiness().get();
+					Server.getInstance().toggle(settings.getServerInetName(), settings.getServerPort());
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, UIConstants.TEXT_ERROR_SERVER_FROM_TRAY);
+				}
+			}
 		} else if (e.getSource() == exitItem) {
 			tray.remove(trayIcon);
 			System.exit(0);
@@ -158,8 +173,10 @@ public class Tray implements ActionListener, ServerStatusListener {
 	}
 
 	@Override
-	public void statusChanged(boolean running) {
-		MainWindow mainWindow = getMainWindow(false);
+	public void serverStatusChanged(boolean running) {
+		if (startStopItem != null){
+			startStopItem.setLabel(running ? "Stop" : "Start");
+		}
 		if (mainWindow != null) {
 			mainWindow.updateViewStatusServer();
 		}
