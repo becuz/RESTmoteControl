@@ -69,3 +69,9 @@
 	width:100%; 
 	border:1px solid #ccc;
 }
+#padLog{
+	min-height:50px; 
+	background:#fff; 
+	width:100%; 
+	border:1px solid #ccc;
+}

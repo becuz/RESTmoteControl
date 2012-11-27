@@ -6,6 +6,9 @@ var currentMediaCategory;
 var currentApp;
 var $activeApps;
 
+//mouse pad
+var mx = 0, my = 0, deltaX = 0, deltaY = 0, frequencyCalls = 75, lastTimeMousePadMove = 0, timerMouse = null;
+
 //var lastLiClickPoint;
 //var liTapHold;
 
@@ -49,14 +52,15 @@ $( "#home" ).live( "pageinit",function(event){ //$(document).bind('pageinit', fu
 		$.mobile.changePage($( "#" + kind + "control" ));
 	});
 	
+	//TODO maybe try to use String.fromCharCode(e.keyCode)
 	$( "#keyboard-input" ).bind( "keyup", function(e, ui) {
 		if(e.keyCode == 8){
 			ajax_keyboardType( "$RES_BACK_SPACE" );
 		} else {
-			var v = $( "#keyboard-input" ).val();
-			if (v.length > 0){
-				ajax_keyboardType(v);
-				$( "#keyboard-input" ).val( "" );
+			var s = $( "#keyboard-input" ).val(); //in the Nexus 7 s contains all typed chars, not just the last. 
+			$("#keyboard-input").val('');	
+			if (s.length > 0){
+				ajax_keyboardType(s.charAt(s.length-1));
 			}
 		}
 	});
@@ -142,16 +146,24 @@ function ajax_control(kind, command) {
 	});
 }
 
-function ajax_mouseDelta(deltaX, deltaY) {
-	var u = remoteUrl + "pc/mouse/";
-	u += (deltaX >= 0 ? '+' : '')+deltaX;
-	u += 'x'
-	u += (deltaY >= 0 ? '+' : '')+deltaY;
-	//console.log(u);
-	$.ajax({
-		type: "PUT",
-		url: u
-	});
+//Called from timerMouse
+function ajax_mouseDelta() {
+	if (new Date().getTime() - lastTimeMousePadMove > frequencyCalls * 2){
+		clearInterval(timerMouse);
+		timerMouse = null;
+	} else {
+		deltaX = parseInt(Math.round(deltaX / 2));
+		deltaY = parseInt(Math.round(deltaY / 2));
+		var u = remoteUrl + "pc/mouse/";
+		u += (deltaX >= 0 ? '+' : '')+deltaX;
+		u += 'x'
+		u += (deltaY >= 0 ? '+' : '')+deltaY;
+		$("#padLog").html(u);
+		$.ajax({
+			type: "PUT",
+			url: u
+		});
+	}
 }
 
 function ajax_controlPc(command) {
@@ -330,29 +342,30 @@ function displayRc($brotherDom, idContainer, title, controlsManager, iconSize, p
 	var $divRcRows; //Div containing rows of controls
 	var $divTitle;
 	if ($( "#"+idContainer).length == 0){	//Let's created it the first time
-		var $divRc = $( "<div id='" + idContainer + "' class='rc-controls' style='padding-top:" + paddingTop + "px;'></div>" )
-			.insertAfter($brotherDom);		
-		//TODO btns in the div of control
+		var $divRc = $( "<div id='" + idContainer + "' class='rc-controls' style='padding-top:" + paddingTop + "px;'></div>" ).insertAfter($brotherDom);		
 		//Mouse Pad
 		if(idContainer == 'mouse'){			
-			var $divPad = $( '<div id="pad"></div>').insertAfter($divRc);		
-			var mx = my = 0;
-			
-			$divPad.bind('vmouseup',function(ev){
-				$divPad.unbind('vmousemove');
+			var $divPad = $( '<div id="pad"></div>').insertAfter($divRc);
+			$divPad.bind('vmousemove',function(ev){
+				if (timerMouse == null){
+					timerMouse = setInterval(ajax_mouseDelta, frequencyCalls);
+					mx = ev.pageX;
+					my = ev.pageY;
+				}
+				lastTimeMousePadMove = new Date().getTime();
+				deltaX = ev.pageX - mx;
+				deltaY = ev.pageY - my;
+//				$divPad.html(
+//						ev.pageX + ' ' + ev.pageX + "<br/>" +
+//						mx + ' ' + my + "<br/>" +
+//						deltaX + ' ' + deltaY
+//				);
+				ev.preventDefault();
+				ev.stopImmediatePropagation();
 			});
-			$divPad.bind('vmousedown',function(ev){
-				mx = ev.pageX;
-				my = ev.pageY;
-				$divPad.bind('vmousemove',function(ev){
-					var deltaX = ev.pageX - mx;
-					var deltaY = ev.pageY - my;
-					ajax_mouseDelta(deltaX, deltaY);
-				});
-				
-			});		
 		}
 		$divTitle = $( "<div class='rc-title' id='" + idContainer + "_title'>" +
+				//TODO btns in the div of control
 //							"<a class='float-left' data-role='button' href='#' data-iconpos='notext' data-icon='refresh' " +
 //								"data-inline='true' data-mini='true' id='btn-hide'></a>" +
 							"<span id='" + idContainer + "_title_t'></span>" +
@@ -389,7 +402,7 @@ function displayRc($brotherDom, idContainer, title, controlsManager, iconSize, p
 		var $controlDiv = $( "<div align='center' class='control' id='" + name +"'></div>" )
 			.appendTo($( "#"+idContainer+"_row"+control.row + " div.ui-block-"+l[(l.length-1)/2 + control.position]));
 		if (control.hideImg){
-			$controlDiv.html(control.text);
+			$controlDiv.html(control.name);
 		} else {
 			var $img = $( "<img " 
 					+ "src='images/" + data.settings.iconControlsTheme + "/" + name + ".png'"

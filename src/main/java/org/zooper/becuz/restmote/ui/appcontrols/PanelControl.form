@@ -22,16 +22,15 @@
                   <Group type="102" attributes="0">
                       <Component id="checkSelectedControlNoImg" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="textFieldSelectedControlName" pref="133" max="32767" attributes="0"/>
-                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                      <Component id="textFieldSelectedControlName" min="-2" pref="89" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Component id="btnEdirAppTest" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnEdirAppTest" linkSize="1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnDeleteControl" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="btnDeleteControl" linkSize="1" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace pref="77" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="lblTextFieldKeyStroke" alignment="1" min="-2" max="-2" attributes="0"/>
                   <Component id="lblComboVirtualKey" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -85,11 +84,8 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                              <Component id="btnNext" pref="34" max="32767" attributes="0"/>
-                          </Group>
-                          <Component id="btnPrev" alignment="1" max="32767" attributes="0"/>
+                          <Component id="btnNext" linkSize="2" alignment="1" min="-2" pref="34" max="-2" attributes="0"/>
+                          <Component id="btnPrev" linkSize="2" alignment="1" min="-2" pref="38" max="-2" attributes="0"/>
                           <Component id="lblPaging" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>

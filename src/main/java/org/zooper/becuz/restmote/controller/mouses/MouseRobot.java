@@ -21,6 +21,7 @@ public class MouseRobot implements Mouse {
 	
 	@Override
 	public boolean mouseMove(String move) throws Exception {
+		log.debug("got mouse move: " + move);
 		Point pointerLocation = MouseInfo.getPointerInfo().getLocation();
 		int x = (int) pointerLocation.getX();
 		int y = (int) pointerLocation.getY();

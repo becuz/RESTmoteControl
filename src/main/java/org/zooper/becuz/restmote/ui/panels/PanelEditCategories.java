@@ -124,25 +124,27 @@ public class PanelEditCategories extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 224, Short.MAX_VALUE)
-                        .addComponent(btnEditCategorySave)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEditCategoryCancel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTextFieldNameCategory, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblTextFieldExtensionsCategory)
-                            .addComponent(lblTextFieldDescriptionCategory, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblCategoryApp, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(textFieldDescriptionCategory)
-                            .addComponent(textFieldExtensionsCategory)
-                            .addComponent(textFieldNameCategory)
-                            .addComponent(comboCategoryApp, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(lblTextFieldNameCategory, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblTextFieldExtensionsCategory, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblTextFieldDescriptionCategory, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblCategoryApp, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textFieldNameCategory)
+                    .addComponent(textFieldExtensionsCategory)
+                    .addComponent(textFieldDescriptionCategory)
+                    .addComponent(comboCategoryApp, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(252, Short.MAX_VALUE)
+                .addComponent(btnEditCategorySave)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEditCategoryCancel)
+                .addGap(10, 10, 10))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnEditCategoryCancel, btnEditCategorySave});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -168,6 +170,9 @@ public class PanelEditCategories extends javax.swing.JPanel {
                     .addComponent(btnEditCategoryCancel))
                 .addContainerGap(126, Short.MAX_VALUE))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnEditCategoryCancel, btnEditCategorySave});
+
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditCategoryCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditCategoryCancelActionPerformed

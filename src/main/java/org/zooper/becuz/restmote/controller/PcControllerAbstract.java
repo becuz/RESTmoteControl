@@ -224,6 +224,7 @@ public abstract class PcControllerAbstract {
 
 	/**
 	 * Return the dimensions (WxH) of all pc' screens
+	 * TODO cache these values
 	 * @return
 	 */
 	public int[][] getScreenSizes(){
@@ -251,34 +252,41 @@ public abstract class PcControllerAbstract {
 			keyboardControlsManager = new ControlsManager();
 			//first line
 			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_UP, KeyEvent.VK_UP, 1, 0));
+			
 			//second line
+			Control cntrlTab = Control.getControl("Tab <", 1, KeyEvent.VK_TAB, 2, -2);
+			cntrlTab.setHideImg(true);
+			keyboardControlsManager.addControl(cntrlTab);
 			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_LEFT, KeyEvent.VK_LEFT, 2, -1));
 			Control cntrlEnter = Control.getControl(ControlDefaultTypeKeyboard.KBD_ENTER, KeyEvent.VK_ENTER, 2, 0);
-			//cntrlEnter.setHideImg(true);
-			//cntrlEnter.setText("Enter");
 			keyboardControlsManager.addControl(cntrlEnter);
 			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_RIGHT, KeyEvent.VK_RIGHT, 2, 1));
-			//third line		
-			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_DOWN, KeyEvent.VK_DOWN, 3, 0));
-			//fourth line
-			Control cntrlAlt = Control.getControl("Alt", 1, KeyEvent.VK_ALT, 4, -2);
-			cntrlAlt.setHideImg(true);
-			//cntrlAlt.setText("Alt");
-			keyboardControlsManager.addControl(cntrlAlt);
-			Control cntrlEsc = Control.getControl("Esc", 1, KeyEvent.VK_ESCAPE, 4, -1);
-			cntrlEsc.setHideImg(true);
-			//cntrlEsc.setText("Esc");
-			keyboardControlsManager.addControl(cntrlEsc);
-			Control cntrlTab = Control.getControl("Tab <", 1, KeyEvent.VK_TAB, 4, 1);
-			cntrlTab.setHideImg(true);
-			//cntrlTab.setText("Tab<");
-			keyboardControlsManager.addControl(cntrlTab);
-			Set<Integer> list = new HashSet<Integer>();
-			list.addAll(Arrays.asList(new Integer[]{KeyEvent.VK_SHIFT, KeyEvent.VK_TAB}));
-			Control cntrlITab = Control.getControl("Tab >", 1, list, 4, 2);
+			Control cntrlITab = Control.getControl("Tab >", 1, 
+					new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_SHIFT, KeyEvent.VK_TAB})), 2, 2);
 			cntrlITab.setHideImg(true);
-			//cntrlITab.setText("Tab>");
 			keyboardControlsManager.addControl(cntrlITab);
+			
+			//third line		
+			Control cntrlAlt = Control.getControl("Alt", 1, KeyEvent.VK_ALT, 3, -2);
+			cntrlAlt.setHideImg(true);
+			keyboardControlsManager.addControl(cntrlAlt);
+			
+			Control cntrl = Control.getControl("Ctrl", 1, KeyEvent.VK_CONTROL, 3, -1);
+			cntrl.setHideImg(true);
+			keyboardControlsManager.addControl(cntrl);
+			
+			Control cntrlMeta = Control.getControl("Meta", 1, KeyEvent.VK_META, 3, 0);
+			cntrlMeta.setHideImg(true);
+			keyboardControlsManager.addControl(cntrlMeta);
+			
+			Control cntrlEsc = Control.getControl("Esc", 1, KeyEvent.VK_ESCAPE, 3, 1);
+			cntrlEsc.setHideImg(true);
+			keyboardControlsManager.addControl(cntrlEsc);
+			
+			//fourth line
+			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_DOWN, KeyEvent.VK_DOWN, 4, 0));			
+			
+			
 		}
 		return keyboardControlsManager;
 	}

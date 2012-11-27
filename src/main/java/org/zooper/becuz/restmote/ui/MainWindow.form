@@ -61,9 +61,9 @@
                   <Group type="102" attributes="0">
                       <Component id="lblStatus" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnSave" min="-2" pref="131" max="-2" attributes="0"/>
+                      <Component id="btnSave" linkSize="11" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btnCancel" min="-2" pref="131" max="-2" attributes="0"/>
+                      <Component id="btnCancel" linkSize="11" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -108,7 +108,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="panelSettingsPnlServer" min="-2" max="-2" attributes="0"/>
+                      <Component id="panelSettingsPnlServer" min="-2" pref="282" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="panelSettingsPnlGeneral" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -140,26 +140,27 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="lblServerUrl" alignment="0" max="32767" attributes="0"/>
                               <Component id="lblQrCode" alignment="0" max="32767" attributes="0"/>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="1" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="comboInetNames" max="32767" attributes="0"/>
                                       <Group type="102" attributes="0">
-                                          <EmptySpace min="0" pref="101" max="32767" attributes="0"/>
                                           <Component id="lblComboPort" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="textFieldPort" min="-2" pref="69" max="-2" attributes="0"/>
+                                          <Component id="textFieldPort" min="-2" pref="77" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lblComboInetNames" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                  <Component id="lblStatusServer" max="32767" attributes="0"/>
+                                                  <Component id="btnToggleServer" pref="157" max="32767" attributes="0"/>
+                                              </Group>
+                                          </Group>
                                       </Group>
                                   </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="btnRefreshInetNames" min="-2" pref="28" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="lblComboInetNames" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="btnToggleServer" alignment="0" min="-2" pref="157" max="-2" attributes="0"/>
-                                      <Component id="lblStatusServer" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="btnRefreshInetNames" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -171,10 +172,10 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="lblComboInetNames" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="comboInetNames" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnRefreshInetNames" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="btnRefreshInetNames" pref="0" max="32767" attributes="0"/>
+                              <Component id="comboInetNames" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -185,7 +186,7 @@
                           <Component id="lblStatusServer" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnToggleServer" min="-2" pref="35" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="76" max="32767" attributes="0"/>
                           <Component id="lblQrCode" min="-2" pref="220" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="lblServerUrl" min="-2" max="-2" attributes="0"/>
@@ -225,6 +226,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblStatusServer">
                   <Properties>
+                    <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="text" type="java.lang.String" value="Checking server status.."/>
                   </Properties>
                 </Component>
@@ -241,6 +243,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblServerUrl">
                   <Properties>
+                    <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="text" type="java.lang.String" value="server URL"/>
                   </Properties>
                   <AuxValues>
@@ -260,6 +263,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblQrCode">
                   <Properties>
+                    <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="text" type="java.lang.String" value="qrCode"/>
                   </Properties>
                 </Component>
@@ -280,57 +284,44 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblIconsCredits" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblPaths" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jScrollPane1" alignment="1" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="scrollPaneListPaths" pref="337" max="32767" attributes="0"/>
-                                              <Component id="textFieldPath" max="32767" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="102" attributes="0">
-                                                  <Component id="btnBrowsePath" min="-2" pref="62" max="-2" attributes="0"/>
-                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                  <Component id="btnAddPath" pref="110" max="32767" attributes="0"/>
-                                              </Group>
-                                              <Component id="btnDeletePath" pref="137" max="32767" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <Group type="102" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="lblTextFieldName" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="lblTextFieldNameRoot" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="lblTextFieldScanDepth" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="lblComboIconTheme" min="-2" pref="93" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="102" attributes="0">
-                                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                                      <Component id="textFieldNameRoot" alignment="1" pref="140" max="32767" attributes="0"/>
-                                                      <Component id="textFieldScanDepth" alignment="1" max="32767" attributes="0"/>
-                                                      <Component id="textFieldName" max="32767" attributes="0"/>
-                                                  </Group>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="lblTooltip1" min="-2" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Component id="comboIconTheme" min="-2" pref="140" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="lblIconsCredits" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="lblPaths" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="jScrollPane1" max="32767" attributes="0"/>
+                                      <Component id="scrollPaneListPaths" pref="429" max="32767" attributes="0"/>
+                                      <Component id="textFieldPath" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="btnBrowsePath" linkSize="8" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="btnAddPath" linkSize="8" min="-2" pref="61" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="btnDeletePath" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="lblTextFieldScanDepth" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblTextFieldNameRoot" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblTextFieldName" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblComboIconTheme" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="textFieldNameRoot" alignment="1" max="32767" attributes="0"/>
+                                          <Component id="textFieldScanDepth" alignment="1" max="32767" attributes="0"/>
+                                          <Component id="textFieldName" min="-2" pref="140" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="comboIconTheme" min="-2" pref="140" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -341,7 +332,6 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lblTextFieldName" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="textFieldName" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblTooltip1" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -353,29 +343,27 @@
                               <Component id="lblTextFieldScanDepth" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="textFieldScanDepth" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblComboIconTheme" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="comboIconTheme" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblComboIconTheme" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                           <Component id="jScrollPane1" min="-2" pref="111" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="lblIconsCredits" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="26" max="32767" attributes="0"/>
+                          <EmptySpace pref="70" max="32767" attributes="0"/>
                           <Component id="lblPaths" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="btnAddPath" pref="0" max="32767" attributes="0"/>
-                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                                  <Component id="textFieldPath" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btnBrowsePath" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="btnAddPath" linkSize="9" pref="0" max="32767" attributes="0"/>
+                              <Component id="btnBrowsePath" linkSize="9" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="textFieldPath" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="scrollPaneListPaths" min="-2" pref="118" max="-2" attributes="0"/>
-                              <Component id="btnDeletePath" min="-2" pref="24" max="-2" attributes="0"/>
+                              <Component id="btnDeletePath" linkSize="9" min="-2" pref="24" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -514,13 +502,6 @@
                     <Property name="text" type="java.lang.String" value="credits"/>
                   </Properties>
                 </Component>
-                <Component class="org.zooper.becuz.restmote.ui.widgets.LblTooltip" name="lblTooltip1">
-                  <Properties>
-                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="UIConstants.TOOLTIP_STNGS_NAME" type="code"/>
-                    </Property>
-                  </Properties>
-                </Component>
               </SubComponents>
             </Container>
           </SubComponents>
@@ -546,8 +527,8 @@
                           <Component id="lblAppsSummary" min="-2" max="-2" attributes="0"/>
                           <Component id="panelAppsPnlList" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="panelEditApps" min="-2" pref="605" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="panelEditApps" min="-2" pref="641" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -556,13 +537,11 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblAppsSummary" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="panelEditApps" pref="530" max="32767" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Component id="lblAppsSummary" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="panelAppsPnlList" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="panelEditApps" max="32767" attributes="0"/>
+                          <Component id="panelAppsPnlList" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -592,10 +571,10 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="scrollPaneListApps" pref="0" max="32767" attributes="0"/>
                               <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace min="0" pref="26" max="32767" attributes="0"/>
-                                  <Component id="btnDeleteApp" min="-2" pref="75" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-                                  <Component id="btnAddApp" min="-2" pref="83" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="28" max="32767" attributes="0"/>
+                                  <Component id="btnDeleteApp" linkSize="6" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="btnAddApp" linkSize="6" min="-2" pref="83" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -606,11 +585,11 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="scrollPaneListApps" pref="392" max="32767" attributes="0"/>
+                          <Component id="scrollPaneListApps" pref="435" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="btnDeleteApp" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnAddApp" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="btnAddApp" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnDeleteApp" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -623,6 +602,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/delete.png"/>
                     </Property>
+                    <Property name="text" type="java.lang.String" value="Delete"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                   <Events>
@@ -686,17 +666,12 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="panelCategoriesPnlList" min="-2" pref="286" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="panelEditCategories" pref="621" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="lblCategoriesSummary" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="lblCategoriesSummary" max="32767" attributes="0"/>
+                          <Component id="panelCategoriesPnlList" pref="236" max="32767" attributes="0"/>
                       </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="panelEditCategories" pref="641" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -706,10 +681,10 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblCategoriesSummary" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="panelEditCategories" pref="495" max="32767" attributes="0"/>
-                          <Component id="panelCategoriesPnlList" pref="495" max="32767" attributes="0"/>
+                          <Component id="panelEditCategories" pref="510" max="32767" attributes="0"/>
+                          <Component id="panelCategoriesPnlList" pref="510" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -734,20 +709,15 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="scrollPaneListCategories" pref="0" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
-                                  <Component id="lblListCategories" min="-2" pref="250" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="btnAddCategory" alignment="1" min="-2" pref="65" max="-2" attributes="0"/>
-                                      <Component id="btnDeleteCategory" alignment="1" min="-2" pref="49" max="-2" attributes="0"/>
-                                      <Component id="scrollPaneListCategories" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="btnDeleteCategory" linkSize="5" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="btnAddCategory" linkSize="5" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -757,30 +727,25 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-                          <Component id="lblListCategories" min="-2" pref="64" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnAddCategory" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="scrollPaneListCategories" min="-2" pref="240" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="btnDeleteCategory" min="-2" max="-2" attributes="0"/>
+                          <Component id="scrollPaneListCategories" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="btnAddCategory" linkSize="4" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnDeleteCategory" linkSize="4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="lblListCategories">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="&lt;html&gt;Edit one category from below &lt;br/&gt;or create a new one:&lt;/html&gt;"/>
-                  </Properties>
-                </Component>
                 <Component class="javax.swing.JButton" name="btnDeleteCategory">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/delete.png"/>
                     </Property>
+                    <Property name="text" type="java.lang.String" value="Delete"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                   <Events>
@@ -801,7 +766,7 @@
                         </Property>
                         <Property name="selectionMode" type="int" value="0"/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                          <Color id="Default Cursor"/>
+                          <Color id="Cursore predefinito"/>
                         </Property>
                       </Properties>
                       <Events>
@@ -815,6 +780,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/add.png"/>
                     </Property>
+                    <Property name="text" type="java.lang.String" value="New"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddCategoryActionPerformed"/>
@@ -824,7 +790,7 @@
             </Container>
             <Component class="javax.swing.JLabel" name="lblCategoriesSummary">
               <Properties>
-                <Property name="text" type="java.lang.String" value="jLabel2"/>
+                <Property name="text" type="java.lang.String" value="Edit one existing category, or create a new one. "/>
               </Properties>
             </Component>
             <Component class="org.zooper.becuz.restmote.ui.panels.PanelEditCategories" name="panelEditCategories">
