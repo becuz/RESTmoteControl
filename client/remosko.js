@@ -9,6 +9,9 @@ var $activeApps;
 //mouse pad
 var mx = 0, my = 0, deltaX = 0, deltaY = 0, frequencyCalls = 75, lastTimeMousePadMove = 0, timerMouse = null;
 
+//mouse wheel
+var wmx = 0, wmy = 0, wdeltaX = 0, wdeltaY = 0, wfrequencyCalls = 75, wlastTimeMousePadMove = 0, wtimerMouse = null;
+
 //var lastLiClickPoint;
 //var liTapHold;
 
@@ -163,6 +166,22 @@ function ajax_mouseDelta() {
 			type: "PUT",
 			url: u
 		});
+	}
+}
+
+function ajax_wheelDelta() {
+	if (new Date().getTime() - wlastTimeMousePadMove > wfrequencyCalls * 2){
+		clearInterval(wtimerMouse);
+		wtimerMouse = null;
+	} else {				
+		wdeltaY = parseInt(Math.round(wdeltaY / 2));
+		var u = remoteUrl + "pc/mouse/wheel/";		
+		u += (wdeltaY >= 0 ? '+' : '') + wdeltaY;
+		console.log(u);
+		$.ajax({
+			type: "PUT",
+			url: u
+		});		
 	}
 }
 
@@ -345,8 +364,11 @@ function displayRc($brotherDom, idContainer, title, controlsManager, iconSize, p
 		var $divRc = $( "<div id='" + idContainer + "' class='rc-controls' style='padding-top:" + paddingTop + "px;'></div>" ).insertAfter($brotherDom);		
 		//Mouse Pad
 		if(idContainer == 'mouse'){			
-			var $divPad = $( '<div id="pad"></div>').insertAfter($divRc);
-			$divPad.bind('vmousemove',function(ev){
+			//var $divPad = $( '<div id="pad"></div>').insertAfter($divRc);
+			//var $divPad = $( '<div id="clickpad"></div>').insertAfter($divRc);
+
+			//Mouse Pad functionality
+			$('#pad').bind('vmousemove',function(ev){
 				if (timerMouse == null){
 					timerMouse = setInterval(ajax_mouseDelta, frequencyCalls);
 					mx = ev.pageX;
@@ -360,10 +382,30 @@ function displayRc($brotherDom, idContainer, title, controlsManager, iconSize, p
 //						mx + ' ' + my + "<br/>" +
 //						deltaX + ' ' + deltaY
 //				);
+				
 				ev.preventDefault();
 				ev.stopImmediatePropagation();
 			});
+			$('#wheel-pad').bind('vmousemove',function(ev){
+				if (wtimerMouse == null){
+					wtimerMouse = setInterval(ajax_wheelDelta, wfrequencyCalls);					
+					my = ev.pageY;
+				}
+				wlastTimeMousePadMove = new Date().getTime();				
+				wdeltaY = ev.pageY - wmy;				
+				ev.preventDefault();
+				ev.stopImmediatePropagation();
+			});
+			
+			//Mouse Click Pad functionality
+			$('#left-click-pad').bind('vmousedown',function(ev){
+				ajax_control('mouse', 'mouse_click1');
+			});
+			$('#right-click-pad').bind('vmousedown',function(ev){
+				ajax_control('mouse', 'mouse_click3');
+			});
 		}
+		
 		$divTitle = $( "<div class='rc-title' id='" + idContainer + "_title'>" +
 				//TODO btns in the div of control
 //							"<a class='float-left' data-role='button' href='#' data-iconpos='notext' data-icon='refresh' " +
@@ -395,25 +437,26 @@ function displayRc($brotherDom, idContainer, title, controlsManager, iconSize, p
 			$( "<div align='center' class='ui-block-" + l[i] + " controls-row'></div>" ).appendTo($row);
 		}
 	}
-	
-	for (j=0; j<controlsManager.controls.length; j++){
-		var control = controlsManager.controls[j];
-		var name = control.name;
-		var $controlDiv = $( "<div align='center' class='control' id='" + name +"'></div>" )
-			.appendTo($( "#"+idContainer+"_row"+control.row + " div.ui-block-"+l[(l.length-1)/2 + control.position]));
-		if (control.hideImg){
-			$controlDiv.html(control.name);
-		} else {
-			var $img = $( "<img " 
-					+ "src='images/" + data.settings.iconControlsTheme + "/" + name + ".png'"
-					+ " class='control-img' style='margin-top:-" + iconSize/2 + "px;margin-left:-" + iconSize/2 + "px;'/>" ).appendTo($controlDiv);
-			$img.attr( "width", iconSize+"px" );
-			$img.attr( "height", iconSize+"px" );			
+	if(idContainer != 'mouse'){
+		for (j=0; j<controlsManager.controls.length; j++){
+			var control = controlsManager.controls[j];
+			var name = control.name;
+			var $controlDiv = $( "<div align='center' class='control' id='" + name +"'></div>" )
+				.appendTo($( "#"+idContainer+"_row"+control.row + " div.ui-block-"+l[(l.length-1)/2 + control.position]));
+			if (control.hideImg){
+				$controlDiv.html(control.name);
+			} else {
+				var $img = $( "<img " 
+						+ "src='images/" + data.settings.iconControlsTheme + "/" + name + ".png'"
+						+ " class='control-img' style='margin-top:-" + iconSize/2 + "px;margin-left:-" + iconSize/2 + "px;'/>" ).appendTo($controlDiv);
+				$img.attr( "width", iconSize+"px" );
+				$img.attr( "height", iconSize+"px" );			
+			}
+			$controlDiv.bind( "vmousedown", function(event) {
+		    	ajax_control(idContainer, $(this).attr( "id" ))
+			});
 		}
-		$controlDiv.bind( "vmousedown", function(event) {
-	    	ajax_control(idContainer, $(this).attr( "id" ))
-		});
-	}	
+	}
 }
 
 function displayApps(apps){
