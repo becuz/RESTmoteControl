@@ -30,11 +30,6 @@ public class App implements Editable, Completable{
 
 	@JsonIgnore
 	private Long id;
-
-	/**
-	 * 
-	 */
-	private Boolean active = true;
 	
 	/**
 	 * Has to be the same used in the controller!!
@@ -179,12 +174,6 @@ public class App implements Editable, Completable{
 	}
 	public void setWindowName(String windowName) {
 		this.windowName = windowName;
-	}
-	public Boolean getActive() {
-		return active;
-	}
-	public void setActive(Boolean active) {
-		this.active = active;
 	}
 	public String getPath() {
 		return path;

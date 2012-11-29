@@ -8,18 +8,15 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+
 import javax.swing.DefaultComboBoxModel;
-
-import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
-import javax.swing.JList;
 import javax.swing.ListSelectionModel;
-import org.zooper.becuz.restmote.business.ActiveAppBusiness;
-import org.zooper.becuz.restmote.http.InetAddr;
-import org.zooper.becuz.restmote.http.Server;
 
+import org.zooper.becuz.restmote.business.ActiveAppBusiness;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.model.interfaces.Persistable;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
 import org.zooper.becuz.restmote.ui.MainWindow;
 import org.zooper.becuz.restmote.ui.UIConstants;
@@ -39,12 +36,7 @@ public class PanelEditApps extends javax.swing.JPanel {
 
 	private boolean modified = false;
 	
-	private JList listApps;
-	
-	/**
-	 * Reference to the listAppsModel
-	 */
-	private DefaultListModel<App> listAppsModel;
+	private PanelListPersistable panelListPersistable;
 	
 	/**
      * Swing list model for {@link #comboInetNames} 
@@ -56,15 +48,10 @@ public class PanelEditApps extends javax.swing.JPanel {
      */
     private AppControlsTableModel appTableModel = new AppControlsTableModel();
 	
-	/**
-	 * 
-	 * @param listApps
-	 * @param listAppsModel 
-	 */
-	public PanelEditApps(JList listApps, DefaultListModel<App> listAppsModel) {
+
+	public PanelEditApps(PanelListPersistable panelListPersistable) {
 		this();
-		this.listApps = listApps;
-		this.listAppsModel = listAppsModel;
+		this.panelListPersistable = panelListPersistable;
 	}
 	
 	/**
@@ -83,11 +70,13 @@ public class PanelEditApps extends javax.swing.JPanel {
 	 */
 	private void buildListWindowsModel(){
 		listWindowsModel.removeAllElements();
+		listWindowsModel.addElement("");
 		List<ActiveApp> activeApps = new ActiveAppBusiness().getActiveApps(true);
 		for(ActiveApp activeApp: activeApps){
-			listWindowsModel.addElement(activeApp.getName());
-			//TODO listWindowsModel.setSelectedItem("");
-		}
+			if (listWindowsModel.getIndexOf(activeApp.getName()) == -1){
+				listWindowsModel.addElement(activeApp.getName());
+			}
+		}	
 	}
 	
 	private void setSelectedWindow(String windowName){
@@ -96,7 +85,7 @@ public class PanelEditApps extends javax.swing.JPanel {
 				listWindowsModel.addElement(windowName);
 			}
 		}
-		listWindowsModel.setSelectedItem(windowName);
+		listWindowsModel.setSelectedItem(windowName == null ? "" : windowName);
 	}
 	
 	public void editControl(Control control){
@@ -104,6 +93,7 @@ public class PanelEditApps extends javax.swing.JPanel {
 	}
 	
 	public void editApp(App app){
+		setEnabled(app != null);
         textFieldNameApp.setText(app == null ? "" : app.getName());
         textFieldExtensionsApp.setText(app == null ? "" : Utils.join(app.getExtensions(), ","));
 		checkInstanceApp.setSelected(app == null ? false : app.isForceOneInstance());
@@ -152,9 +142,9 @@ public class PanelEditApps extends javax.swing.JPanel {
         scrollPaneTableControls = new javax.swing.JScrollPane();
         tableControls = new ControlsTable();
         tableControls.setModel(appTableModel);
-        jScrollPane1 = new javax.swing.JScrollPane();
+        scrollPaneListImages = new javax.swing.JScrollPane();
         listImages = new ImageList(false);
-        panelControlKeys = new org.zooper.becuz.restmote.ui.appcontrols.PanelControl(tableControls);
+        panelControlKeys = new org.zooper.becuz.restmote.ui.appcontrols.PanelControlKeys(tableControls);
         lblHelpIcons = new javax.swing.JLabel();
         lblHelpTable = new javax.swing.JLabel();
 
@@ -178,12 +168,6 @@ public class PanelEditApps extends javax.swing.JPanel {
         lblTextFieldNameApp.setText("Name:");
         lblTextFieldNameApp.setToolTipText(UIConstants.TOOLTIP_APP_NAME);
 
-        textFieldNameApp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textFieldNameAppActionPerformed(evt);
-            }
-        });
-
         lblTextFieldExtensionsApp.setText("Extensions");
         lblTextFieldExtensionsApp.setToolTipText(UIConstants.TOOLTIP_APP_EXTENSIONS);
 
@@ -201,12 +185,6 @@ public class PanelEditApps extends javax.swing.JPanel {
         lblTextFieldPathApp.setFont(lblTextFieldPathApp.getFont().deriveFont(lblTextFieldPathApp.getFont().getStyle() | java.awt.Font.BOLD));
         lblTextFieldPathApp.setText("Path:");
         lblTextFieldPathApp.setToolTipText(UIConstants.TOOLTIP_APP_PATH);
-
-        textFieldPathApp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textFieldPathAppActionPerformed(evt);
-            }
-        });
 
         btnBrowsePath1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/folder.png"))); // NOI18N
         btnBrowsePath1.addActionListener(new java.awt.event.ActionListener() {
@@ -308,7 +286,7 @@ public class PanelEditApps extends javax.swing.JPanel {
 
         listImages.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         listImages.setLayoutOrientation(javax.swing.JList.HORIZONTAL_WRAP);
-        jScrollPane1.setViewportView(listImages);
+        scrollPaneListImages.setViewportView(listImages);
 
         lblHelpIcons.setText("Drag'n'drop the icons on the table below to add a Control");
 
@@ -321,7 +299,7 @@ public class PanelEditApps extends javax.swing.JPanel {
             .addGroup(panelControlsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(scrollPaneListImages)
                     .addComponent(scrollPaneTableControls, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)
                     .addComponent(lblHelpIcons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelControlKeys, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -334,7 +312,7 @@ public class PanelEditApps extends javax.swing.JPanel {
                 .addContainerGap(36, Short.MAX_VALUE)
                 .addComponent(lblHelpIcons)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrollPaneListImages, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
                 .addComponent(lblHelpTable)
                 .addGap(3, 3, 3)
@@ -362,20 +340,20 @@ public class PanelEditApps extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 447, Short.MAX_VALUE)
+                .addGap(0, 476, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditAppCancel)
                     .addComponent(btnEditAppSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 29, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditAppCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditAppCancelActionPerformed
         //TODO il panel edit non scrive sul modello, ma il panel dei controls si
-		listApps.clearSelection();
+		panelListPersistable.clearSelection();
     }//GEN-LAST:event_btnEditAppCancelActionPerformed
 
 	@Override
@@ -394,16 +372,17 @@ public class PanelEditApps extends javax.swing.JPanel {
 	
 	
     private void btnEditAppSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditAppSaveActionPerformed
-		int selectedIndex = listApps.getSelectedIndex();
-        App app = selectedIndex == -1 ? null : listAppsModel.getElementAt(selectedIndex);
-        if (app != null){
-            app.setName(textFieldNameApp.getText());
+        Persistable p = panelListPersistable.getSelectedItem();
+		if (p != null){
+            App app = (App) p;
+			app.setName(textFieldNameApp.getText());
             //app.setDescription(textFieldDescriptionCategory.getText());
             app.setExtensions(new HashSet<>(Arrays.asList(textFieldExtensionsApp.getText().split(","))));
             app.setForceOneInstance(checkInstanceApp.isSelected());
             app.setArgumentsFile(textFieldArgFileApp.getText());
             app.setArgumentsDir(textFieldArgDirApp.getText());
             app.setPath(textFieldPathApp.getText());
+			app.setWindowName(comboWindowName.getSelectedItem().toString());
 			//TODO il panel edit non scrive sul modello, ma il panel dei controls si
 			app.getControlsManager().getControls().clear();
 			for (int i = 0; i < tableControls.getRowCount(); i++) {
@@ -423,7 +402,7 @@ public class PanelEditApps extends javax.swing.JPanel {
 				}
 			}
         }
-        listApps.clearSelection();
+        panelListPersistable.clearSelection();
     }//GEN-LAST:event_btnEditAppSaveActionPerformed
 
     private void btnBrowsePath1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowsePath1ActionPerformed
@@ -436,18 +415,9 @@ public class PanelEditApps extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnBrowsePath1ActionPerformed
 
-    private void textFieldNameAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldNameAppActionPerformed
-        modified = false;
-    }//GEN-LAST:event_textFieldNameAppActionPerformed
-
-    private void textFieldPathAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldPathAppActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textFieldPathAppActionPerformed
-
     private void btnRefreshWindowsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshWindowsActionPerformed
         buildListWindowsModel();
-		int selectedIndex = listApps.getSelectedIndex();
-		setSelectedWindow(listAppsModel.getElementAt(selectedIndex).getWindowName());
+		setSelectedWindow(((App)panelListPersistable.getSelectedItem()).getWindowName());
     }//GEN-LAST:event_btnRefreshWindowsActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -457,7 +427,6 @@ public class PanelEditApps extends javax.swing.JPanel {
     private javax.swing.JButton btnRefreshWindows;
     private javax.swing.JCheckBox checkInstanceApp;
     private javax.swing.JComboBox comboWindowName;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane;
     private javax.swing.JLabel lblComboWindowName;
     private javax.swing.JLabel lblHelpIcons;
@@ -469,8 +438,9 @@ public class PanelEditApps extends javax.swing.JPanel {
     private javax.swing.JLabel lblTextFieldPathApp;
     private javax.swing.JList listImages;
     private javax.swing.JPanel panelConfiguration;
-    private org.zooper.becuz.restmote.ui.appcontrols.PanelControl panelControlKeys;
+    private org.zooper.becuz.restmote.ui.appcontrols.PanelControlKeys panelControlKeys;
     private javax.swing.JPanel panelControls;
+    private javax.swing.JScrollPane scrollPaneListImages;
     private javax.swing.JScrollPane scrollPaneTableControls;
     private javax.swing.JTable tableControls;
     private javax.swing.JTextField textFieldArgDirApp;

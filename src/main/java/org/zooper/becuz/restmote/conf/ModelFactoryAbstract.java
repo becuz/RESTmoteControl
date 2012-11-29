@@ -63,6 +63,7 @@ public abstract class ModelFactoryAbstract {
 	public MediaCategory getMediaCategoryRoot(){
 		if (mediaCategoryRoot == null){
 			mediaCategoryRoot = new MediaCategory(MediaCategory.ROOT_NAME);
+			mediaCategoryRoot.setDescription("Allows to browse the entire filesystem.");
 		}
 		return mediaCategoryRoot;
 	}

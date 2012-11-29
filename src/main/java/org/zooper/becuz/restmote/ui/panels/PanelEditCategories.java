@@ -9,13 +9,13 @@ import java.util.Enumeration;
 import java.util.HashSet;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
 
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.MediaCategory;
+import org.zooper.becuz.restmote.model.interfaces.Persistable;
 import org.zooper.becuz.restmote.ui.UIConstants;
 import org.zooper.becuz.restmote.ui.UIUtils;
+import org.zooper.becuz.restmote.utils.Constants;
 import org.zooper.becuz.restmote.utils.Utils;
 
 /**
@@ -25,20 +25,23 @@ import org.zooper.becuz.restmote.utils.Utils;
 @SuppressWarnings("serial")
 public class PanelEditCategories extends javax.swing.JPanel {
 
-	private JList listCategories;
-	private DefaultListModel<MediaCategory> listMediaCategoriesModel;
+	private PanelListPersistable panelListPersistable;
+	
 	private DefaultComboBoxModel<App> comboAppsModel = new DefaultComboBoxModel<App>();
 	
-	
-	public PanelEditCategories(
-			JList listCategories,
-			DefaultListModel<MediaCategory> listMediaCategoriesModel){
-		this();
-		this.listCategories = listCategories;
-		this.listMediaCategoriesModel = listMediaCategoriesModel;
+	/**
+	 * Creates new form PanelEditCategories
+	 */
+	public PanelEditCategories() {
+		initComponents();
 	}
 	
-	public void setModelAppData(Enumeration<App> apps){
+	public PanelEditCategories(PanelListPersistable panelListPersistable) {
+		this();
+		this.panelListPersistable = panelListPersistable;
+	}
+	
+	public void setModelAppData(Enumeration<Persistable> apps){
 		App prevSelectedApp = (App) comboAppsModel.getSelectedItem(); 
 		comboAppsModel.removeAllElements();
 		while (apps.hasMoreElements()) {
@@ -49,20 +52,18 @@ public class PanelEditCategories extends javax.swing.JPanel {
 			comboAppsModel.setSelectedItem(prevSelectedApp);
 		}
 	}
-
-	/**
-	 * Creates new form PanelEditCategories
-	 */
-	public PanelEditCategories() {
-		initComponents();
-	}
 	
 	public void editMediaCategory(MediaCategory mediaCategory){
+		setEnabled(mediaCategory != null);
         textFieldNameCategory.setText(mediaCategory == null ? "" : mediaCategory.getName());
         textFieldDescriptionCategory.setText(mediaCategory == null ? "" : mediaCategory.getDescription());
         textFieldExtensionsCategory.setText(mediaCategory == null ? "" : Utils.join(mediaCategory.getExtensions(), ","));
 		comboCategoryApp.setSelectedItem(mediaCategory == null ? null : mediaCategory.getApp());
-		checkCategoryActive.setSelected(mediaCategory == null ? null : mediaCategory.getActive());
+		checkCategoryActive.setSelected(mediaCategory == null ? false : mediaCategory.getActive());
+		textFieldNameCategory.setEnabled(mediaCategory != null && !mediaCategory.getName().equals(Constants.MEDIA_ROOT));
+		textFieldDescriptionCategory.setEnabled(mediaCategory != null && !mediaCategory.getName().equals(Constants.MEDIA_ROOT));
+		textFieldExtensionsCategory.setEnabled(mediaCategory != null && !mediaCategory.getName().equals(Constants.MEDIA_ROOT));
+		comboCategoryApp.setEnabled(mediaCategory != null && !mediaCategory.getName().equals(Constants.MEDIA_ROOT));
     }
 
 	@Override
@@ -191,20 +192,20 @@ public class PanelEditCategories extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditCategoryCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditCategoryCancelActionPerformed
-        listCategories.clearSelection();
+        panelListPersistable.clearSelection();
     }//GEN-LAST:event_btnEditCategoryCancelActionPerformed
 
     private void btnEditCategorySaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditCategorySaveActionPerformed
-        int selectedIndex = listCategories.getSelectedIndex();
-        MediaCategory mediaCategory = selectedIndex == -1 ? null : listMediaCategoriesModel.getElementAt(selectedIndex);
-        if (mediaCategory != null){
+        Persistable p = panelListPersistable.getSelectedItem();
+		if (p != null){
+            MediaCategory mediaCategory = (MediaCategory) p;
             mediaCategory.setName(textFieldNameCategory.getText());
             mediaCategory.setDescription(textFieldDescriptionCategory.getText());
             mediaCategory.setExtensions(new HashSet<>(Arrays.asList(textFieldExtensionsCategory.getText().split(","))));
 			mediaCategory.setApp(comboAppsModel.getSelectedItem() == null ? null : (App) comboAppsModel.getSelectedItem());
 			mediaCategory.setActive(checkCategoryActive.isSelected());
         }
-        listCategories.clearSelection();
+        panelListPersistable.clearSelection();
     }//GEN-LAST:event_btnEditCategorySaveActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

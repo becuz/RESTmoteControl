@@ -19,9 +19,10 @@ public class UIConstants {
 	public static final String TOOLTIP_CATEGORY_DESCRIPTION = "Free description";
 	public static final String TOOLTIP_CATEGORY_APP = "A specific app to open the files of this category. If blank files will be opened with the default system applications";
 	
-	public static final String TOOLTIP_APP_NAME = "Name of the app";
-	public static final String TOOLTIP_APP_EXTENSIONS = "TODO";
-	public static final String TOOLTIP_APP_WINDOW = "Ensure your app is running and select it from the list";
+	public static final String TOOLTIP_APP_NAME = "Name of the application";
+	public static final String TOOLTIP_APP_EXTENSIONS = "<html>Comma separated list of extensions that this application is able to open.<br/>"
+			+ "This advanced setting will allows particular clients to control this application without the need to know his details</html>";
+	public static final String TOOLTIP_APP_WINDOW = "Ensure your application is running and select it from the list";
 	public static final String TOOLTIP_APP_PATH = "Full path of the application";
 	public static final String TOOLTIP_APP_ARGFILE = Constants.APP_ARGUMENT_FILE + " is file to open. Add command line parameters if you wish";
 	public static final String TOOLTIP_APP_ARGDIR = "Leave blank if this app doesn't support directory opening";

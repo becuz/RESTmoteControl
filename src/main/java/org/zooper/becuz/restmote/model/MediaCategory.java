@@ -13,6 +13,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.zooper.becuz.restmote.model.interfaces.Completable;
 import org.zooper.becuz.restmote.model.interfaces.Editable;
 import org.zooper.becuz.restmote.model.transport.MediaRoot;
+import org.zooper.becuz.restmote.utils.Constants;
 import org.zooper.becuz.restmote.utils.Utils;
 
 /**
@@ -65,7 +66,7 @@ public class MediaCategory implements Editable, Completable{
 	 * 
 	 */
 	@JsonIgnore
-	private Boolean active;
+	private Boolean active = true;
 	
 	public MediaCategory() {
 	}
@@ -84,9 +85,12 @@ public class MediaCategory implements Editable, Completable{
 	
 	@Override
 	public void isComplete() throws IllegalArgumentException {
+		if (getName().equals(Constants.MEDIA_ROOT)){
+			return;
+		}
 		StringBuffer errors = new StringBuffer();
 		if (extensions == null || extensions.isEmpty()){
-			errors.append("\nExtensions are mandatory"); //TODO
+			errors.append("\nExtensions are mandatory");
 		}
 		if (errors.length() > 0){
 			throw new IllegalArgumentException(errors.toString());

@@ -39,7 +39,14 @@ public class ImageListModel extends DefaultListModel<ImageIcon>{
 		FilenameFilter filenameFilter = new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
-				return name.toLowerCase().endsWith(".png");
+				name = name.toLowerCase();
+				if (name.startsWith("mouse")){
+					return false;
+				}
+				if (name.startsWith("kbd")){
+					return false;
+				}
+				return name.toLowerCase().endsWith(".png") ;
 			}
 		};
 		for (File imgFile : f.listFiles(filenameFilter)){

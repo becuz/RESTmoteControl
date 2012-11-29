@@ -24,7 +24,7 @@ import org.zooper.becuz.restmote.ui.UIUtils;
  * @author bebo
  */
 @SuppressWarnings("serial")
-public class PanelControl extends javax.swing.JPanel {
+public class PanelControlKeys extends javax.swing.JPanel {
 
 	private boolean modified;
 	
@@ -115,12 +115,12 @@ public class PanelControl extends javax.swing.JPanel {
 		//private void updateView(){}
 	}
 	
-        public PanelControl(){}
+	public PanelControlKeys(){}
         
 	/**
-	 * Creates new form PanelControl
+	 * Creates new form PanelControlKeys
 	 */
-	public PanelControl(JTable appControlsTable) {
+	public PanelControlKeys(JTable appControlsTable) {
 		this.appControlsTable = appControlsTable;
 		ControlSelectionListener controlSelectionListener = new ControlSelectionListener();
 		appControlsTable.getModel().addTableModelListener(controlSelectionListener);
@@ -254,7 +254,7 @@ public class PanelControl extends javax.swing.JPanel {
 
         lblComboVirtualKey.setText("Virtual Key:");
 
-        lblTextFieldKeyStroke.setText("Shortcut");
+        lblTextFieldKeyStroke.setText("Shortcut:");
 
         btnPrev.setText("<");
         btnPrev.setFocusPainted(false);

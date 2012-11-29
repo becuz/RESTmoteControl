@@ -157,7 +157,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lblTextFieldKeyStroke">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Shortcut"/>
+        <Property name="text" type="java.lang.String" value="Shortcut:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnPrev">
