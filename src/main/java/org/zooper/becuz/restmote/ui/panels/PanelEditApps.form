@@ -38,7 +38,7 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="0" pref="444" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="447" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnEditAppCancel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnEditAppSave" alignment="3" max="32767" attributes="0"/>
@@ -47,7 +47,7 @@
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <Component id="jTabbedPane" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="26" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -86,15 +86,17 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="lblTextFieldArgFileApp" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="lblTextFieldPathApp" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="lblTextFieldNameApp" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblComboWindowName" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="comboWindowName" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="textFieldArgFileApp" min="-2" pref="82" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -104,27 +106,28 @@
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="checkInstanceApp" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="textFieldNameApp" min="-2" pref="149" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="lblTextFieldExtensionsApp" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="textFieldExtensionsApp" min="-2" pref="194" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="textFieldPathApp" min="-2" pref="409" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="textFieldNameApp" min="-2" pref="149" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="lblTextFieldExtensionsApp" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="textFieldExtensionsApp" min="-2" pref="194" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="textFieldPathApp" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnBrowsePath1" min="-2" pref="68" max="-2" attributes="0"/>
-                      <EmptySpace pref="63" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="btnBrowsePath1" linkSize="2" pref="68" max="32767" attributes="0"/>
+                          <Component id="btnRefreshWindows" linkSize="2" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="55" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace pref="147" max="32767" attributes="0"/>
+                      <EmptySpace pref="148" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="textFieldNameApp" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="lblTextFieldNameApp" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -133,9 +136,17 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="textFieldPathApp" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblTextFieldPathApp" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnBrowsePath1" alignment="1" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="comboWindowName" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblComboWindowName" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnRefreshWindows" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="btnBrowsePath1" linkSize="1" alignment="1" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="textFieldPathApp" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblTextFieldPathApp" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -158,7 +169,10 @@
                     <Font bold="true" component="lblTextFieldNameApp" property="font" relativeSize="true" size="0"/>
                   </FontInfo>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Name"/>
+                <Property name="text" type="java.lang.String" value="Name:"/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIConstants.TOOLTIP_APP_NAME" type="code"/>
+                </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="textFieldNameApp">
@@ -169,6 +183,9 @@
             <Component class="javax.swing.JLabel" name="lblTextFieldExtensionsApp">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Extensions"/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIConstants.TOOLTIP_APP_EXTENSIONS" type="code"/>
+                </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="textFieldExtensionsApp">
@@ -188,26 +205,22 @@
                     <Font bold="true" component="lblTextFieldArgFileApp" property="font" relativeSize="true" size="0"/>
                   </FontInfo>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Arg file"/>
+                <Property name="text" type="java.lang.String" value="Arg file:"/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIConstants.TOOLTIP_APP_ARGFILE" type="code"/>
+                </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="textFieldArgFileApp">
-              <Properties>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="UIConstants.TOOLTIP_APP_ARGFILE" type="code"/>
-                </Property>
-              </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="textFieldArgDirApp">
-              <Properties>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="UIConstants.TOOLTIP_APP_ARGFILE" type="code"/>
-                </Property>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblTextFieldArgDirApp">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Arg dir"/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIConstants.TOOLTIP_APP_ARGDIR" type="code"/>
+                </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblTextFieldPathApp">
@@ -217,7 +230,10 @@
                     <Font bold="true" component="lblTextFieldPathApp" property="font" relativeSize="true" size="0"/>
                   </FontInfo>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Path"/>
+                <Property name="text" type="java.lang.String" value="Path:"/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIConstants.TOOLTIP_APP_PATH" type="code"/>
+                </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="textFieldPathApp">
@@ -233,6 +249,36 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBrowsePath1ActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JComboBox" name="comboWindowName">
+              <Properties>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="listWindowsModel" type="code"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblComboWindowName">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.editors2.FontEditor">
+                  <FontInfo relative="true">
+                    <Font bold="true" component="lblComboWindowName" property="font" relativeSize="true" size="0"/>
+                  </FontInfo>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Window:"/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIConstants.TOOLTIP_APP_WINDOW" type="code"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnRefreshWindows">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIUtils.ICON_REFRESH" type="code"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRefreshWindowsActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -265,7 +311,7 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace pref="21" max="32767" attributes="0"/>
+                      <EmptySpace pref="36" max="32767" attributes="0"/>
                       <Component id="lblHelpIcons" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="115" max="-2" attributes="0"/>
@@ -274,7 +320,7 @@
                       <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                       <Component id="scrollPaneTableControls" min="-2" pref="137" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="panelControlKeys" pref="88" max="32767" attributes="0"/>
+                      <Component id="panelControlKeys" pref="102" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>

@@ -63,16 +63,19 @@ public class Settings implements Persistable{
 	/**
 	 * Names of net interfaces the server should run on
 	 */
+	@JsonIgnore
 	private String serverInetName;
 	
 	/**
 	 * Ip of {@link #serverInetName}
 	 */
+	@JsonIgnore
 	private String serverLastIp;
 	
 	/**
 	 * Port the server should run on 
 	 */
+	@JsonIgnore
 	private Integer serverPort;
 	
 	/**

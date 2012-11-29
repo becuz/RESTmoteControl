@@ -25,7 +25,20 @@ public class CompletableListRenderer extends JLabel implements ListCellRenderer<
 	@Override
 	public Component getListCellRendererComponent(JList<? extends Completable> list,
 			Completable value, int index, boolean isSelected, boolean cellHasFocus) {
-		setIcon(value.isComplete() ? ICON_OK : ICON_WARNING);
+		try {
+			value.isComplete();
+			setIcon(ICON_OK);
+			setToolTipText(null);
+		} catch (IllegalArgumentException e){
+			setIcon(ICON_WARNING);
+			String tooltip = "<html>";
+			for(String error: e.getMessage().split("\n")){
+				tooltip += "<br/>" + error;
+			}
+			tooltip += "</html>";
+			setToolTipText(tooltip);
+		}
+		
 		setText(((Editable)value).getName());
 	    if(isSelected){
 	    	setForeground(list.getSelectionForeground());

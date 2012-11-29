@@ -53,31 +53,31 @@ public class MainWindow extends javax.swing.JFrame {
 	 * File chooser used in several points
 	 */
 	private static JFileChooser fc;
-	
+
     /**
      * Swing list model for {@link #listPaths} 
      */
-    private DefaultListModel<String> listPathsModel;
+    private DefaultListModel<String> listPathsModel = new DefaultListModel<String>();
     
     /**
      * Swing list model for {@link #comboInetNames} 
      */
-    private ListComboBoxModel<InetAddr> listInetNamesModel;
+    private ListComboBoxModel<InetAddr> listInetNamesModel = new ListComboBoxModel<InetAddr>();
 	
 	/**
      * Swing list model for {@link #comboInetNames} 
      */
-    private DefaultComboBoxModel<String> listIconThemesModel;
+    private DefaultComboBoxModel<String> listIconThemesModel = new DefaultComboBoxModel<String>();
     
     /**
      * Swing list model for {@link #listCategories} 
      */
-    private DefaultListModel<MediaCategory> listMediaCategoriesModel;
+    private DefaultListModel<MediaCategory> listMediaCategoriesModel = new DefaultListModel<MediaCategory>();
     
 	 /**
      * Swing list model for {@link #listApps} 
      */
-    private DefaultListModel<App> listAppsModel;
+    private DefaultListModel<App> listAppsModel = new DefaultListModel<App>();
     
 	/**
 	 * 
@@ -93,11 +93,6 @@ public class MainWindow extends javax.swing.JFrame {
      * Creates new form MainWindow
      */
     public MainWindow() {
-		listInetNamesModel = new ListComboBoxModel<InetAddr>();
-		listMediaCategoriesModel = new DefaultListModel<MediaCategory>();
-    	listPathsModel = new DefaultListModel<String>();
-		listIconThemesModel = new DefaultComboBoxModel<String>();
-		listAppsModel = new DefaultListModel<App>();
 		listAppsModel.addListDataListener(new ListDataListener() {
 			
 			@Override
@@ -133,19 +128,6 @@ public class MainWindow extends javax.swing.JFrame {
 		copyToView();
     }
 
-	private void buildListInetNamesModel(String selectInetName){
-		listInetNamesModel.clear();
-		listInetNamesModel.addAll(Server.getInstance().getLocalInetAddresses());
-		if (!Utils.isEmpty(selectInetName)){
-    		for(InetAddr inetAddr: listInetNamesModel.getAll()){
-    			if(inetAddr.getInetName().equals(selectInetName)){
-    				listInetNamesModel.setSelectedItem(inetAddr);
-    				break;
-    			}
-    		}
-    	}
-	}
-	
     /**
      * Builds the swing models
      */
@@ -198,7 +180,23 @@ public class MainWindow extends javax.swing.JFrame {
 		updateViewStatusServer();
 	}
 	
-
+	/**
+	 * Populate listInetNamesModel
+	 * @param selectInetName 
+	 */
+	private void buildListInetNamesModel(String selectInetName){
+		listInetNamesModel.clear();
+		listInetNamesModel.addAll(Server.getInstance().getLocalInetAddresses());
+		if (!Utils.isEmpty(selectInetName)){
+    		for(InetAddr inetAddr: listInetNamesModel.getAll()){
+    			if(inetAddr.getInetName().equals(selectInetName)){
+    				listInetNamesModel.setSelectedItem(inetAddr);
+    				break;
+    			}
+    		}
+    	}
+	}
+	
 	public static JFileChooser getFc() {
 		if (fc == null){
 			fc = new JFileChooser();
@@ -296,7 +294,7 @@ public class MainWindow extends javax.swing.JFrame {
         lblServerUrl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblServerUrl.setText("server URL");
 
-        btnRefreshInetNames.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/refresh.png"))); // NOI18N
+        btnRefreshInetNames.setIcon(UIUtils.ICON_REFRESH);
         btnRefreshInetNames.setFocusPainted(false);
         btnRefreshInetNames.addActionListener(formListener);
 
@@ -326,7 +324,7 @@ public class MainWindow extends javax.swing.JFrame {
                                     .addGroup(panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(lblStatusServer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(btnToggleServer, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                         .addComponent(btnRefreshInetNames)))
                 .addContainerGap())
         );
@@ -456,11 +454,11 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblIconsCredits)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
                 .addComponent(lblPaths)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnAddPath, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(btnAddPath, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnBrowsePath)
                     .addComponent(textFieldPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -478,7 +476,7 @@ public class MainWindow extends javax.swing.JFrame {
             panelSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelSettingsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelSettingsPnlServer, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelSettingsPnlServer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelSettingsPnlGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -531,7 +529,7 @@ public class MainWindow extends javax.swing.JFrame {
             panelAppsPnlListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAppsPnlListLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrollPaneListApps, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+                .addComponent(scrollPaneListApps)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelAppsPnlListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAddApp)
@@ -642,8 +640,8 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(lblCategoriesSummary)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelCategoriesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelEditCategories, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
-                    .addComponent(panelCategoriesPnlList, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE))
+                    .addComponent(panelEditCategories, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE)
+                    .addComponent(panelCategoriesPnlList, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE))
                 .addContainerGap())
         );
 

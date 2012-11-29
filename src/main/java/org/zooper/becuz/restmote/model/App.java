@@ -32,9 +32,19 @@ public class App implements Editable, Completable{
 	private Long id;
 
 	/**
+	 * 
+	 */
+	private Boolean active = true;
+	
+	/**
 	 * Has to be the same used in the controller!!
 	 */
 	private String name;
+	
+	/**
+	 * 
+	 */
+	private String windowName;
 	
 	/**
 	 * Full path of the executable. The name of the executable is enough if its path is in the system bin variable.
@@ -112,17 +122,25 @@ public class App implements Editable, Completable{
 	public void validate() throws IllegalArgumentException {}
 	
 	@Override
-	public boolean isComplete() {
+	public void isComplete() throws IllegalArgumentException {
+		StringBuffer errors = new StringBuffer();
 		if (Utils.isEmpty(getPath())){
-			return false;
+			errors.append("\nPath is mandatory");
+		} else if (!new File(getPath()).exists()){
+			errors.append("\nPath doesn't exist");
 		}
-		if (!new File(getPath()).exists()){
-			return false;
+		if (Utils.isEmpty(getWindowName())){
+			errors.append("\nWindow is mandatory");
 		}
 		if (controlsManager == null || controlsManager.getControls() == null || controlsManager.getControls().isEmpty()){
-			return false;
+			errors.append("\nNo controls are defined");
 		}
-		return true;
+		if (Utils.isEmpty(getArgumentsFile())){
+			errors.append("\nArg file is mandatory");
+		}
+		if (errors.length() > 0){
+			throw new IllegalArgumentException(errors.toString());
+		}
 	}
 
 	@Override
@@ -148,11 +166,25 @@ public class App implements Editable, Completable{
 		return getName();
 	}
 	
+	@Override
 	public String getName() {
 		return name;
 	}
+	@Override
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getWindowName() {
+		return windowName;
+	}
+	public void setWindowName(String windowName) {
+		this.windowName = windowName;
+	}
+	public Boolean getActive() {
+		return active;
+	}
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 	public String getPath() {
 		return path;

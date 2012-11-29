@@ -7,14 +7,20 @@ package org.zooper.becuz.restmote.ui.panels;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
+import org.zooper.becuz.restmote.business.ActiveAppBusiness;
+import org.zooper.becuz.restmote.http.InetAddr;
+import org.zooper.becuz.restmote.http.Server;
 
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.model.transport.ActiveApp;
 import org.zooper.becuz.restmote.ui.MainWindow;
 import org.zooper.becuz.restmote.ui.UIConstants;
 import org.zooper.becuz.restmote.ui.UIUtils;
@@ -35,20 +41,31 @@ public class PanelEditApps extends javax.swing.JPanel {
 	
 	private JList listApps;
 	
+	/**
+	 * Reference to the listAppsModel
+	 */
 	private DefaultListModel<App> listAppsModel;
 	
-	 /**
-     * 
+	/**
+     * Swing list model for {@link #comboInetNames} 
+     */
+    private DefaultComboBoxModel<String> listWindowsModel = new DefaultComboBoxModel<String>();
+	
+	/**
+     *  
      */
     private AppControlsTableModel appTableModel = new AppControlsTableModel();
 	
-	
+	/**
+	 * 
+	 * @param listApps
+	 * @param listAppsModel 
+	 */
 	public PanelEditApps(JList listApps, DefaultListModel<App> listAppsModel) {
 		this();
 		this.listApps = listApps;
 		this.listAppsModel = listAppsModel;
 	}
-	
 	
 	/**
 	 * Creates new form PanelEditApps
@@ -57,6 +74,29 @@ public class PanelEditApps extends javax.swing.JPanel {
 		initComponents();
 		tableControls.setDefaultRenderer(Control.class, new ControlRenderer());
 		tableControls.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		buildListWindowsModel();
+	}
+	
+	/**
+	 * Populate listInetNamesModel
+	 * @param selectInetName 
+	 */
+	private void buildListWindowsModel(){
+		listWindowsModel.removeAllElements();
+		List<ActiveApp> activeApps = new ActiveAppBusiness().getActiveApps(true);
+		for(ActiveApp activeApp: activeApps){
+			listWindowsModel.addElement(activeApp.getName());
+			//TODO listWindowsModel.setSelectedItem("");
+		}
+	}
+	
+	private void setSelectedWindow(String windowName){
+		if (windowName != null){
+			if (listWindowsModel.getIndexOf(windowName) == -1){
+				listWindowsModel.addElement(windowName);
+			}
+		}
+		listWindowsModel.setSelectedItem(windowName);
 	}
 	
 	public void editControl(Control control){
@@ -75,6 +115,7 @@ public class PanelEditApps extends javax.swing.JPanel {
 		} else {
 			appTableModel.clearData();
 		}
+		setSelectedWindow(app == null ? null : app.getWindowName());
     }
 	
 
@@ -104,6 +145,9 @@ public class PanelEditApps extends javax.swing.JPanel {
         lblTextFieldPathApp = new javax.swing.JLabel();
         textFieldPathApp = new javax.swing.JTextField();
         btnBrowsePath1 = new javax.swing.JButton();
+        comboWindowName = new javax.swing.JComboBox();
+        lblComboWindowName = new javax.swing.JLabel();
+        btnRefreshWindows = new javax.swing.JButton();
         panelControls = new javax.swing.JPanel();
         scrollPaneTableControls = new javax.swing.JScrollPane();
         tableControls = new ControlsTable();
@@ -131,7 +175,8 @@ public class PanelEditApps extends javax.swing.JPanel {
         });
 
         lblTextFieldNameApp.setFont(lblTextFieldNameApp.getFont().deriveFont(lblTextFieldNameApp.getFont().getStyle() | java.awt.Font.BOLD));
-        lblTextFieldNameApp.setText("Name");
+        lblTextFieldNameApp.setText("Name:");
+        lblTextFieldNameApp.setToolTipText(UIConstants.TOOLTIP_APP_NAME);
 
         textFieldNameApp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -140,22 +185,22 @@ public class PanelEditApps extends javax.swing.JPanel {
         });
 
         lblTextFieldExtensionsApp.setText("Extensions");
+        lblTextFieldExtensionsApp.setToolTipText(UIConstants.TOOLTIP_APP_EXTENSIONS);
 
         textFieldExtensionsApp.setToolTipText("Comma separated list of extensions. Example: .mp3, .m3u, .ogg");
 
         checkInstanceApp.setText("One Instance");
 
         lblTextFieldArgFileApp.setFont(lblTextFieldArgFileApp.getFont().deriveFont(lblTextFieldArgFileApp.getFont().getStyle() | java.awt.Font.BOLD));
-        lblTextFieldArgFileApp.setText("Arg file");
-
-        textFieldArgFileApp.setToolTipText(UIConstants.TOOLTIP_APP_ARGFILE);
-
-        textFieldArgDirApp.setToolTipText(UIConstants.TOOLTIP_APP_ARGFILE);
+        lblTextFieldArgFileApp.setText("Arg file:");
+        lblTextFieldArgFileApp.setToolTipText(UIConstants.TOOLTIP_APP_ARGFILE);
 
         lblTextFieldArgDirApp.setText("Arg dir");
+        lblTextFieldArgDirApp.setToolTipText(UIConstants.TOOLTIP_APP_ARGDIR);
 
         lblTextFieldPathApp.setFont(lblTextFieldPathApp.getFont().deriveFont(lblTextFieldPathApp.getFont().getStyle() | java.awt.Font.BOLD));
-        lblTextFieldPathApp.setText("Path");
+        lblTextFieldPathApp.setText("Path:");
+        lblTextFieldPathApp.setToolTipText(UIConstants.TOOLTIP_APP_PATH);
 
         textFieldPathApp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -170,18 +215,33 @@ public class PanelEditApps extends javax.swing.JPanel {
             }
         });
 
+        comboWindowName.setModel(listWindowsModel);
+
+        lblComboWindowName.setFont(lblComboWindowName.getFont().deriveFont(lblComboWindowName.getFont().getStyle() | java.awt.Font.BOLD));
+        lblComboWindowName.setText("Window:");
+        lblComboWindowName.setToolTipText(UIConstants.TOOLTIP_APP_WINDOW);
+
+        btnRefreshWindows.setIcon(UIUtils.ICON_REFRESH);
+        btnRefreshWindows.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshWindowsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelConfigurationLayout = new javax.swing.GroupLayout(panelConfiguration);
         panelConfiguration.setLayout(panelConfigurationLayout);
         panelConfigurationLayout.setHorizontalGroup(
             panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelConfigurationLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTextFieldArgFileApp, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblTextFieldPathApp, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblTextFieldNameApp, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblTextFieldArgFileApp)
+                    .addComponent(lblTextFieldPathApp)
+                    .addComponent(lblTextFieldNameApp)
+                    .addComponent(lblComboWindowName))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(comboWindowName, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelConfigurationLayout.createSequentialGroup()
                         .addComponent(textFieldArgFileApp, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -190,22 +250,26 @@ public class PanelEditApps extends javax.swing.JPanel {
                         .addComponent(textFieldArgDirApp, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(checkInstanceApp))
-                    .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(panelConfigurationLayout.createSequentialGroup()
-                            .addComponent(textFieldNameApp, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(lblTextFieldExtensionsApp)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(textFieldExtensionsApp, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(textFieldPathApp, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelConfigurationLayout.createSequentialGroup()
+                        .addComponent(textFieldNameApp, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblTextFieldExtensionsApp)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textFieldExtensionsApp, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textFieldPathApp))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBrowsePath1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnBrowsePath1, javax.swing.GroupLayout.DEFAULT_SIZE, 68, Short.MAX_VALUE)
+                    .addComponent(btnRefreshWindows, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
+
+        panelConfigurationLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnBrowsePath1, btnRefreshWindows});
+
         panelConfigurationLayout.setVerticalGroup(
             panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelConfigurationLayout.createSequentialGroup()
-                .addContainerGap(147, Short.MAX_VALUE)
+                .addContainerGap(148, Short.MAX_VALUE)
                 .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(textFieldNameApp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTextFieldNameApp)
@@ -213,9 +277,15 @@ public class PanelEditApps extends javax.swing.JPanel {
                     .addComponent(textFieldExtensionsApp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textFieldPathApp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTextFieldPathApp)
-                    .addComponent(btnBrowsePath1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboWindowName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblComboWindowName)
+                    .addComponent(btnRefreshWindows))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnBrowsePath1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(textFieldPathApp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblTextFieldPathApp)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(textFieldArgFileApp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -225,6 +295,8 @@ public class PanelEditApps extends javax.swing.JPanel {
                     .addComponent(checkInstanceApp))
                 .addGap(195, 195, 195))
         );
+
+        panelConfigurationLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnBrowsePath1, btnRefreshWindows});
 
         jTabbedPane.addTab("Configuration", panelConfiguration);
 
@@ -259,7 +331,7 @@ public class PanelEditApps extends javax.swing.JPanel {
         panelControlsLayout.setVerticalGroup(
             panelControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelControlsLayout.createSequentialGroup()
-                .addContainerGap(21, Short.MAX_VALUE)
+                .addContainerGap(36, Short.MAX_VALUE)
                 .addComponent(lblHelpIcons)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -268,7 +340,7 @@ public class PanelEditApps extends javax.swing.JPanel {
                 .addGap(3, 3, 3)
                 .addComponent(scrollPaneTableControls, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelControlKeys, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                .addComponent(panelControlKeys, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -290,14 +362,14 @@ public class PanelEditApps extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 444, Short.MAX_VALUE)
+                .addGap(0, 447, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditAppCancel)
                     .addComponent(btnEditAppSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 26, Short.MAX_VALUE)))
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -372,13 +444,22 @@ public class PanelEditApps extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_textFieldPathAppActionPerformed
 
+    private void btnRefreshWindowsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshWindowsActionPerformed
+        buildListWindowsModel();
+		int selectedIndex = listApps.getSelectedIndex();
+		setSelectedWindow(listAppsModel.getElementAt(selectedIndex).getWindowName());
+    }//GEN-LAST:event_btnRefreshWindowsActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBrowsePath1;
     private javax.swing.JButton btnEditAppCancel;
     private javax.swing.JButton btnEditAppSave;
+    private javax.swing.JButton btnRefreshWindows;
     private javax.swing.JCheckBox checkInstanceApp;
+    private javax.swing.JComboBox comboWindowName;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane;
+    private javax.swing.JLabel lblComboWindowName;
     private javax.swing.JLabel lblHelpIcons;
     private javax.swing.JLabel lblHelpTable;
     private javax.swing.JLabel lblTextFieldArgDirApp;

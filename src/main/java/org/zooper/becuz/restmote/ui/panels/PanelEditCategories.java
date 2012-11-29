@@ -14,6 +14,7 @@ import javax.swing.JList;
 
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.MediaCategory;
+import org.zooper.becuz.restmote.ui.UIConstants;
 import org.zooper.becuz.restmote.ui.UIUtils;
 import org.zooper.becuz.restmote.utils.Utils;
 
@@ -61,6 +62,7 @@ public class PanelEditCategories extends javax.swing.JPanel {
         textFieldDescriptionCategory.setText(mediaCategory == null ? "" : mediaCategory.getDescription());
         textFieldExtensionsCategory.setText(mediaCategory == null ? "" : Utils.join(mediaCategory.getExtensions(), ","));
 		comboCategoryApp.setSelectedItem(mediaCategory == null ? null : mediaCategory.getApp());
+		checkCategoryActive.setSelected(mediaCategory == null ? null : mediaCategory.getActive());
     }
 
 	@Override
@@ -88,16 +90,20 @@ public class PanelEditCategories extends javax.swing.JPanel {
         btnEditCategorySave = new javax.swing.JButton();
         comboCategoryApp = new javax.swing.JComboBox<App>();
         lblCategoryApp = new javax.swing.JLabel();
+        checkCategoryActive = new javax.swing.JCheckBox();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Edit"));
 
         lblTextFieldNameCategory.setFont(lblTextFieldNameCategory.getFont().deriveFont(lblTextFieldNameCategory.getFont().getStyle() | java.awt.Font.BOLD));
-        lblTextFieldNameCategory.setText("Name");
+        lblTextFieldNameCategory.setText("Name:");
+        lblTextFieldNameCategory.setToolTipText(UIConstants.TOOLTIP_CATEGORY_NAME);
 
-        lblTextFieldDescriptionCategory.setText("Description");
+        lblTextFieldDescriptionCategory.setText("Description:");
+        lblTextFieldDescriptionCategory.setToolTipText(UIConstants.TOOLTIP_CATEGORY_DESCRIPTION);
 
         lblTextFieldExtensionsCategory.setFont(lblTextFieldExtensionsCategory.getFont().deriveFont(lblTextFieldExtensionsCategory.getFont().getStyle() | java.awt.Font.BOLD));
-        lblTextFieldExtensionsCategory.setText("Extensions");
+        lblTextFieldExtensionsCategory.setText("Extensions:");
+        lblTextFieldExtensionsCategory.setToolTipText(UIConstants.TOOLTIP_CATEGORY_EXTENSIONS);
 
         btnEditCategoryCancel.setText("Cancel");
         btnEditCategoryCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -115,7 +121,11 @@ public class PanelEditCategories extends javax.swing.JPanel {
 
         comboCategoryApp.setModel(comboAppsModel);
 
-        lblCategoryApp.setText("App");
+        lblCategoryApp.setText("App:");
+        lblCategoryApp.setToolTipText(UIConstants.TOOLTIP_CATEGORY_APP);
+
+        checkCategoryActive.setText("Active");
+        checkCategoryActive.setToolTipText(UIConstants.TOOLTIP_CATEGORY_ACTIVE);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -141,6 +151,10 @@ public class PanelEditCategories extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEditCategoryCancel)
                 .addGap(10, 10, 10))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(75, 75, 75)
+                .addComponent(checkCategoryActive)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnEditCategoryCancel, btnEditCategorySave});
@@ -148,7 +162,8 @@ public class PanelEditCategories extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(checkCategoryActive)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTextFieldNameCategory)
                     .addComponent(textFieldNameCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -168,7 +183,7 @@ public class PanelEditCategories extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditCategorySave)
                     .addComponent(btnEditCategoryCancel))
-                .addContainerGap(126, Short.MAX_VALUE))
+                .addContainerGap(112, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnEditCategoryCancel, btnEditCategorySave});
@@ -187,6 +202,7 @@ public class PanelEditCategories extends javax.swing.JPanel {
             mediaCategory.setDescription(textFieldDescriptionCategory.getText());
             mediaCategory.setExtensions(new HashSet<>(Arrays.asList(textFieldExtensionsCategory.getText().split(","))));
 			mediaCategory.setApp(comboAppsModel.getSelectedItem() == null ? null : (App) comboAppsModel.getSelectedItem());
+			mediaCategory.setActive(checkCategoryActive.isSelected());
         }
         listCategories.clearSelection();
     }//GEN-LAST:event_btnEditCategorySaveActionPerformed
@@ -194,6 +210,7 @@ public class PanelEditCategories extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditCategoryCancel;
     private javax.swing.JButton btnEditCategorySave;
+    private javax.swing.JCheckBox checkCategoryActive;
     private javax.swing.JComboBox comboCategoryApp;
     private javax.swing.JLabel lblCategoryApp;
     private javax.swing.JLabel lblTextFieldDescriptionCategory;

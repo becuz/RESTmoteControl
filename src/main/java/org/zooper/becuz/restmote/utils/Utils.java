@@ -114,8 +114,7 @@ public class Utils {
 	public static String getRootDir() {
 		if (restmoteRootDirAbsolutePath == null) {
 			restmoteRootDirAbsolutePath = Utils.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-			restmoteRootDirAbsolutePath = restmoteRootDirAbsolutePath.substring(
-					/* TODO check why 1 */ getOs().equals(OS.WINDOWS) ? 1 : 0, restmoteRootDirAbsolutePath.length() - 1);
+			restmoteRootDirAbsolutePath = restmoteRootDirAbsolutePath.substring(getOs().equals(OS.WINDOWS) ? 1 : 0, restmoteRootDirAbsolutePath.length() - 1);
 			restmoteRootDirAbsolutePath = restmoteRootDirAbsolutePath.substring(0, restmoteRootDirAbsolutePath.lastIndexOf("/") + 1);
 			String[] binPaths = {"build/", "bin/"}; //each IDE and OS has its own mechanisms
 			for(String binPath : binPaths){

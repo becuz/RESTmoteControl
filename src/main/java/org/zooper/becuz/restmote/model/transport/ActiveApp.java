@@ -104,7 +104,7 @@ public class ActiveApp implements Comparable<ActiveApp>{
 
 	public boolean isInstanceOf(App app) {
 		if (app == null) return false;
-		return getName().toLowerCase().equals(app.getName().toLowerCase());
+		return getName().toLowerCase().equals(app.getWindowName().toLowerCase());
 	}
 	
 	

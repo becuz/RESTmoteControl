@@ -16,7 +16,8 @@ public class ModelFactoryWindows extends ModelFactoryAbstract{
 	@Override
 	public App getAppMovies(){
 		if (appMovies == null){
-			appMovies = new App("smplayer", "C:\\Program Files (x86)\\SMPlayer\\smplayer.exe");
+			appMovies = new App("Smplayer", "C:\\Program Files (x86)\\SMPlayer\\smplayer.exe");
+			appMovies.setWindowName("smplayer");
 			appMovies.addExtension("avi");
 			appMovies.setForceOneInstance(true);
 			ControlsManager controlAppMovies = new ControlsManager();
@@ -39,7 +40,8 @@ public class ModelFactoryWindows extends ModelFactoryAbstract{
 	@Override
 	public App getAppMusic(){
 		if (appMusic == null){
-			appMusic = new App("winamp", "C:\\Program Files (x86)\\Winamp\\winamp.exe");
+			appMusic = new App("Winamp", "C:\\Program Files (x86)\\Winamp\\winamp.exe");
+			appMusic.setWindowName("winamp");
 			appMusic.setArgumentsDir(Constants.APP_ARGUMENT_DIR);
 			appMusic.addExtension("mp3");
 			appMusic.addExtension("ogg");
@@ -62,7 +64,8 @@ public class ModelFactoryWindows extends ModelFactoryAbstract{
 	@Override
 	public App getAppPics(){
 		if (appPics == null){
-			appPics = new App("i_view32", "C:\\Program Files (x86)\\IrfanView\\i_view32.exe");
+			appPics = new App("Irfan View", "C:\\Program Files (x86)\\IrfanView\\i_view32.exe");
+			appPics.setWindowName("i_view32");
 			appPics.addExtension("jpg");
 			appPics.addExtension("gif");
 			appPics.addExtension("png");

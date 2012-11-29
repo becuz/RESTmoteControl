@@ -31,7 +31,8 @@ public class ModelFactoryLinux extends ModelFactoryAbstract{
 	@Override
 	public App getAppMusic(){
 		if (appMusic == null){
-			appMusic = new App("rhythmbox", "rhythmbox");
+			appMusic = new App("Rhythmbox", "rhythmbox");
+			appMusic.setWindowName("rhythmbox");
 			appMusic.addExtension("mp3");
 			//appMusic.addExtension("ogg");
 			appMusic.setForceOneInstance(false);
@@ -62,7 +63,8 @@ public class ModelFactoryLinux extends ModelFactoryAbstract{
 	@Override
 	public App getAppPics(){
 		if (appPics == null){
-			appPics = new App("eog", "eog");
+			appPics = new App("Gnome Image Viewer", "eog");
+			appPics.setWindowName("eog");
 			appPics.addExtension("jpg");
 			appPics.addExtension("gif");
 			appPics.addExtension("png");

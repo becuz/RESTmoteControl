@@ -83,11 +83,14 @@ public class MediaCategory implements Editable, Completable{
 	}
 	
 	@Override
-	public boolean isComplete() {
+	public void isComplete() throws IllegalArgumentException {
+		StringBuffer errors = new StringBuffer();
 		if (extensions == null || extensions.isEmpty()){
-			return false;
+			errors.append("\nExtensions are mandatory"); //TODO
 		}
-		return true;
+		if (errors.length() > 0){
+			throw new IllegalArgumentException(errors.toString());
+		}
 	}
 	
 	@Override
