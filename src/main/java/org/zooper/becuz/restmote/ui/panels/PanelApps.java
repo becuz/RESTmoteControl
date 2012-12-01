@@ -1,12 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.zooper.becuz.restmote.ui.panels;
 
 import java.util.List;
-
-import javax.swing.DefaultListModel;
 
 import org.zooper.becuz.restmote.business.AppBusiness;
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
@@ -17,19 +11,14 @@ import org.zooper.becuz.restmote.model.interfaces.Persistable;
  *
  * @author admin
  */
-public class PanelApps extends javax.swing.JPanel implements PanelPersistables{
+public class PanelApps extends PanelPersistables{
 
-	/**
-     * Swing list model
-     */
-    private DefaultListModel<Persistable> listModel = new DefaultListModel<Persistable>();
-	
 	/**
 	 * Creates new form PanelApps
 	 */
 	public PanelApps() {
 		initComponents();
-		panelEditApps.setEnabled(false);
+		panelEditApp.setEnabled(false);
 	}
 
 	/**
@@ -42,7 +31,7 @@ public class PanelApps extends javax.swing.JPanel implements PanelPersistables{
     private void initComponents() {
 
         panelListPersistable = new org.zooper.becuz.restmote.ui.panels.PanelListPersistable(this);
-        panelEditApps = new org.zooper.becuz.restmote.ui.panels.PanelEditApps(panelListPersistable);
+        panelEditApp = new org.zooper.becuz.restmote.ui.panels.PanelEditApp(panelListPersistable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -51,20 +40,20 @@ public class PanelApps extends javax.swing.JPanel implements PanelPersistables{
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelListPersistable, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelEditApps, javax.swing.GroupLayout.PREFERRED_SIZE, 647, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelEditApp, javax.swing.GroupLayout.PREFERRED_SIZE, 647, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelListPersistable, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
-                    .addComponent(panelEditApps, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelListPersistable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelEditApp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.zooper.becuz.restmote.ui.panels.PanelEditApps panelEditApps;
+    private org.zooper.becuz.restmote.ui.panels.PanelEditApp panelEditApp;
     private org.zooper.becuz.restmote.ui.panels.PanelListPersistable panelListPersistable;
     // End of variables declaration//GEN-END:variables
 
@@ -86,12 +75,7 @@ public class PanelApps extends javax.swing.JPanel implements PanelPersistables{
 
 	@Override
 	public void edit(Persistable p) {
-		panelEditApps.editApp((App)p);
-	}
-
-	@Override
-	public DefaultListModel<Persistable> getListModel() {
-		return listModel;
+		panelEditApp.edit((App)p);
 	}
 
 	@Override

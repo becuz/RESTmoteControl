@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.zooper.becuz.restmote.ui.panels;
 
 import java.io.File;
@@ -10,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.ListSelectionModel;
 
@@ -32,12 +29,8 @@ import org.zooper.becuz.restmote.utils.Utils;
  * @author bebo
  */
 @SuppressWarnings("serial")
-public class PanelEditApps extends javax.swing.JPanel {
+public class PanelEditApp extends PanelPersistable {
 
-	private boolean modified = false;
-	
-	private PanelListPersistable panelListPersistable;
-	
 	/**
      * Swing list model for {@link #comboInetNames} 
      */
@@ -49,19 +42,23 @@ public class PanelEditApps extends javax.swing.JPanel {
     private AppControlsTableModel appTableModel = new AppControlsTableModel();
 	
 
-	public PanelEditApps(PanelListPersistable panelListPersistable) {
+	public PanelEditApp(PanelListPersistable panelListPersistable) {
 		this();
 		this.panelListPersistable = panelListPersistable;
 	}
 	
 	/**
-	 * Creates new form PanelEditApps
+	 * Creates new form PanelEditAppttt
 	 */
-	public PanelEditApps() {
+	public PanelEditApp() {
 		initComponents();
+		jComponentsToObserve = new JComponent[]{
+				textFieldNameApp, textFieldExtensionsApp, checkInstanceApp,
+				textFieldArgFileApp, textFieldArgDirApp, textFieldPathApp, comboWindowName};
 		tableControls.setDefaultRenderer(Control.class, new ControlRenderer());
 		tableControls.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		buildListWindowsModel();
+		activateViewChangesListener();
 	}
 	
 	/**
@@ -92,8 +89,10 @@ public class PanelEditApps extends javax.swing.JPanel {
 		panelControlKeys.setControl(control);
 	}
 	
-	public void editApp(App app){
-		setEnabled(app != null);
+	@Override
+	public void edit(Persistable p){
+		super.edit(p);
+		App app = (App) p;
         textFieldNameApp.setText(app == null ? "" : app.getName());
         textFieldExtensionsApp.setText(app == null ? "" : Utils.join(app.getExtensions(), ","));
 		checkInstanceApp.setSelected(app == null ? false : app.isForceOneInstance());
@@ -106,6 +105,7 @@ public class PanelEditApps extends javax.swing.JPanel {
 			appTableModel.clearData();
 		}
 		setSelectedWindow(app == null ? null : app.getWindowName());
+		listenViewChanges = true;
     }
 	
 

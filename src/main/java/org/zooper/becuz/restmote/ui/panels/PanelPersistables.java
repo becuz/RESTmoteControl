@@ -1,22 +1,43 @@
 package org.zooper.becuz.restmote.ui.panels;
 
 import javax.swing.DefaultListModel;
-
+import javax.swing.JPanel;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
 
-/**
- *
- * @author bebo
- */
-public interface PanelPersistables {
+public abstract class PanelPersistables extends JPanel{
+
+	/**
+     * Swing list model
+     */
+    protected DefaultListModel<Persistable> listModel = new DefaultListModel<Persistable>();
 	
-	public void copyToView();
+	/**
+	 * 
+	 */
+	public abstract void copyToView();
 	
-	public void save();
+	/**
+	 * 
+	 */
+	public abstract void save();
 	
-	public Persistable getNew();
+	/**
+	 * 
+	 * @return 
+	 */
+	public abstract Persistable getNew();
 	
-	public void edit(Persistable p);
+	/**
+	 * 
+	 * @param p 
+	 */
+	public abstract void edit(Persistable p);
 	
-	public DefaultListModel<Persistable> getListModel();
+	/**
+	 * 
+	 * @return 
+	 */
+	public DefaultListModel<Persistable> getListModel(){
+		return listModel;
+	};
 }

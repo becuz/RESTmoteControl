@@ -1,20 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.zooper.becuz.restmote.ui.panels;
 
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
-
 import javax.swing.DefaultComboBoxModel;
-
+import javax.swing.JComponent;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
 import org.zooper.becuz.restmote.ui.UIConstants;
-import org.zooper.becuz.restmote.ui.UIUtils;
 import org.zooper.becuz.restmote.utils.Constants;
 import org.zooper.becuz.restmote.utils.Utils;
 
@@ -23,24 +17,31 @@ import org.zooper.becuz.restmote.utils.Utils;
  * @author bebo
  */
 @SuppressWarnings("serial")
-public class PanelEditCategories extends javax.swing.JPanel {
+public class PanelEditCategory extends PanelPersistable {
 
-	private PanelListPersistable panelListPersistable;
-	
 	private DefaultComboBoxModel<App> comboAppsModel = new DefaultComboBoxModel<App>();
 	
+
 	/**
-	 * Creates new form PanelEditCategories
+	 * Creates new form PanelEditCategory
 	 */
-	public PanelEditCategories() {
+	public PanelEditCategory() {
 		initComponents();
+		jComponentsToObserve = new JComponent[]{
+			textFieldNameCategory, textFieldDescriptionCategory, textFieldExtensionsCategory, 
+			comboCategoryApp, checkCategoryActive};
+		activateViewChangesListener();
 	}
 	
-	public PanelEditCategories(PanelListPersistable panelListPersistable) {
+	public PanelEditCategory(PanelListPersistable panelListPersistable) {
 		this();
 		this.panelListPersistable = panelListPersistable;
 	}
 	
+	/**
+	 * Set the the model of comboAppsModel, with the updated apps list
+	 * @param apps 
+	 */
 	public void setModelAppData(Enumeration<Persistable> apps){
 		App prevSelectedApp = (App) comboAppsModel.getSelectedItem(); 
 		comboAppsModel.removeAllElements();
@@ -53,8 +54,10 @@ public class PanelEditCategories extends javax.swing.JPanel {
 		}
 	}
 	
-	public void editMediaCategory(MediaCategory mediaCategory){
-		setEnabled(mediaCategory != null);
+	@Override
+	public void edit(Persistable p){
+		super.edit(p);
+		MediaCategory mediaCategory = (MediaCategory) p;
         textFieldNameCategory.setText(mediaCategory == null ? "" : mediaCategory.getName());
         textFieldDescriptionCategory.setText(mediaCategory == null ? "" : mediaCategory.getDescription());
         textFieldExtensionsCategory.setText(mediaCategory == null ? "" : Utils.join(mediaCategory.getExtensions(), ","));
@@ -64,13 +67,10 @@ public class PanelEditCategories extends javax.swing.JPanel {
 		textFieldDescriptionCategory.setEnabled(mediaCategory != null && !mediaCategory.getName().equals(Constants.MEDIA_ROOT));
 		textFieldExtensionsCategory.setEnabled(mediaCategory != null && !mediaCategory.getName().equals(Constants.MEDIA_ROOT));
 		comboCategoryApp.setEnabled(mediaCategory != null && !mediaCategory.getName().equals(Constants.MEDIA_ROOT));
+		listenViewChanges = true;
     }
 
-	@Override
-	public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
-		UIUtils.setEnabledRecursive(this, enabled);
-	}
+	
 	
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -221,4 +221,8 @@ public class PanelEditCategories extends javax.swing.JPanel {
     private javax.swing.JTextField textFieldExtensionsCategory;
     private javax.swing.JTextField textFieldNameCategory;
     // End of variables declaration//GEN-END:variables
+
+	
+
+	
 }
