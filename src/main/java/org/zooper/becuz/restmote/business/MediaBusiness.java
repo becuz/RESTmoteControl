@@ -1,6 +1,7 @@
 package org.zooper.becuz.restmote.business;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -120,6 +121,35 @@ public class MediaBusiness extends BusinessAbstract{
 	}
 	
 	/**
+	 * Filter for {@link MediaBusiness#retrieveMedias(String, Integer, List, String)} 
+	 * @author bebo
+	 */
+	public class MediaFilter implements FileFilter {
+
+		private List<String> extensions;
+		private Pattern pattern;
+		
+		public MediaFilter(List<String> extensions, String patternString) {
+			super();
+			this.extensions = extensions;
+			if (!Utils.isEmpty(patternString)){
+				pattern = Pattern.compile(patternString);
+			}
+		}
+
+		@Override
+		public boolean accept(File pathname) {
+			if (pathname.isDirectory()) return true;
+			if ((pattern == null || pattern.matcher(pathname.getAbsolutePath()).matches()) 
+					&& (extensions == null || extensions.isEmpty() || extensions.contains(Utils.getFileExtension(pathname.getAbsolutePath()).toLowerCase()))){
+				return true;
+			}
+			return false;
+		}
+		
+	}
+	
+	/**
 	 * 
 	 * @param path root path for the scan
 	 * @param depth negative to scan everything
@@ -128,37 +158,21 @@ public class MediaBusiness extends BusinessAbstract{
 	 * @return
 	 */
 	public List<Media> retrieveMedias(String path, Integer depth, List<String> extensions, String pattern){
-		//TODO, use FileFilter and FilenameFilter
 		log.debug("getMedia() path: " + path + ", depth: " + depth + ", extensions: " + extensions + ", pattern: " + pattern);
-		Pattern p = null;
-		if (!Utils.isEmpty(pattern)){
-			p = Pattern.compile(pattern);
-		}
 		List<Media> results = new ArrayList<Media>();
 		depth = depth == null ? getSettingsBusiness().get().getScanDepth() : depth;
 		if (depth != 0) { //-1 is a valid value, means go deep indefinitely, as there are files.
 			File f = new File(path);
 			if (f.exists() && f.isDirectory()){
-				File[] children = f.listFiles();
+				File[] children = f.listFiles(new MediaFilter(extensions, pattern));
 				if (children != null){
 					for(File child: children){
 						String childPath = child.getAbsolutePath();
-						boolean fileAllowed = false;
-						if (child.isDirectory()){
-							fileAllowed = true;
-						} else {
-							if ((p == null || p.matcher(childPath).matches()) 
-									&& (extensions == null || extensions.isEmpty() || extensions.contains(Utils.getFileExtension(childPath).toLowerCase()))){
-								fileAllowed = true;
-							}
+						Media mediaChild = new Media(childPath);
+						if (!child.isDirectory()){
+							mediaChild.setFile(true);	//let's leave it at null in case it's a directory: less noise as we avoid serialize nulls
 						}
-						if (fileAllowed){
-							Media mediaChild = new Media(childPath);
-							if (!child.isDirectory()){
-								mediaChild.setFile(true);	//let's leave it at null in case it's a directory: less noise as we avoid serialize nulls
-							}
-							results.add(mediaChild);							
-						}
+						results.add(mediaChild);							
 					}
 					if (depth != 1){ 
 						for (Media mediaChild: results){

@@ -16,19 +16,30 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.zooper.becuz.restmote.model.App;
+import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
+import org.zooper.becuz.restmote.rest.exceptions.NotAcceptableException;
+import org.zooper.becuz.restmote.rest.exceptions.ServerException;
 
 /**
  * 
- * TODO GET	/activeapps/{name}?refresh=true						//name is an App name
- * 
  * GET		/activeapps?refresh=true							//get List<ActiveApp>
- * GET		/activeapps/{handle}?refresh=true					//get ActiveApp
+ * GET		/activeapps/handle/1234?refresh=true				//get ActiveApp
+ * GET	    /activeapps/winamp?refresh=true						//get ActiveApp by App.name
  * 
- * POST		/activeapps/{handle}/focus							//put the handle application on focus
+ * POST		/activeapps/handle/1234/focus						//put the handle application on focus
  * 
- * DELETE	/activeapps/{handle}								//close the application by single handle
+ * DELETE	/activeapps/handle/1234								//close the application by single handle
  * DELETE	/activeapps/					JSON List<String>	//close the applications by handles
+ * DELETE	/activeapps/winamp 									//close the ActiveApp by App#name
+ * DELETE   /activeapps/ext/mp3									//close the ActiveApp by App#extension
+ * 
+ * POST		/activeapps/winamp/control/PAUSE					//send the command PAUSE to one instance of winamp (App#name)
+ * POST		/activeapps/winamp/k/c								//send the keyboard char to one instance of winamp (App#name)
+ * POST		/activeapps/ext/mp3/control/PAUSE					//whatever application is configured on the server to manage mp3 files (App#extension)
+ * POST		/activeapps/handle/1234/control/PAUSE				//specific window (ActiveApp#handle)
+ * POST		/activeapps/control/PAUSE							//currently on focus
  * 
  * 
  * @author bebo
@@ -61,12 +72,11 @@ public class ActiveAppResource extends AbstractResource {
 	}
 	
 	/**
-	 * Return the running applications
 	 * @param refresh rebuild the list
 	 * @return
 	 */
 	@GET
-	@Path("{handle}")
+	@Path("/handle/{handle}")
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public ActiveApp getActiveApp(
 			@PathParam("handle") String handle,
@@ -76,12 +86,27 @@ public class ActiveAppResource extends AbstractResource {
 	}
 	
 	/**
+	 * @param appName {@link App#name}
+	 * @param refresh rebuild the list
+	 * @return
+	 */
+	@GET
+	@Path("{appName}")
+	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
+	public List<ActiveApp> getActiveAppsByAppName(
+			@PathParam("appName") String appName,
+			@QueryParam("refresh") String refresh){
+		log.info("ActiveAppResource getActiveApp appName " + appName + ", refresh: " + refresh);
+		return getActiveAppBusiness().getActiveAppsByAppName(appName, "true".equals(refresh));
+	}
+	
+	/**
 	 * Close the running applications with the specified handles
 	 * @param handles
 	 * @see #listApps(boolean)
 	 */
 	@DELETE
-	@Path("{handle}")
+	@Path("/handle/{handle}")
 	@Consumes({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public void killApps(@PathParam("handle") String handle){
 		log.info("killApps handle: " + handle);
@@ -109,11 +134,151 @@ public class ActiveAppResource extends AbstractResource {
 	}
 	
 	/**
+	 * @return
+	 */
+	@DELETE
+	@Path("/{appName}")
+	public void closeByName(
+			@PathParam("appName") String appName){
+		log.info("AppResource delete, name: " + appName);
+		try {
+			getRemoteControlBusiness().closeMedia(getAppBusiness().getByName(appName));
+		} catch (Exception e) {
+			throw new WebApplicationException(Response.status(500).entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());
+		}
+	}
+	
+	/**
+	 * @return
+	 */
+	@DELETE
+	@Path("/ext/{extension}")
+	public void closeByExtension(
+			@PathParam("extension") String extension){
+		log.info("AppResource delete, extension: " + extension);
+		try {
+			getRemoteControlBusiness().closeMedia(getAppBusiness().getByExtension(extension));
+		} catch (Exception e) {
+			throw new WebApplicationException(Response.status(500).entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());
+		}
+	}
+	
+	// ---------------- Control ------------------------
+	
+	/**
+	 * Send the specified control to the first running instance of the app with name appName.
+	 * On the server an App configured with that name must exists. 
+	 * @param appName, example: "WINAMP"
+	 * @param control, example: "PAUSE"
+	 */
+	@POST
+	@Path("/{appName}/control/{control}")
+	public void controlByAppName(
+			@PathParam("appName") String appName, 
+			@PathParam("control") String control){
+		log.info("controlByAppName appName: " + appName + ", control: " + control);
+		try {
+			getRemoteControlBusiness().control(appName, control, null);
+		} catch (IllegalArgumentException e) {
+			throw new NotAcceptableException(e.getMessage());
+		} catch (Exception e) {
+			log.info(e.getMessage() + " " + e.getCause());
+			throw new ServerException(e.getMessage());
+		}
+	}
+	
+	/**
+	 * Send the specified control to the first running instance of the app with name appName.
+	 * On the server an App configured with that name doesn't have to exists. 
+	 * @param appName, example: "WINAMP"
+	 * @param shortcut, example: 'c'
+	 */
+	@POST
+	@Path("/{appName}/k/{shortcut}")
+	public void controlByAppNameAndShortcut(
+			@PathParam("appName") String appName, 
+			@PathParam("shortcut") String shortcut){
+		log.info("controlByAppNameAndShortcut appName: " + appName + " shortcut: " + shortcut);
+		try {
+			getRemoteControlBusiness().control(appName, null, shortcut.charAt(0));
+		} catch (Exception e) {
+			log.error(e.toString());
+			throw new ServerException(e.getMessage());
+		}
+	}
+	
+	/**
+	 * Send the specified control to the first running instance of the app that handles the specified file extension.
+	 * On the server an App configured with that name must exists. 
+	 * @param extension, example: "mp3"
+	 * @param control, example: "PAUSE"
+	 */
+	@POST
+	@Path("/ext/{extension}/control/{controlName}")
+	public void controlByExtension(
+			@PathParam("extension") String extension, 
+			@PathParam("controlName") String controlName){
+		log.info("controlByExtension extension: " + extension + " control: " + controlName);
+		MediaCategory mediaCategory = getMediaCategoryBusiness().getByExtension(extension);
+		App app = null;
+		if (mediaCategory != null){
+			app = mediaCategory.getApp();
+		}
+		if (app == null){
+			app = getAppBusiness().getByExtension(extension);
+		}
+		try {
+			getRemoteControlBusiness().control(app, controlName, null);
+		} catch (Exception e) {
+			log.error(e.toString());
+			throw new ServerException(e.getMessage());
+		}
+	}
+	
+	/**
+	 * Send the specified control to the application with the specified handle.
+	 * On the server that configured App must exists. 
+	 * @param handle
+	 * @param control, example: "PAUSE"
+	 * @see PcResource#listApps(boolean)
+	 */
+	@POST
+	@Path("/handle/{handle}/control/{control}")
+	public void controlByHandle(
+			@PathParam("handle") String handle, 
+			@PathParam("control") String control){
+		log.info("controlByHandle handle: " + handle + " control: " + control);
+		try {
+			getRemoteControlBusiness().controlByHandle(handle, control, null);
+		} catch (Exception e) {
+			log.error(e.toString());
+			throw new ServerException(e.getMessage());
+		}
+	}
+	
+	/**
+	 * Send the specified control to the application that has focus.
+	 * On the server that configured App must exists.
+	 * @param control, example: "PAUSE"
+	 */
+	@POST
+	@Path("/control/{control}")
+	public void control(@PathParam("control") String control){
+		log.info("control control: " + control);
+		try {
+			getRemoteControlBusiness().controlByHandle(null, control, null);
+		} catch (Exception e) {
+			log.error(e.toString());
+			throw new ServerException(e.getMessage());
+		}
+	}
+	
+	/**
 	 * Gives the focus and bring to front the application with the specified handle
 	 * @param handle
 	 */
 	@POST
-	@Path("{handle}/focus")
+	@Path("/handle/{handle}/focus")
 	public void focus(@PathParam("handle") String handle){
 		log.info("focus handle: " + handle);
 		try {

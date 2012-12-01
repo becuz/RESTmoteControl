@@ -22,11 +22,11 @@ import javax.swing.JTable;
 @SuppressWarnings("serial")
 public class ControlsTable extends JTable implements DropTargetListener {
 	
+	@SuppressWarnings("unused")
 	private DropTarget target;
 
 	public ControlsTable() {
 		target = new DropTarget(this, this);
-		// setTransferHandler(new MyTransferHandler());
 	}
 
 	@Override
@@ -54,7 +54,6 @@ public class ControlsTable extends JTable implements DropTargetListener {
 		int col = columnAtPoint(p);
 		try {
 			String imgName = (String) t.getTransferData(d[0]);
-			//TODO can't add two pictures'
 			((AppControlsTableModel)getModel()).setImageAt(imgName, row, col);
 			changeSelection(row, col, false, false);
 		} catch (UnsupportedFlavorException ex) {

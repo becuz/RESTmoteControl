@@ -33,7 +33,7 @@ public class MediaRootResource extends AbstractResource{
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public List<MediaRoot> getMediaRoots(){
-		log.info("getMediaRoots");
+		log.debug("getMediaRoots");
 		getMediaBusiness().rootScan();
 		return getMediaBusiness().getMediaRoots();
 	}

@@ -4,16 +4,12 @@ var data;
 
 var currentMediaCategory;
 var currentApp;
-var $activeApps;
 
 //mouse pad
-var mx = 0, my = 0, deltaX = 0, deltaY = 0, frequencyCalls = 75, lastTimeMousePadMove = 0, timerMouse = null;
+var mx = 0, my = 0, deltaX = 0, deltaY = 0, frequencyCalls = 50, lastTimeMousePadMove = 0, timerMouse = null, precisionFactor = 2;
 
 //mouse wheel
 var wmx = 0, wmy = 0, wdeltaX = 0, wdeltaY = 0, wfrequencyCalls = 75, wlastTimeMousePadMove = 0, wtimerMouse = null;
-
-//var lastLiClickPoint;
-//var liTapHold;
 
 $( "#home" ).live( "pageinit",function(event){ //$(document).bind('pageinit', function ()  //$(document).ready(function () {
 	console.log("#home.live()");
@@ -26,7 +22,9 @@ $( "#home" ).live( "pageinit",function(event){ //$(document).bind('pageinit', fu
 	ajax_getData();	
 
 	$( "#footer a[data-rel != 'dialog']" ).each(function(index) {
-		$(this).bind( "vclick", function(event) {
+		$(this).bind( "vclick", function(ev) {
+			ev.preventDefault();
+			ev.stopImmediatePropagation();
 			var id = $(this).attr( "id" ); 
 			if (id == 'apps'){
 				ajax_getActiveApps(false);
@@ -36,21 +34,25 @@ $( "#home" ).live( "pageinit",function(event){ //$(document).bind('pageinit', fu
 		});
 	});
 	
-	$('#btn-back').bind( "vclick", function(event) {
+	$('#btn-back').bind( "vclick", function(ev) {
+		ev.preventDefault();
+		ev.stopImmediatePropagation();
 		if (stackMedias.length > 1){
 			stackMedias.pop();
 			displayMedia(stackMedias.pop());
 		}
 	});
 	
-	$('a[data-rel="btn-home"]').bind( "vclick", function(event) {
+	$('a[data-rel="btn-home"]').bind( "vclick", function(ev) {
+		ev.preventDefault();
+		ev.stopImmediatePropagation();
 		displayHome();
 	});
 	
-	$('a[data-rel="btn-mouse"],a[data-rel="btn-keyboard"]').bind( "tap", function(event) {
-		event.stopImmediatePropagation();
-		event.preventDefault();
-		var kind = $(this).attr( "data-rel" ).substr(4); //kind is "mouse" or "keyboard"
+	$('a[data-rel="btn-mouse"],a[data-rel="btn-keyboard"]').bind( "vclick", function(ev) {
+		ev.stopImmediatePropagation();
+		ev.preventDefault();
+		var kind = $(this).attr( "data-rel" ).substr(4); ////omit prefix "btn-".length. kind is "mouse" or "keyboard"
 		displayMouseOrKeyboardRc(kind);
 		$.mobile.changePage($( "#" + kind + "control" ));
 	});
@@ -76,7 +78,9 @@ $( "#dialog-pc-poweroff" ).live( "pageinit",function(event){
 });
 
 $( "#dialog-pc-vol" ).live( "pageinit",function(event){
-	$( "#dialog-pc-btn-volmute" ).bind( "vclick", function(event) {
+	$( "#dialog-pc-btn-volmute" ).bind( "vclick", function(ev) {
+		ev.preventDefault();
+		ev.stopImmediatePropagation();
 		handlerBtnDialogPc($(this));
 	});
 	$( "#dialog-pc-vol-value" ).bind( "change", function(event) {
@@ -85,7 +89,7 @@ $( "#dialog-pc-vol" ).live( "pageinit",function(event){
 });
 
 function handlerBtnDialogPc(button) {
-	var id = button.attr( "id" ).substr(14);
+	var id = button.attr( "id" ).substr(14); ////omit prefix "dialog-pc-btn-".length
 	if (id != "cancel" ){
 		ajax_controlPc(id);
 	}
@@ -141,7 +145,7 @@ function ajax_control(kind, command) {
 	if (kind == "keyboard" || kind == "mouse"){
 		u = remoteUrl + "pc/" + kind + "/control/" + command;
 	} else {
-		u = remoteUrl + "apps/"+(currentApp ? currentApp.name + "/" : "" ) + "control/" + command
+		u = remoteUrl + "activeapps/"+(currentApp ? currentApp.name + "/" : "" ) + "control/" + command
 	}
 	$.ajax({
 		type: "POST",
@@ -155,8 +159,8 @@ function ajax_mouseDelta() {
 		clearInterval(timerMouse);
 		timerMouse = null;
 	} else {
-		deltaX = parseInt(Math.round(deltaX / 2));
-		deltaY = parseInt(Math.round(deltaY / 2));
+		deltaX = parseInt(Math.round(deltaX / precisionFactor));
+		deltaY = parseInt(Math.round(deltaY / precisionFactor));
 		var u = remoteUrl + "pc/mouse/";
 		u += (deltaX >= 0 ? '+' : '')+deltaX;
 		u += 'x'
@@ -175,7 +179,7 @@ function ajax_wheelDelta() {
 		wtimerMouse = null;
 	} else {				
 		wdeltaY = parseInt(Math.round(wdeltaY / 2));
-		var u = remoteUrl + "pc/mouse/wheel/";		
+		var u = remoteUrl + "pc/mouse/wheel/";
 		u += (wdeltaY >= 0 ? '+' : '') + wdeltaY;
 		console.log(u);
 		$.ajax({
@@ -220,7 +224,7 @@ function ajax_getActiveApps(refresh) {
 function ajax_focusApp(handle) {
 	$.ajax({
 		type: "POST",
-		url: remoteUrl + "activeapps/"+handle + "/focus"
+		url: remoteUrl + "activeapps/handle/"+handle + "/focus"
 	});
 }
 
@@ -262,7 +266,9 @@ function displayMedia(media){
 								"<h4 id='media-title'></h4>" +
 							"</div>" ).appendTo($content);
 		$divMediaTitle.trigger("create");
-		$( "#btn-refresh" ).bind( "vclick", function(event) {
+		$( "#btn-refresh" ).bind( "vclick", function(ev) {
+			ev.preventDefault();
+			ev.stopImmediatePropagation();
 			if (stackMedias.length === 1){
 				console.log( "stackMedias.isEmpty(). calling getMediaRoots" );
 				ajax_getMediaRoots();
@@ -298,26 +304,20 @@ function displayMedia(media){
 					return false;
 				});
 			}
-			$li.bind( "vclick", function(event) {
-				//if (!liTapHold){
-//					var curclickpoint = event.clientX+'x'+event.clientY
-//					if (lastLiClickPoint == curclickpoint) return false;
-//					lastLiClickPoint = curclickpoint;
-					if (mediaChild.file){
-						ajax_openFile(mediaChild);
-					} else if (mediaChild.mediaChildrenSize != 0) {
-						//push in history
-						//window.history.pushState(null,null,mediaChild.name);
-						if (mediaChild.mediaChildrenSize > 0){ 
-							displayMedia(mediaChild);
-						} else if (mediaChild.mediaChildrenSize == -1){
-							ajax_getMedias(mediaChild, $li.find( "span.ui-li-count" ));
-						}						
-					}
-				//}
-				//liTapHold = false;
-				event.stopImmediatePropagation();
-				event.preventDefault();
+			$li.bind( "vclick", function(ev) {
+				ev.preventDefault();
+				ev.stopImmediatePropagation();
+				if (mediaChild.file){
+					ajax_openFile(mediaChild);
+				} else if (mediaChild.mediaChildrenSize != 0) {
+					//push in history
+					//window.history.pushState(null,null,mediaChild.name);
+					if (mediaChild.mediaChildrenSize > 0){ 
+						displayMedia(mediaChild);
+					} else if (mediaChild.mediaChildrenSize == -1){
+						ajax_getMedias(mediaChild, $li.find( "span.ui-li-count" ));
+					}						
+				}
 				return false;
 			});
 		});
@@ -364,9 +364,6 @@ function displayRc($brotherDom, idContainer, title, controlsManager, iconSize, p
 		var $divRc = $( "<div id='" + idContainer + "' class='rc-controls' style='padding-top:" + paddingTop + "px;'></div>" ).insertAfter($brotherDom);		
 		//Mouse Pad
 		if(idContainer == 'mouse'){			
-			//var $divPad = $( '<div id="pad"></div>').insertAfter($divRc);
-			//var $divPad = $( '<div id="clickpad"></div>').insertAfter($divRc);
-
 			//Mouse Pad functionality
 			$('#pad').bind('vmousemove',function(ev){
 				if (timerMouse == null){
@@ -377,31 +374,34 @@ function displayRc($brotherDom, idContainer, title, controlsManager, iconSize, p
 				lastTimeMousePadMove = new Date().getTime();
 				deltaX = ev.pageX - mx;
 				deltaY = ev.pageY - my;
-//				$divPad.html(
-//						ev.pageX + ' ' + ev.pageX + "<br/>" +
-//						mx + ' ' + my + "<br/>" +
-//						deltaX + ' ' + deltaY
-//				);
-				
 				ev.preventDefault();
 				ev.stopImmediatePropagation();
 			});
 			$('#wheel-pad').bind('vmousemove',function(ev){
 				if (wtimerMouse == null){
 					wtimerMouse = setInterval(ajax_wheelDelta, wfrequencyCalls);					
-					my = ev.pageY;
+					wmy = ev.pageY;
 				}
 				wlastTimeMousePadMove = new Date().getTime();				
 				wdeltaY = ev.pageY - wmy;				
 				ev.preventDefault();
 				ev.stopImmediatePropagation();
 			});
+			$('#pad').bind('vclick',function(ev){
+				ev.preventDefault();
+				ev.stopImmediatePropagation();
+				ajax_control('mouse', 'mouse_click1');
+			});
 			
 			//Mouse Click Pad functionality
-			$('#left-click-pad').bind('vmousedown',function(ev){
+			$('#left-click-pad').bind('vclick',function(ev){
+				ev.preventDefault();
+				ev.stopImmediatePropagation();
 				ajax_control('mouse', 'mouse_click1');
 			});
 			$('#right-click-pad').bind('vmousedown',function(ev){
+				ev.preventDefault();
+				ev.stopImmediatePropagation();
 				ajax_control('mouse', 'mouse_click3');
 			});
 		}
@@ -452,7 +452,9 @@ function displayRc($brotherDom, idContainer, title, controlsManager, iconSize, p
 				$img.attr( "width", iconSize+"px" );
 				$img.attr( "height", iconSize+"px" );			
 			}
-			$controlDiv.bind( "vmousedown", function(event) {
+			$controlDiv.bind("vclick", function(ev) {
+				ev.preventDefault();
+				ev.stopImmediatePropagation();
 		    	ajax_control(idContainer, $(this).attr( "id" ))
 			});
 		}
@@ -460,11 +462,14 @@ function displayRc($brotherDom, idContainer, title, controlsManager, iconSize, p
 }
 
 function displayApps(apps){
+	var $activeApps;
 	if ($( "#btn-killApps" ).length == 0){
 		var $dialogActiveApps = $( "#dialog-listActiveApps div[data-role='content']" );
 		var $killSel = $( "<a data-role='button' href='#' data-icon='delete' id ='btn-killApps'>kill selected</a>" ).appendTo($dialogActiveApps);
-		$killSel.bind( "vclick", function(event) {
+		$killSel.bind( "vclick", function(ev) {
 			try {
+				ev.preventDefault();
+				ev.stopImmediatePropagation();
 				var handles = new Array();
 				$( "#active-apps input:checked" ).each(function(i) {
 					handles.push($(this).attr( "id" ).substr(6)); //omit prefix "handle".length
@@ -477,6 +482,7 @@ function displayApps(apps){
 		});
 		$activeApps = $( "<div id='active-apps' data-role='fieldcontain'></div>" ).appendTo($dialogActiveApps);
 	} else {
+		$activeApps = $( "#active-apps");
 		$activeApps.empty();
 	}
 	var $fieldset = $( "<fieldset data-role='controlgroup'></fieldset>" ).appendTo($activeApps);
@@ -493,7 +499,7 @@ function displayApps(apps){
 			event.preventDefault();
 			event.stopImmediatePropagation();
 			displayHome();
-			ajax_focusApp($(this).parents( "label" ).attr( "for" ).substr(3));
+			ajax_focusApp($(this).parents( "label" ).attr( "for" ).substr(6)); ////omit prefix "handle".length
 			if ($(this).hasClass( "use-app" )){
 				displayMediaRc(getConfiguredApp($(this).parents( "label" ).data( "appname" )));
 			}
@@ -503,10 +509,10 @@ function displayApps(apps){
 	$.mobile.changePage( "#dialog-listActiveApps" );
 }
 
-//
+
 function getConfiguredApp(appName){
 	for(j=0; j<data.mediaRoots.length;j++){
-		if (data.mediaRoots[j].mediaCategory.app && appName == data.mediaRoots[j].mediaCategory.app.name){
+		if (data.mediaRoots[j].mediaCategory.app && appName == data.mediaRoots[j].mediaCategory.app.windowName){
 			return data.mediaRoots[j].mediaCategory.app;
 		}
 	}

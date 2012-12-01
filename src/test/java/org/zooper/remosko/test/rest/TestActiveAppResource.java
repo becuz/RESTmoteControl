@@ -51,11 +51,11 @@ public class TestActiveAppResource extends TestResourceAbstract {
 		
 		//POST /activeapps/handleOther/focus
 		invokeUrl(
-				server.getApiUrl() + "activeapps/" + handleOther + "/focus", "", 
+				server.getApiUrl() + "activeapps/handle/" + handleOther + "/focus", "", 
 				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "POST", "", HttpURLConnection.HTTP_NO_CONTENT);
 		//GET /activeapps/handleOther
 		result = invokeUrl(
-				server.getApiUrl() + "activeapps/" + handleOther, "?refresh=true", 
+				server.getApiUrl() + "activeapps/handle/" + handleOther, "?refresh=true", 
 				MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "GET", "", HttpURLConnection.HTTP_OK);
 		myString = IOUtils.toString(result, "UTF-8");
 		log.info("/get returned:" + myString);
@@ -65,12 +65,12 @@ public class TestActiveAppResource extends TestResourceAbstract {
 		
 		if (handleEclipse != null){
 			invokeUrl(
-					server.getApiUrl() + "activeapps/" + handleEclipse + "/focus", "", 
+					server.getApiUrl() + "activeapps/handle/" + handleEclipse + "/focus", "", 
 					MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "POST", "", HttpURLConnection.HTTP_NO_CONTENT);
 			Thread.sleep(100);
 			//GET /activeapps/handleOther
 			result = invokeUrl(
-					server.getApiUrl() + "activeapps/" + handleOther, "?refresh=true", 
+					server.getApiUrl() + "activeapps/handle/" + handleOther, "?refresh=true", 
 					MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "GET", "", HttpURLConnection.HTTP_OK);
 			myString = IOUtils.toString(result, "UTF-8");
 			log.info("/get returned:" + myString);

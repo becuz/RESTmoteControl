@@ -51,6 +51,24 @@ public class ActiveAppBusiness extends BusinessAbstract{
 	}
 	
 	/**
+	 * @param appName
+	 * @param refresh
+	 * @return running applications on the pc.
+	 */
+	public List<ActiveApp> getActiveAppsByAppName(String appName, boolean refresh) {
+		List<ActiveApp> result = new ArrayList<>();
+		getActiveApps(refresh);
+		App app = getAppBusiness().getByName(appName);
+		for(ActiveApp activeApp: activeApps){
+			if (activeApp.isInstanceOf(app)){
+				result.add(activeApp);
+			}
+		}
+		return result;
+	}
+	
+	
+	/**
 	 * Put the user input focus on the next running application
 	 * @return the ActiveApp that has focus
 	 * @throws Exception 
@@ -72,7 +90,7 @@ public class ActiveAppBusiness extends BusinessAbstract{
 	 * @param refresh re-retrieve running apps
 	 * @return
 	 */
-	public List<String> getActiveHandlesOfApp(App app, boolean refresh){
+	public List<String> getActiveAppHandlesOfApp(App app, boolean refresh){
 		List<String> result = new ArrayList<String>();
 		for(ActiveApp activeApp: getActiveApps(refresh)){
 			if (activeApp.isInstanceOf(app)){

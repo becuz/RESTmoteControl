@@ -100,7 +100,7 @@ public class MediaCategory implements Editable, Completable{
 	@Override
 	public boolean equals(Object other) {
         if (this == other) return true;
-        if (!(other instanceof Control) ) return false;
+        if (!(other instanceof MediaCategory)) return false;
         final MediaCategory a = (MediaCategory) other;
         if (!a.getName().equals(getName())) return false;
         if (!a.getExtensions().equals(getExtensions())) return false;

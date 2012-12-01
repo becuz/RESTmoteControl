@@ -223,7 +223,6 @@ public abstract class PcControllerAbstract {
 
 	/**
 	 * Return the dimensions (WxH) of all pc' screens
-	 * TODO cache these values
 	 * @return
 	 */
 	public int[][] getScreenSizes(){
@@ -345,7 +344,7 @@ public abstract class PcControllerAbstract {
 	 * @throws Exception 
 	 */
 	public boolean closeApp(App app) throws Exception {
-		killApps(activeAppBusiness.getActiveHandlesOfApp(app, true));
+		killApps(activeAppBusiness.getActiveAppHandlesOfApp(app, true));
 		Process process = appProcesses.get(app);
 		if (process != null){
 			process.destroy();
@@ -489,7 +488,7 @@ public abstract class PcControllerAbstract {
 	 * @throws Exception 
 	 */
 	public ActiveApp focusApp(App app) throws Exception{
-		List<String> handles = activeAppBusiness.getActiveHandlesOfApp(app, true);
+		List<String> handles = activeAppBusiness.getActiveAppHandlesOfApp(app, true);
 		if (handles != null && handles.size() > 0){
 			return focusApp(handles.get(0));
 		}
