@@ -188,7 +188,7 @@ public class TestRemoteControlBusiness extends TestAbstract{
 	public void mute() throws InterruptedException{
 		try {
 			for (int i = 0; i < 2; i++) {
-				remoteControlBusiness.mute();
+				remoteControlBusiness.toggleMute();
 				Thread.sleep(200);
 			}
 		} catch (Exception e) {

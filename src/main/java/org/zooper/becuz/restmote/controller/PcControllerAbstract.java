@@ -127,7 +127,7 @@ public abstract class PcControllerAbstract {
 	 * @return true if the operation had success
 	 * @throws Exception 
 	 */
-	public abstract boolean mute() throws Exception;
+	public abstract boolean toggleMute() throws Exception;
 	
 	/**
 	 * Set the pc volume

@@ -135,8 +135,8 @@ public class RemoteControlBusiness extends BusinessAbstract{
 		return PcControllerFactory.getPcController().suspend();
 	}
 	
-	public boolean mute() throws Exception{
-		return PcControllerFactory.getPcController().mute();
+	public boolean toggleMute() throws Exception{
+		return PcControllerFactory.getPcController().toggleMute();
 	}
 	
 	public boolean setVolume(int volume) throws Exception{

@@ -77,7 +77,7 @@ public class PcControllerWindows extends PcControllerAbstract{
 	}
 
 	@Override
-	public boolean mute() throws Exception {
+	public boolean toggleMute() throws Exception {
 		return execute(new String[]{".\\lib\\win\\nircmd.exe", "mutesysvolume", "2"}) != null; 
 	}
 	

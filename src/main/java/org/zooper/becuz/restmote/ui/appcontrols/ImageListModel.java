@@ -15,7 +15,6 @@ import org.zooper.becuz.restmote.utils.Utils;
 
 /**
  * Model of all client icons
- * TODO the ones in system/ are ignored
  * @author bebo
  */
 @SuppressWarnings("serial")

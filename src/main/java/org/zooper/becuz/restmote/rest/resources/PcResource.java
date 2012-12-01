@@ -16,16 +16,20 @@ import org.zooper.becuz.restmote.controller.PcControllerFactory;
 import org.zooper.becuz.restmote.controller.mouses.Mouse;
 import org.zooper.becuz.restmote.controller.mouses.Mouse.BTN_ACTION;
 import org.zooper.becuz.restmote.model.Control;
-import org.zooper.becuz.restmote.model.transport.ActiveApp;
 import org.zooper.becuz.restmote.model.transport.PcInfo;
 import org.zooper.becuz.restmote.utils.Constants;
+
 
 /**
  * APIs to control the pc.
  * 
  * GET /pc												//return PcInfo
  * 
- * POST		/pc/control/{control}						//send the command VOLMUTE to the pc
+ * POST		/pc/control/poweroff
+ * POST		/pc/control/suspend						
+ * 
+ * POST		/pc/control/vol/toggle						//toggle mute
+ * POST		/pc/control/vol/10							//set the volume 0-100
  * 
  * POST		/pc/keyboard/control/{control}				//es KBD_UP
  * POST		/pc/keyboard/{type}							//type on keyboard the string s
@@ -41,8 +45,6 @@ import org.zooper.becuz.restmote.utils.Constants;
  * POST		/pc/mouse/buttons/1/click	?
  * POST		/pc/mouse/buttons/1/press	?
  * POST		/pc/mouse/buttons/1/release	?
- * 
- * TODO resource volume/
  * 
  * @author bebo
  * @see Control
@@ -92,19 +94,31 @@ public class PcResource extends AbstractResource{
 	public Response pcControl(@PathParam("control") String control){
 		try {
 			log.info("pcControl control: " + control);
-			if ("volmute".equals(control)){
-				getRemoteControlBusiness().mute();	
-			} else if (control.startsWith("vol-")){
-				getRemoteControlBusiness().setVolume(Integer.parseInt(control.substring(4)));	
-			} else if ("suspend".equals(control)){
+			if ("suspend".equals(control)){
 				getRemoteControlBusiness().suspend();	
 			} else if ("poweroff".equals(control)){
 				getRemoteControlBusiness().poweroff();
-			} else if ("nextapp".equals(control)){ //TODO put in ActiveAppResource
-				ActiveApp activeApp = getActiveAppBusiness().next();
-				return Response.status(Response.Status.CREATED).entity(activeApp).build();
 			} else {
 				log.warn("pccontrol " + control + " not implemented!");
+			}
+			return Response.status(Response.Status.NO_CONTENT).build();
+		} catch (Exception e) {
+			throw new WebApplicationException(Response.status(500).entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());
+		}
+	}
+	
+	@POST
+	@Path("/vol/{action}")
+	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
+	public Response vol(@PathParam("action") String action){
+		try{
+			if ("toggle".equals(action)){
+				getRemoteControlBusiness().toggleMute();	
+			} else {
+				try {
+					int volume = Integer.parseInt(action);
+					getRemoteControlBusiness().setVolume(volume);
+				} catch (NumberFormatException e){}
 			}
 			return Response.status(Response.Status.NO_CONTENT).build();
 		} catch (Exception e) {

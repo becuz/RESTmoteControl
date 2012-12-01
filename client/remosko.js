@@ -28,8 +28,8 @@ $( "#home" ).live( "pageinit",function(event){ //$(document).bind('pageinit', fu
 			var id = $(this).attr( "id" ); 
 			if (id == 'apps'){
 				ajax_getActiveApps(false);
-			} else {
-				ajax_controlPc(id);										
+			} else if (id == 'nextapp'){
+				ajax_focusApp();
 			}
 		});
 	});
@@ -84,14 +84,18 @@ $( "#dialog-pc-vol" ).live( "pageinit",function(event){
 		handlerBtnDialogPc($(this));
 	});
 	$( "#dialog-pc-vol-value" ).bind( "change", function(event) {
-		ajax_controlPc( "vol-"+$( "#dialog-pc-vol-value" ).val());
+		ajax_controlPc( "vol/"+$( "#dialog-pc-vol-value" ).val());
 	});
 });
 
 function handlerBtnDialogPc(button) {
 	var id = button.attr( "id" ).substr(14); ////omit prefix "dialog-pc-btn-".length
 	if (id != "cancel" ){
-		ajax_controlPc(id);
+		if (id == "volmute"){
+			ajax_controlPc("vol/toggle");
+		} else {
+			ajax_controlPc("control/"+id);
+		}
 	}
 	$.mobile.changePage($('#home'));
 }
@@ -192,7 +196,7 @@ function ajax_wheelDelta() {
 function ajax_controlPc(command) {
 	$.ajax({
 		type: "POST",
-		url: remoteUrl + "pc/control/"+command,
+		url: remoteUrl + "pc/"+command,
 		success: function(data) {
 			if (command=="nextapp" ){
 				displayMediaRc(getConfiguredApp(data.name)); //data is model ActiveApp
@@ -224,7 +228,7 @@ function ajax_getActiveApps(refresh) {
 function ajax_focusApp(handle) {
 	$.ajax({
 		type: "POST",
-		url: remoteUrl + "activeapps/handle/"+handle + "/focus"
+		url: remoteUrl + "activeapps/" + (handle === undefined ? "next" : ("handle/"+handle + "/focus"))
 	});
 }
 

@@ -15,7 +15,7 @@ public class PcControllerMac extends PcControllerAbstract{
 	}
 
 	@Override
-	public boolean mute() throws Exception {
+	public boolean toggleMute() throws Exception {
 		throw new NotYetImplementedException();
 	}
 

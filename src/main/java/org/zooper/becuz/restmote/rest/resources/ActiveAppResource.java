@@ -29,6 +29,7 @@ import org.zooper.becuz.restmote.rest.exceptions.ServerException;
  * GET	    /activeapps/winamp?refresh=true						//get ActiveApp by App.name
  * 
  * POST		/activeapps/handle/1234/focus						//put the handle application on focus
+ * POST		/activeapps/next									//put the focus on the next ActiveApp
  * 
  * DELETE	/activeapps/handle/1234								//close the application by single handle
  * DELETE	/activeapps/					JSON List<String>	//close the applications by handles
@@ -287,4 +288,15 @@ public class ActiveAppResource extends AbstractResource {
 			throw new WebApplicationException(Response.status(500).entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());
 		}
 	}
-}
+	
+	@POST
+	@Path("/next")
+	public ActiveApp focusNext(){
+		log.info("focus next");
+		try {
+			return getActiveAppBusiness().next();
+		} catch (Exception e) {
+			throw new WebApplicationException(Response.status(500).entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());
+		}
+	}
+}	

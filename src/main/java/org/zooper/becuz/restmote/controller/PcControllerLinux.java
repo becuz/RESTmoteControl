@@ -91,7 +91,7 @@ public class PcControllerLinux extends PcControllerAbstract{
 	}
 	
 	@Override
-	public boolean mute() throws Exception {
+	public boolean toggleMute() throws Exception {
 		return execute("amixer --quiet set Master toggle".split(" ")) != null; 			//TODO bug in amixer (toggle works just the first time)
 	}
 
