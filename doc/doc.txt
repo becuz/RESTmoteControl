@@ -1,0 +1,3 @@
+Diagrams are managed by eclipse plugin http://www.objectaid.com. Installation:
+Name: ObjectAid UML Explorer
+URL:  http://www.objectaid.com/update 
