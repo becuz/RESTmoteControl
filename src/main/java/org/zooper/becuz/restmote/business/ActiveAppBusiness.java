@@ -40,12 +40,22 @@ public class ActiveAppBusiness extends BusinessAbstract{
 	}
 	
 	/**
+	 * 
 	 * @param refresh
-	 * @return running applications on the pc.
+	 * @return
 	 */
 	public List<ActiveApp> getActiveApps(boolean refresh) {
+		return getActiveApps(refresh, false);
+	}
+	
+	/**
+	 * @param refresh
+	 * @param detailed
+	 * @return running applications on the pc.
+	 */
+	public List<ActiveApp> getActiveApps(boolean refresh, boolean detailed) {
 		if (refresh || activeApps.isEmpty()){
-			PcControllerFactory.getPcController().rebuildActiveApps();
+			PcControllerFactory.getPcController().rebuildActiveApps(detailed);
 		}
 		return activeApps;
 	}

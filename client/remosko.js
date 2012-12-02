@@ -490,12 +490,12 @@ function displayApps(apps){
 		$activeApps.empty();
 	}
 	var $fieldset = $( "<fieldset data-role='controlgroup'></fieldset>" ).appendTo($activeApps);
-	$.each(apps, function(i, app){
+	$.each(apps, function(i, activeApp){
 		$fieldset.append(
-				"<input type='checkbox' id='handle" + app.handle + "'></input>" + 
-				"<label for='handle" + app.handle + "' class='checkbox-app' data-appname='" + app.name + "'>" +
-					"<span data-role='use' class='use-app" + (getConfiguredApp(app.name) ? "" : "-disabled" ) + "'>" + app.name + "</span>" +
-					"<span class='checkbox-app-winlbl'>" + app.windowLbl + "</span>" +
+				"<input type='checkbox' id='handle" + activeApp.handle + "'></input>" + 
+				"<label for='handle" + activeApp.handle + "' class='checkbox-app' data-appname='" + activeApp.name + "'>" +
+					"<span data-role='use' class='use-app" + (activeApp.hasApp ? "" : "-disabled" ) + "'>" + activeApp.name + "</span>" +
+					"<span class='checkbox-app-winlbl'>" + activeApp.windowLbl + "</span>" +
 				"</label>" );
 	});
 	$activeApps.find( "span[data-role='use']" ).each(function(i) {

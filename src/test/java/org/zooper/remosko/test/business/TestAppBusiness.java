@@ -3,7 +3,10 @@
  */
 package org.zooper.remosko.test.business;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.event.KeyEvent;
 
@@ -11,8 +14,9 @@ import org.junit.Test;
 import org.zooper.becuz.restmote.business.AppBusiness;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.Control;
-import org.zooper.becuz.restmote.model.ControlsManager;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeApp;
+import org.zooper.becuz.restmote.model.ControlsManager;
+import org.zooper.becuz.restmote.utils.Utils.OS;
 import org.zooper.remosko.test.TestAbstract;
 
 /**
@@ -39,10 +43,28 @@ public class TestAppBusiness extends TestAbstract{
 	}
 	
 	@Test
-	public void testGetAppByExtension() {
-		String ext = appMusic.getExtensions().iterator().next();
-		assertNotNull(ext);
-		assertTrue(appBusiness.getByExtension(ext).getName().equals(appMusic.getName()));
+	public void testGetAppByFilter() {
+		assertTrue(
+				appBusiness.getByFilters(appMusic.getName(), null, null, null, null).get(0)
+				.equals(appMusic));
+		assertTrue(
+				appBusiness.getByFilters(null, appMusic.getWindowName(), null, null, null).get(0)
+				.equals(appMusic));
+		assertTrue(
+				appBusiness.getByFilters(null, appMusic.getWindowName(), null, null, null).get(0)
+				.equals(appMusic));
+		assertTrue(
+				appBusiness.getByFilters(null, appMusic.getWindowName(), null, OS.WINDOWS, null).get(0)
+				.equals(appMusic));
+		assertTrue(
+				appBusiness.getByFilters(null, null, "mp3", null, null).get(0)
+				.equals(appMusic));
+		assertTrue(
+				appBusiness.getByFilters(appMusic.getName(), appMusic.getWindowName(), appMusic.getExtensions().iterator().next(), null, null).get(0)
+				.equals(appMusic));
+		assertTrue(appBusiness.getByFilters("not"+appMusic.getName(), null, null, null, null).isEmpty());
+		assertTrue(appBusiness.getByFilters(null, "not"+appMusic.getWindowName(), null, null, null).isEmpty());
+		
 	}
 	
 	@Test
@@ -64,6 +86,7 @@ public class TestAppBusiness extends TestAbstract{
 		app.getControlsManager().removeControl(control2);
 		appBusiness.store(app);
 		assertEquals(app.getControlsManager().getControls().size(), 1);
+		appBusiness.delete(app);
 	}
 
 }

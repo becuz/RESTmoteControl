@@ -3,16 +3,18 @@
  */
 package org.zooper.remosko.test.rest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.net.HttpURLConnection;
 import java.net.URLEncoder;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
 import org.zooper.becuz.restmote.model.transport.Media;

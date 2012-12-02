@@ -1,6 +1,7 @@
 package org.zooper.becuz.restmote.model;
 
 import java.io.File;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,17 +11,18 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.zooper.becuz.restmote.conf.ModelFactoryAbstract;
+import org.zooper.becuz.restmote.controller.PcControllerAbstract;
 import org.zooper.becuz.restmote.controller.PcControllerWindows;
 import org.zooper.becuz.restmote.model.interfaces.Completable;
 import org.zooper.becuz.restmote.model.interfaces.Editable;
+import org.zooper.becuz.restmote.model.transport.ActiveApp;
 import org.zooper.becuz.restmote.rest.resources.PcResource;
 import org.zooper.becuz.restmote.utils.Constants;
 import org.zooper.becuz.restmote.utils.Utils;
 
 /**
- * Identifies an application installed on the server pc and configured by the user.
- * The path is needed to be able to run it with the proper arguments.
- * {@link #controlsManager} is needed to be able to control the app (es: PAUSE) through shourtcut.
+ * Identifies a computer application, with its shortcuts.
+ * 
  * @see ModelFactoryAbstract#getAppMusic() 
  * @author bebo
  */
@@ -32,18 +34,42 @@ public class App implements Editable, Completable{
 	private Long id;
 	
 	/**
-	 * Has to be the same used in the controller!!
+	 * Name of the family of application. 
+	 * This is needed when there are several definition of a common program, usually
+	 * because some versions introduce different shortcuts. 
+	 * For example there could exist an app Firefox and a Firefox v2. Both of them should belong to the same family 
+	 * and just one of them will be {@link #chosen}. 
+	 */
+	private String family;
+	
+	/**
+	 * Name of the application 
 	 */
 	private String name;
 	
 	/**
-	 * 
+	 * Name of the application as is in {@link ActiveApp#getName()} it's returned fom {@link PcControllerAbstract#rebuildActiveApps()}
 	 */
 	private String windowName;
 	
 	/**
+	 * True if this is the default {@link #chosen} of the {@link #family}
+	 */
+	private Boolean chosenDefault;
+	
+	/**
+	 * 
+	 */
+	private Boolean chosen;
+	
+	/**
+	 * The os of this app
+	 */
+	private String os;
+	
+	/**
 	 * Full path of the executable. The name of the executable is enough if its path is in the system bin variable.
-	 * Ie this string is a command that the system console has to able to run. 
+	 * This string is a command that the system console has to able to run. 
 	 */
 	private String path;
 	
@@ -76,29 +102,13 @@ public class App implements Editable, Completable{
 	@JsonIgnore
 	private Set<String> extensions;
 	
-//	/**
-//	 * Remote id, for user-submitted Controls. It's the id in remosko website db
-//	 */
-//	@JsonIgnore
-//	private Long idRemote;
-//	
-//	/**
-//	 * 
-//	 */
-//	@JsonIgnore
-//	private Long idSubmitter;
-//	
-//	/**
-//	 * 
-//	 */
-//	@JsonIgnore
-//	private Integer avgVote;
-//	
-//	/**
-//	 * 
-//	 */
-//	@JsonIgnore
-//	private Integer numVoters;
+	/**
+	 */
+	private Date creationDate;
+	
+	/**
+	 */
+	private Date updateDate;
 	
 	public App() {
 	}
@@ -114,7 +124,9 @@ public class App implements Editable, Completable{
 	}
 	
 	@Override
-	public void validate() throws IllegalArgumentException {}
+	public void validate() throws IllegalArgumentException {
+		isComplete();
+	}
 	
 	@Override
 	public void isComplete() throws IllegalArgumentException {
@@ -194,14 +206,6 @@ public class App implements Editable, Completable{
 		this.argumentsDir = argumentsDir;
 	}
 
-	public boolean isForceOneInstance() {
-		return forceOneInstance;
-	}
-
-	public void setForceOneInstance(boolean forceOneInstance) {
-		this.forceOneInstance = forceOneInstance;
-	}
-
 	public ControlsManager getControlsManager() {
 		if (controlsManager == null){
 			controlsManager = new ControlsManager();
@@ -231,11 +235,51 @@ public class App implements Editable, Completable{
 	public boolean removeExtension(String extensions) {
 		return getExtensions().remove(extensions);
 	}
-	
+	public String getFamily() {
+		return family;
+	}
+	public void setFamily(String family) {
+		this.family = family;
+	}
+	public Boolean isChosenDefault() {
+		return chosenDefault;
+	}
+	public void setChosenDefault(Boolean chosenDefault) {
+		this.chosenDefault = chosenDefault;
+	}
+	public Boolean isChosen() {
+		return chosen;
+	}
+	public void setChosen(Boolean chosen) {
+		this.chosen = chosen;
+	}
+	public String getOs() {
+		return os;
+	}
+	public void setOs(String os) {
+		this.os = os;
+	}
+	public Boolean getForceOneInstance() {
+		return forceOneInstance;
+	}
+	public void setForceOneInstance(Boolean forceOneInstance) {
+		this.forceOneInstance = forceOneInstance;
+	}
+	public Date getCreationDate() {
+		return creationDate;
+	}
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+	public void setUpdateDate(Date updatedDate) {
+		this.updateDate = updatedDate;
+	}
 	public Long getId() {
 		return id;
 	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}

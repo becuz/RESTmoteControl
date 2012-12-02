@@ -1,6 +1,5 @@
 package org.zooper.becuz.restmote.persistence;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,16 +7,10 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.zooper.becuz.restmote.model.interfaces.Editable;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
-import org.zooper.becuz.restmote.model.transport.MediaRoot;
 
 public abstract class PersistenceAbstract {
 
 	protected static final Logger log = Logger.getLogger(PersistenceAbstract.class.getName());
-	
-	/**
-	 * Medias are currently not persisted..
-	 */
-	protected List<MediaRoot> mediaRoots = new ArrayList<MediaRoot>(); 
 	
 	/**
 	 * Cache
@@ -35,36 +28,20 @@ public abstract class PersistenceAbstract {
 	protected PersistenceAbstract() {
 	}
 	
-	public List<MediaRoot> getMediaRoots() {
-		return mediaRoots;
-	}
-
-	public void addMediaRoot(MediaRoot m) {
-		mediaRoots.add(m);
-	}
-
-//	public void removeMediaRoot(MediaRoot m) {
-//		mediaRoots.remove(m);
+//	protected void printCache(){
+//		System.out.println("***cacheContainsAllOfAKind");
+//		for(Class c: cacheContainsAllOfAKind.keySet()){
+//			System.out.println(c + ": " + cacheContainsAllOfAKind.get(c));
+//		}
+//		System.out.println("***cache");
+//		for(Class c: cache.keySet()){
+//			System.out.println(c);
+//			Map<Long, Persistable> m = cache.get(c);
+//			for(Persistable p: m.values()){
+//				System.out.println(p);
+//			}
+//		}
 //	}
-	
-	public void clearMediaRoots() {
-		mediaRoots.clear();
-	}
-	
-	protected void printCache(){
-		System.out.println("***cacheContainsAllOfAKind");
-		for(Class c: cacheContainsAllOfAKind.keySet()){
-			System.out.println(c + ": " + cacheContainsAllOfAKind.get(c));
-		}
-		System.out.println("***cache");
-		for(Class c: cache.keySet()){
-			System.out.println(c);
-			Map<Long, Persistable> m = cache.get(c);
-			for(Persistable p: m.values()){
-				System.out.println(p);
-			}
-		}
-	}
 	
 	/**
 	 * Clear all cache

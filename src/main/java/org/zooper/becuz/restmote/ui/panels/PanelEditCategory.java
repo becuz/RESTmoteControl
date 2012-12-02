@@ -3,8 +3,10 @@ package org.zooper.becuz.restmote.ui.panels;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
+
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;

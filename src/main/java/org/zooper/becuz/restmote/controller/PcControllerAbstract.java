@@ -350,7 +350,7 @@ public abstract class PcControllerAbstract {
 			process.destroy();
 			appProcesses.remove(app);
 		}
-		rebuildActiveApps();
+		rebuildActiveApps(false);
 		return process != null;
 	}
 	
@@ -376,9 +376,10 @@ public abstract class PcControllerAbstract {
 	
 	
 	/**
-	 * rebuilds {@link #activeApps}
+	 * 
+	 * @param detailed 
 	 */
-	public void rebuildActiveApps(){
+	public void rebuildActiveApps(boolean detailed){
 		log.info("rebuildActiveApps");
 		getActiveAppBusiness().clearActiveApps();
 		BufferedReader brInput = null;
@@ -387,11 +388,18 @@ public abstract class PcControllerAbstract {
 			Process p = execute(getCommandListApps().split("\\s+"));
 			brInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			brError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-			getActiveAppBusiness().addActiveApps(getRunningApps(brInput, brError));
+			List<ActiveApp> activeApps = getRunningApps(brInput, brError);
+			if (detailed){
+				for(ActiveApp activeApp: activeApps){
+					List<App> apps = getAppBusiness().getByFilters(null, activeApp.getName(), null, Utils.getOs(), true);
+					activeApp.setHasApp(!apps.isEmpty());
+				}
+			}
+			getActiveAppBusiness().addActiveApps(activeApps);
 			//p.waitFor();
 			p.destroy();
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			log.error("", e);
 	    } finally {
 	    	try {
 	    		if (brInput != null){
@@ -487,8 +495,8 @@ public abstract class PcControllerAbstract {
 	 * @return true if the operation had success
 	 * @throws Exception 
 	 */
-	public ActiveApp focusApp(App app) throws Exception{
-		List<String> handles = activeAppBusiness.getActiveAppHandlesOfApp(app, true);
+	public ActiveApp focusApp(App app, boolean refresh) throws Exception{
+		List<String> handles = activeAppBusiness.getActiveAppHandlesOfApp(app, refresh);
 		if (handles != null && handles.size() > 0){
 			return focusApp(handles.get(0));
 		}

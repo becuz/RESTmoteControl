@@ -8,11 +8,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.net.HttpURLConnection;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;

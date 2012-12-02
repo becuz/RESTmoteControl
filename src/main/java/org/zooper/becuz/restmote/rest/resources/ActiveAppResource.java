@@ -17,14 +17,13 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.zooper.becuz.restmote.model.App;
-import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
 import org.zooper.becuz.restmote.rest.exceptions.NotAcceptableException;
 import org.zooper.becuz.restmote.rest.exceptions.ServerException;
 
 /**
  * 
- * GET		/activeapps?refresh=true							//get List<ActiveApp>
+ * GET		/activeapps											//get List<ActiveApp>
  * GET		/activeapps/handle/1234?refresh=true				//get ActiveApp
  * GET	    /activeapps/winamp?refresh=true						//get ActiveApp by App.name
  * 
@@ -66,10 +65,9 @@ public class ActiveAppResource extends AbstractResource {
 	 */
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
-	public List<ActiveApp> get(
-			@QueryParam("refresh") String refresh){
-		log.info("ActiveAppResource get refresh: " + refresh);
-		return getActiveAppBusiness().getActiveApps("true".equals(refresh));
+	public List<ActiveApp> get(){
+		log.info("ActiveAppResource");
+		return getActiveAppBusiness().getActiveApps(true, true);
 	}
 	
 	/**
@@ -158,7 +156,11 @@ public class ActiveAppResource extends AbstractResource {
 			@PathParam("extension") String extension){
 		log.info("AppResource delete, extension: " + extension);
 		try {
-			getRemoteControlBusiness().closeMedia(getAppBusiness().getByExtension(extension));
+			App app = getAppBusiness().getRunningByExtension(extension);
+			if (app == null){
+				throw new Exception("No app founded to receive command");
+			}
+			getRemoteControlBusiness().closeMedia(app);
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());
 		}
@@ -220,13 +222,9 @@ public class ActiveAppResource extends AbstractResource {
 			@PathParam("extension") String extension, 
 			@PathParam("controlName") String controlName){
 		log.info("controlByExtension extension: " + extension + " control: " + controlName);
-		MediaCategory mediaCategory = getMediaCategoryBusiness().getByExtension(extension);
-		App app = null;
-		if (mediaCategory != null){
-			app = mediaCategory.getApp();
-		}
+		App app = getAppBusiness().getRunningByExtension(extension);
 		if (app == null){
-			app = getAppBusiness().getByExtension(extension);
+			throw new ServerException("No app founded to receive command");
 		}
 		try {
 			getRemoteControlBusiness().control(app, controlName, null);

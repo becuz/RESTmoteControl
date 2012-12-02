@@ -8,12 +8,18 @@
 		<id name="id" column="appId">
 			<generator class="native" />
 		</id>
+		<property name="family" />
 		<property name="name" />
 		<property name="windowName" />
+		<property name="chosenDefault" />
+		<property name="chosen" />
+		<property name="os" />
 		<property name="path" />
 		<property name="argumentsFile" />
 		<property name="argumentsDir" />	
 		<property name="forceOneInstance" />
+		<property name="creationDate" />
+		<property name="updateDate" />
 		<set name="extensions" table="App_Extensions" lazy="false">
             <key column="appId"/>
             <element type="string" column="extension"/>

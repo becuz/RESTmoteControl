@@ -9,8 +9,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import org.apache.log4j.Logger;
 
+import org.apache.log4j.Logger;
 import org.hibernate.cfg.Environment;
 import org.junit.AfterClass;
 import org.zooper.becuz.restmote.business.MediaBusiness;

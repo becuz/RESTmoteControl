@@ -22,10 +22,24 @@ public class MediaBusiness extends BusinessAbstract{
 	protected static final Logger log = Logger.getLogger(PcControllerAbstract.class.getName());
 	
 	/**
-	 * @return
+	 * Medias are currently not persisted..
 	 */
-	public List<MediaRoot> getMediaRoots(){
-		return persistenceAbstract.getMediaRoots();
+	private static List<MediaRoot> mediaRoots = new ArrayList<MediaRoot>(); 
+	
+	public List<MediaRoot> getMediaRoots() {
+		return mediaRoots;
+	}
+
+	public void addMediaRoot(MediaRoot m) {
+		mediaRoots.add(m);
+	}
+
+//	public void removeMediaRoot(MediaRoot m) {
+//		mediaRoots.remove(m);
+//	}
+	
+	public void clearMediaRoots() {
+		mediaRoots.clear();
 	}
 	
 	/**
@@ -40,25 +54,6 @@ public class MediaBusiness extends BusinessAbstract{
 			}
 		}
 		return null;
-	}
-	
-	/**
-	 * 
-	 * @param m
-	 */
-	public void addMediaRoot(MediaRoot m){
-		persistenceAbstract.addMediaRoot(m);
-	}
-	
-//	public void removeMediaRoot(MediaRoot m){
-//		persistenceAbstract.removeMediaRoot(m);
-//	}
-	
-	/**
-	 * 
-	 */
-	public void clearMediaRoots(){
-		persistenceAbstract.clearMediaRoots();
 	}
 	
 	/**

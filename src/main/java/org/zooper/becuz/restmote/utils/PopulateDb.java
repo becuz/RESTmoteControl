@@ -28,7 +28,7 @@ public class PopulateDb {
 	
 	private static final Logger log = Logger.getLogger(PopulateDb.class.getName());
 
-	public void createAndPopulate(boolean develop) {
+	public void createAndPopulate(/*boolean develop*/) {
 		boolean populate = false;
 		PersistenceAbstract persistenceAbstract = PersistenceFactory.getPersistenceAbstract();
 		if (persistenceAbstract instanceof PersistenceHibernate){
@@ -38,10 +38,11 @@ public class PopulateDb {
 			if (!new File(dbFile+".properties").exists()){
 				hbm2dll = "create";
 				populate = true;
-			} else if (develop || !RestmoteControl.getVersion().equals(RestmoteControl.getDbVersion())){
+			} else if (/*develop ||*/ !RestmoteControl.getVersion().equals(RestmoteControl.getDbVersion())){
 				hbm2dll = "update";
 			}
 			if (hbm2dll != null){
+				log.info("A mainteneance operation is goin to perform on the database: " + hbm2dll);
 				p.put(Environment.HBM2DDL_AUTO, hbm2dll); 	
 				HibernateUtil.setProperties(p);
 			}
@@ -52,16 +53,9 @@ public class PopulateDb {
 		Settings settings = new SettingsBusiness().get();
 		persistenceAbstract.beginTransaction();
 		if (settings == null){
+			log.info("Settings instance not found, creating.. ");
 			settings = new Settings();
-			settings.setName("Home");
-			settings.setNameRoot("My medias");
-			settings.setScanDepth(1);
-			settings.setServerPort(9898);
-			settings.setTheme("iconic");
 			persistenceAbstract.store(settings);
-		} else {
-			//future updates
-			//persistenceAbstract.update(settings);
 		}
 		
 		if (populate){

@@ -23,7 +23,7 @@ import org.zooper.becuz.restmote.utils.Utils;
 @XmlRootElement
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class Settings implements Persistable{
-
+	
 	@JsonIgnore
 	private Long id;
 	
@@ -35,12 +35,12 @@ public class Settings implements Persistable{
 	/**
 	 * Name that appears on the header
 	 */
-	private String name;
+	private String name = "Home";
 	
 	/**
 	 * Name that appears on the home
 	 */
-	private String nameRoot;
+	private String nameRoot = "My medias";
 	
 //	/**
 //	 * 
@@ -57,7 +57,7 @@ public class Settings implements Persistable{
 	 * Depth in scanning paths. Negative to scan everything. Used internally in {@link PcControllerAbstract#getMedia(String, Set, Integer)}.
 	 * Clients can override this specifying it as a parameter in the GET methods.
 	 */
-	private Integer scanDepth;
+	private Integer scanDepth = 1;
 	
 	
 	/**
@@ -76,17 +76,17 @@ public class Settings implements Persistable{
 	 * Port the server should run on 
 	 */
 	@JsonIgnore
-	private Integer serverPort;
+	private Integer serverPort = 9898;
 	
 	/**
 	 * icon theme name of controls 
 	 */
-	private String iconControlsTheme;
+	private String iconControlsTheme = "iconic";
 	
 	/**
 	 * icon theme name of system 
 	 */
-	private String iconSystemTheme;
+	private String iconSystemTheme = "iconic";
 	
 	//****************************************************************************************
 	

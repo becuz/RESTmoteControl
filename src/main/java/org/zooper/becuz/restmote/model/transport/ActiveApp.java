@@ -16,24 +16,29 @@ import org.zooper.becuz.restmote.model.App;
 public class ActiveApp implements Comparable<ActiveApp>{
 	
 	/**
-	 * 
+	 * Handle of the window
 	 */
 	private String handle;
 	
 	/**
-	 * 
+	 * Name of the window
 	 */
 	private String name;
 	
 	/**
-	 * 
+	 * Full label of the window
 	 */
 	private String windowLbl;
 	
 	/**
-	 * 
+	 * Currently on focus
 	 */
 	private boolean focus;
+	
+	/**
+	 * If true, exists an {@link App} able to manage it
+	 */
+	private boolean hasApp;
 	
 	public ActiveApp() {}
 	
@@ -74,6 +79,14 @@ public class ActiveApp implements Comparable<ActiveApp>{
 	
 	public void setFocus(boolean focus) {
 		this.focus = focus;
+	}
+	
+	public boolean isHasApp() {
+		return hasApp;
+	}
+
+	public void setHasApp(boolean hasApp) {
+		this.hasApp = hasApp;
 	}
 
 	@Override

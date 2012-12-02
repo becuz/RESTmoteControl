@@ -95,7 +95,7 @@ public class PanelEditApp extends PanelPersistable {
 		App app = (App) p;
         textFieldNameApp.setText(app == null ? "" : app.getName());
         textFieldExtensionsApp.setText(app == null ? "" : Utils.join(app.getExtensions(), ","));
-		checkInstanceApp.setSelected(app == null ? false : app.isForceOneInstance());
+		checkInstanceApp.setSelected(app == null ? false : app.getForceOneInstance());
 		textFieldArgFileApp.setText(app == null ? "" : app.getArgumentsFile());
 		textFieldArgDirApp.setText(app == null ? "" : app.getArgumentsDir());
 		textFieldPathApp.setText(app == null ? "" : app.getPath());

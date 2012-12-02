@@ -2,6 +2,7 @@ package org.zooper.becuz.restmote.ui.panels;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
+
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
 
 public abstract class PanelPersistables extends JPanel{

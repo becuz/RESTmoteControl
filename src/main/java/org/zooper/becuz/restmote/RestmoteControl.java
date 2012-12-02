@@ -25,7 +25,7 @@ public class RestmoteControl {
 	/**
 	 * Version of the runtime system. Has to be changed when the are updates in the persistence model layer. 
 	 */
-	private static String version = "0.032b";
+	private static String version = "0.033b";
 
 	/**
 	 * @return the version currently installed in the machine, accordingly to what is written in the file /version
@@ -56,7 +56,7 @@ public class RestmoteControl {
 	 * @throws Exception
 	 */
 	public void run(boolean develop) throws Exception {
-		new PopulateDb().createAndPopulate(develop);
+		new PopulateDb().createAndPopulate(/*develop*/);
 
 		// to cache everything, let's do several getAll
 //		PersistenceAbstract persistenceAbstract = PersistenceFactory.getPersistenceAbstract();

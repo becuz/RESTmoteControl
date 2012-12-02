@@ -6,8 +6,8 @@ package org.zooper.remosko.test.rest;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import org.apache.log4j.Logger;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.zooper.becuz.restmote.utils.Utils;
 

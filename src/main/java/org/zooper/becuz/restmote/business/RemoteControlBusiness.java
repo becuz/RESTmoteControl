@@ -28,7 +28,7 @@ public class RemoteControlBusiness extends BusinessAbstract{
 	
 	public boolean openFile(String filePath, App app) throws Exception{
 		if (app != null){
-			if (app.isForceOneInstance()){
+			if (app.getForceOneInstance()){
 				PcControllerFactory.getPcController().closeApp(app);
 			}
 		}
@@ -81,7 +81,7 @@ public class RemoteControlBusiness extends BusinessAbstract{
 		}
 		ActiveApp activeAppFocused = getActiveAppBusiness().getActiveAppFocused(true);
 		if (activeAppFocused == null || !activeAppFocused.isInstanceOf(app)){ //if a window of this App type is not already focused
-			if (PcControllerFactory.getPcController().focusApp(app) == null){
+			if (PcControllerFactory.getPcController().focusApp(app, false) == null){
 				throw new IllegalArgumentException("No running instance of App " + app.getName());
 			}
 		}

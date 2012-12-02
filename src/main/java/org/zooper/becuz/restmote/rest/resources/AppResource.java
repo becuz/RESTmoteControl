@@ -2,23 +2,16 @@ package org.zooper.becuz.restmote.rest.resources;
 
 import java.util.Collection;
 
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.zooper.becuz.restmote.model.App;
-import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
-import org.zooper.becuz.restmote.rest.exceptions.NotAcceptableException;
 import org.zooper.becuz.restmote.rest.exceptions.NotFoundException;
-import org.zooper.becuz.restmote.rest.exceptions.ServerException;
 
 /**
  * 
@@ -78,7 +71,7 @@ public class AppResource extends AbstractResource {
 	public App getByExtension(
 			@PathParam("extension") String extension){
 		log.info("AppResource get, extension: " + extension);
-		return getAppBusiness().getByExtension(extension);
+		return getAppBusiness().getRunningByExtension(extension);
 	}
 	
 	/**
