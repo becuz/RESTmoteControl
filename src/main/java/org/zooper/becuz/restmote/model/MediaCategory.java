@@ -10,6 +10,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import org.codehaus.jackson.map.annotate.JsonView;
+import org.zooper.becuz.restmote.conf.rest.Views;
 import org.zooper.becuz.restmote.model.interfaces.Completable;
 import org.zooper.becuz.restmote.model.interfaces.Editable;
 import org.zooper.becuz.restmote.model.transport.MediaRoot;
@@ -31,7 +33,7 @@ public class MediaCategory implements Editable, Completable{
 	/**
 	 * 
 	 */
-	@JsonIgnore
+	@JsonView(Views.All.class)
 	private Long id;
 	
 	/**
@@ -42,7 +44,7 @@ public class MediaCategory implements Editable, Completable{
 	/**
 	 * Extensions that this MediaCategory manages
 	 */
-	@JsonIgnore
+	@JsonView(Views.All.class)
 	private Set<String> extensions;
 	
 	/**
@@ -53,19 +55,19 @@ public class MediaCategory implements Editable, Completable{
 	/**
 	 * 
 	 */
-	@JsonIgnore
+	@JsonView(Views.All.class)
 	private String description;
 	
 	/**
 	 * Paths.
 	 */
-	@JsonIgnore
+	@JsonView(Views.All.class)
 	private Set<String> paths;
 	
 	/**
 	 * 
 	 */
-	@JsonIgnore
+	@JsonView(Views.All.class)
 	private Boolean active = true;
 	
 	public MediaCategory() {

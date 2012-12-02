@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.zooper.remosko.conf;
+package org.zooper.becuz.restmote.conf.rest;
 
 
 import javax.ws.rs.ext.ContextResolver;
@@ -36,10 +36,8 @@ public class JacksonConfigurator implements ContextResolver<ObjectMapper> {
 //        mapper.configure(SerializationConfig.Feature.WRITE_NULL_PROPERTIES,false);
         mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
         mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.configure(SerializationConfig.Feature.USE_ANNOTATIONS, false);
-        mapper.configure(DeserializationConfig.Feature.USE_ANNOTATIONS, false);
-//        SimpleModule testModule = new SimpleModule("MyModule", new Version(1, 0, 0, null)).addDeserializer(Text.class, new TextDeserializer());
-//        mapper.registerModule(testModule);
+//        mapper.configure(SerializationConfig.Feature.USE_ANNOTATIONS, false);
+//        mapper.configure(DeserializationConfig.Feature.USE_ANNOTATIONS, false);
     }
 
     public ObjectMapper getContext(Class<?> arg0) {

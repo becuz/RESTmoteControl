@@ -15,8 +15,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
+import org.zooper.becuz.restmote.conf.rest.RestFactory;
 import org.zooper.becuz.restmote.model.App;
-import org.zooper.remosko.conf.RestFactory;
 
 /**
  * TODO
@@ -39,7 +39,6 @@ public class TestAppResource extends TestResourceAbstract {
 		assertTrue(!apps.isEmpty());
 		for(App app: apps){
 			assertNotNull(app.getName());
-			assertNotNull(app.getPath());
 		}
 	}
 }

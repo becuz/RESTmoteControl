@@ -15,10 +15,10 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
+import org.zooper.becuz.restmote.conf.rest.RestFactory;
 import org.zooper.becuz.restmote.model.transport.Data;
 import org.zooper.becuz.restmote.model.transport.Media;
 import org.zooper.becuz.restmote.model.transport.MediaRoot;
-import org.zooper.remosko.conf.RestFactory;
 
 /**
  * @author bebo

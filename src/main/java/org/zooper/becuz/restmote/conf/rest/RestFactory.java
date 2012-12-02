@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.zooper.remosko.conf;
+package org.zooper.becuz.restmote.conf.rest;
 
 import org.apache.log4j.Logger;
 

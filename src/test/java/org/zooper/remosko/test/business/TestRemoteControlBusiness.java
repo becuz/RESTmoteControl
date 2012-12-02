@@ -98,6 +98,23 @@ public class TestRemoteControlBusiness extends TestAbstract{
 			}
 			assertNull(activeApp);
 			
+			
+		} catch (Exception e){
+			e.printStackTrace();
+			log.info(e.getMessage() + " " + e.getCause());
+			fail();
+		}
+	}
+	
+	
+	@Test
+	public void testOpenFile(){
+		try {
+			List<MediaRoot> mediaRoots = mediaBusiness.getMediaRoots();
+			assertNotNull(mediaRoots);
+			assertEquals(mediaRoots.size(), 4);
+			Media m = findMediaByExtensionInMediaRoots(mediaRoots, "mp3");
+			assertNotNull(m);
 			remoteControlBusiness.openFile(m.getPath(), null);
 			handle = TestActiveAppBusiness.getActiveApp(appMusic, true).getHandle();
 			assertNotNull(handle);
@@ -112,7 +129,6 @@ public class TestRemoteControlBusiness extends TestAbstract{
 			fail();
 		}
 	}
-	
 	
 	
 	@Test

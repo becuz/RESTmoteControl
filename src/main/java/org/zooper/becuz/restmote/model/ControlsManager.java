@@ -4,7 +4,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.map.annotate.JsonView;
+import org.zooper.becuz.restmote.conf.rest.Views;
 import org.zooper.becuz.restmote.controller.PcControllerAbstract;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
 
@@ -19,7 +20,7 @@ public class ControlsManager implements Persistable{
 	/**
 	 * Local store id
 	 */
-	@JsonIgnore
+	@JsonView(Views.All.class)
 	private Long id;
 	
 	/**

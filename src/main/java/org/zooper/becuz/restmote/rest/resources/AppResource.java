@@ -9,6 +9,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.annotate.JsonView;
+import org.zooper.becuz.restmote.conf.rest.Views;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
 import org.zooper.becuz.restmote.rest.exceptions.NotFoundException;
@@ -41,6 +43,7 @@ public class AppResource extends AbstractResource {
 	 */
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
+	@JsonView({Views.Public.class})
 	public Collection<App> get(){
 		log.info("AppResource get");
 		return getAppBusiness().getAll();

@@ -7,9 +7,10 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import org.codehaus.jackson.map.annotate.JsonView;
+import org.zooper.becuz.restmote.conf.rest.Views;
 import org.zooper.becuz.restmote.controller.PcControllerAbstract;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
 import org.zooper.becuz.restmote.utils.Constants;
@@ -24,12 +25,13 @@ import org.zooper.becuz.restmote.utils.Utils;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class Settings implements Persistable{
 	
-	@JsonIgnore
+	@JsonView(Views.All.class)
 	private Long id;
 	
 	/**
 	 * 
 	 */
+	@JsonView(Views.All.class)
 	private Date lastUpdated;
 	
 	/**
@@ -50,7 +52,7 @@ public class Settings implements Persistable{
 	/**
 	 * Paths to scan
 	 */
-	@JsonIgnore
+	@JsonView(Views.All.class)
 	private Set<String> paths;
 
 	/**
@@ -63,19 +65,19 @@ public class Settings implements Persistable{
 	/**
 	 * Names of net interfaces the server should run on
 	 */
-	@JsonIgnore
+	@JsonView(Views.All.class)
 	private String serverInetName;
 	
 	/**
 	 * Ip of {@link #serverInetName}
 	 */
-	@JsonIgnore
+	@JsonView(Views.All.class)
 	private String serverLastIp;
 	
 	/**
 	 * Port the server should run on 
 	 */
-	@JsonIgnore
+	@JsonView(Views.All.class)
 	private Integer serverPort = 9898;
 	
 	/**

@@ -17,9 +17,9 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
+import org.zooper.becuz.restmote.conf.rest.RestFactory;
 import org.zooper.becuz.restmote.model.transport.Media;
 import org.zooper.becuz.restmote.utils.Utils;
-import org.zooper.remosko.conf.RestFactory;
 
 /**
  * TODO all tests, starting with the use of scanDepth parameter, and calling GETs that returns mp3 and avi medias..

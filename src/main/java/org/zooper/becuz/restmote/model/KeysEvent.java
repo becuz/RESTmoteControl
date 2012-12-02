@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
 
 /**
@@ -18,7 +17,6 @@ public class KeysEvent implements Comparable<KeysEvent>, Persistable{
 	/**
 	 * 
 	 */
-	@JsonIgnore
 	private Long id;
 	
 	/**

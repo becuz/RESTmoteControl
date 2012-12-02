@@ -7,10 +7,11 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import org.codehaus.jackson.map.annotate.JsonView;
 import org.zooper.becuz.restmote.conf.ModelFactoryAbstract;
+import org.zooper.becuz.restmote.conf.rest.Views;
 import org.zooper.becuz.restmote.controller.PcControllerAbstract;
 import org.zooper.becuz.restmote.controller.PcControllerWindows;
 import org.zooper.becuz.restmote.model.interfaces.Completable;
@@ -30,7 +31,7 @@ import org.zooper.becuz.restmote.utils.Utils;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class App implements Editable, Completable{
 
-	@JsonIgnore
+	@JsonView(Views.All.class)
 	private Long id;
 	
 	/**
@@ -40,6 +41,7 @@ public class App implements Editable, Completable{
 	 * For example there could exist an app Firefox and a Firefox v2. Both of them should belong to the same family 
 	 * and just one of them will be {@link #chosen}. 
 	 */
+	@JsonView(Views.All.class)
 	private String family;
 	
 	/**
@@ -55,22 +57,26 @@ public class App implements Editable, Completable{
 	/**
 	 * True if this is the default {@link #chosen} of the {@link #family}
 	 */
+	@JsonView(Views.All.class)
 	private Boolean chosenDefault;
 	
 	/**
 	 * 
 	 */
+	@JsonView(Views.All.class)
 	private Boolean chosen;
 	
 	/**
 	 * The os of this app
 	 */
+	@JsonView(Views.All.class)
 	private String os;
 	
 	/**
 	 * Full path of the executable. The name of the executable is enough if its path is in the system bin variable.
 	 * This string is a command that the system console has to able to run. 
 	 */
+	@JsonView(Views.All.class)
 	private String path;
 	
 	/**
@@ -93,21 +99,24 @@ public class App implements Editable, Completable{
 	 * @see PcControllerWindows#openFile(String, App)
 	 * @see PcControllerWindows#closeApp(App)
 	 */
+	@JsonView(Views.All.class)
 	private Boolean forceOneInstance = true;
 	
 	/**
 	 * Extensions that this App manages. 
 	 * Needed just if this app isn't attached to any {@link MediaCategory} and the client wants to control this app through {@link PcResource}
 	 */
-	@JsonIgnore
+	@JsonView(Views.All.class)
 	private Set<String> extensions;
 	
 	/**
 	 */
+	@JsonView(Views.All.class)
 	private Date creationDate;
 	
 	/**
 	 */
+	@JsonView(Views.All.class)
 	private Date updateDate;
 	
 	public App() {

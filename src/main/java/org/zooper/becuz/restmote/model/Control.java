@@ -12,6 +12,8 @@ import java.util.TreeSet;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import org.codehaus.jackson.map.annotate.JsonView;
+import org.zooper.becuz.restmote.conf.rest.Views;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
 import org.zooper.becuz.restmote.utils.Utils;
 
@@ -24,7 +26,7 @@ import org.zooper.becuz.restmote.utils.Utils;
 public class Control implements Persistable{
 
 	public static final int MAX_NUM_ROWS = 4;
-	public static final int MAX_NUM_COLS = 5; //odd number is nicer!
+	public static final int MAX_NUM_COLS = 5; //odd number is nicer
 	
 	public static enum ControlDefaultTypeApp {
 		PLAY, PAUSE, STOP,
@@ -49,7 +51,7 @@ public class Control implements Persistable{
 	/**
 	 * pk
 	 */
-	@JsonIgnore
+	@JsonView(Views.All.class)
 	private Long id;
 	
 	/**
@@ -60,6 +62,7 @@ public class Control implements Persistable{
 	/**
 	 * textual description of the control, ex: "pauses the application"
 	 */
+	@JsonView(Views.All.class)
 	private String description;
 	
 	/**
@@ -203,6 +206,7 @@ public class Control implements Persistable{
 		}
 	}
 	
+	@JsonIgnore
 	public boolean isEmpty(){
 		return keysEvents == null || keysEvents.isEmpty();
 	}
