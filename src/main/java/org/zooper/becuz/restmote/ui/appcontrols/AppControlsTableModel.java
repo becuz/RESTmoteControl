@@ -1,88 +1,76 @@
 package org.zooper.becuz.restmote.ui.appcontrols;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import javax.swing.table.AbstractTableModel;
 
 import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.ControlsManager;
 import org.zooper.becuz.restmote.model.KeysEvent;
+import org.zooper.becuz.restmote.model.VisualControl;
 
 @SuppressWarnings("serial")
 public class AppControlsTableModel extends AbstractTableModel{
 
-    private Control[][] data;
+    private List<Control> data;
 
     public AppControlsTableModel() {
-    	data = new Control[Control.MAX_NUM_ROWS][Control.MAX_NUM_COLS];
+    	data = new ArrayList<Control>();
 	}
     
-	public void setData(ControlsManager controlsManager){
-		data = new Control[Control.MAX_NUM_ROWS][Control.MAX_NUM_COLS];
-		int delta = (Control.MAX_NUM_COLS-1)/2;
-		if (controlsManager.getControls() != null){
-			for(Control control: controlsManager.getControls()){
-				data[control.getRow()-1][control.getPosition()+delta] = control;//(control == null ? "null" : control.getName());
-			}
-		}
+	public void setData(Set<Control> controls){
+		data = new ArrayList<Control>(controls);
 		fireTableDataChanged();
 	}
 	
 	public void clearData(){
-		data = null;
+		data.clear();
 		fireTableDataChanged();
 	}
 	
-	public void setImageAt(String imgName, int rowIndex, int columnIndex){
-		Object o = getValueAt(rowIndex, columnIndex);
-		Control control;
-		if (o == null){
-			control = createDefaultControlAt(imgName, rowIndex, columnIndex, true);
-		} else {
-			control = (Control) o;
-			control.setName(imgName);
-		}
-		control.setHideImg(false);
-		fireTableCellUpdated(rowIndex, columnIndex);
-	}
-	
-	public Control createDefaultControlAt(String name, int rowIndex, int columnIndex, boolean add){
-		int delta = (Control.MAX_NUM_COLS-1)/2;
-		Control control = Control.getControl(name, rowIndex+1, columnIndex - delta);
-		control.addKeysEvent(new KeysEvent());
-		if (add){
-			setValueAt(control, rowIndex, columnIndex);
-		}
-		return control;
+	public Control getControlAt(int rowIndex){
+		return data.get(rowIndex);
 	}
 	
 	@Override
 	public String getColumnName(int column) {
+		if (column == 0){
+			return "Shortcut";
+		}
+		if (column == 1){
+			return "Description";
+		}
 		return ""+column;
 	}
 	
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		return Control.class;
+		return String.class;
 	}
 	
 	@Override
 	public int getRowCount() {
-		return data == null ? 0 :Control.MAX_NUM_ROWS;
+		return data == null ? 0 : data.size();
 	}
 
 	@Override
 	public int getColumnCount() {
-		return data == null ? 0 :Control.MAX_NUM_COLS;
+		return 2;
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		return data[rowIndex][columnIndex];
+		Control c = data.get(rowIndex);
+		if (columnIndex == 0){
+			return PanelControlKeys.getKeysAsString(c, -1);
+		}
+		if (columnIndex == 1){
+			return c.getDescription();
+		}
+		return "";
 	}
 	
-	@Override
-	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		data[rowIndex][columnIndex] = (Control)aValue;
-		fireTableCellUpdated(rowIndex, columnIndex);
-	}
+	
 
 }

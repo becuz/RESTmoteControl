@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
-import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.model.VisualControl;
 
 @SuppressWarnings("serial")
 public class ControlRenderer extends JLabel implements TableCellRenderer {
@@ -27,7 +27,7 @@ public class ControlRenderer extends JLabel implements TableCellRenderer {
 			setText("");
 			setIcon(null);
 		} else {
-			Control control = (Control) value;
+			VisualControl control = (VisualControl) value;
 			if (Boolean.TRUE.equals(control.getHideImg())){
 				setText(control.getName());
 				setIcon(null);

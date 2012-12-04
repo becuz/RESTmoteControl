@@ -16,6 +16,7 @@ import org.zooper.becuz.restmote.controller.PcControllerFactory;
 import org.zooper.becuz.restmote.controller.mouses.Mouse;
 import org.zooper.becuz.restmote.controller.mouses.Mouse.BTN_ACTION;
 import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.model.VisualControl;
 import org.zooper.becuz.restmote.model.transport.PcInfo;
 import org.zooper.becuz.restmote.utils.Constants;
 
@@ -136,7 +137,7 @@ public class PcResource extends AbstractResource{
 	public void mouseControl(@PathParam("controlName") String controlName) {
 		log.info("mouseMoves controlName: " + controlName);
 		try {
-			Control control = PcControllerFactory.getPcController().getMouseControlsManager().getControl(controlName);
+			VisualControl control = PcControllerFactory.getPcController().getMouseControlsManager().getControl(controlName);
 			if (control != null){
 				Mouse mouse = PcControllerFactory.getPcController().getMouse();
 				if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_CENTER.toString().toLowerCase())){
@@ -215,7 +216,8 @@ public class PcResource extends AbstractResource{
 	public void keyboardControl(@PathParam("controlName") String controlName) {
 		log.info("keyboardControl controlName: " + controlName);
 		try {
-			getRemoteControlBusiness().control(PcControllerFactory.getPcController().getKeyboardControlsManager().getControl(controlName));
+			Control control = PcControllerFactory.getPcController().getKeyboardVisualControlsManager().getControl(controlName).getControl();
+			getRemoteControlBusiness().control(control);
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());
 		}

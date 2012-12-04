@@ -33,7 +33,7 @@
 
 		<mapping resource="org/zooper/becuz/restmote/model/KeysEvent.hbm.xml"/>
 		<mapping resource="org/zooper/becuz/restmote/model/Control.hbm.xml"/>
-		<mapping resource="org/zooper/becuz/restmote/model/ControlsManager.hbm.xml"/> 
+		<mapping resource="org/zooper/becuz/restmote/model/VisualControl.hbm.xml"/> 
 		<mapping resource="org/zooper/becuz/restmote/model/App.hbm.xml"/>
 		<mapping resource="org/zooper/becuz/restmote/model/MediaCategory.hbm.xml"/>
         <mapping resource="org/zooper/becuz/restmote/model/Settings.hbm.xml"/>

@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.codehaus.jackson.map.annotate.JsonView;
@@ -89,10 +90,6 @@ public class App implements Editable, Completable{
 	 */
 	private String argumentsDir = null;
 	
-	/**
-	 * 
-	 */
-	private ControlsManager controlsManager;
 	
 	/**
 	 * if true, the system makes this app runs always in just one instance.
@@ -118,6 +115,26 @@ public class App implements Editable, Completable{
 	 */
 	@JsonView(Views.All.class)
 	private Date updateDate;
+
+	/**
+	 * 
+	 */
+	private Set<Control> controls;
+	
+	/**
+	 * 
+	 */
+	private Set<VisualControl> visualControls;
+	
+	/**
+	 * 
+	 */
+	private ControlsManager<Control> controlsManager;
+	
+	/**
+	 * 
+	 */
+	private ControlsManager<VisualControl> visualControlsManager;
 	
 	public App() {
 	}
@@ -148,7 +165,7 @@ public class App implements Editable, Completable{
 		if (Utils.isEmpty(getWindowName())){
 			errors.append("\nWindow is mandatory");
 		}
-		if (controlsManager == null || controlsManager.getControls() == null || controlsManager.getControls().isEmpty()){
+		if (controls == null || controls.isEmpty()){
 			errors.append("\nNo controls are defined");
 		}
 		if (Utils.isEmpty(getArgumentsFile())){
@@ -215,15 +232,20 @@ public class App implements Editable, Completable{
 		this.argumentsDir = argumentsDir;
 	}
 
-	public ControlsManager getControlsManager() {
+	@JsonIgnore
+	public ControlsManager<Control> getControlsManager() {
 		if (controlsManager == null){
-			controlsManager = new ControlsManager();
+			controlsManager = new ControlsManager<Control>(controls);
 		}
 		return controlsManager;
 	}
 
-	public void setControlsManager(ControlsManager controls) {
-		this.controlsManager = controls;
+	@JsonIgnore
+	public ControlsManager<VisualControl> getVisualControlsManager() {
+		if (visualControlsManager == null){
+			visualControlsManager = new ControlsManager<VisualControl>(visualControls);
+		}
+		return visualControlsManager;
 	}
 	
 	public Set<String> getExtensions() {
@@ -292,5 +314,23 @@ public class App implements Editable, Completable{
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public Set<Control> getControls() {
+		return controls;
+	}
+
+	public void setControls(Set<Control> controls) {
+		this.controls = controls;
+	}
+
+	public Set<VisualControl> getVisualControls() {
+		return visualControls;
+	}
+
+	public void setVisualControls(Set<VisualControl> visualControls) {
+		this.visualControls = visualControls;
+	}
+
+	
 	
 }

@@ -24,12 +24,22 @@
             <key column="appId"/>
             <element type="string" column="extension"/>
         </set>
-		<many-to-one name="controlsManager" 
-			lazy="false"
-			cascade="all,delete-orphan"
-	        column="controlsManagerId" 
-	        unique="true"
-	        />
+        <set name="controls" table="App_Controls" 
+				cascade="all" 
+				lazy="false">
+	        <key column="appId"/>
+	        <many-to-many column="controlId"
+	            unique="true"
+	            class="Control"/>
+	    </set>
+	    <set name="visualControls" table="App_VisualControls" 
+				cascade="all" 
+				lazy="false">
+	        <key column="appId"/>
+	        <many-to-many column="controlId"
+	            unique="true"
+	            class="VisualControl"/>
+	    </set>
 	</class>
 
 </hibernate-mapping>

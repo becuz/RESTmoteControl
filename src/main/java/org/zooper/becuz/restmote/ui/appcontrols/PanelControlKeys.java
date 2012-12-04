@@ -17,6 +17,7 @@ import javax.swing.event.TableModelListener;
 
 import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.KeysEvent;
+import org.zooper.becuz.restmote.model.VisualControl;
 import org.zooper.becuz.restmote.ui.UIUtils;
 
 /**
@@ -64,37 +65,39 @@ public class PanelControlKeys extends javax.swing.JPanel {
 			int selectedColumn = appControlsTable.getSelectedColumn();
 			int selectedRow = appControlsTable.getSelectedRow();
 			
-			if (previousSelectedRow > -1 && previousSelectedColumn > -1 && (selectedRow != previousSelectedRow || selectedColumn != previousSelectedColumn)){
-				Control controlSelected = (Control) appControlsTable.getModel().getValueAt(previousSelectedRow, previousSelectedColumn);	
-				if (controlSelected != null){
-					boolean valid = true;
-					try {
-						controlSelected.validate();
-						valid = !controlSelected.isEmpty();
-					} catch (IllegalArgumentException ex){
-						valid = false;
-					}
-					if (!valid){
-						//internalUpdate = true;
-						appControlsTable.getModel().setValueAt(null, previousSelectedRow, previousSelectedColumn);
-//					} else {
-//						setControl(controlSelected);
-					}
-				}
-			}
-			Control controlSelected = null;
-			if (selectedColumn > -1 && selectedRow > -1){
-				controlSelected = (Control) appControlsTable.getModel().getValueAt(selectedRow, selectedColumn);	
-				if (
-						controlSelected == null 
-						//&& !internalUpdate 
-						&& (selectedColumn != previousSelectedColumn || selectedRow != previousSelectedRow)){
-					//internalUpdate = true;
-					controlSelected = ((AppControlsTableModel)appControlsTable.getModel()).createDefaultControlAt("name", selectedRow, selectedColumn, false);
-					controlSelected.setHideImg(true);
-					appControlsTable.getModel().setValueAt(controlSelected, selectedRow, selectedColumn);
-				}
-			}
+//			if (previousSelectedRow > -1 && previousSelectedColumn > -1 && (selectedRow != previousSelectedRow || selectedColumn != previousSelectedColumn)){
+//				Control controlSelected = (Control) appControlsTable.getModel().getValueAt(previousSelectedRow, previousSelectedColumn);	
+//				if (controlSelected != null){
+//					boolean valid = true;
+//					try {
+//						controlSelected.validate();
+//						valid = !controlSelected.isEmpty();
+//					} catch (IllegalArgumentException ex){
+//						valid = false;
+//					}
+//					if (!valid){
+//						//internalUpdate = true;
+//						appControlsTable.getModel().setValueAt(null, previousSelectedRow, previousSelectedColumn);
+////					} else {
+////						setControl(controlSelected);
+//					}
+//				}
+//			}
+//			VisualControl controlSelected = null;
+//			if (selectedColumn > -1 && selectedRow > -1){
+//				controlSelected = (VisualControl) appControlsTable.getModel().getValueAt(selectedRow, selectedColumn);	
+//				if (
+//						controlSelected == null 
+//						//&& !internalUpdate 
+//						&& (selectedColumn != previousSelectedColumn || selectedRow != previousSelectedRow)){
+//					//internalUpdate = true;
+//					controlSelected = ((AppVisualControlsTableModel)appControlsTable.getModel()).createDefaultControlAt("name", selectedRow, selectedColumn, false);
+//					controlSelected.setHideImg(true);
+//					appControlsTable.getModel().setValueAt(controlSelected, selectedRow, selectedColumn);
+//				}
+//			}
+			
+			Control controlSelected = ((AppControlsTableModel)appControlsTable.getModel()).getControlAt(selectedRow);
 			setControl(controlSelected);
 			previousSelectedRow = selectedRow;
 			previousSelectedColumn = selectedColumn;
@@ -151,6 +154,28 @@ public class PanelControlKeys extends javax.swing.JPanel {
 		return (!control.getKeysEvents().isEmpty() && !control.getKeysEvents().last().getKeys().isEmpty());
 	}
 	
+	public static String getKeysAsString(Control c, int index){
+		List<KeysEvent> keysEventsList = new ArrayList(c.getKeysEvents());
+		int from = index == -1 ? 0 : index;
+		int to = index == -1 ? keysEventsList.size()-1 : index;
+		String keysText = new String();
+		for (int i = from; i <= to; i++) {
+			if (i > from){
+				keysText += ",";
+			}
+			KeysEvent currentKeysEvent = keysEventsList.get(i);
+			if (currentKeysEvent.getKeys() != null){
+				for(Integer key: currentKeysEvent.getKeys()){
+					if (keysText.length() > 0){
+						keysText += "+";
+					}
+					keysText += (KeyEvent.getKeyText(key));
+				}
+			}
+		}
+		return keysText;
+	}
+	
 	/**
 	 * Update the view accordingly to the {@link #control}
 	 */
@@ -163,11 +188,6 @@ public class PanelControlKeys extends javax.swing.JPanel {
 		btnPrev.setEnabled(indexKeysEvents > 0);
 		btnNext.setText(control == null || indexKeysEvents == control.getKeysEvents().size()-1 ? "+" : ">");
 		btnNext.setEnabled(control != null && (indexKeysEvents < control.getKeysEvents().size()-1 || canAddShortcutInControl()));
-		btnDeleteControl.setEnabled(control != null);
-		textFieldSelectedControlName.setText(control == null ? "" : control.getName());
-		textFieldSelectedControlName.setEnabled(checkSelectedControlNoImg.isSelected());
-		checkSelectedControlNoImg.setEnabled(ImageList.getImageListModel().getImageIcon(textFieldSelectedControlName.getText()) != null);
-		checkSelectedControlNoImg.setSelected(control == null ? false : Boolean.TRUE.equals(control.getHideImg()));
 		if (control != null){
 			List<KeysEvent> keysEventsList = new ArrayList(control.getKeysEvents());
 			KeysEvent currentKeysEvent = keysEventsList.get(indexKeysEvents);
@@ -212,10 +232,6 @@ public class PanelControlKeys extends javax.swing.JPanel {
         btnPrev = new javax.swing.JButton();
         btnNext = new javax.swing.JButton();
         lblPaging = new javax.swing.JLabel();
-        checkSelectedControlNoImg = new javax.swing.JCheckBox();
-        textFieldSelectedControlName = new javax.swing.JTextField();
-        btnDeleteControl = new javax.swing.JButton();
-        btnEdirAppTest = new javax.swing.JButton();
 
         comboVirtualKey.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -274,110 +290,63 @@ public class PanelControlKeys extends javax.swing.JPanel {
 
         lblPaging.setText("0/0");
 
-        checkSelectedControlNoImg.setText("No image");
-        checkSelectedControlNoImg.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                checkSelectedControlNoImgActionPerformed(evt);
-            }
-        });
-
-        textFieldSelectedControlName.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                textFieldSelectedControlNameKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                textFieldSelectedControlNameKeyTyped(evt);
-            }
-        });
-
-        btnDeleteControl.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/delete.png"))); // NOI18N
-        btnDeleteControl.setEnabled(false);
-        btnDeleteControl.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteControlActionPerformed(evt);
-            }
-        });
-
-        btnEdirAppTest.setText("Test");
-        btnEdirAppTest.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEdirAppTestActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(checkSelectedControlNoImg)
+                        .addGap(116, 116, 116)
+                        .addComponent(btnPrev)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textFieldSelectedControlName, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnEdirAppTest)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTextFieldKeyStroke, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblComboVirtualKey, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDeleteControl)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTextFieldKeyStroke, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblComboVirtualKey, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnPrev, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblPaging, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnNext)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(comboVirtualKey, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(textFieldKeyStroke, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(checkBoxKeyShift)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(checkBoxKeyCtrl)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(checkBoxKeyAlt, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(checkBoxKeyShift))
-                        .addGap(6, 6, 6))))
+                                .addComponent(checkBoxKeyAlt)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnNext))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(223, 223, 223)
+                        .addComponent(lblPaging, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnDeleteControl, btnEdirAppTest});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(checkBoxKeyAlt)
-                            .addComponent(checkBoxKeyCtrl)
-                            .addComponent(comboVirtualKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblComboVirtualKey))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(checkBoxKeyShift)
-                            .addComponent(textFieldKeyStroke, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblTextFieldKeyStroke))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnNext, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnPrev, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblPaging, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(checkBoxKeyAlt)
+                                    .addComponent(checkBoxKeyCtrl)
+                                    .addComponent(comboVirtualKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblComboVirtualKey))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(textFieldKeyStroke, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(checkBoxKeyShift)
+                                    .addComponent(lblTextFieldKeyStroke)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblPaging))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(textFieldSelectedControlName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(checkSelectedControlNoImg))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnEdirAppTest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnDeleteControl, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
+                        .addContainerGap()
+                        .addComponent(btnPrev, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnNext, btnPrev});
@@ -452,57 +421,20 @@ public class PanelControlKeys extends javax.swing.JPanel {
 		
     }//GEN-LAST:event_textFieldKeyStrokeKeyPressed
 
-	private void fireUpdate(){
-		((AppControlsTableModel)appControlsTable.getModel())
-				.fireTableCellUpdated(appControlsTable.getSelectedRow(), appControlsTable.getSelectedColumn());
-	}
 	
-    private void checkSelectedControlNoImgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkSelectedControlNoImgActionPerformed
-        System.out.println("TODO checkSelectedControlNoImgActionPerformed");
-		modified = true;
-		textFieldSelectedControlName.setEnabled(checkSelectedControlNoImg.isSelected());
-		control.setHideImg(checkSelectedControlNoImg.isSelected());
-		fireUpdate();
-    }//GEN-LAST:event_checkSelectedControlNoImgActionPerformed
-
-    private void textFieldSelectedControlNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldSelectedControlNameKeyTyped
-		System.out.println("TODO textFieldSelectedControlNameKeyTyped");
-    }//GEN-LAST:event_textFieldSelectedControlNameKeyTyped
-
-    private void textFieldSelectedControlNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldSelectedControlNameKeyReleased
-        System.out.println("TODO textFieldSelectedControlNameKeyReleased");
-		modified = true;
-		control.setName(textFieldSelectedControlName.getText());
-		fireUpdate();
-    }//GEN-LAST:event_textFieldSelectedControlNameKeyReleased
-
-    private void btnDeleteControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteControlActionPerformed
-        int selectedRow = appControlsTable.getSelectedRow();
-		int selectedColumn = appControlsTable.getSelectedColumn();
-		appControlsTable.clearSelection();
-		appControlsTable.getModel().setValueAt(null, selectedRow, selectedColumn);
-    }//GEN-LAST:event_btnDeleteControlActionPerformed
-
-    private void btnEdirAppTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEdirAppTestActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnEdirAppTestActionPerformed
-
+	
 	
 	
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnDeleteControl;
-    private javax.swing.JButton btnEdirAppTest;
     private javax.swing.JButton btnNext;
     private javax.swing.JButton btnPrev;
     private javax.swing.JCheckBox checkBoxKeyAlt;
     private javax.swing.JCheckBox checkBoxKeyCtrl;
     private javax.swing.JCheckBox checkBoxKeyShift;
-    private javax.swing.JCheckBox checkSelectedControlNoImg;
     private javax.swing.JComboBox comboVirtualKey;
     private javax.swing.JLabel lblComboVirtualKey;
     private javax.swing.JLabel lblPaging;
     private javax.swing.JLabel lblTextFieldKeyStroke;
     private javax.swing.JTextField textFieldKeyStroke;
-    private javax.swing.JTextField textFieldSelectedControlName;
     // End of variables declaration//GEN-END:variables
 }

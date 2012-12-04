@@ -36,23 +36,20 @@ public class ModelFactoryLinux extends ModelFactoryAbstract{
 			appMusic.addExtension("mp3");
 			//appMusic.addExtension("ogg");
 			appMusic.setForceOneInstance(false);
-			ControlsManager controlAppMusic = new ControlsManager();
-			controlAppMusic.addControl(Control.getControl(
-					ControlDefaultTypeApp.VOLUP, 1, new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_ALT, KeyEvent.VK_UP})), 1, 0));
-			controlAppMusic.addControl(Control.getControl(
-					ControlDefaultTypeApp.PREV, 1, new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_ALT, KeyEvent.VK_LEFT})), 2, -2));
+			getControl(appMusic, 		
+					ControlDefaultTypeApp.VOLUP, 1, new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_ALT, KeyEvent.VK_UP})), 1, 0);
+			getControl(appMusic, 
+					ControlDefaultTypeApp.PREV, 1, new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_ALT, KeyEvent.VK_LEFT})), 2, -2);
 			Set<Integer> l = new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_CONTROL, KeyEvent.VK_SPACE}));
-			controlAppMusic.addControl(Control.getControl(
-					ControlDefaultTypeApp.PLAY, 1, l, 2, -1));
-			controlAppMusic.addControl(Control.getControl(
-					ControlDefaultTypeApp.PAUSE, 1, l, 2, -1));
-			controlAppMusic.addControl(Control.getControl(
-					ControlDefaultTypeApp.NEXT, 1, new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_ALT, KeyEvent.VK_RIGHT})), 2, 2));
-			//controlAppMusic.addControl(Control.getControl(ControlDefaultTypeApp.BACKWARD, 3, KeyEvent.VK_LEFT, 3, -1));
-			controlAppMusic.addControl(Control.getControl(
-					ControlDefaultTypeApp.VOLDOWN, 1, new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_ALT, KeyEvent.VK_DOWN})), 3, 0));
+			getControl(appMusic, ControlDefaultTypeApp.PLAY, 1, l, 2, -1);
+			getControl(appMusic, ControlDefaultTypeApp.PAUSE, 1, l, 2, -1);
+			getControl(appMusic, 
+					ControlDefaultTypeApp.NEXT, 1, new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_ALT, KeyEvent.VK_RIGHT})), 2, 2);
+			//getControl(appMusic, ControlDefaultTypeApp.BACKWARD, 3, KeyEvent.VK_LEFT, 3, -1));
+			getControl(appMusic, 
+					ControlDefaultTypeApp.VOLDOWN, 1, new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_ALT, KeyEvent.VK_DOWN})), 3, 0);
 			//controlAppMusic.addControl(Control.getControl(ControlDefaultTypeApp.FORWARD, 3, KeyEvent.VK_RIGHT, 3, 1));
-			appMusic.setControlsManager(controlAppMusic);
+			syncControls(appMusic);
 		}
 		return appMusic;
 	}
@@ -69,12 +66,11 @@ public class ModelFactoryLinux extends ModelFactoryAbstract{
 			appPics.addExtension("gif");
 			appPics.addExtension("png");
 			appPics.setForceOneInstance(true);
-			ControlsManager controlAppPics = new ControlsManager();
-			controlAppPics.addControl(Control.getControl(ControlDefaultTypeApp.FULLSCREEN, KeyEvent.VK_F11, 1, 0));
-			controlAppPics.addControl(Control.getControl(ControlDefaultTypeApp.BACKWARD, KeyEvent.VK_LEFT, 2, -1));
-			controlAppPics.addControl(Control.getControl(ControlDefaultTypeApp.PLAY, KeyEvent.VK_F5, 2, 0));
-			controlAppPics.addControl(Control.getControl(ControlDefaultTypeApp.FORWARD, KeyEvent.VK_RIGHT, 2, 1));
-			appPics.setControlsManager(controlAppPics);
+			getControl(appPics, ControlDefaultTypeApp.FULLSCREEN, KeyEvent.VK_F11, 1, 0);
+			getControl(appPics, ControlDefaultTypeApp.BACKWARD, KeyEvent.VK_LEFT, 2, -1);
+			getControl(appPics, ControlDefaultTypeApp.PLAY, KeyEvent.VK_F5, 2, 0);
+			getControl(appPics, ControlDefaultTypeApp.FORWARD, KeyEvent.VK_RIGHT, 2, 1);
+			syncControls(appPics);
 		}
 		return appPics;
 	}

@@ -10,13 +10,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.zooper.becuz.restmote.business.ActiveAppBusiness;
@@ -34,6 +33,7 @@ import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeKeyboard;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeMouse;
 import org.zooper.becuz.restmote.model.ControlsManager;
+import org.zooper.becuz.restmote.model.VisualControl;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
 import org.zooper.becuz.restmote.utils.Constants;
 import org.zooper.becuz.restmote.utils.Utils;
@@ -77,12 +77,32 @@ public abstract class PcControllerAbstract {
 	/**
 	 * 
 	 */
-	private ControlsManager mouseControlsManager;
+	private Set<Control> kbdControls;
+	
+	/**
+	 * 
+	 */
+	private Set<VisualControl> kbdVisualControls;
+	
+	/**
+	 * 
+	 */
+	private Set<VisualControl> mouseControls;
+	
+	/**
+	 * 
+	 */
+	private ControlsManager<VisualControl> mouseControlsManager;
 
 	/**
 	 * 
 	 */
-	private ControlsManager keyboardControlsManager;
+	private ControlsManager<Control> keyboardControlsManager;
+	
+	/**
+	 * 
+	 */
+	private ControlsManager<VisualControl> keyboardVisualControlsManager;
 	
 	//*****************************************************************************************
 	
@@ -245,62 +265,76 @@ public abstract class PcControllerAbstract {
 		return results;
 	}
 	
-	public ControlsManager getKeyboardControlsManager() {
-		if (keyboardControlsManager == null){
-			keyboardControlsManager = new ControlsManager();
+	public ControlsManager<VisualControl> getKeyboardVisualControlsManager() {
+		if (keyboardVisualControlsManager == null){
+			keyboardControlsManager = new ControlsManager<Control>(kbdControls);
+			keyboardVisualControlsManager = new ControlsManager<VisualControl>(kbdVisualControls);
 			//first line
-			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_UP, KeyEvent.VK_UP, 1, 0));
+			Control control = new Control(ControlDefaultTypeKeyboard.KBD_UP.toString().toLowerCase(), KeyEvent.VK_UP);
+			VisualControl visualControl = new VisualControl(control, 1, 0);
+			keyboardControlsManager.addControl(control);
+			keyboardVisualControlsManager.addControl(visualControl);
 			
 			//second line
-			Control cntrlTab = Control.getControl("Tab <", 1, KeyEvent.VK_TAB, 2, -2);
-			cntrlTab.setHideImg(true);
-			keyboardControlsManager.addControl(cntrlTab);
-			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_LEFT, KeyEvent.VK_LEFT, 2, -1));
-			Control cntrlEnter = Control.getControl(ControlDefaultTypeKeyboard.KBD_ENTER, KeyEvent.VK_ENTER, 2, 0);
-			keyboardControlsManager.addControl(cntrlEnter);
-			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_RIGHT, KeyEvent.VK_RIGHT, 2, 1));
-			Control cntrlITab = Control.getControl("Tab >", 1, 
-					new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_SHIFT, KeyEvent.VK_TAB})), 2, 2);
-			cntrlITab.setHideImg(true);
-			keyboardControlsManager.addControl(cntrlITab);
+			control = new Control("Tab <", KeyEvent.VK_TAB);
+			visualControl = new VisualControl(control, 2, -2);
+			visualControl.setHideImg(true);
+			keyboardControlsManager.addControl(control);
+			keyboardVisualControlsManager.addControl(visualControl);
 			
-			//third line		
-			Control cntrlAlt = Control.getControl("Alt", 1, KeyEvent.VK_ALT, 3, -2);
-			cntrlAlt.setHideImg(true);
-			keyboardControlsManager.addControl(cntrlAlt);
-			
-			Control cntrl = Control.getControl("Ctrl", 1, KeyEvent.VK_CONTROL, 3, -1);
-			cntrl.setHideImg(true);
-			keyboardControlsManager.addControl(cntrl);
-			
-			Control cntrlMeta = Control.getControl("Meta", 1, KeyEvent.VK_META, 3, 0);
-			cntrlMeta.setHideImg(true);
-			keyboardControlsManager.addControl(cntrlMeta);
-			
-			Control cntrlEsc = Control.getControl("Esc", 1, KeyEvent.VK_ESCAPE, 3, 1);
-			cntrlEsc.setHideImg(true);
-			keyboardControlsManager.addControl(cntrlEsc);
-			
-			//fourth line
-			keyboardControlsManager.addControl(Control.getControl(ControlDefaultTypeKeyboard.KBD_DOWN, KeyEvent.VK_DOWN, 4, 0));			
-			
-			
+//			keyboardControlsManager.addControl(ModelFactoryAbstract.getControlKeyboard(ControlDefaultTypeKeyboard.KBD_LEFT, KeyEvent.VK_LEFT, 2, -1));
+//			
+//			Control cntrlEnter = ModelFactoryAbstract.getControlKeyboard(ControlDefaultTypeKeyboard.KBD_ENTER, KeyEvent.VK_ENTER, 2, 0);
+//			keyboardControlsManager.addControl(cntrlEnter);
+//			
+//			keyboardControlsManager.addControl(ModelFactoryAbstract.getControlKeyboard(ControlDefaultTypeKeyboard.KBD_RIGHT, KeyEvent.VK_RIGHT, 2, 1));
+//			
+//			Control cntrlITab = ModelFactoryAbstract.getControKeyboardl("Tab >", 1, 
+//					new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_SHIFT, KeyEvent.VK_TAB})), 2, 2);
+//			cntrlITab.setHideImg(true);
+//			keyboardControlsManager.addControl(cntrlITab);
+//			
+//			//third line		
+//			Control cntrlAlt = ModelFactoryAbstract.getControlKeyboard("Alt", 1, KeyEvent.VK_ALT, 3, -2);
+//			cntrlAlt.setHideImg(true);
+//			keyboardControlsManager.addControl(cntrlAlt);
+//			
+//			Control cntrl = ModelFactoryAbstract.getControlKeyboard("Ctrl", 1, KeyEvent.VK_CONTROL, 3, -1);
+//			cntrl.setHideImg(true);
+//			keyboardControlsManager.addControl(cntrl);
+//			
+//			Control cntrlMeta = ModelFactoryAbstract.getControlKeyboard("Meta", 1, KeyEvent.VK_META, 3, 0);
+//			cntrlMeta.setHideImg(true);
+//			keyboardControlsManager.addControl(cntrlMeta);
+//			
+//			Control cntrlEsc = ModelFactoryAbstract.getControlKeyboard("Esc", 1, KeyEvent.VK_ESCAPE, 3, 1);
+//			cntrlEsc.setHideImg(true);
+//			keyboardControlsManager.addControl(cntrlEsc);
+//			
+//			//fourth line
+//			keyboardControlsManager.addControl(ModelFactoryAbstract.getControlKeyboard(ControlDefaultTypeKeyboard.KBD_DOWN, KeyEvent.VK_DOWN, 4, 0));			
+//			kbdControls = keyboardControlsManager.getControls(); 
 		}
+		return keyboardVisualControlsManager;
+	}
+
+	public ControlsManager<Control> getKeyboardControlsManager() {
 		return keyboardControlsManager;
 	}
 	
-	public ControlsManager getMouseControlsManager() {
+	public ControlsManager<VisualControl> getMouseControlsManager() {
 		if (mouseControlsManager == null){
-			mouseControlsManager = new ControlsManager();
-			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_CLICK1, 1, -1));
-			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_UP, 1, 0));
-			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_CLICK3, 1, 1));
-			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_LEFT, 2, -1));
-			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_CENTER, 2, 0));
-			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_RIGHT, 2, 1));
-			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_WHEELUP, 3, -1));
-			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_DOWN, 3, 0));
-			mouseControlsManager.addControl(Control.getControl(ControlDefaultTypeMouse.MOUSE_WHEELDOWN, 3, 1));
+			mouseControlsManager = new ControlsManager<VisualControl>(mouseControls);
+			mouseControlsManager.addControl(new VisualControl(ControlDefaultTypeMouse.MOUSE_CLICK1.toString().toLowerCase(), 1, -1));
+			mouseControlsManager.addControl(new VisualControl(ControlDefaultTypeMouse.MOUSE_UP.toString().toLowerCase(), 1, 0));
+			mouseControlsManager.addControl(new VisualControl(ControlDefaultTypeMouse.MOUSE_CLICK3.toString().toLowerCase(), 1, 1));
+			mouseControlsManager.addControl(new VisualControl(ControlDefaultTypeMouse.MOUSE_LEFT.toString().toLowerCase(), 2, -1));
+			mouseControlsManager.addControl(new VisualControl(ControlDefaultTypeMouse.MOUSE_CENTER.toString().toLowerCase(), 2, 0));
+			mouseControlsManager.addControl(new VisualControl(ControlDefaultTypeMouse.MOUSE_RIGHT.toString().toLowerCase(), 2, 1));
+			mouseControlsManager.addControl(new VisualControl(ControlDefaultTypeMouse.MOUSE_WHEELUP.toString().toLowerCase(), 3, -1));
+			mouseControlsManager.addControl(new VisualControl(ControlDefaultTypeMouse.MOUSE_DOWN.toString().toLowerCase(), 3, 0));
+			mouseControlsManager.addControl(new VisualControl(ControlDefaultTypeMouse.MOUSE_WHEELDOWN.toString().toLowerCase(), 3, 1));
+			mouseControls = mouseControlsManager.getControls();
 		}
 		return mouseControlsManager;
 	}

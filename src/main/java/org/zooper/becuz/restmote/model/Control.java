@@ -23,11 +23,8 @@ import org.zooper.becuz.restmote.utils.Utils;
  * @author bebo
  */
 @JsonSerialize(include = Inclusion.NON_NULL)
-public class Control implements Persistable{
+public class Control implements ControlInterface{
 
-	public static final int MAX_NUM_ROWS = 4;
-	public static final int MAX_NUM_COLS = 5; //odd number is nicer
-	
 	public static enum ControlDefaultTypeApp {
 		PLAY, PAUSE, STOP,
 		PREV, NEXT, FORWARD, BACKWARD, 
@@ -71,106 +68,26 @@ public class Control implements Persistable{
 	@JsonIgnore
 	private SortedSet<KeysEvent> keysEvents;
 	
-	/**
-	 * For custom controls
-	 */
-	private String imgSrc;
-	
-	/**
-	 * 0 = centered. -2,-1,0,1,2
-	 */
-	private Integer position;
-	
-	/**
-	 * row of the control 
-	 */
-	private Integer row;
-	
-	/**
-	 * If false no image is displayed, {@link #text} instead
-	 */
-	private Boolean hideImg;
-	
-	/**
-	 * Human readable text for this control, ex. "Esc","Enter" 
-	 */
-	//private String text;
-	
 	public Control() {
 	}
 
-	private Control(String name, Integer row, Integer position) {
+	public Control(String name) {
 		this();
 		this.name = name;
-		this.row = row;
-		this.position = position;
+	}
+	
+	public Control(String name, Integer key) {
+		this(name);
+		addKeysEvent(new KeysEvent(key));
 	}
 
-	public static Control getControl(ControlDefaultTypeMouse c, Integer row, Integer position){
-		return getControl(c.toString().toLowerCase(), null, row, position);
-	}
 	
-	public static Control getControl(String name, Integer row, Integer position){
-		return getControl(name, null, row, position);
-	}
-	
-	public static Control getControl(ControlDefaultTypeKeyboard c, Integer key, Integer row, Integer position){
-		return getControl(c.toString().toLowerCase(), 1, key, row, position);
-	}
-	
-	public static Control getControl(String name, Integer key, Integer row, Integer position){
-		return getControl(name, 1, key, row, position);
-	}
-	
-	public static Control getControl(ControlDefaultTypeApp c, Integer key, Integer row, Integer position){
-		return getControl(c, 1, key, row, position);
-	}
-	
-	public static Control getControl(ControlDefaultTypeApp c, Integer repeat, Integer key, Integer row, Integer position){
-		return getControl(c.toString().toLowerCase(), repeat, key, row, position);
-	}
-	
-	public static Control getControl(String name, Integer repeat, Integer key, Integer row, Integer position){
-		Set<Integer> keysInner = new HashSet<Integer>();
-		if (key != null){
-			keysInner.add(key);
-		}
-		return getControl(name, repeat, keysInner, row, position);
-	}
-	
-	public static Control getControl(ControlDefaultTypeApp c, Integer repeat, Set<Integer> keys, Integer row, Integer position){
-		return getControl(c.toString().toLowerCase(), repeat, keys, row, position);
-	}
-	
-	public static Control getControl(String name, Integer repeat, Set<Integer> keys, Integer row, Integer position){
-		List<Set<Integer>> sequenceKeys = new ArrayList<Set<Integer>>();
-		sequenceKeys.add(keys);
-		return getControlMultiCommand(name, Collections.singletonList(repeat), sequenceKeys, row, position);
-	}
-	
-	public static Control getControlMultiCommand(String name, List<Integer> repeat, List<Set<Integer>> keys, Integer row, Integer position){
-		Control c = new Control(name.toLowerCase(), row, position);
-		int i = 0;
-		for(Set<Integer> k: keys){
-			KeysEvent keysEvent = new KeysEvent(k, repeat.get(i++));
-			c.addKeysEvent(keysEvent);
-		}
-		c.validate();
-		return c;
-	}
 	
 	@Override
 	public void validate() throws IllegalArgumentException {
 		clean();
 		if (Utils.isEmpty(name)){
 			throw new IllegalArgumentException("Control has no name");
-		}
-		if (row == null || row < 1 || row > MAX_NUM_ROWS){
-			throw new IllegalArgumentException("Control " + name + ". Row can't be null and has to be between 1 and 4");
-		}
-		int m = (MAX_NUM_COLS-1)/2;
-		if (position == null || position < -m || position > m){
-			throw new IllegalArgumentException("Control " + name + ". Position can't be null and has to be between -" + m + " and " + m);
 		}
 //		if (!name.startsWith("MOUSE") && isEmpty()){ //mouse controls have no keys
 //			throw new IllegalArgumentException("Control without shortcuts is pretty useless");
@@ -237,30 +154,6 @@ public class Control implements Persistable{
 	public void setKeysEvents(SortedSet<KeysEvent> keysEvent) {
 		this.keysEvents = keysEvent;
 	}
-	
-	public String getImgSrc() {
-		return imgSrc;
-	}
-
-	public void setImgSrc(String imgSrc) {
-		this.imgSrc = imgSrc;
-	}
-
-	public Integer getPosition() {
-		return position;
-	}
-
-	public void setPosition(Integer position) {
-		this.position = position;
-	}
-
-	public Integer getRow() {
-		return row;
-	}
-
-	public void setRow(Integer row) {
-		this.row = row;
-	}
 
 	public Long getId() {
 		return id;
@@ -270,26 +163,12 @@ public class Control implements Persistable{
 		this.id = id;
 	}
 	
-	public Boolean getHideImg() {
-		return hideImg;
-	}
-
-	public void setHideImg(Boolean useImg) {
-		this.hideImg = useImg;
-	}
 	
 //	@Override
 //	public int compareTo(Control o) {
 //		return this.getLogicOrder().compareTo(o.getLogicOrder());
 //	}
 
-//	public String getText() {
-//		return text;
-//	}
-//
-//	public void setText(String text) {
-//		this.text = text;
-//	}
 
 	public void addKeysEvent(KeysEvent keysEvent) {
 		keysEvent.setLogicOrder(getKeysEvents().size());
@@ -303,6 +182,7 @@ public class Control implements Persistable{
 			c.setLogicOrder(i++);
 		}
 	}
+	
 	
 //	public void setposition(position position) {
 //		this.position = position.toString();

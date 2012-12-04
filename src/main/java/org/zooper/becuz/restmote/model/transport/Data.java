@@ -1,15 +1,16 @@
 package org.zooper.becuz.restmote.model.transport;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
-import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeKeyboard;
+import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeMouse;
-import org.zooper.becuz.restmote.model.ControlsManager;
 import org.zooper.becuz.restmote.model.Settings;
+import org.zooper.becuz.restmote.model.VisualControl;
 import org.zooper.becuz.restmote.rest.resources.DataResource;
 
 /**
@@ -34,15 +35,14 @@ public class Data {
 	
 	/**
 	 * Available keyboards controls
-	 * @see ControlDefaultTypeKeyboard
 	 */
-	private ControlsManager keyboardControlsManager;
+	private Set<VisualControl> keyboardVisualControls;
 	
 	/**
 	 * Available mouse controls
 	 * @see ControlDefaultTypeMouse
 	 */
-	private ControlsManager mouseControlsManager;
+	private Set<VisualControl> mouseVisualControls;
 	
 	//****************************************************************************************
 	
@@ -65,20 +65,22 @@ public class Data {
 		this.mediaRoots = mediaRoots;
 	}
 
-	public ControlsManager getKeyboardControlsManager() {
-		return keyboardControlsManager;
+	public Set<VisualControl> getKeyboardVisualControls() {
+		return keyboardVisualControls;
 	}
 
-	public void setKeyboardControlsManager(ControlsManager keyboardControlsManager) {
-		this.keyboardControlsManager = keyboardControlsManager;
+	public void setKeyboardVisualControls(Set<VisualControl> keyboardVisualControls) {
+		this.keyboardVisualControls = keyboardVisualControls;
 	}
 
-	public ControlsManager getMouseControlsManager() {
-		return mouseControlsManager;
+	public Set<VisualControl> getMouseVisualControls() {
+		return mouseVisualControls;
 	}
 
-	public void setMouseControlsManager(ControlsManager mouseControlsManager) {
-		this.mouseControlsManager = mouseControlsManager;
+	public void setMouseVisualControls(Set<VisualControl> mouseVisualControls) {
+		this.mouseVisualControls = mouseVisualControls;
 	}
+	
+
 	
 }

@@ -42,15 +42,14 @@ public class PanelCategories extends PanelPersistables {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelListPersistable, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelEditCategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(panelEditCategory, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(panelEditCategory, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelListPersistable, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE))
+                    .addComponent(panelListPersistable, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE))
                 .addGap(11, 11, 11))
         );
     }// </editor-fold>//GEN-END:initComponents

@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 
 import org.junit.Test;
 import org.zooper.becuz.restmote.business.AppBusiness;
+import org.zooper.becuz.restmote.conf.ModelFactoryAbstract;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeApp;
@@ -72,10 +73,13 @@ public class TestAppBusiness extends TestAbstract{
 		App app = new App("smplayer", "path");
 		app.addExtension("avi");
 		app.setForceOneInstance(true);
-		ControlsManager controlAppMovies = new ControlsManager();
-		Control control1 = controlAppMovies.addControl(Control.getControl(ControlDefaultTypeApp.VOLUP, KeyEvent.VK_0, 1, 0));
-		Control control2 = controlAppMovies.addControl(Control.getControl(ControlDefaultTypeApp.FULLSCREEN, KeyEvent.VK_F, 2, -2));
-		app.setControlsManager(controlAppMovies);
+		ControlsManager<Control> controlApp = app.getControlsManager();
+		Control control1 = 
+				(Control) ModelFactoryAbstract.getControl(app, ControlDefaultTypeApp.VOLUP, KeyEvent.VK_0, 1, 0)[0];
+		Control control2 = 
+				(Control) ModelFactoryAbstract.getControl(app, ControlDefaultTypeApp.FULLSCREEN, KeyEvent.VK_F, 1, -2)[0];
+		ModelFactoryAbstract.syncControls(app);
+		app.setControls(controlApp.getControls());
 		appBusiness.store(app);
 		control1.setName("name");
 		appBusiness.store(app);

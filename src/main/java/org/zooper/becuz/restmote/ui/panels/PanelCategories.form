@@ -19,8 +19,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="panelListPersistable" min="-2" pref="242" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelEditCategory" max="32767" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <Component id="panelEditCategory" pref="558" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -29,7 +28,7 @@
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="panelEditCategory" alignment="0" max="32767" attributes="0"/>
-                  <Component id="panelListPersistable" pref="526" max="32767" attributes="0"/>
+                  <Component id="panelListPersistable" pref="524" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
           </Group>

@@ -27,6 +27,8 @@ public class UIConstants {
 	public static final String TOOLTIP_APP_ARGFILE = Constants.APP_ARGUMENT_FILE + " is file to open. Add command line parameters if you wish";
 	public static final String TOOLTIP_APP_ARGDIR = "Leave blank if this app doesn't support directory opening";
 	public static final String TOOLTIP_APP_ONEINSTANCE = "Mark if you don't want more instances of this app open (and if the app doesn't already allow this itself)";
+	public static final String TOOLTIP_APP_BROWSE = "Browse and choose the executable";
+	public static final String TOOLTIP_APP_REFRESH = "Refresh the list of running applications";
 	
 	public static final String TOOLTIP_APP_CONTROLS = "Edit the shortcuts";
 	public static final String TOOLTIP_APP_CONTROLS_DELETE = "Delete selected Control";

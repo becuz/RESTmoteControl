@@ -20,12 +20,12 @@ import javax.swing.JTable;
  * @author bebo
  */
 @SuppressWarnings("serial")
-public class ControlsTable extends JTable implements DropTargetListener {
+public class VisualControlsTable extends JTable implements DropTargetListener {
 	
 	@SuppressWarnings("unused")
 	private DropTarget target;
 
-	public ControlsTable() {
+	public VisualControlsTable() {
 		target = new DropTarget(this, this);
 	}
 
@@ -54,12 +54,12 @@ public class ControlsTable extends JTable implements DropTargetListener {
 		int col = columnAtPoint(p);
 		try {
 			String imgName = (String) t.getTransferData(d[0]);
-			((AppControlsTableModel)getModel()).setImageAt(imgName, row, col);
+			((AppVisualControlsTableModel)getModel()).setImageAt(imgName, row, col);
 			changeSelection(row, col, false, false);
 		} catch (UnsupportedFlavorException ex) {
-			Logger.getLogger(ControlsTable.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(VisualControlsTable.class.getName()).log(Level.SEVERE, null, ex);
 		} catch (IOException ex) {
-			Logger.getLogger(ControlsTable.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(VisualControlsTable.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
 	}

@@ -25,7 +25,7 @@ public class RestmoteControl {
 	/**
 	 * Version of the runtime system. Has to be changed when the are updates in the persistence model layer. 
 	 */
-	private static String version = "0.033b";
+	private static String version = "0.034b";
 
 	/**
 	 * @return the version currently installed in the machine, accordingly to what is written in the file /version

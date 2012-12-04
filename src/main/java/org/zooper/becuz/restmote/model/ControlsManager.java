@@ -4,64 +4,40 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.codehaus.jackson.map.annotate.JsonView;
-import org.zooper.becuz.restmote.conf.rest.Views;
-import org.zooper.becuz.restmote.controller.PcControllerAbstract;
-import org.zooper.becuz.restmote.model.interfaces.Persistable;
-
 /**
- * Simple utility class to link several {@link Control}s to an other {@link Persistable}: {@link App} or {@link PcControllerAbstract} implementations.
  *
  * @author bebo
  *
  */
-public class ControlsManager implements Persistable{
+public class ControlsManager<E extends ControlInterface> {
 
-	/**
-	 * Local store id
-	 */
-	@JsonView(Views.All.class)
-	private Long id;
-	
 	/**
 	 * 
 	 */
-	private Set<Control> controls;
+	private Set<E> controls;
 	
-	public ControlsManager() {
+	public ControlsManager(Set<E> controls) {
+		this.controls = controls;
 	}
 	
-	@Override
-	public void validate() throws IllegalArgumentException {}
-	
-	@Override
-	public Long getId() {
-		return id;
-	}
-
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Set<Control> getControls() {
+	public Set<E> getControls() {
 		if (controls == null){
-			controls = new HashSet<Control>();
+			controls = new HashSet<E>();
 		}
 		return controls;
 	}
 
-	public void setControls(Set<Control> controls) {
+	public void setControls(Set<E> controls) {
 		this.controls = controls;
 	}
 	
-	public void addControls(Collection<Control> newControls) {
-		for(Control c: newControls){
+	public void addControls(Collection<E> newControls) {
+		for(E c: newControls){
 			addControl(c);
 		}
 	}
 	
-	public Control addControl(Control control) {
+	public E addControl(E control) {
 //		for(Control c: controls){
 //			if (c.getName().equals(control.getName())){
 //				throw new IllegalArgumentException("Control " + control.getName() + " already present");
@@ -71,9 +47,20 @@ public class ControlsManager implements Persistable{
 		return control;
 	}
 	
-	public Control getControl(String controlName) {
+	public E getControl(Long id) {
 		if (controls != null){
-			for(Control c: controls){
+			for(E c: controls){
+				if (c.getId().equals(id)){
+					return c;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public E getControl(String controlName) {
+		if (controls != null){
+			for(E c: controls){
 				if (c.getName().toLowerCase().equals(controlName.toLowerCase())){
 					return c;
 				}

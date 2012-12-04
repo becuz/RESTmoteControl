@@ -4,16 +4,21 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="org.zooper.becuz.restmote.model">
 
-	<class name="Control" table="Controls">
+	<class name="VisualControl" table="VisualControls">
 		<id name="id" column="controlId">
 			<generator class="native" />
 		</id>
 		<property name="name" />
-		<property name="description" />
-		<set name="keysEvents" table="Control_KeysEvents" sort="natural" cascade="all" lazy="false">
-	        <key column="controlId"/>
-	        <many-to-many column="keysEventId" class="KeysEvent"/>
-	    </set>
+		<property name="position" />
+		<property name="row" />
+		<property name="imgSrc" />
+		<property name="hideImg" />
+		<property name="text" />
+		<many-to-one name="Control" 
+	        lazy="false"
+	        column="originalControlId" 
+	        unique="false"			
+	        not-null="false"/>	
 	</class>
 
 </hibernate-mapping>

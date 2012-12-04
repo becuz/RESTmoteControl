@@ -1,10 +1,20 @@
 package org.zooper.becuz.restmote.conf;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.zooper.becuz.restmote.model.App;
+import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeApp;
+import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeKeyboard;
+import org.zooper.becuz.restmote.model.ControlInterface;
+import org.zooper.becuz.restmote.model.KeysEvent;
 import org.zooper.becuz.restmote.model.MediaCategory;
+import org.zooper.becuz.restmote.model.VisualControl;
 import org.zooper.becuz.restmote.utils.PopulateDb;
 
 /**
@@ -69,7 +79,73 @@ public abstract class ModelFactoryAbstract {
 	}
 	
 	public Character getAppMusicPauseChar(){
-		return KeyEvent.getKeyText(getAppMusic().getControlsManager().getControl(ControlDefaultTypeApp.PAUSE.toString().toLowerCase()).getKeysEvents().iterator().next().getKeys().iterator().next()).charAt(0);
+		return KeyEvent.getKeyText(
+				getAppMusic().getVisualControlsManager().getControl(ControlDefaultTypeApp.PAUSE.toString().toLowerCase())
+				.getControl().getKeysEvents().iterator().next().getKeys().iterator().next()).charAt(0);
+	}
+	
+//	public static ControlInterface[] getControl(String name, Integer row, Integer position){
+//		return getControl(name, null, row, position);
+//	}
+//	
+	public static ControlInterface[] getControlKeyboard(ControlDefaultTypeKeyboard c, Integer key, Integer row, Integer position){
+		return getControlKeyboard(c.toString().toLowerCase(), key, row, position);
+	}
+	
+	public static ControlInterface[] getControlKeyboard(String name, Integer key, Integer row, Integer position){
+		return getControl(null, name, 1, key, row, position);
+	}
+//	
+//	public static ControlInterface[] getControl(ControlDefaultTypeApp c, Integer key, Integer row, Integer position){
+//		return getControl(c, 1, key, row, position);
+//	}
+	
+	public static ControlInterface[] getControl(App app, ControlDefaultTypeApp c, Integer key, Integer row, Integer position){
+		return getControl(app, c, 1, key, row, position);
+	}
+	
+	public static ControlInterface[] getControl(App app, ControlDefaultTypeApp c, Integer repeat, Integer key, Integer row, Integer position){
+		return getControl(app, c.toString().toLowerCase(), repeat, key, row, position);
+	}
+	
+	public static ControlInterface[] getControl(App app, String name, Integer repeat, Integer key, Integer row, Integer position){
+		Set<Integer> keysInner = new HashSet<Integer>();
+		if (key != null){
+			keysInner.add(key);
+		}
+		return getControl(app, name, repeat, keysInner, row, position);
+	}
+	
+	public static ControlInterface[] getControl(App app, ControlDefaultTypeApp c, Integer repeat, Set<Integer> keys, Integer row, Integer position){
+		return getControl(app, c.toString().toLowerCase(), repeat, keys, row, position);
+	}
+	
+	public static ControlInterface[] getControl(App app, String name, Integer repeat, Set<Integer> keys, Integer row, Integer position){
+		List<Set<Integer>> sequenceKeys = new ArrayList<Set<Integer>>();
+		sequenceKeys.add(keys);
+		return getControlMultiCommand(app, name, Collections.singletonList(repeat), sequenceKeys, row, position);
+	}
+	
+	public static ControlInterface[] getControlMultiCommand(App app, String name, List<Integer> repeat, List<Set<Integer>> keys, Integer row, Integer position){
+		Control c = new Control(name.toLowerCase());
+		int i = 0;
+		for(Set<Integer> k: keys){
+			KeysEvent keysEvent = new KeysEvent(k, repeat.get(i++));
+			c.addKeysEvent(keysEvent);
+		}
+		c.validate();
+		VisualControl vc = new VisualControl(c, row, position);
+		vc.validate();
+		if (app != null){
+			app.getControlsManager().addControl(c);
+			app.getVisualControlsManager().addControl(vc);
+		}
+		return new ControlInterface[]{c, vc};
+	}
+	
+	public static void syncControls(App app){
+		app.setControls(app.getControlsManager().getControls());
+		app.setVisualControls(app.getVisualControlsManager().getControls());
 	}
 	
 }

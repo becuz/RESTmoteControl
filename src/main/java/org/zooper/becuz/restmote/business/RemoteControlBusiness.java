@@ -15,6 +15,7 @@ import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeApp;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeKeyboard;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeMouse;
 import org.zooper.becuz.restmote.model.KeysEvent;
+import org.zooper.becuz.restmote.model.VisualControl;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
 import org.zooper.becuz.restmote.utils.Utils;
 
@@ -86,7 +87,7 @@ public class RemoteControlBusiness extends BusinessAbstract{
 			}
 		}
 		if (!Utils.isEmpty(controlName)){
-			Control control = app.getControlsManager().getControl(controlName);
+			Control control = app.getVisualControlsManager().getControl(controlName).getControl();
 			if (control == null){
 				throw new IllegalArgumentException("No control " + controlName + " found for app " + app.getName());
 			}

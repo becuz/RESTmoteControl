@@ -11,6 +11,9 @@ public class UIUtils {
 
 	public static final ImageIcon ICON_TOOLTIP = new ImageIcon(MainWindow.class.getResource("/org/zooper/becuz/restmote/ui/images/16/tooltip.png"));
 	public static final ImageIcon ICON_REFRESH = new ImageIcon(MainWindow.class.getResource("/org/zooper/becuz/restmote/ui/images/16/refresh.png"));
+	public static final ImageIcon ICON_DELETE = new ImageIcon(MainWindow.class.getResource("/org/zooper/becuz/restmote/ui/images/16/delete.png"));
+	public static final ImageIcon ICON_ADD = new ImageIcon(MainWindow.class.getResource("/org/zooper/becuz/restmote/ui/images/16/add.png"));
+	public static final ImageIcon ICON_EDIT = new ImageIcon(MainWindow.class.getResource("/org/zooper/becuz/restmote/ui/images/16/edit.png"));
 	
 	public static ImageIcon createImageIcon(URL url, Integer w, Integer h){
 		return createImageIcon(url, null, w, h);

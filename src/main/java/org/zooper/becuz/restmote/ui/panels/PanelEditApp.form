@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.5" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.6" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -24,11 +24,10 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="493" max="32767" attributes="0"/>
+              <EmptySpace pref="633" max="32767" attributes="0"/>
               <Component id="btnEditAppSave" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="btnEditAppCancel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
           </Group>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Component id="jTabbedPane" alignment="0" max="32767" attributes="0"/>
@@ -38,16 +37,17 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="0" pref="476" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnEditAppCancel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnEditAppSave" alignment="3" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="493" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="btnEditAppSave" alignment="1" max="32767" attributes="0"/>
+                  <Component id="btnEditAppCancel" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <Component id="jTabbedPane" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="29" max="32767" attributes="0"/>
+                  <Component id="jTabbedPane" min="-2" pref="483" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="44" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -120,14 +120,14 @@
                           <Component id="btnBrowsePath1" linkSize="2" pref="68" max="32767" attributes="0"/>
                           <Component id="btnRefreshWindows" linkSize="2" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="55" max="32767" attributes="0"/>
+                      <EmptySpace pref="189" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace pref="148" max="32767" attributes="0"/>
+                      <EmptySpace pref="161" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="textFieldNameApp" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="lblTextFieldNameApp" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -193,6 +193,9 @@
             <Component class="javax.swing.JCheckBox" name="checkInstanceApp">
               <Properties>
                 <Property name="text" type="java.lang.String" value="One Instance"/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIConstants.TOOLTIP_APP_ONEINSTANCE" type="code"/>
+                </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblTextFieldArgFileApp">
@@ -240,6 +243,9 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/folder.png"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIConstants.TOOLTIP_APP_BROWSE" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBrowsePath1ActionPerformed"/>
@@ -270,6 +276,9 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="UIUtils.ICON_REFRESH" type="code"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIConstants.TOOLTIP_APP_REFRESH" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRefreshWindowsActionPerformed"/>
@@ -292,11 +301,23 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="scrollPaneTableControls" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="btnEditControl" alignment="0" min="-2" pref="35" max="-2" attributes="0"/>
+                                  <Component id="btnAddControl" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnDeleteControl" alignment="1" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                           <Component id="scrollPaneListImages" max="32767" attributes="0"/>
-                          <Component id="scrollPaneTableControls" alignment="1" pref="606" max="32767" attributes="0"/>
+                          <Component id="scrollPaneTableVisualControls" alignment="1" pref="740" max="32767" attributes="0"/>
                           <Component id="lblHelpIcons" alignment="0" max="32767" attributes="0"/>
                           <Component id="panelControlKeys" alignment="1" max="32767" attributes="0"/>
-                          <Component id="lblHelpTable" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="panelVisualControl1" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -305,17 +326,28 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace pref="36" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="scrollPaneTableControls" min="-2" pref="112" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="btnDeleteControl" min="-2" pref="21" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                              <Component id="btnAddControl" min="-2" pref="23" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="btnEditControl" min="-2" pref="21" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="panelControlKeys" min="-2" pref="61" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                       <Component id="lblHelpIcons" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="scrollPaneListImages" min="-2" pref="115" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                      <Component id="lblHelpTable" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-                      <Component id="scrollPaneTableControls" min="-2" pref="137" max="-2" attributes="0"/>
+                      <Component id="scrollPaneListImages" min="-2" pref="69" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="panelControlKeys" pref="102" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="scrollPaneTableVisualControls" min="-2" pref="99" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="panelVisualControl1" min="-2" pref="26" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -330,6 +362,25 @@
               <SubComponents>
                 <Component class="javax.swing.JTable" name="tableControls">
                   <Properties>
+                    <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="appControlsTableModel" type="code"/>
+                    </Property>
+                    <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
+                      <JTableSelectionModel selectionMode="0"/>
+                    </Property>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JScrollPane" name="scrollPaneTableVisualControls">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTable" name="tableVisualControls">
+                  <Properties>
                     <Property name="cellSelectionEnabled" type="boolean" value="true"/>
                     <Property name="rowHeight" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="32" type="code"/>
@@ -342,8 +393,8 @@
                     </Property>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new ControlsTable()"/>
-                    <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="tableControls.setModel(appTableModel);"/>
+                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new org.zooper.becuz.restmote.ui.appcontrols.VisualControlsTable()"/>
+                    <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="tableVisualControls.setModel(appTableModel);"/>
                   </AuxValues>
                 </Component>
               </SubComponents>
@@ -376,9 +427,33 @@
                 <Property name="text" type="java.lang.String" value="Drag&apos;n&apos;drop the icons on the table below to add a Control"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblHelpTable">
+            <Component class="org.zooper.becuz.restmote.ui.appcontrols.PanelVisualControl" name="panelVisualControl1">
+            </Component>
+            <Component class="javax.swing.JButton" name="btnDeleteControl">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Select a Control in the table to edit his shortcut(s)"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIUtils.ICON_DELETE" type="code"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeleteControlActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnAddControl">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIUtils.ICON_ADD" type="code"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddControlActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnEditControl">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIUtils.ICON_EDIT" type="code"/>
+                </Property>
               </Properties>
             </Component>
           </SubComponents>

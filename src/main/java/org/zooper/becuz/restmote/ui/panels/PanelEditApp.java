@@ -19,8 +19,9 @@ import org.zooper.becuz.restmote.ui.MainWindow;
 import org.zooper.becuz.restmote.ui.UIConstants;
 import org.zooper.becuz.restmote.ui.UIUtils;
 import org.zooper.becuz.restmote.ui.appcontrols.AppControlsTableModel;
+import org.zooper.becuz.restmote.ui.appcontrols.AppVisualControlsTableModel;
 import org.zooper.becuz.restmote.ui.appcontrols.ControlRenderer;
-import org.zooper.becuz.restmote.ui.appcontrols.ControlsTable;
+import org.zooper.becuz.restmote.ui.appcontrols.VisualControlsTable;
 import org.zooper.becuz.restmote.ui.appcontrols.ImageList;
 import org.zooper.becuz.restmote.utils.Utils;
 
@@ -37,9 +38,14 @@ public class PanelEditApp extends PanelPersistable {
     private DefaultComboBoxModel<String> listWindowsModel = new DefaultComboBoxModel<String>();
 	
 	/**
-     *  
+	 * Model for app.getControls()
+	 */
+	private AppControlsTableModel appControlsTableModel = new AppControlsTableModel();
+	
+	/**
+     * Model for app.getVisualControls()  
      */
-    private AppControlsTableModel appTableModel = new AppControlsTableModel();
+    private AppVisualControlsTableModel appTableModel = new AppVisualControlsTableModel();
 	
 
 	public PanelEditApp(PanelListPersistable panelListPersistable) {
@@ -55,8 +61,8 @@ public class PanelEditApp extends PanelPersistable {
 		jComponentsToObserve = new JComponent[]{
 				textFieldNameApp, textFieldExtensionsApp, checkInstanceApp,
 				textFieldArgFileApp, textFieldArgDirApp, textFieldPathApp, comboWindowName};
-		tableControls.setDefaultRenderer(Control.class, new ControlRenderer());
-		tableControls.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableVisualControls.setDefaultRenderer(Control.class, new ControlRenderer());
+		tableVisualControls.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		buildListWindowsModel();
 		activateViewChangesListener();
 	}
@@ -100,8 +106,10 @@ public class PanelEditApp extends PanelPersistable {
 		textFieldArgDirApp.setText(app == null ? "" : app.getArgumentsDir());
 		textFieldPathApp.setText(app == null ? "" : app.getPath());
 		if (app != null){
-			appTableModel.setData(app.getControlsManager());
+			appControlsTableModel.setData(app.getControls());
+			appTableModel.setData(app.getVisualControlsManager());
 		} else {
+			appControlsTableModel.clearData();
 			appTableModel.clearData();
 		}
 		setSelectedWindow(app == null ? null : app.getWindowName());
@@ -140,13 +148,18 @@ public class PanelEditApp extends PanelPersistable {
         btnRefreshWindows = new javax.swing.JButton();
         panelControls = new javax.swing.JPanel();
         scrollPaneTableControls = new javax.swing.JScrollPane();
-        tableControls = new ControlsTable();
-        tableControls.setModel(appTableModel);
+        tableControls = new javax.swing.JTable();
+        scrollPaneTableVisualControls = new javax.swing.JScrollPane();
+        tableVisualControls = new org.zooper.becuz.restmote.ui.appcontrols.VisualControlsTable();
+        tableVisualControls.setModel(appTableModel);
         scrollPaneListImages = new javax.swing.JScrollPane();
         listImages = new ImageList(false);
         panelControlKeys = new org.zooper.becuz.restmote.ui.appcontrols.PanelControlKeys(tableControls);
         lblHelpIcons = new javax.swing.JLabel();
-        lblHelpTable = new javax.swing.JLabel();
+        panelVisualControl1 = new org.zooper.becuz.restmote.ui.appcontrols.PanelVisualControl();
+        btnDeleteControl = new javax.swing.JButton();
+        btnAddControl = new javax.swing.JButton();
+        btnEditControl = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Edit"));
 
@@ -174,6 +187,7 @@ public class PanelEditApp extends PanelPersistable {
         textFieldExtensionsApp.setToolTipText("Comma separated list of extensions. Example: .mp3, .m3u, .ogg");
 
         checkInstanceApp.setText("One Instance");
+        checkInstanceApp.setToolTipText(UIConstants.TOOLTIP_APP_ONEINSTANCE);
 
         lblTextFieldArgFileApp.setFont(lblTextFieldArgFileApp.getFont().deriveFont(lblTextFieldArgFileApp.getFont().getStyle() | java.awt.Font.BOLD));
         lblTextFieldArgFileApp.setText("Arg file:");
@@ -187,6 +201,7 @@ public class PanelEditApp extends PanelPersistable {
         lblTextFieldPathApp.setToolTipText(UIConstants.TOOLTIP_APP_PATH);
 
         btnBrowsePath1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/folder.png"))); // NOI18N
+        btnBrowsePath1.setToolTipText(UIConstants.TOOLTIP_APP_BROWSE);
         btnBrowsePath1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBrowsePath1ActionPerformed(evt);
@@ -200,6 +215,7 @@ public class PanelEditApp extends PanelPersistable {
         lblComboWindowName.setToolTipText(UIConstants.TOOLTIP_APP_WINDOW);
 
         btnRefreshWindows.setIcon(UIUtils.ICON_REFRESH);
+        btnRefreshWindows.setToolTipText(UIConstants.TOOLTIP_APP_REFRESH);
         btnRefreshWindows.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRefreshWindowsActionPerformed(evt);
@@ -239,7 +255,7 @@ public class PanelEditApp extends PanelPersistable {
                 .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnBrowsePath1, javax.swing.GroupLayout.DEFAULT_SIZE, 68, Short.MAX_VALUE)
                     .addComponent(btnRefreshWindows, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(189, Short.MAX_VALUE))
         );
 
         panelConfigurationLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnBrowsePath1, btnRefreshWindows});
@@ -247,7 +263,7 @@ public class PanelEditApp extends PanelPersistable {
         panelConfigurationLayout.setVerticalGroup(
             panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelConfigurationLayout.createSequentialGroup()
-                .addContainerGap(148, Short.MAX_VALUE)
+                .addContainerGap(161, Short.MAX_VALUE)
                 .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(textFieldNameApp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTextFieldNameApp)
@@ -278,11 +294,15 @@ public class PanelEditApp extends PanelPersistable {
 
         jTabbedPane.addTab("Configuration", panelConfiguration);
 
-        tableControls.setCellSelectionEnabled(true);
-        tableControls.setRowHeight(32);
-        tableControls.setSelectionBackground(new java.awt.Color(204, 255, 204));
-        tableControls.setTableHeader(null);
+        tableControls.setModel(appControlsTableModel);
+        tableControls.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         scrollPaneTableControls.setViewportView(tableControls);
+
+        tableVisualControls.setCellSelectionEnabled(true);
+        tableVisualControls.setRowHeight(32);
+        tableVisualControls.setSelectionBackground(new java.awt.Color(204, 255, 204));
+        tableVisualControls.setTableHeader(null);
+        scrollPaneTableVisualControls.setViewportView(tableVisualControls);
 
         listImages.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         listImages.setLayoutOrientation(javax.swing.JList.HORIZONTAL_WRAP);
@@ -290,7 +310,21 @@ public class PanelEditApp extends PanelPersistable {
 
         lblHelpIcons.setText("Drag'n'drop the icons on the table below to add a Control");
 
-        lblHelpTable.setText("Select a Control in the table to edit his shortcut(s)");
+        btnDeleteControl.setIcon(UIUtils.ICON_DELETE);
+        btnDeleteControl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteControlActionPerformed(evt);
+            }
+        });
+
+        btnAddControl.setIcon(UIUtils.ICON_ADD);
+        btnAddControl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddControlActionPerformed(evt);
+            }
+        });
+
+        btnEditControl.setIcon(UIUtils.ICON_EDIT);
 
         javax.swing.GroupLayout panelControlsLayout = new javax.swing.GroupLayout(panelControls);
         panelControls.setLayout(panelControlsLayout);
@@ -299,27 +333,45 @@ public class PanelEditApp extends PanelPersistable {
             .addGroup(panelControlsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelControlsLayout.createSequentialGroup()
+                        .addComponent(scrollPaneTableControls)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnEditControl, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAddControl, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnDeleteControl, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addComponent(scrollPaneListImages)
-                    .addComponent(scrollPaneTableControls, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)
+                    .addComponent(scrollPaneTableVisualControls, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
                     .addComponent(lblHelpIcons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelControlKeys, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblHelpTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelControlsLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(panelVisualControl1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         panelControlsLayout.setVerticalGroup(
             panelControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelControlsLayout.createSequentialGroup()
-                .addContainerGap(36, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(panelControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrollPaneTableControls, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelControlsLayout.createSequentialGroup()
+                        .addComponent(btnDeleteControl, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(btnAddControl, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnEditControl, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelControlKeys, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
                 .addComponent(lblHelpIcons)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollPaneListImages, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addComponent(lblHelpTable)
-                .addGap(3, 3, 3)
-                .addComponent(scrollPaneTableControls, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrollPaneListImages, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelControlKeys, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(scrollPaneTableVisualControls, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(panelVisualControl1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane.addTab("Controls", panelControls);
@@ -329,25 +381,25 @@ public class PanelEditApp extends PanelPersistable {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(493, Short.MAX_VALUE)
+                .addContainerGap(633, Short.MAX_VALUE)
                 .addComponent(btnEditAppSave)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEditAppCancel)
-                .addGap(6, 6, 6))
+                .addComponent(btnEditAppCancel))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jTabbedPane))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 476, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEditAppCancel)
-                    .addComponent(btnEditAppSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(493, 493, 493)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnEditAppSave, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEditAppCancel, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 29, Short.MAX_VALUE)))
+                    .addComponent(jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 44, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -361,9 +413,8 @@ public class PanelEditApp extends PanelPersistable {
 		super.setEnabled(enabled);
 		UIUtils.setEnabledRecursive(panelConfiguration, enabled);
 		listImages.setEnabled(enabled);
-		tableControls.setEnabled(enabled);
+		tableVisualControls.setEnabled(enabled);
 		lblHelpIcons.setEnabled(enabled);
-		lblHelpTable.setEnabled(enabled);
 		if (!enabled){
 			UIUtils.setEnabledRecursive(panelControlKeys, false);
 		}
@@ -385,9 +436,9 @@ public class PanelEditApp extends PanelPersistable {
 			app.setWindowName(comboWindowName.getSelectedItem().toString());
 			//TODO il panel edit non scrive sul modello, ma il panel dei controls si
 			app.getControlsManager().getControls().clear();
-			for (int i = 0; i < tableControls.getRowCount(); i++) {
-				for (int j = 0; j < tableControls.getColumnCount(); j++) {
-					Control c = (Control) tableControls.getModel().getValueAt(i, j);
+			for (int i = 0; i < tableVisualControls.getRowCount(); i++) {
+				for (int j = 0; j < tableVisualControls.getColumnCount(); j++) {
+					Control c = (Control) tableVisualControls.getModel().getValueAt(i, j);
 					if (c != null){
 						c.clean();
 						if (!c.isEmpty()){
@@ -420,17 +471,27 @@ public class PanelEditApp extends PanelPersistable {
 		setSelectedWindow(((App)panelListPersistable.getSelectedItem()).getWindowName());
     }//GEN-LAST:event_btnRefreshWindowsActionPerformed
 
+    private void btnAddControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddControlActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddControlActionPerformed
+
+    private void btnDeleteControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteControlActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDeleteControlActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddControl;
     private javax.swing.JButton btnBrowsePath1;
+    private javax.swing.JButton btnDeleteControl;
     private javax.swing.JButton btnEditAppCancel;
     private javax.swing.JButton btnEditAppSave;
+    private javax.swing.JButton btnEditControl;
     private javax.swing.JButton btnRefreshWindows;
     private javax.swing.JCheckBox checkInstanceApp;
     private javax.swing.JComboBox comboWindowName;
     private javax.swing.JTabbedPane jTabbedPane;
     private javax.swing.JLabel lblComboWindowName;
     private javax.swing.JLabel lblHelpIcons;
-    private javax.swing.JLabel lblHelpTable;
     private javax.swing.JLabel lblTextFieldArgDirApp;
     private javax.swing.JLabel lblTextFieldArgFileApp;
     private javax.swing.JLabel lblTextFieldExtensionsApp;
@@ -440,9 +501,12 @@ public class PanelEditApp extends PanelPersistable {
     private javax.swing.JPanel panelConfiguration;
     private org.zooper.becuz.restmote.ui.appcontrols.PanelControlKeys panelControlKeys;
     private javax.swing.JPanel panelControls;
+    private org.zooper.becuz.restmote.ui.appcontrols.PanelVisualControl panelVisualControl1;
     private javax.swing.JScrollPane scrollPaneListImages;
     private javax.swing.JScrollPane scrollPaneTableControls;
+    private javax.swing.JScrollPane scrollPaneTableVisualControls;
     private javax.swing.JTable tableControls;
+    private javax.swing.JTable tableVisualControls;
     private javax.swing.JTextField textFieldArgDirApp;
     private javax.swing.JTextField textFieldArgFileApp;
     private javax.swing.JTextField textFieldExtensionsApp;

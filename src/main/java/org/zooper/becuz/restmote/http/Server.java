@@ -1,12 +1,10 @@
 package org.zooper.becuz.restmote.http;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -18,7 +16,6 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.grizzly.http.server.Response;
 import org.glassfish.grizzly.http.server.StaticHttpHandler;
 import org.zooper.becuz.restmote.utils.Utils;
 
@@ -120,29 +117,13 @@ public class Server implements Runnable {
 		rc.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 		httpServer = GrizzlyServerFactory.createHttpServer(getApiUrl(), rc);
 		
-		StaticHttpHandler staticHttpHandler = new StaticHttpHandler(Utils.getRootDir() + "client"){
-			@Override
-			public void service(
-					org.glassfish.grizzly.http.server.Request request,
-					Response response) throws Exception {
-				String extension = request.getRequestURI().substring(request.getRequestURI().lastIndexOf('.')+1);
-				String contentType = contentTypes.get(extension);
-				if (contentType != null){
-					response.setContentType(contentType);
-				}
-				request.getInputStream().close();
-				super.service(request, response);
-			}
-		};
+		StaticHttpHandler staticHttpHandler = new StaticHttpHandler(Utils.getRootDir() + "client");
+		staticHttpHandler.setFileCacheEnabled(false);	//Allow editing of files when server is running. TODO Should be true in production!
 		httpServer.getServerConfiguration().addHttpHandler(staticHttpHandler, "/client");
-//		for (NetworkListener l : httpServer.getListeners()) {
-//			log.info("Listener " + l.getName());
-//			l.getFileCache().setEnabled(false);
-//		}
+		
 		log.info("Server started with WADL available at " + serverUrl + "application.wadl\n" +
 				"Try out " + getClientUrl() + " or " + getApiUrl()  + "data\n");
 		new Thread(this).start();
-		callGetSettings();
 		return inetAddr;
 	}	
 	
@@ -253,30 +234,5 @@ public class Server implements Runnable {
 		}
 		log.info("Exiting thread");
 	}
-	
-	/**
-	 * Call by http the url /settings
-	 * TODO BUG, this method is called internally after server startup because the first invocation, despite the fact that it's executed correctly, returns a 404!
-	 * @param completeUrl
-	 */
-	private void callGetSettings(){
-		for (int i = 0; i < 1; i++) {
-			try {
-				URL url = new URL(getApiUrl()+"data");
-				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-				connection.setUseCaches(false);
-				connection.setRequestMethod("GET");
-				connection.setInstanceFollowRedirects(false);
-				connection.setConnectTimeout(60000);
-				connection.setDoOutput(false);
-				connection.connect();
-				connection.getResponseCode(); //404!
-//				log.info("response code for /data is " + connection.getResponseCode());
-			} catch (Exception e){
-				log.fatal(e.getMessage() + " " + e.getCause());
-			}
-		}
-	}
-	
     
 }

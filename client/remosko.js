@@ -335,7 +335,7 @@ function displayMediaRc(app){
 				$( "#home > div" ).eq(0), 
 				"rc", 
 				app.name, 
-				app.controlsManager, 
+				app.visualControls, 
 				"26",
 				10);
 	} else {
@@ -349,19 +349,19 @@ function displayMouseOrKeyboardRc(kind){
 			$( "#" + kind + "control > div" ).eq(1).find( "div" ),	//preeceding brother
 			kind, 												//"mouse" or "keyboard"
 			"",													//Title
-			data[kind+"ControlsManager"], 						//model ControlsManager
+			data[kind+"VisualControls"], 						//model Controls
 			"26",												//Icon size
 			10);												//paddingTop	
 }
 
-//show or hide the div control, depending by the controls defined in controlsManager. 
+//show or hide the div control, depending by the controls. 
 //$brotherDom preceeding sibling
 //idContainer
 //title
-//controlsManager
+//controls
 //iconSize
 //paddingTop
-function displayRc($brotherDom, idContainer, title, controlsManager, iconSize, paddingTop){
+function displayRc($brotherDom, idContainer, title, controls, iconSize, paddingTop){
 	var $divRcRows; //Div containing rows of controls
 	var $divTitle;
 	if ($( "#"+idContainer).length == 0){	//Let's created it the first time
@@ -442,8 +442,8 @@ function displayRc($brotherDom, idContainer, title, controlsManager, iconSize, p
 		}
 	}
 	if(idContainer != 'mouse'){
-		for (j=0; j<controlsManager.controls.length; j++){
-			var control = controlsManager.controls[j];
+		for (j=0; j<controls.length; j++){
+			var control = controls[j];
 			var name = control.name;
 			var $controlDiv = $( "<div align='center' class='control' id='" + name +"'></div>" )
 				.appendTo($( "#"+idContainer+"_row"+control.row + " div.ui-block-"+l[(l.length-1)/2 + control.position]));

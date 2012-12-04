@@ -16,92 +16,76 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="checkSelectedControlNoImg" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="textFieldSelectedControlName" min="-2" pref="89" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="btnEdirAppTest" linkSize="1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnDeleteControl" linkSize="1" min="-2" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace pref="77" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="lblTextFieldKeyStroke" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblComboVirtualKey" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnPrev" alignment="1" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="lblPaging" min="-2" pref="199" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnNext" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="-2" pref="116" max="-2" attributes="0"/>
+                      <Component id="btnPrev" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="comboVirtualKey" min="-2" pref="157" max="-2" attributes="0"/>
-                          <Component id="textFieldKeyStroke" min="-2" pref="157" max="-2" attributes="0"/>
+                          <Component id="lblTextFieldKeyStroke" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblComboVirtualKey" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
+                          <Component id="comboVirtualKey" alignment="0" min="-2" pref="157" max="-2" attributes="0"/>
+                          <Component id="textFieldKeyStroke" alignment="0" min="-2" pref="157" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="checkBoxKeyShift" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
                               <Component id="checkBoxKeyCtrl" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="checkBoxKeyAlt" min="-2" pref="47" max="-2" attributes="0"/>
+                              <Component id="checkBoxKeyAlt" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="checkBoxKeyShift" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnNext" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="223" max="-2" attributes="0"/>
+                      <Component id="lblPaging" min="-2" pref="199" max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace pref="70" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="checkBoxKeyAlt" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="checkBoxKeyCtrl" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="comboVirtualKey" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblComboVirtualKey" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="checkBoxKeyShift" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="textFieldKeyStroke" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblTextFieldKeyStroke" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnNext" linkSize="2" alignment="1" min="-2" pref="34" max="-2" attributes="0"/>
-                          <Component id="btnPrev" linkSize="2" alignment="1" min="-2" pref="38" max="-2" attributes="0"/>
-                          <Component id="lblPaging" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="checkBoxKeyAlt" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="checkBoxKeyCtrl" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="comboVirtualKey" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblComboVirtualKey" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="textFieldKeyStroke" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="checkBoxKeyShift" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblTextFieldKeyStroke" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="btnNext" linkSize="2" min="-2" pref="34" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblPaging" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="textFieldSelectedControlName" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="checkSelectedControlNoImg" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="btnEdirAppTest" alignment="0" max="32767" attributes="0"/>
-                          <Component id="btnDeleteControl" alignment="0" min="-2" pref="23" max="-2" attributes="0"/>
-                      </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnPrev" linkSize="2" min="-2" pref="38" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace pref="29" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -182,39 +166,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="0/0"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="checkSelectedControlNoImg">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="No image"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checkSelectedControlNoImgActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JTextField" name="textFieldSelectedControlName">
-      <Events>
-        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textFieldSelectedControlNameKeyReleased"/>
-        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textFieldSelectedControlNameKeyTyped"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnDeleteControl">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/delete.png"/>
-        </Property>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeleteControlActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnEdirAppTest">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Test"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEdirAppTestActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>

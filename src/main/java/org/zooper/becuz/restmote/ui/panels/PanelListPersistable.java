@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
+import org.zooper.becuz.restmote.ui.UIUtils;
 import org.zooper.becuz.restmote.ui.widgets.CompletableListRenderer;
 
 /**
@@ -60,7 +61,7 @@ public class PanelListPersistable extends javax.swing.JPanel {
         setBorder(javax.swing.BorderFactory.createTitledBorder("List"));
         setPreferredSize(new java.awt.Dimension(236, 515));
 
-        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/delete.png"))); // NOI18N
+        btnDelete.setIcon(UIUtils.ICON_DELETE);
         btnDelete.setText("Delete");
         btnDelete.setEnabled(false);
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -77,7 +78,7 @@ public class PanelListPersistable extends javax.swing.JPanel {
         });
         scrollPaneList.setViewportView(list);
 
-        btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/add.png"))); // NOI18N
+        btnAdd.setIcon(UIUtils.ICON_ADD);
         btnAdd.setText("New");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,7 +95,7 @@ public class PanelListPersistable extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(scrollPaneList, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 30, Short.MAX_VALUE)
+                        .addGap(0, 50, Short.MAX_VALUE)
                         .addComponent(btnDelete)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -104,7 +105,7 @@ public class PanelListPersistable extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrollPaneList, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE)
+                .addComponent(scrollPaneList, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
