@@ -335,7 +335,7 @@ function displayMediaRc(app){
 				$( "#home > div" ).eq(0), 
 				"rc", 
 				app.name, 
-				app.visualControls, 
+				app.visualControlsManager.controls, 
 				"26",
 				10);
 	} else {

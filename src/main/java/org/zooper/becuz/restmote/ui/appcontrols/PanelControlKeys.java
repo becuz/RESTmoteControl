@@ -96,12 +96,13 @@ public class PanelControlKeys extends javax.swing.JPanel {
 //					appControlsTable.getModel().setValueAt(controlSelected, selectedRow, selectedColumn);
 //				}
 //			}
-			
-			Control controlSelected = ((AppControlsTableModel)appControlsTable.getModel()).getControlAt(selectedRow);
-			setControl(controlSelected);
-			previousSelectedRow = selectedRow;
-			previousSelectedColumn = selectedColumn;
-			//internalUpdate = false;
+			if (selectedColumn > -1 && selectedRow > -1){
+				Control controlSelected = ((AppControlsTableModel)appControlsTable.getModel()).getControlAt(selectedRow);
+				setControl(controlSelected);
+				previousSelectedRow = selectedRow;
+				previousSelectedColumn = selectedColumn;
+				//internalUpdate = false;
+			}
 		}
 
 		@Override

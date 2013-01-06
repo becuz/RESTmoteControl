@@ -13,6 +13,9 @@ import javax.swing.ListSelectionModel;
 import org.zooper.becuz.restmote.business.ActiveAppBusiness;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.model.ControlsManager;
+import org.zooper.becuz.restmote.model.VisualControl;
+import org.zooper.becuz.restmote.model.VisualControlsManager;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
 import org.zooper.becuz.restmote.ui.MainWindow;
@@ -21,7 +24,7 @@ import org.zooper.becuz.restmote.ui.UIUtils;
 import org.zooper.becuz.restmote.ui.appcontrols.AppControlsTableModel;
 import org.zooper.becuz.restmote.ui.appcontrols.AppVisualControlsTableModel;
 import org.zooper.becuz.restmote.ui.appcontrols.ControlRenderer;
-import org.zooper.becuz.restmote.ui.appcontrols.VisualControlsTable;
+import org.zooper.becuz.restmote.ui.appcontrols.ControlTransferHandler;
 import org.zooper.becuz.restmote.ui.appcontrols.ImageList;
 import org.zooper.becuz.restmote.utils.Utils;
 
@@ -65,6 +68,8 @@ public class PanelEditApp extends PanelPersistable {
 		tableVisualControls.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		buildListWindowsModel();
 		activateViewChangesListener();
+		tableControls.setDragEnabled(true);
+		tableControls.setTransferHandler(new ControlTransferHandler());
 	}
 	
 	/**
@@ -106,8 +111,8 @@ public class PanelEditApp extends PanelPersistable {
 		textFieldArgDirApp.setText(app == null ? "" : app.getArgumentsDir());
 		textFieldPathApp.setText(app == null ? "" : app.getPath());
 		if (app != null){
-			appControlsTableModel.setData(app.getControls());
-			appTableModel.setData(app.getVisualControlsManager());
+			appControlsTableModel.setData(app.getControlsManager().getControls());
+			appTableModel.setData(app.getVisualControlsManager().getControls());
 		} else {
 			appControlsTableModel.clearData();
 			appTableModel.clearData();
@@ -263,7 +268,7 @@ public class PanelEditApp extends PanelPersistable {
         panelConfigurationLayout.setVerticalGroup(
             panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelConfigurationLayout.createSequentialGroup()
-                .addContainerGap(161, Short.MAX_VALUE)
+                .addContainerGap(170, Short.MAX_VALUE)
                 .addGroup(panelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(textFieldNameApp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTextFieldNameApp)
@@ -349,6 +354,9 @@ public class PanelEditApp extends PanelPersistable {
                         .addComponent(panelVisualControl1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
+
+        panelControlsLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAddControl, btnDeleteControl, btnEditControl});
+
         panelControlsLayout.setVerticalGroup(
             panelControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelControlsLayout.createSequentialGroup()
@@ -374,6 +382,8 @@ public class PanelEditApp extends PanelPersistable {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        panelControlsLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnAddControl, btnDeleteControl, btnEditControl});
+
         jTabbedPane.addTab("Controls", panelControls);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -390,16 +400,15 @@ public class PanelEditApp extends PanelPersistable {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(493, 493, 493)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEditAppSave, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEditAppCancel, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(504, 504, 504)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEditAppCancel)
+                    .addComponent(btnEditAppSave)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 44, Short.MAX_VALUE)))
+                    .addComponent(jTabbedPane)
+                    .addGap(35, 35, 35)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -435,10 +444,13 @@ public class PanelEditApp extends PanelPersistable {
             app.setPath(textFieldPathApp.getText());
 			app.setWindowName(comboWindowName.getSelectedItem().toString());
 			//TODO il panel edit non scrive sul modello, ma il panel dei controls si
-			app.getControlsManager().getControls().clear();
-			for (int i = 0; i < tableVisualControls.getRowCount(); i++) {
-				for (int j = 0; j < tableVisualControls.getColumnCount(); j++) {
-					Control c = (Control) tableVisualControls.getModel().getValueAt(i, j);
+			ControlsManager controlsManager = app.getControlsManager();
+			VisualControlsManager visualControlsManager = app.getVisualControlsManager();
+			controlsManager.clear();
+			visualControlsManager.clear();
+			for (int i = 0; i < tableControls.getRowCount(); i++) {
+				for (int j = 0; j < tableControls.getColumnCount(); j++) {
+					Control c = (Control) tableControls.getModel().getValueAt(i, j);
 					if (c != null){
 						c.clean();
 						if (!c.isEmpty()){
@@ -447,8 +459,21 @@ public class PanelEditApp extends PanelPersistable {
 							} catch (IllegalArgumentException e){
 								//TODO 
 							}
-							app.getControlsManager().addControl(c);
+							controlsManager.addControl(c);
 						}
+					}
+				}
+			}
+			for (int i = 0; i < tableVisualControls.getRowCount(); i++) {
+				for (int j = 0; j < tableVisualControls.getColumnCount(); j++) {
+					VisualControl c = (VisualControl) tableVisualControls.getModel().getValueAt(i, j);
+					if (c != null){
+						try {
+							c.validate();
+						} catch (IllegalArgumentException e){
+							//TODO 
+						}
+						visualControlsManager.addControl(c);
 					}
 				}
 			}

@@ -3,7 +3,7 @@
   <class id="1" corner="BOTTOM_RIGHT" language="java" name="org.zooper.becuz.restmote.model.App" 
     project="RES(T)moteControl" file="/RES(T)moteControl/src/main/java/org/zooper/becuz/restmote/model/App.java" 
     binary="false">    
-    <position height="-1" width="-1" x="379" y="-30"/>    
+    <position height="-1" width="-1" x="416" y="17"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -12,7 +12,7 @@
   <class id="2" corner="BOTTOM_RIGHT" language="java" name="org.zooper.becuz.restmote.model.Control" 
     project="RES(T)moteControl" file="/RES(T)moteControl/src/main/java/org/zooper/becuz/restmote/model/Control.java" 
     binary="false">    
-    <position height="-1" width="-1" x="386" y="375"/>    
+    <position height="-1" width="-1" x="281" y="533"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -21,110 +21,125 @@
   <class id="3" corner="BOTTOM_RIGHT" language="java" name="org.zooper.becuz.restmote.model.MediaCategory" 
     project="RES(T)moteControl" 
     file="/RES(T)moteControl/src/main/java/org/zooper/becuz/restmote/model/MediaCategory.java" binary="false">    
-    <position height="-1" width="-1" x="123" y="-59"/>    
+    <position height="-1" width="-1" x="132" y="-38"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <enumeration id="4" corner="BOTTOM_RIGHT" language="java" 
-    name="org.zooper.becuz.restmote.model.Control.ControlDefaultTypeMouse" project="RES(T)moteControl" 
-    file="/RES(T)moteControl/src/main/java/org/zooper/becuz/restmote/model/Control.java" binary="false">    
-    <position height="-1" width="-1" x="152" y="813"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true"/>      
-      <operations public="false" package="false" protected="false" private="false"/>    
-    </display>  
-  </enumeration>  
-  <enumeration id="5" corner="BOTTOM_RIGHT" language="java" 
-    name="org.zooper.becuz.restmote.model.Control.ControlDefaultTypeKeyboard" project="RES(T)moteControl" 
-    file="/RES(T)moteControl/src/main/java/org/zooper/becuz/restmote/model/Control.java" binary="false">    
-    <position height="-1" width="-1" x="436" y="779"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true"/>      
-      <operations public="false" package="false" protected="false" private="false"/>    
-    </display>  
-  </enumeration>  
-  <enumeration id="6" corner="BOTTOM_RIGHT" language="java" 
-    name="org.zooper.becuz.restmote.model.Control.ControlDefaultTypeApp" project="RES(T)moteControl" 
-    file="/RES(T)moteControl/src/main/java/org/zooper/becuz/restmote/model/Control.java" binary="false">    
-    <position height="-1" width="-1" x="693" y="839"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true"/>      
-      <operations public="false" package="false" protected="false" private="false"/>    
-    </display>  
-  </enumeration>  
-  <class id="7" corner="BOTTOM_RIGHT" language="java" name="org.zooper.becuz.restmote.model.KeysEvent" 
+  <class id="4" corner="BOTTOM_RIGHT" language="java" name="org.zooper.becuz.restmote.model.KeysEvent" 
     project="RES(T)moteControl" file="/RES(T)moteControl/src/main/java/org/zooper/becuz/restmote/model/KeysEvent.java" 
     binary="false">    
-    <position height="-1" width="-1" x="781" y="392"/>    
+    <position height="-1" width="-1" x="112" y="434"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <class id="8" corner="BOTTOM_RIGHT" language="java" name="org.zooper.becuz.restmote.model.Settings" 
+  <class id="5" corner="BOTTOM_RIGHT" language="java" name="org.zooper.becuz.restmote.model.Settings" 
     project="RES(T)moteControl" file="/RES(T)moteControl/src/main/java/org/zooper/becuz/restmote/model/Settings.java" 
     binary="false">    
-    <position height="-1" width="-1" x="805" y="-47"/>    
+    <position height="-1" width="-1" x="115" y="226"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <class id="9" corner="BOTTOM_RIGHT" language="java" name="org.zooper.becuz.restmote.model.ControlsManager" 
+  <class id="6" corner="BOTTOM_RIGHT" language="java" name="org.zooper.becuz.restmote.model.ControlsManager" 
     project="RES(T)moteControl" 
     file="/RES(T)moteControl/src/main/java/org/zooper/becuz/restmote/model/ControlsManager.java" binary="false">    
-    <position height="-1" width="-1" x="384" y="170"/>    
+    <position height="-1" width="-1" x="878" y="571"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <nesting id="10">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="4"/>  
-  </nesting>  
-  <association id="11">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="12" name="app"/>      
-      <multiplicity id="13" minimum="0" maximum="1"/>    
+  <class id="7" corner="BOTTOM_RIGHT" language="java" name="org.zooper.becuz.restmote.controller.PcControllerAbstract" 
+    project="RES(T)moteControl" 
+    file="/RES(T)moteControl/src/main/java/org/zooper/becuz/restmote/controller/PcControllerAbstract.java" 
+    binary="false">    
+    <position height="-1" width="-1" x="749" y="6"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="8" corner="BOTTOM_RIGHT" language="java" name="org.zooper.becuz.restmote.model.VisualControl" 
+    project="RES(T)moteControl" 
+    file="/RES(T)moteControl/src/main/java/org/zooper/becuz/restmote/model/VisualControl.java" binary="false">    
+    <position height="-1" width="-1" x="632" y="531"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <dependency id="9">    
+    <bendpoint x="575" y="46"/>    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <dependency id="10">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <dependency id="11">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <dependency id="12">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="8"/>  
+  </dependency>  
+  <association id="13">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="14" name="kbdControlsManager"/>      
+      <multiplicity id="15" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
+    <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="14">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="6"/>  
-  </nesting>  
-  <association id="15">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="16" name="keysEvents"/>      
-      <multiplicity id="17" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="18">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="19" name="controlsManager"/>      
-      <multiplicity id="20" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="21">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="22" name="controls"/>      
-      <multiplicity id="23" minimum="0" maximum="2147483647"/>    
+  <association id="16">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="17" name="control"/>      
+      <multiplicity id="18" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="24">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="5"/>  
-  </nesting>  
+  <association id="19">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="20" name="controls"/>      
+      <multiplicity id="21" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="22">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="23" name="controlsManager">        
+        <position height="15" width="88" x="407" y="231"/>      
+      </attribute>      
+      <multiplicity id="24" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="25">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="26" name="app"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="28">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="29" name="keysEvents"/>      
+      <multiplicity id="30" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     visibility="true">    
     <attributes public="true" package="true" protected="true" private="true"/>    

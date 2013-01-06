@@ -84,10 +84,6 @@ public abstract class ModelFactoryAbstract {
 				.getControl().getKeysEvents().iterator().next().getKeys().iterator().next()).charAt(0);
 	}
 	
-//	public static ControlInterface[] getControl(String name, Integer row, Integer position){
-//		return getControl(name, null, row, position);
-//	}
-//	
 	public static ControlInterface[] getControlKeyboard(ControlDefaultTypeKeyboard c, Integer key, Integer row, Integer position){
 		return getControlKeyboard(c.toString().toLowerCase(), key, row, position);
 	}
@@ -95,10 +91,10 @@ public abstract class ModelFactoryAbstract {
 	public static ControlInterface[] getControlKeyboard(String name, Integer key, Integer row, Integer position){
 		return getControl(null, name, 1, key, row, position);
 	}
-//	
-//	public static ControlInterface[] getControl(ControlDefaultTypeApp c, Integer key, Integer row, Integer position){
-//		return getControl(c, 1, key, row, position);
-//	}
+	
+	public static ControlInterface[] getControlKeyboard(String name, HashSet<Integer> keys, Integer row, Integer position){
+		return getControl(null, name, 1, keys, row, position);
+	}
 	
 	public static ControlInterface[] getControl(App app, ControlDefaultTypeApp c, Integer key, Integer row, Integer position){
 		return getControl(app, c, 1, key, row, position);
@@ -141,11 +137,6 @@ public abstract class ModelFactoryAbstract {
 			app.getVisualControlsManager().addControl(vc);
 		}
 		return new ControlInterface[]{c, vc};
-	}
-	
-	public static void syncControls(App app){
-		app.setControls(app.getControlsManager().getControls());
-		app.setVisualControls(app.getVisualControlsManager().getControls());
 	}
 	
 }

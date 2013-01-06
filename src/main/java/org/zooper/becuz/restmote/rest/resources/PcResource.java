@@ -137,7 +137,7 @@ public class PcResource extends AbstractResource{
 	public void mouseControl(@PathParam("controlName") String controlName) {
 		log.info("mouseMoves controlName: " + controlName);
 		try {
-			VisualControl control = PcControllerFactory.getPcController().getMouseControlsManager().getControl(controlName);
+			VisualControl control = PcControllerFactory.getPcController().getMouseVisualControlsManager().getControl(controlName);
 			if (control != null){
 				Mouse mouse = PcControllerFactory.getPcController().getMouse();
 				if (control.getName().equals(Control.ControlDefaultTypeMouse.MOUSE_CENTER.toString().toLowerCase())){
@@ -216,7 +216,7 @@ public class PcResource extends AbstractResource{
 	public void keyboardControl(@PathParam("controlName") String controlName) {
 		log.info("keyboardControl controlName: " + controlName);
 		try {
-			Control control = PcControllerFactory.getPcController().getKeyboardVisualControlsManager().getControl(controlName).getControl();
+			Control control = PcControllerFactory.getPcController().getKbdVisualControlsManager().getControl(controlName).getControl();
 			getRemoteControlBusiness().control(control);
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());

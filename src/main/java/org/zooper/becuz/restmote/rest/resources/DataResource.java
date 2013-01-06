@@ -35,8 +35,8 @@ public class DataResource extends AbstractResource{
 		Data d = new Data();
 		d.setSettings(getSettingsBusiness().get());
 		d.setMediaRoots(getMediaBusiness().getMediaRoots());
-		d.setKeyboardVisualControls(PcControllerFactory.getPcController().getKeyboardVisualControlsManager().getControls());
-		d.setMouseVisualControls(PcControllerFactory.getPcController().getMouseControlsManager().getControls());
+		d.setKeyboardVisualControls(PcControllerFactory.getPcController().getKbdVisualControlsManager().getControls());
+		d.setMouseVisualControls(PcControllerFactory.getPcController().getMouseVisualControlsManager().getControls());
 		return d;
 	}
 	

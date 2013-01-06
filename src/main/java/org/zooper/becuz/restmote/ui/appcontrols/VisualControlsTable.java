@@ -15,6 +15,8 @@ import java.util.logging.Logger;
 
 import javax.swing.JTable;
 
+import org.zooper.becuz.restmote.model.Control;
+
 /**
  * 
  * @author bebo
@@ -53,9 +55,13 @@ public class VisualControlsTable extends JTable implements DropTargetListener {
 		int row = rowAtPoint(p);
 		int col = columnAtPoint(p);
 		try {
-			String imgName = (String) t.getTransferData(d[0]);
-			((AppVisualControlsTableModel)getModel()).setImageAt(imgName, row, col);
-			changeSelection(row, col, false, false);
+			if (d[0].equals(DataFlavor.getTextPlainUnicodeFlavor())){
+				String imgName = (String) t.getTransferData(d[0]);
+				((AppVisualControlsTableModel)getModel()).setImageAt(imgName, row, col);
+				changeSelection(row, col, false, false);
+			} else {//if (d[0].getMimeType().equals(DataFlavor.javaSerializedObjectMimeType)){
+				Control control = (Control) t.getTransferData(d[0]);
+			}
 		} catch (UnsupportedFlavorException ex) {
 			Logger.getLogger(VisualControlsTable.class.getName()).log(Level.SEVERE, null, ex);
 		} catch (IOException ex) {

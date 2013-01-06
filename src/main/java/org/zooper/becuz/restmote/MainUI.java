@@ -6,6 +6,11 @@ import javax.swing.UIManager;
 import org.zooper.becuz.restmote.http.Server;
 import org.zooper.becuz.restmote.ui.Tray;
 
+/**
+ * Entry point to start the server without user interface
+ * @author bebo
+ *
+ */
 public class MainUI {
 
 	public static void main(String[] args) throws Exception {
@@ -22,8 +27,6 @@ public class MainUI {
             	tray.createAndShowGUI();
             }
         });
-        //ToolTipManager.sharedInstance().setInitialDelay(0);
-
 	}
 
 }

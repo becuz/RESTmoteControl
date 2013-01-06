@@ -15,7 +15,6 @@ import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeApp;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeKeyboard;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeMouse;
 import org.zooper.becuz.restmote.model.KeysEvent;
-import org.zooper.becuz.restmote.model.VisualControl;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
 import org.zooper.becuz.restmote.utils.Utils;
 
@@ -76,8 +75,8 @@ public class RemoteControlBusiness extends BusinessAbstract{
 	 * @param app
 	 * @throws Exception 
 	 */
-	public void control(App app, String controlName, Character c) throws Exception {
-		if (Utils.isEmpty(controlName) && c == null){
+	public void control(App app, String controlName, Character charachter) throws Exception {
+		if (Utils.isEmpty(controlName) && charachter == null){
 			throw new IllegalArgumentException("No control specified");
 		}
 		ActiveApp activeAppFocused = getActiveAppBusiness().getActiveAppFocused(true);
@@ -93,7 +92,7 @@ public class RemoteControlBusiness extends BusinessAbstract{
 			}
 			control(control);
 		} else {
-			control(c);
+			control(charachter);
 		}
 	}
 	

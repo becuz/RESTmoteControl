@@ -1,10 +1,10 @@
 package org.zooper.becuz.restmote.ui.appcontrols;
 
+import java.util.Set;
+
 import javax.swing.table.AbstractTableModel;
 
 import org.zooper.becuz.restmote.model.Control;
-import org.zooper.becuz.restmote.model.ControlsManager;
-import org.zooper.becuz.restmote.model.KeysEvent;
 import org.zooper.becuz.restmote.model.VisualControl;
 
 @SuppressWarnings("serial")
@@ -16,11 +16,11 @@ public class AppVisualControlsTableModel extends AbstractTableModel{
     	data = new VisualControl[VisualControl.MAX_NUM_ROWS][VisualControl.MAX_NUM_COLS];
 	}
     
-	public void setData(ControlsManager<VisualControl> controlsManager){
+	public void setData(Set<VisualControl> controls){
 		data = new VisualControl[VisualControl.MAX_NUM_ROWS][VisualControl.MAX_NUM_COLS];
 		int delta = (VisualControl.MAX_NUM_COLS-1)/2;
-		if (controlsManager.getControls() != null){
-			for(VisualControl control: controlsManager.getControls()){
+		if (controls != null){
+			for(VisualControl control: controls){
 				data[control.getRow()-1][control.getPosition()+delta] = control;//(control == null ? "null" : control.getName());
 			}
 		}

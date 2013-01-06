@@ -215,8 +215,6 @@ public class MainWindow extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(900, 700));
         setPreferredSize(new java.awt.Dimension(900, 700));
 
-        panelTabs.setMinimumSize(null);
-
         panelSettingsPnlServer.setBorder(javax.swing.BorderFactory.createTitledBorder("Server"));
 
         lblComboInetNames.setText("Interface");
@@ -395,7 +393,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblIconsCredits)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
                 .addComponent(lblPaths)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -482,7 +480,7 @@ public class MainWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelTabs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelTabs)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel)

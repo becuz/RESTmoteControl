@@ -7,7 +7,6 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.codehaus.jackson.map.annotate.JsonView;
@@ -116,25 +115,10 @@ public class App implements Editable, Completable{
 	@JsonView(Views.All.class)
 	private Date updateDate;
 
-	/**
-	 * 
-	 */
-	private Set<Control> controls;
+	@JsonView(Views.All.class)
+	private ControlsManager controlsManager;
 	
-	/**
-	 * 
-	 */
-	private Set<VisualControl> visualControls;
-	
-	/**
-	 * 
-	 */
-	private ControlsManager<Control> controlsManager;
-	
-	/**
-	 * 
-	 */
-	private ControlsManager<VisualControl> visualControlsManager;
+	private VisualControlsManager visualControlsManager;
 	
 	public App() {
 	}
@@ -165,9 +149,9 @@ public class App implements Editable, Completable{
 		if (Utils.isEmpty(getWindowName())){
 			errors.append("\nWindow is mandatory");
 		}
-		if (controls == null || controls.isEmpty()){
-			errors.append("\nNo controls are defined");
-		}
+//		if (controls == null || controls.isEmpty()){
+//			errors.append("\nNo controls are defined");
+//		}
 		if (Utils.isEmpty(getArgumentsFile())){
 			errors.append("\nArg file is mandatory");
 		}
@@ -232,22 +216,6 @@ public class App implements Editable, Completable{
 		this.argumentsDir = argumentsDir;
 	}
 
-	@JsonIgnore
-	public ControlsManager<Control> getControlsManager() {
-		if (controlsManager == null){
-			controlsManager = new ControlsManager<Control>(controls);
-		}
-		return controlsManager;
-	}
-
-	@JsonIgnore
-	public ControlsManager<VisualControl> getVisualControlsManager() {
-		if (visualControlsManager == null){
-			visualControlsManager = new ControlsManager<VisualControl>(visualControls);
-		}
-		return visualControlsManager;
-	}
-	
 	public Set<String> getExtensions() {
 		if (extensions == null) {
 			extensions = new HashSet<String>();
@@ -315,22 +283,27 @@ public class App implements Editable, Completable{
 		this.id = id;
 	}
 
-	public Set<Control> getControls() {
-		return controls;
+	public ControlsManager getControlsManager() {
+		if (controlsManager == null){
+			controlsManager = new ControlsManager();
+		}
+		return controlsManager;
 	}
 
-	public void setControls(Set<Control> controls) {
-		this.controls = controls;
+	public void setControlsManager(ControlsManager controlsManager) {
+		this.controlsManager = controlsManager;
 	}
 
-	public Set<VisualControl> getVisualControls() {
-		return visualControls;
+	public VisualControlsManager getVisualControlsManager() {
+		if (visualControlsManager == null){
+			visualControlsManager = new VisualControlsManager();
+		}
+		return visualControlsManager;
 	}
 
-	public void setVisualControls(Set<VisualControl> visualControls) {
-		this.visualControls = visualControls;
+	public void setVisualControlsManager(VisualControlsManager visualControlsManager) {
+		this.visualControlsManager = visualControlsManager;
 	}
 
-	
 	
 }

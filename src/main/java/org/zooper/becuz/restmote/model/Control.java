@@ -1,11 +1,6 @@
 package org.zooper.becuz.restmote.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -14,7 +9,6 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.codehaus.jackson.map.annotate.JsonView;
 import org.zooper.becuz.restmote.conf.rest.Views;
-import org.zooper.becuz.restmote.model.interfaces.Persistable;
 import org.zooper.becuz.restmote.utils.Utils;
 
 /**

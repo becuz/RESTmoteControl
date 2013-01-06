@@ -30,8 +30,9 @@ public class UIConstants {
 	public static final String TOOLTIP_APP_BROWSE = "Browse and choose the executable";
 	public static final String TOOLTIP_APP_REFRESH = "Refresh the list of running applications";
 	
-	public static final String TOOLTIP_APP_CONTROLS = "Edit the shortcuts";
-	public static final String TOOLTIP_APP_CONTROLS_DELETE = "Delete selected Control";
-	public static final String TOOLTIP_APP_CONTROLS_TEST = "Test the configuration.";
+	//public static final String TOOLTIP_APP_CONTROLS = "Edit the shortcuts";
+	//public static final String TOOLTIP_APP_CONTROLS_DELETE = "Delete selected Control";
+	public static final String TOOLTIP_APP_CONTROLS_RIGHT = "Add";
+	//public static final String TOOLTIP_APP_CONTROLS_TEST = "Test the configuration.";
 	
 }

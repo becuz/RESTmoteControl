@@ -73,23 +73,24 @@ public class TestAppBusiness extends TestAbstract{
 		App app = new App("smplayer", "path");
 		app.addExtension("avi");
 		app.setForceOneInstance(true);
-		ControlsManager<Control> controlApp = app.getControlsManager();
+		ControlsManager controlApp = app.getControlsManager();
 		Control control1 = 
 				(Control) ModelFactoryAbstract.getControl(app, ControlDefaultTypeApp.VOLUP, KeyEvent.VK_0, 1, 0)[0];
 		Control control2 = 
 				(Control) ModelFactoryAbstract.getControl(app, ControlDefaultTypeApp.FULLSCREEN, KeyEvent.VK_F, 1, -2)[0];
-		ModelFactoryAbstract.syncControls(app);
-		app.setControls(controlApp.getControls());
+		controlApp.addControl(control1);
+		controlApp.addControl(control2);
 		appBusiness.store(app);
 		control1.setName("name");
 		appBusiness.store(app);
 		app = appBusiness.get(app.getId());
-		assertNotNull(app.getControlsManager().getControl("name"));
-		assertNull(app.getControlsManager().getControl(ControlDefaultTypeApp.VOLUP.toString()));
-		assertEquals(app.getControlsManager().getControls().size(), 2);
-		app.getControlsManager().removeControl(control2);
+		controlApp = app.getControlsManager();
+		assertNotNull(controlApp.getControl("name"));
+		assertNull(controlApp.getControl(ControlDefaultTypeApp.VOLUP.toString()));
+		assertEquals(controlApp.getControls().size(), 2);
+		controlApp.removeControl(control2);
 		appBusiness.store(app);
-		assertEquals(app.getControlsManager().getControls().size(), 1);
+		assertEquals(controlApp.getControls().size(), 1);
 		appBusiness.delete(app);
 	}
 

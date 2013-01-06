@@ -14,7 +14,7 @@ import org.zooper.becuz.restmote.model.interfaces.Persistable;
  * @author bebo
  *
  */
-public class ControlsManager implements Persistable {
+public class VisualControlsManager implements Persistable {
 
 	/**
 	 * Local store id
@@ -25,9 +25,9 @@ public class ControlsManager implements Persistable {
 	/**
 	 * 
 	 */
-	private Set<Control> controls;
+	private Set<VisualControl> visualControls;
 	
-	public ControlsManager() {
+	public VisualControlsManager() {
 	}
 	
 	@Override
@@ -43,25 +43,25 @@ public class ControlsManager implements Persistable {
 		this.id = id;
 	}
 
-	public Set<Control> getControls() {
-		if (controls == null){
-			controls = new HashSet<Control>();
+	public Set<VisualControl> getControls() {
+		if (visualControls == null){
+			visualControls = new HashSet<VisualControl>();
 		}
-		return controls;
+		return visualControls;
 	}
 
-	public void setControls(Set<Control> controls) {
-		this.controls = controls;
+	public void setControls(Set<VisualControl> controls) {
+		this.visualControls = controls;
 	}
 	
-	public void addControls(Collection<Control> newControls) {
-		for(Control c: newControls){
+	public void addControls(Collection<VisualControl> newControls) {
+		for(VisualControl c: newControls){
 			addControl(c);
 		}
 	}
 	
-	public Control addControl(Control control) {
-//		for(Control c: controls){
+	public VisualControl addControl(VisualControl control) {
+//		for(Control c: visualControls){
 //			if (c.getName().equals(control.getName())){
 //				throw new IllegalArgumentException("Control " + control.getName() + " already present");
 //			}
@@ -70,9 +70,9 @@ public class ControlsManager implements Persistable {
 		return control;
 	}
 	
-	public Control getControl(String controlName) {
-		if (controls != null){
-			for(Control c: controls){
+	public VisualControl getControl(String controlName) {
+		if (visualControls != null){
+			for(VisualControl c: visualControls){
 				if (c.getName().toLowerCase().equals(controlName.toLowerCase())){
 					return c;
 				}
@@ -81,9 +81,9 @@ public class ControlsManager implements Persistable {
 		return null;
 	}
 	
-	public Control getControl(Long id) {
-		if (controls != null){
-			for(Control c: controls){
+	public VisualControl getControl(Long id) {
+		if (visualControls != null){
+			for(VisualControl c: visualControls){
 				if (c.getId().equals(id)){
 					return c;
 				}

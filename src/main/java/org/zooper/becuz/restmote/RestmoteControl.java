@@ -14,16 +14,21 @@ import org.zooper.becuz.restmote.model.Settings;
 import org.zooper.becuz.restmote.utils.PopulateDb;
 import org.zooper.becuz.restmote.utils.Utils;
 
+/**
+ * 
+ * @author bebo
+ *
+ */
 public class RestmoteControl {
 
 	/**
-	 * Version currently installed in the machine.
+	 * Version currently "installed" in the machine.
 	 * It's retrieved through the string written in the file /version
 	 */
 	private static String dbVersion = null;
 	
 	/**
-	 * Version of the runtime system. Has to be changed when the are updates in the persistence model layer. 
+	 * Version of the runtime system. Has to be upgraded when the are updates in the persistence model layer. 
 	 */
 	private static String version = "0.034b";
 

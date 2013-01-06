@@ -30,7 +30,6 @@ public class ModelFactoryWindows extends ModelFactoryAbstract{
 			((VisualControl)cs[1]).setHideImg(true);
 			getControl(appMovies, ControlDefaultTypeApp.VOLMUTE, 1, KeyEvent.VK_M, 3, -1);
 			getControl(appMovies, ControlDefaultTypeApp.VOLDOWN, 3, KeyEvent.VK_9, 3, 0);
-			syncControls(appMovies);
 		}
 		return appMovies;
 	}
@@ -53,7 +52,6 @@ public class ModelFactoryWindows extends ModelFactoryAbstract{
 			getControl(appMusic, ControlDefaultTypeApp.BACKWARD, 3, KeyEvent.VK_LEFT, 3, -1);
 			getControl(appMusic, ControlDefaultTypeApp.VOLDOWN, 5, KeyEvent.VK_DOWN, 3, 0);
 			getControl(appMusic, ControlDefaultTypeApp.FORWARD, 3, KeyEvent.VK_RIGHT, 3, 1);
-			syncControls(appMusic);
 		}
 		return appMusic;
 	}
@@ -73,7 +71,6 @@ public class ModelFactoryWindows extends ModelFactoryAbstract{
 			list.addAll(Arrays.asList(new Integer[]{KeyEvent.VK_SHIFT, KeyEvent.VK_A}));
 			getControl(appPics, ControlDefaultTypeApp.PLAY, 1, list, 2, 0);
 			getControl(appPics, ControlDefaultTypeApp.FORWARD, KeyEvent.VK_RIGHT, 2, 1);
-			syncControls(appPics);
 		}
 		return appPics;
 	}

@@ -1,11 +1,15 @@
 package org.zooper.becuz.restmote.controller;
 
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.zooper.becuz.restmote.conf.ModelFactoryAbstract;
+import org.zooper.becuz.restmote.model.ControlInterface;
+import org.zooper.becuz.restmote.model.VisualControl;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
 import org.zooper.becuz.restmote.utils.Utils;
 
@@ -84,6 +88,14 @@ public class PcControllerWindows extends PcControllerAbstract{
 	@Override
 	public boolean setVolume(int vol) throws Exception {
 		return execute(new String[]{".\\lib\\win\\nircmd.exe", "setsysvolume", "" + Utils.map(vol, 0, 100, 0, 65535)}) != null; 
+	}
+	
+	@Override
+	protected void buildKeyboardsControls() {
+		super.buildKeyboardsControls();
+		ControlInterface[] cs = ModelFactoryAbstract.getControlKeyboard("Win", KeyEvent.VK_WINDOWS, 3, 0);
+		((VisualControl)cs[1]).setHideImg(true);
+		addKbdControls(cs);
 	}
 	
 }

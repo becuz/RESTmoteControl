@@ -49,7 +49,6 @@ public class ModelFactoryLinux extends ModelFactoryAbstract{
 			getControl(appMusic, 
 					ControlDefaultTypeApp.VOLDOWN, 1, new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_ALT, KeyEvent.VK_DOWN})), 3, 0);
 			//controlAppMusic.addControl(Control.getControl(ControlDefaultTypeApp.FORWARD, 3, KeyEvent.VK_RIGHT, 3, 1));
-			syncControls(appMusic);
 		}
 		return appMusic;
 	}
@@ -70,7 +69,6 @@ public class ModelFactoryLinux extends ModelFactoryAbstract{
 			getControl(appPics, ControlDefaultTypeApp.BACKWARD, KeyEvent.VK_LEFT, 2, -1);
 			getControl(appPics, ControlDefaultTypeApp.PLAY, KeyEvent.VK_F5, 2, 0);
 			getControl(appPics, ControlDefaultTypeApp.FORWARD, KeyEvent.VK_RIGHT, 2, 1);
-			syncControls(appPics);
 		}
 		return appPics;
 	}
