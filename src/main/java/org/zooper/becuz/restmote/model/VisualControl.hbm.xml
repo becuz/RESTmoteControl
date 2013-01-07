@@ -9,7 +9,7 @@
 			<generator class="native" />
 		</id>
 		<property name="name" />
-		<property name="position" />
+		<property name="column" />
 		<property name="row" />
 		<property name="imgSrc" />
 		<property name="hideImg" />

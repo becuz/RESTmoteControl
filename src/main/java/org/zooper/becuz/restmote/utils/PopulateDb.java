@@ -19,8 +19,8 @@ import org.zooper.becuz.restmote.persistence.PersistenceHibernate;
 import org.zooper.becuz.restmote.persistence.hibernate.HibernateUtil;
 
 /**
- * Convenience class to recreate the db and populate with some data.
- * 
+ * Creates (or updates) the database and populate it with some data.
+ * It creates the db if not exists the file (HSQL on db/) or updates it if !RestmoteControl.getVersion().equals(RestmoteControl.getDbVersion())
  * @author bebo
  *
  */
@@ -38,7 +38,7 @@ public class PopulateDb {
 			if (!new File(dbFile+".properties").exists()){
 				hbm2dll = "create";
 				populate = true;
-			} else if (/*develop ||*/ !RestmoteControl.getVersion().equals(RestmoteControl.getDbVersion())){
+			} else if (/*develop ||*/ !RestmoteControl.getVersion().equals(RestmoteControl.getInstalledVersion())){
 				hbm2dll = "update";
 			}
 			if (hbm2dll != null){
@@ -68,7 +68,7 @@ public class PopulateDb {
 			MediaCategory mediaCategoryPics = ModelFactoryFactory.getModelFactoryAbstract().getMediaCategoryPics();
 			MediaCategory mediaCategoryRoot = ModelFactoryFactory.getModelFactoryAbstract().getMediaCategoryRoot();
 			
-			//Temporary way to specify paths, waiting a proper admin user interface
+			//Flexible way to specify paths to scan for media. developers can list their own paths
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(this.getClass().getResource("/paths").getPath()));
 		        String line;

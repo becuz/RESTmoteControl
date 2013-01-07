@@ -25,25 +25,25 @@ public class RestmoteControl {
 	 * Version currently "installed" in the machine.
 	 * It's retrieved through the string written in the file /version
 	 */
-	private static String dbVersion = null;
+	private static String installedVersion = null;
 	
 	/**
 	 * Version of the runtime system. Has to be upgraded when the are updates in the persistence model layer. 
 	 */
-	private static String version = "0.034b";
+	private static String version = "0.036b";
 
 	/**
 	 * @return the version currently installed in the machine, accordingly to what is written in the file /version
 	 */
-	public static String getDbVersion(){
-		if (dbVersion == null){
+	public static String getInstalledVersion(){
+		if (installedVersion == null){
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(new File(Utils.getRootDir() + "version")));
-		        dbVersion = br.readLine();
+		        installedVersion = br.readLine();
 		        br.close();
 			} catch (Exception e){}
 		}
-        return dbVersion;
+        return installedVersion;
 	}
 	
 	/**
@@ -82,7 +82,7 @@ public class RestmoteControl {
 		}
 		settingsBusiness.store(settings);
 		
-		if (!getVersion().equals(getDbVersion())){
+		if (!getVersion().equals(getInstalledVersion())){
 			File f = new File(Utils.getRootDir() + "version");
 			f.delete();
 			FileWriter fstream = new FileWriter(f);

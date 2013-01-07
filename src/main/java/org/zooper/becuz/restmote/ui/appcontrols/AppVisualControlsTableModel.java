@@ -21,7 +21,7 @@ public class AppVisualControlsTableModel extends AbstractTableModel{
 		int delta = (VisualControl.MAX_NUM_COLS-1)/2;
 		if (controls != null){
 			for(VisualControl control: controls){
-				data[control.getRow()-1][control.getPosition()+delta] = control;//(control == null ? "null" : control.getName());
+				data[control.getRow()-1][control.getColumn()+delta] = control;//(control == null ? "null" : control.getName());
 			}
 		}
 		fireTableDataChanged();

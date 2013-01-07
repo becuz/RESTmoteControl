@@ -4,6 +4,11 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonView;
 import org.zooper.becuz.restmote.conf.rest.Views;
 
+/**
+ * This class represents a visual interface to a {@link Control}
+ * Visually is expressed by a text and/or an icon.
+ * @author bebo
+ */
 public class VisualControl implements ControlInterface{
 
 	public static final int MAX_NUM_COLS = 5; //odd number is nicer
@@ -16,30 +21,20 @@ public class VisualControl implements ControlInterface{
 	private Long id;
 	
 	/**
-	 * 
-	 */
-	private String name;
-	
-	/**
-	 * TODO
+	 * Actual control
 	 */
 	@JsonIgnore
 	private Control control;
 	
 	/**
-	 * For custom controls
+	 * TODO
+	 */
+	private String name;
+	
+	/**
+	 * icon
 	 */
 	private String imgSrc;
-	
-	/**
-	 * 0 = centered. -2,-1,0,1,2
-	 */
-	private Integer position;
-	
-	/**
-	 * row of the control 
-	 */
-	private Integer row;
 	
 	/**
 	 * If false no image is displayed, {@link #text} instead
@@ -51,13 +46,25 @@ public class VisualControl implements ControlInterface{
 	 */
 	private String text;
 	
+	/**
+	 * 0 = centered. -2,-1,0,1,2
+	 * @see VisualControl#MAX_NUM_COLS
+	 */
+	private Integer column;
+	
+	/**
+	 * row of the control
+	 * @see VisualControl#MAX_NUM_ROWS
+	 */
+	private Integer row;
+	
 	public VisualControl() {}
 	
 	public VisualControl(String name, Integer row, Integer position) {
 		this();
 		this.name = name;
 		this.row = row;
-		this.position = position;
+		this.column = position;
 	}
 	
 	public VisualControl(Control control, Integer row, Integer position) {
@@ -71,7 +78,7 @@ public class VisualControl implements ControlInterface{
 			throw new IllegalArgumentException("VisualControl of " + getName() + ". Row can't be null and has to be between 1 and 4");
 		}
 		int m = (MAX_NUM_COLS-1)/2;
-		if (position == null || position < -m || position > m){
+		if (column == null || column < -m || column > m){
 			throw new IllegalArgumentException("VisualControl of " + getName() + ". Position can't be null and has to be between -" + m + " and " + m);
 		}
 	}
@@ -101,12 +108,12 @@ public class VisualControl implements ControlInterface{
 		this.imgSrc = imgSrc;
 	}
 
-	public Integer getPosition() {
-		return position;
+	public Integer getColumn() {
+		return column;
 	}
 
-	public void setPosition(Integer position) {
-		this.position = position;
+	public void setColumn(Integer column) {
+		this.column = column;
 	}
 
 	public Integer getRow() {

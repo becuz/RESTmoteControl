@@ -446,7 +446,7 @@ function displayRc($brotherDom, idContainer, title, controls, iconSize, paddingT
 			var control = controls[j];
 			var name = control.name;
 			var $controlDiv = $( "<div align='center' class='control' id='" + name +"'></div>" )
-				.appendTo($( "#"+idContainer+"_row"+control.row + " div.ui-block-"+l[(l.length-1)/2 + control.position]));
+				.appendTo($( "#"+idContainer+"_row"+control.row + " div.ui-block-"+l[(l.length-1)/2 + control.column]));
 			if (control.hideImg){
 				$controlDiv.html(control.name);
 			} else {
