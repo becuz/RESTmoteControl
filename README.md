@@ -3,7 +3,7 @@ RESTmoteControl
 *Your house and his devices use the power of the computer!*
 
 RES(T)mote Control is a "framework" that helps you to control your pc remotely, ideally from a mobile device like a smartphone or an Arduino, but potentially from any Http client.
-Architectually it's a Java stand-alone HttpServer with a simple REST API to control some aspects of the machine where it's running.
+Architectually it's a Java stand-alone HttpServer with a simple REST API to run commands on the machine where it's running.
 
 You can make calls like:
 
@@ -11,7 +11,7 @@ You can make calls like:
 - *PUT 	http://server/api/pc/mouse/912x22*
 - *POST	http://server/api/pc/mouse/buttons/1/click*
 
-and others to browse/open files, setting system volume, shoutdown the machine.
+and other calls to browse/open files, setting system volume, shoutdown the machine.
 
 You can use it as a media remote control from your couch, calling things like:
 
@@ -26,7 +26,8 @@ The server hosts also a ready, but evolving, Mobile Web App written with jQueryM
 We are developing a simple Swing UI to set the server and define controls (MainUI.java).
 
 # Roadmap
-- Support Linux, Mac, Raspberry Pi
+- Support Mac and Raspberry Pi
+- Usb and Bluetooth support
 - Possibility to define more articolated sequences of controls
 - Plugins mechanism to define elaborated services, like logging, notification, two-ways interaction with a local application (opposed to the one defined above that is a one-way comunication through shortcut and mouse events)
 - Arduino plugin
@@ -40,8 +41,10 @@ There are project files to open it with Eclipse or NetBeans. No Maven (yet).
 
 
 # Simple Usage
-- The run the server, run the org.zooper.becuz.restmote.Main class
-- Open with a browser the url logged in the console. Should be http://machineip:9898/client/index.html
-- You can optionally configure media paths editing file src/main/java/paths
-- To be able to control applications, you need to add them in PopulateDb.java or have the default ones installed. Right now the default hardcoded configuration, and the tests, assumes winamp, smplayer and irfanview are installed on the machine. Check ModelFactoryWindows.java.
+- The run the server, run the org.zooper.becuz.restmote.Main or MainUI class
+- Open with a browser the url logged in the console (Main) or defined in the UI (MainUI). Should be http://machineip:9898/client/index.html
+- You can optionally configure media paths editing file src/main/java/paths (Main) or through the UI (MainUI)
+- To be able to control applications, you need to add them in PopulateDb.java or have the default ones installed. Right now the default hardcoded configuration, and the tests, assumes winamp, smplayer and irfanview (Windows) or Rhythmbox, smplayer and Gnome Image Viewer (Linux) are installed on the machine. Check ModelFactory*.java.
 - To run JUnit tests: AllTests.java
+
+Have fun!
