@@ -6,6 +6,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.codehaus.jackson.map.annotate.JsonView;
 import org.zooper.becuz.restmote.conf.rest.Views;
+import org.zooper.becuz.restmote.model.interfaces.Completable;
 import org.zooper.becuz.restmote.model.interfaces.Editable;
 import org.zooper.becuz.restmote.utils.Utils;
 
@@ -16,7 +17,7 @@ import org.zooper.becuz.restmote.utils.Utils;
  */
 @XmlRootElement
 @JsonSerialize(include = Inclusion.NON_NULL)
-public class Command implements Editable {
+public class Command implements Editable, Completable {
 
 	/**
 	 * pk
@@ -46,7 +47,7 @@ public class Command implements Editable {
 	}
 
 	@Override
-	public void validate() throws IllegalArgumentException {
+	public void isComplete() throws IllegalArgumentException {
 		StringBuffer errors = new StringBuffer();
 		if (Utils.isEmpty(getName())){
 			errors.append("\nName is mandatory");
@@ -57,6 +58,11 @@ public class Command implements Editable {
 		if (errors.length() > 0){
 			throw new IllegalArgumentException(errors.toString());
 		}
+	}
+	
+	@Override
+	public void validate() throws IllegalArgumentException {
+		isComplete();
 	}
 	
 	public Long getId() {
@@ -82,5 +88,5 @@ public class Command implements Editable {
 	public void setCommand(String command) {
 		this.command = command;
 	}
-	
+
 }

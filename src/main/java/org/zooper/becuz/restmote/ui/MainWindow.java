@@ -92,6 +92,7 @@ public class MainWindow extends javax.swing.JFrame {
 		
 		panelApps.copyToView();
 		panelCategories.copyToView();
+		panelCommands.copyToView();
 		
 		listPathsModel.clear();
 		
@@ -202,6 +203,7 @@ public class MainWindow extends javax.swing.JFrame {
         lblIconsCredits = new javax.swing.JLabel();
         panelApps = new org.zooper.becuz.restmote.ui.panels.PanelApps();
         panelCategories = new org.zooper.becuz.restmote.ui.panels.PanelCategories();
+        panelCommands = new org.zooper.becuz.restmote.ui.panels.PanelCommands();
         btnSave = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         lblStatus = new javax.swing.JLabel();
@@ -285,7 +287,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(lblStatusServer)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnToggleServer, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
                 .addComponent(lblQrCode, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblServerUrl)
@@ -342,7 +344,7 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(lblPaths, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelSettingsPnlGeneralLayout.createSequentialGroup()
                         .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(scrollPaneListPaths, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+                            .addComponent(scrollPaneListPaths, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
                             .addComponent(textFieldPath))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -394,7 +396,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblIconsCredits)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
                 .addComponent(lblPaths)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelSettingsPnlGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -430,6 +432,7 @@ public class MainWindow extends javax.swing.JFrame {
         panelTabs.addTab("Settings", new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/wrench.png")), panelSettings); // NOI18N
         panelTabs.addTab("Apps", new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/apps.png")), panelApps); // NOI18N
         panelTabs.addTab("Categories", new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/categories.png")), panelCategories); // NOI18N
+        panelTabs.addTab("Commands", new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/commands.png")), panelCommands); // NOI18N
 
         btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/accept.png"))); // NOI18N
         btnSave.setText("Save");
@@ -464,15 +467,13 @@ public class MainWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelTabs, javax.swing.GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSave)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCancel)))
+                .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 665, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSave)
+                .addGap(18, 18, 18)
+                .addComponent(btnCancel)
                 .addContainerGap())
+            .addComponent(panelTabs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCancel, btnSave});
@@ -480,7 +481,6 @@ public class MainWindow extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(panelTabs)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -667,7 +667,9 @@ public class MainWindow extends javax.swing.JFrame {
         settings.setTheme(listIconThemesModel.getSelectedItem().toString());
         settingsBusiness.store(settings);
 		
-		
+		panelApps.save();
+		panelCategories.save();
+		panelCommands.save();
 		
 		
         setVisible(false);
@@ -743,6 +745,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuFileExit;
     private org.zooper.becuz.restmote.ui.panels.PanelApps panelApps;
     private org.zooper.becuz.restmote.ui.panels.PanelCategories panelCategories;
+    private org.zooper.becuz.restmote.ui.panels.PanelCommands panelCommands;
     private javax.swing.JPanel panelSettings;
     private javax.swing.JPanel panelSettingsPnlGeneral;
     private javax.swing.JPanel panelSettingsPnlServer;

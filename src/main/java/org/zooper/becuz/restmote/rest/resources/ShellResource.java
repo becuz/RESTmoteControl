@@ -1,6 +1,5 @@
 package org.zooper.becuz.restmote.rest.resources;
 
-import java.io.IOException;
 import java.util.Collection;
 
 import javax.ws.rs.Consumes;
@@ -71,9 +70,10 @@ public class ShellResource extends AbstractResource {
 			throw new NotFoundException("Command " + commandName + " not found");
 		}
 		try {
-			PcControllerFactory.getPcController().execute(command.getCommand());
+			PcControllerFactory.getPcController().execute(command.getCommand().trim());
 		} catch (Exception e) {
-			log.error(e.getMessage() + " " + e.getCause());
+			e.printStackTrace();
+			log.error(e);
 			throw new ServerException(e.getMessage());
 		}
 	}

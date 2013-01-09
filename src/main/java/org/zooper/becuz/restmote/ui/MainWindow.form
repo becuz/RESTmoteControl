@@ -61,24 +61,19 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="panelTabs" pref="873" max="32767" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Component id="lblStatus" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnSave" linkSize="11" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                      <Component id="btnCancel" linkSize="11" min="-2" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
+              <Component id="lblStatus" pref="665" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="btnSave" linkSize="11" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+              <Component id="btnCancel" linkSize="11" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
+          <Component id="panelTabs" alignment="1" pref="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
               <Component id="panelTabs" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -191,7 +186,7 @@
                           <Component id="lblStatusServer" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnToggleServer" min="-2" pref="35" max="-2" attributes="0"/>
-                          <EmptySpace pref="76" max="32767" attributes="0"/>
+                          <EmptySpace pref="115" max="32767" attributes="0"/>
                           <Component id="lblQrCode" min="-2" pref="220" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="lblServerUrl" min="-2" max="-2" attributes="0"/>
@@ -287,7 +282,7 @@
                               <Component id="lblPaths" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="scrollPaneListPaths" pref="394" max="32767" attributes="0"/>
+                                      <Component id="scrollPaneListPaths" pref="414" max="32767" attributes="0"/>
                                       <Component id="textFieldPath" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
@@ -351,7 +346,7 @@
                           <Component id="jScrollPane1" min="-2" pref="111" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="lblIconsCredits" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="98" max="32767" attributes="0"/>
+                          <EmptySpace pref="109" max="32767" attributes="0"/>
                           <Component id="lblPaths" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -524,6 +519,18 @@
                 <Property name="tabTitle" type="java.lang.String" value="Categories"/>
                 <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/categories.png"/>
+                </Property>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="org.zooper.becuz.restmote.ui.panels.PanelCommands" name="panelCommands">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Commands">
+                <Property name="tabTitle" type="java.lang.String" value="Commands"/>
+                <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/commands.png"/>
                 </Property>
               </JTabbedPaneConstraints>
             </Constraint>

@@ -35,4 +35,6 @@ public class UIConstants {
 	public static final String TOOLTIP_APP_CONTROLS_RIGHT = "Add";
 	//public static final String TOOLTIP_APP_CONTROLS_TEST = "Test the configuration.";
 	
+	public static final String TOOLTIP_COMMAND_NAME = "Name of the command";
+	public static final String TOOLTIP_COMMAND_COMMAND = "Command to execute by the shell";
 }
