@@ -36,16 +36,14 @@ public class App implements Editable, Completable{
 	
 	/**
 	 * Name of the family of application. 
-	 * This is needed when there are several definition of a common program, usually
-	 * because some versions introduce different shortcuts. 
-	 * For example there could exist an app Firefox and a Firefox v2. Both of them should belong to the same family 
-	 * and just one of them will be {@link #chosen}. 
+	 * This is needed when there are several definitions of a common program, usually because some versions introduce different shortcuts. 
+	 * For example there could exist an app Firefox and a Firefox v2. Both of them should belong to the same family "Firefox" and just one of them will be {@link #chosen}. 
 	 */
 	@JsonView(Views.All.class)
 	private String family;
 	
 	/**
-	 * Name of the application 
+	 * Name of the application, es "Firefox", or "Firefox v2" 
 	 */
 	private String name;
 	
@@ -61,7 +59,7 @@ public class App implements Editable, Completable{
 	private Boolean chosenDefault;
 	
 	/**
-	 * 
+	 * True if this entity is the default of its family
 	 */
 	@JsonView(Views.All.class)
 	private Boolean chosen;
@@ -73,7 +71,7 @@ public class App implements Editable, Completable{
 	private String os;
 	
 	/**
-	 * Full path of the executable. The name of the executable is enough if its path is in the system bin variable.
+	 * Full path of the executable. The name of the executable is enough if its path is in the system bin paths variable.
 	 * This string is a command that the system console has to able to run. 
 	 */
 	@JsonView(Views.All.class)
@@ -91,7 +89,7 @@ public class App implements Editable, Completable{
 	
 	
 	/**
-	 * if true, the system makes this app runs always in just one instance.
+	 * if true, {@link PcControllerAbstract} makes this app to run always in just one instance.
 	 * @see PcControllerWindows#openFile(String, App)
 	 * @see PcControllerWindows#closeApp(App)
 	 */
@@ -106,18 +104,26 @@ public class App implements Editable, Completable{
 	private Set<String> extensions;
 	
 	/**
+	 * time this model entity was created
 	 */
 	@JsonView(Views.All.class)
 	private Date creationDate;
 	
 	/**
+	 * last time this model entity was updated
 	 */
 	@JsonView(Views.All.class)
 	private Date updateDate;
 
+	/**
+	 * Business controls for this app
+	 */
 	@JsonView(Views.All.class)
 	private ControlsManager controlsManager;
 	
+	/**
+	 * UI controls for this app
+	 */
 	private VisualControlsManager visualControlsManager;
 	
 	public App() {
