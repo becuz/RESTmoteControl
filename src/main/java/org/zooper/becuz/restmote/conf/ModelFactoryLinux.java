@@ -6,12 +6,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.zooper.becuz.restmote.model.App;
-import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.model.Command;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeApp;
-import org.zooper.becuz.restmote.model.ControlsManager;
 
 public class ModelFactoryLinux extends ModelFactoryAbstract{
 
+	@Override
+	public Command getACommand() {
+		return new Command("ls", "ls");
+	}
 	
 	/**
 	 * @see ModelFactoryWindows#getAppMovies()

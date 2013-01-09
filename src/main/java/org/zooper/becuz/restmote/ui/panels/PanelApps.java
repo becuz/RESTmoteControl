@@ -3,7 +3,7 @@ package org.zooper.becuz.restmote.ui.panels;
 import java.util.List;
 
 import org.zooper.becuz.restmote.business.AppBusiness;
-import org.zooper.becuz.restmote.controller.PcControllerFactory;
+import org.zooper.becuz.restmote.business.BusinessFactory;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
 
@@ -59,7 +59,7 @@ public class PanelApps extends PanelPersistables{
 	@Override
 	public void copyToView() {
 		listModel.clear();
-		List<App> apps = PcControllerFactory.getPcController().getAppBusiness().getAll();
+		List<App> apps = BusinessFactory.getAppBusiness().getAll();
 		if (apps != null){
 			for(App app: apps){
 				listModel.addElement(app);
@@ -79,7 +79,7 @@ public class PanelApps extends PanelPersistables{
 
 	@Override
 	public void save() {
-		AppBusiness appBusiness = PcControllerFactory.getPcController().getAppBusiness();
+		AppBusiness appBusiness = BusinessFactory.getAppBusiness();
         for (int i = 0; i < listModel.size(); i++) {
         	appBusiness.store(listModel.get(i));
 		}

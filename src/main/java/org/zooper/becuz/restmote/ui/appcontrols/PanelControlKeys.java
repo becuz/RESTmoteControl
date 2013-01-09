@@ -156,7 +156,7 @@ public class PanelControlKeys extends javax.swing.JPanel {
 	}
 	
 	public static String getKeysAsString(Control c, int index){
-		List<KeysEvent> keysEventsList = new ArrayList(c.getKeysEvents());
+		List<KeysEvent> keysEventsList = new ArrayList<KeysEvent>(c.getKeysEvents());
 		int from = index == -1 ? 0 : index;
 		int to = index == -1 ? keysEventsList.size()-1 : index;
 		String keysText = new String();

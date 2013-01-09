@@ -23,13 +23,13 @@ public class AppBusiness extends BusinessModelAbstract<App>{
 	 * @return
 	 */
 	public App getRunningByExtension(String extension){
-		MediaCategory mediaCategory = getMediaCategoryBusiness().getByExtension(extension);
+		MediaCategory mediaCategory = BusinessFactory.getMediaCategoryBusiness().getByExtension(extension);
 		App app = null;
 		if (mediaCategory != null){
 			app = mediaCategory.getApp();
 		}
 		if (app == null){
-			for (ActiveApp activeApp: getActiveAppBusiness().getActiveApps(false)){
+			for (ActiveApp activeApp: BusinessFactory.getActiveAppBusiness().getActiveApps(false)){
 				List<App> apps = getByFilters(null, activeApp.getName(), extension, Utils.getOs(), true);
 				if (!apps.isEmpty()){
 					app = apps.get(0);

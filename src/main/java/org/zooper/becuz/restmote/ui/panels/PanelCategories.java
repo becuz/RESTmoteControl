@@ -2,8 +2,8 @@ package org.zooper.becuz.restmote.ui.panels;
 
 import java.util.List;
 
+import org.zooper.becuz.restmote.business.BusinessFactory;
 import org.zooper.becuz.restmote.business.MediaCategoryBusiness;
-import org.zooper.becuz.restmote.controller.PcControllerFactory;
 import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
 
@@ -61,7 +61,7 @@ public class PanelCategories extends PanelPersistables {
 	@Override
 	public void copyToView() {
 		listModel.clear();
-		List<MediaCategory> mediaCategories = PcControllerFactory.getPcController().getMediaCategoryBusiness().getAll();
+		List<MediaCategory> mediaCategories = BusinessFactory.getMediaCategoryBusiness().getAll();
 		if (mediaCategories != null){
 			for(MediaCategory mediaCategory: mediaCategories){
 				listModel.addElement(mediaCategory);
@@ -85,7 +85,7 @@ public class PanelCategories extends PanelPersistables {
 	
 	@Override
 	public void save() {
-		MediaCategoryBusiness mediaCategoryBusiness = PcControllerFactory.getPcController().getMediaCategoryBusiness();
+		MediaCategoryBusiness mediaCategoryBusiness = BusinessFactory.getMediaCategoryBusiness();
         for (int i = 0; i < listModel.size(); i++) {
         	mediaCategoryBusiness.store(listModel.get(i));
 		}

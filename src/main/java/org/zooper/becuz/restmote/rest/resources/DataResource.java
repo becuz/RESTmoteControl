@@ -7,6 +7,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.annotate.JsonView;
+import org.zooper.becuz.restmote.business.BusinessFactory;
 import org.zooper.becuz.restmote.conf.rest.Views;
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
 import org.zooper.becuz.restmote.model.transport.Data;
@@ -33,8 +34,8 @@ public class DataResource extends AbstractResource{
 	public Data get() {
 		log.info("Data get");
 		Data d = new Data();
-		d.setSettings(getSettingsBusiness().get());
-		d.setMediaRoots(getMediaBusiness().getMediaRoots());
+		d.setSettings(BusinessFactory.getSettingsBusiness().get());
+		d.setMediaRoots(BusinessFactory.getMediaBusiness().getMediaRoots());
 		d.setKeyboardVisualControls(PcControllerFactory.getPcController().getKbdVisualControlsManager().getControls());
 		d.setMouseVisualControls(PcControllerFactory.getPcController().getMouseVisualControlsManager().getControls());
 		return d;

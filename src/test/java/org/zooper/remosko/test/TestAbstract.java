@@ -17,6 +17,7 @@ import org.zooper.becuz.restmote.business.MediaBusiness;
 import org.zooper.becuz.restmote.conf.ModelFactoryFactory;
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
 import org.zooper.becuz.restmote.model.App;
+import org.zooper.becuz.restmote.model.Command;
 import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.model.Settings;
 import org.zooper.becuz.restmote.model.transport.Media;
@@ -49,6 +50,8 @@ public abstract class TestAbstract {
 	protected static App appMovies = mediaCategoryMovies.getApp();
 	protected static App appMusic = mediaCategoryMusic.getApp();
 	protected static App appPics = mediaCategoryPics.getApp();
+	protected static Command commandDefault = ModelFactoryFactory.getModelFactoryAbstract().getACommand();
+	
 	
 	static {
 		persistenceAbstract = PersistenceFactory.getPersistenceAbstract();
@@ -83,6 +86,7 @@ public abstract class TestAbstract {
 		persistenceAbstract.store(mediaCategoryMusic);
 		persistenceAbstract.store(mediaCategoryPics);
 		persistenceAbstract.store(mediaCategoryRoot);
+		persistenceAbstract.store(commandDefault);
 		persistenceAbstract.store(settings);
 		persistenceAbstract.commit();
 		

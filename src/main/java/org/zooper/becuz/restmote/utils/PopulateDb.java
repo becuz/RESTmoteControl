@@ -9,8 +9,10 @@ import org.apache.log4j.Logger;
 import org.hibernate.cfg.Environment;
 import org.zooper.becuz.restmote.RestmoteControl;
 import org.zooper.becuz.restmote.business.SettingsBusiness;
+import org.zooper.becuz.restmote.conf.ModelFactoryAbstract;
 import org.zooper.becuz.restmote.conf.ModelFactoryFactory;
 import org.zooper.becuz.restmote.model.App;
+import org.zooper.becuz.restmote.model.Command;
 import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.model.Settings;
 import org.zooper.becuz.restmote.persistence.PersistenceAbstract;
@@ -59,14 +61,19 @@ public class PopulateDb {
 		}
 		
 		if (populate){
-			App appMovies = ModelFactoryFactory.getModelFactoryAbstract().getAppMovies();
-			App appMusic = ModelFactoryFactory.getModelFactoryAbstract().getAppMusic();
-			App appPics = ModelFactoryFactory.getModelFactoryAbstract().getAppPics();
 			
-			MediaCategory mediaCategoryMovies = ModelFactoryFactory.getModelFactoryAbstract().getMediaCategoryMovies();
-			MediaCategory mediaCategoryMusic = ModelFactoryFactory.getModelFactoryAbstract().getMediaCategoryMusic();
-			MediaCategory mediaCategoryPics = ModelFactoryFactory.getModelFactoryAbstract().getMediaCategoryPics();
-			MediaCategory mediaCategoryRoot = ModelFactoryFactory.getModelFactoryAbstract().getMediaCategoryRoot();
+			ModelFactoryAbstract modelFactoryAbstract = ModelFactoryFactory.getModelFactoryAbstract();
+			
+			App appMovies = modelFactoryAbstract.getAppMovies();
+			App appMusic = modelFactoryAbstract.getAppMusic();
+			App appPics = modelFactoryAbstract.getAppPics();
+			
+			MediaCategory mediaCategoryMovies = modelFactoryAbstract.getMediaCategoryMovies();
+			MediaCategory mediaCategoryMusic = modelFactoryAbstract.getMediaCategoryMusic();
+			MediaCategory mediaCategoryPics = modelFactoryAbstract.getMediaCategoryPics();
+			MediaCategory mediaCategoryRoot = modelFactoryAbstract.getMediaCategoryRoot();
+			
+			Command command = modelFactoryAbstract.getACommand();
 			
 			//Flexible way to specify paths to scan for media. developers can list their own paths
 			try {
@@ -98,7 +105,7 @@ public class PopulateDb {
 			persistenceAbstract.store(mediaCategoryMusic);
 			persistenceAbstract.store(mediaCategoryPics);
 			persistenceAbstract.store(mediaCategoryRoot);
-		
+			persistenceAbstract.store(command);
 		}
 		
 		persistenceAbstract.commit();

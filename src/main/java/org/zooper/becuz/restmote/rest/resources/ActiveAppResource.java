@@ -16,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.zooper.becuz.restmote.business.BusinessFactory;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
 import org.zooper.becuz.restmote.rest.exceptions.NotAcceptableException;
@@ -67,7 +68,7 @@ public class ActiveAppResource extends AbstractResource {
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public List<ActiveApp> get(){
 		log.info("ActiveAppResource");
-		return getActiveAppBusiness().getActiveApps(true, true);
+		return BusinessFactory.getActiveAppBusiness().getActiveApps(true, true);
 	}
 	
 	/**
@@ -81,7 +82,7 @@ public class ActiveAppResource extends AbstractResource {
 			@PathParam("handle") String handle,
 			@QueryParam("refresh") String refresh){
 		log.info("ActiveAppResource getActiveApp handle " + handle + ", refresh: " + refresh);
-		return getActiveAppBusiness().getActiveAppByHandle(handle, "true".equals(refresh));
+		return BusinessFactory.getActiveAppBusiness().getActiveAppByHandle(handle, "true".equals(refresh));
 	}
 	
 	/**
@@ -96,7 +97,7 @@ public class ActiveAppResource extends AbstractResource {
 			@PathParam("appName") String appName,
 			@QueryParam("refresh") String refresh){
 		log.info("ActiveAppResource getActiveApp appName " + appName + ", refresh: " + refresh);
-		return getActiveAppBusiness().getActiveAppsByAppName(appName, "true".equals(refresh));
+		return BusinessFactory.getActiveAppBusiness().getActiveAppsByAppName(appName, "true".equals(refresh));
 	}
 	
 	/**
@@ -110,7 +111,7 @@ public class ActiveAppResource extends AbstractResource {
 	public void killApps(@PathParam("handle") String handle){
 		log.info("killApps handle: " + handle);
 		try {
-			getActiveAppBusiness().killActiveApps(Collections.singletonList(handle));
+			BusinessFactory.getActiveAppBusiness().killActiveApps(Collections.singletonList(handle));
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());
 		}
@@ -126,7 +127,7 @@ public class ActiveAppResource extends AbstractResource {
 	public void killApps(List<String> handles){
 		log.info("killApps handles: " + handles);
 		try {
-			getActiveAppBusiness().killActiveApps(handles);
+			BusinessFactory.getActiveAppBusiness().killActiveApps(handles);
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());
 		}
@@ -141,7 +142,7 @@ public class ActiveAppResource extends AbstractResource {
 			@PathParam("appName") String appName){
 		log.info("AppResource delete, name: " + appName);
 		try {
-			getRemoteControlBusiness().closeMedia(getAppBusiness().getByName(appName));
+			BusinessFactory.getRemoteControlBusiness().closeMedia(BusinessFactory.getAppBusiness().getByName(appName));
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());
 		}
@@ -156,11 +157,11 @@ public class ActiveAppResource extends AbstractResource {
 			@PathParam("extension") String extension){
 		log.info("AppResource delete, extension: " + extension);
 		try {
-			App app = getAppBusiness().getRunningByExtension(extension);
+			App app = BusinessFactory.getAppBusiness().getRunningByExtension(extension);
 			if (app == null){
 				throw new Exception("No app founded to receive command");
 			}
-			getRemoteControlBusiness().closeMedia(app);
+			BusinessFactory.getRemoteControlBusiness().closeMedia(app);
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());
 		}
@@ -181,7 +182,7 @@ public class ActiveAppResource extends AbstractResource {
 			@PathParam("control") String control){
 		log.info("controlByAppName appName: " + appName + ", control: " + control);
 		try {
-			getRemoteControlBusiness().control(appName, control, null);
+			BusinessFactory.getRemoteControlBusiness().control(appName, control, null);
 		} catch (IllegalArgumentException e) {
 			throw new NotAcceptableException(e.getMessage());
 		} catch (Exception e) {
@@ -203,7 +204,7 @@ public class ActiveAppResource extends AbstractResource {
 			@PathParam("shortcut") String shortcut){
 		log.info("controlByAppNameAndShortcut appName: " + appName + " shortcut: " + shortcut);
 		try {
-			getRemoteControlBusiness().control(appName, null, shortcut.charAt(0));
+			BusinessFactory.getRemoteControlBusiness().control(appName, null, shortcut.charAt(0));
 		} catch (Exception e) {
 			log.error(e.toString());
 			throw new ServerException(e.getMessage());
@@ -222,12 +223,12 @@ public class ActiveAppResource extends AbstractResource {
 			@PathParam("extension") String extension, 
 			@PathParam("controlName") String controlName){
 		log.info("controlByExtension extension: " + extension + " control: " + controlName);
-		App app = getAppBusiness().getRunningByExtension(extension);
+		App app = BusinessFactory.getAppBusiness().getRunningByExtension(extension);
 		if (app == null){
 			throw new ServerException("No app founded to receive command");
 		}
 		try {
-			getRemoteControlBusiness().control(app, controlName, null);
+			BusinessFactory.getRemoteControlBusiness().control(app, controlName, null);
 		} catch (Exception e) {
 			log.error(e.toString());
 			throw new ServerException(e.getMessage());
@@ -248,7 +249,7 @@ public class ActiveAppResource extends AbstractResource {
 			@PathParam("control") String control){
 		log.info("controlByHandle handle: " + handle + " control: " + control);
 		try {
-			getRemoteControlBusiness().controlByHandle(handle, control, null);
+			BusinessFactory.getRemoteControlBusiness().controlByHandle(handle, control, null);
 		} catch (Exception e) {
 			log.error(e.toString());
 			throw new ServerException(e.getMessage());
@@ -265,7 +266,7 @@ public class ActiveAppResource extends AbstractResource {
 	public void control(@PathParam("control") String control){
 		log.info("control control: " + control);
 		try {
-			getRemoteControlBusiness().controlByHandle(null, control, null);
+			BusinessFactory.getRemoteControlBusiness().controlByHandle(null, control, null);
 		} catch (Exception e) {
 			log.error(e.toString());
 			throw new ServerException(e.getMessage());
@@ -281,7 +282,7 @@ public class ActiveAppResource extends AbstractResource {
 	public void focus(@PathParam("handle") String handle){
 		log.info("focus handle: " + handle);
 		try {
-			getActiveAppBusiness().focusActiveApp(handle);
+			BusinessFactory.getActiveAppBusiness().focusActiveApp(handle);
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());
 		}
@@ -292,7 +293,7 @@ public class ActiveAppResource extends AbstractResource {
 	public ActiveApp focusNext(){
 		log.info("focus next");
 		try {
-			return getActiveAppBusiness().next();
+			return BusinessFactory.getActiveAppBusiness().next();
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());
 		}

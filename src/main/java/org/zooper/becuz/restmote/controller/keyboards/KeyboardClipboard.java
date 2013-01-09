@@ -6,7 +6,6 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 
-import org.apache.log4j.Logger;
 import org.zooper.becuz.restmote.controller.PcControllerAbstract;
 
 /**
@@ -16,7 +15,7 @@ import org.zooper.becuz.restmote.controller.PcControllerAbstract;
  */
 public class KeyboardClipboard extends Keyboard{
 
-	private static final Logger log = Logger.getLogger(KeyboardClipboard.class.getName());
+//	private static final Logger log = Logger.getLogger(KeyboardClipboard.class.getName());
 
     @Override
     public boolean type(String characters) throws Exception {

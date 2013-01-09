@@ -3,14 +3,13 @@
  */
 package org.zooper.becuz.restmote.conf.rest;
 
-import org.apache.log4j.Logger;
 
 /**
- * <p>RestFactory class.</p>
+ * RestFactory class.
  */
 public final class RestFactory {
 	
-	private static final Logger log = Logger.getLogger(RestFactory.class.getName());
+//	private static final Logger log = Logger.getLogger(RestFactory.class.getName());
 	
 	private static JacksonConfigurator confJsonInstance = null;
 	

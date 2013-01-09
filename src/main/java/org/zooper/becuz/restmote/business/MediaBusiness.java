@@ -19,7 +19,7 @@ import org.zooper.becuz.restmote.utils.Utils;
 
 public class MediaBusiness extends BusinessAbstract{
 	
-	protected static final Logger log = Logger.getLogger(PcControllerAbstract.class.getName());
+	protected static final Logger log = Logger.getLogger(MediaBusiness.class.getName());
 	
 	/**
 	 * Medias are currently not persisted..
@@ -63,7 +63,7 @@ public class MediaBusiness extends BusinessAbstract{
 	public void rootScan() {
 		clearMediaRoots();
 		long startTime = System.currentTimeMillis();
-		Collection<MediaCategory> mediaCategories = getMediaCategoryBusiness().getAll();
+		Collection<MediaCategory> mediaCategories = BusinessFactory.getMediaCategoryBusiness().getAll();
 		if (mediaCategories != null){
 			for(MediaCategory mediaCategory: mediaCategories){
 				if (!Boolean.FALSE.equals(mediaCategory.getActive())){
@@ -96,7 +96,7 @@ public class MediaBusiness extends BusinessAbstract{
 	 */
 	public List<Media> retrieveMedias(MediaRoot mediaRoot){
 		mediaRoot.clearChildren();
-		Settings settings = getSettingsBusiness().get();
+		Settings settings = BusinessFactory.getSettingsBusiness().get();
 		Set<String> paths = mediaRoot.getMediaCategory().getPaths().isEmpty() ? settings.getPaths() : mediaRoot.getMediaCategory().getPaths();
 		for(String path: paths){
 			File file = new File(path);
@@ -155,7 +155,7 @@ public class MediaBusiness extends BusinessAbstract{
 	public List<Media> retrieveMedias(String path, Integer depth, List<String> extensions, String pattern){
 		log.debug("getMedia() path: " + path + ", depth: " + depth + ", extensions: " + extensions + ", pattern: " + pattern);
 		List<Media> results = new ArrayList<Media>();
-		depth = depth == null ? getSettingsBusiness().get().getScanDepth() : depth;
+		depth = depth == null ? BusinessFactory.getSettingsBusiness().get().getScanDepth() : depth;
 		if (depth != 0) { //-1 is a valid value, means go deep indefinitely, as there are files.
 			File f = new File(path);
 			if (f.exists() && f.isDirectory()){

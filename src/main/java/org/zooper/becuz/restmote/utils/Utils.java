@@ -38,16 +38,11 @@ public class Utils {
 	}
 
 	/**
-	 * <p>
-	 * isEmpty.
-	 * </p>
-	 * 
-	 * @param s
-	 *            a {@link java.lang.String} object.
-	 * @return a boolean.
+	 * @param s a {@link java.lang.String} object.
+	 * @return true if lengtt of the trimmed argument is > 0
 	 */
 	public static boolean isEmpty(String s) {
-		return (s == null || s.length() == 0);
+		return (s == null || s.trim().length() == 0);
 	}
 
 	/**

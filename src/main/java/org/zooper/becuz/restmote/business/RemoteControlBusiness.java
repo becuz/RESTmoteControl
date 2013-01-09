@@ -41,7 +41,7 @@ public class RemoteControlBusiness extends BusinessAbstract{
 	
 	
 	public void control(String appName, String controlName, Character c)  throws Exception {
-		control(Utils.isEmpty(appName) ? null : getAppBusiness().getByName(appName), controlName, c);
+		control(Utils.isEmpty(appName) ? null : BusinessFactory.getAppBusiness().getByName(appName), controlName, c);
 	}
 	
 	public void control(String controlName, Character c)  throws Exception {
@@ -53,12 +53,12 @@ public class RemoteControlBusiness extends BusinessAbstract{
 		if (!Utils.isEmpty(handle)){
 			activeApp = PcControllerFactory.getPcController().focusApp(handle);
 		} else {
-			activeApp = getActiveAppBusiness().getActiveAppFocused(true);	//let's try with the app that has focus
+			activeApp = BusinessFactory.getActiveAppBusiness().getActiveAppFocused(true);	//let's try with the app that has focus
 		}
 		if (activeApp == null){
 			throw new IllegalArgumentException("ActiveApp not found!");
 		}
-		App app = getAppBusiness().getByName(activeApp.getName());
+		App app = BusinessFactory.getAppBusiness().getByName(activeApp.getName());
 		if (app == null){
 			throw new IllegalArgumentException("App " + activeApp.getName() + " not configured");
 		}
@@ -79,7 +79,7 @@ public class RemoteControlBusiness extends BusinessAbstract{
 		if (Utils.isEmpty(controlName) && charachter == null){
 			throw new IllegalArgumentException("No control specified");
 		}
-		ActiveApp activeAppFocused = getActiveAppBusiness().getActiveAppFocused(true);
+		ActiveApp activeAppFocused = BusinessFactory.getActiveAppBusiness().getActiveAppFocused(true);
 		if (activeAppFocused == null || !activeAppFocused.isInstanceOf(app)){ //if a window of this App type is not already focused
 			if (PcControllerFactory.getPcController().focusApp(app, false) == null){
 				throw new IllegalArgumentException("No running instance of App " + app.getName());
@@ -115,15 +115,14 @@ public class RemoteControlBusiness extends BusinessAbstract{
 		for(KeysEvent keysEvent: keysEvents){
 			Integer repeatControl = keysEvent.getRepeat();
 			int repeat = repeatControl == null ? 1 : repeatControl;
-//				System.out.println("key pressed " + KeyEvent.VK_F + " " + key);
-				for (int i = 0; i < repeat; i++) {
-					for(int key: keysEvent.getKeys()){
-						PcControllerAbstract.getMyRobot().keyPress(key);
-					}
-					for(int key: keysEvent.getKeys()){
-						PcControllerAbstract.getMyRobot().keyRelease(key);
-					}
+			for (int i = 0; i < repeat; i++) {
+				for(int key: keysEvent.getKeys()){
+					PcControllerAbstract.getMyRobot().keyPress(key);
 				}
+				for(int key: keysEvent.getKeys()){
+					PcControllerAbstract.getMyRobot().keyRelease(key);
+				}
+			}
 		}
 	}
 	

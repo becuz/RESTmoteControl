@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.annotate.JsonView;
+import org.zooper.becuz.restmote.business.BusinessFactory;
 import org.zooper.becuz.restmote.conf.rest.Views;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
@@ -46,7 +47,7 @@ public class AppResource extends AbstractResource {
 	@JsonView({Views.Public.class})
 	public Collection<App> get(){
 		log.info("AppResource get");
-		return getAppBusiness().getAll();
+		return BusinessFactory.getAppBusiness().getAll();
 	}
 	
 	/**
@@ -58,7 +59,7 @@ public class AppResource extends AbstractResource {
 	public App getByName(
 			@PathParam("appName") String appName){
 		log.info("AppResource get, name: " + appName);
-		App app = getAppBusiness().getByName(appName);
+		App app = BusinessFactory.getAppBusiness().getByName(appName);
 		if (app == null){ 
 			throw new NotFoundException("App " + appName + " not found");
 		}
@@ -74,7 +75,7 @@ public class AppResource extends AbstractResource {
 	public App getByExtension(
 			@PathParam("extension") String extension){
 		log.info("AppResource get, extension: " + extension);
-		return getAppBusiness().getRunningByExtension(extension);
+		return BusinessFactory.getAppBusiness().getRunningByExtension(extension);
 	}
 	
 	/**
@@ -86,9 +87,9 @@ public class AppResource extends AbstractResource {
 	public App getByHandle(
 			@PathParam("handle") String handle){
 		log.info("AppResource get, handle: " + handle);
-		ActiveApp activeApp = getActiveAppBusiness().getActiveAppByHandle(handle, false);
+		ActiveApp activeApp = BusinessFactory.getActiveAppBusiness().getActiveAppByHandle(handle, false);
 		if (activeApp != null){
-			return getAppBusiness().getByName(activeApp.getName());
+			return BusinessFactory.getAppBusiness().getByName(activeApp.getName());
 		}
 		return null;
 	}

@@ -35,17 +35,17 @@ public class App implements Editable, Completable{
 	private Long id;
 	
 	/**
+	 * Name of the application, es "Firefox", or "Firefox v2" 
+	 */
+	private String name;
+	
+	/**
 	 * Name of the family of application. 
 	 * This is needed when there are several definitions of a common program, usually because some versions introduce different shortcuts. 
 	 * For example there could exist an app Firefox and a Firefox v2. Both of them should belong to the same family "Firefox" and just one of them will be {@link #chosen}. 
 	 */
 	@JsonView(Views.All.class)
 	private String family;
-	
-	/**
-	 * Name of the application, es "Firefox", or "Firefox v2" 
-	 */
-	private String name;
 	
 	/**
 	 * Name of the application as is in {@link ActiveApp#getName()} it's returned fom {@link PcControllerAbstract#rebuildActiveApps()}
@@ -147,6 +147,9 @@ public class App implements Editable, Completable{
 	@Override
 	public void isComplete() throws IllegalArgumentException {
 		StringBuffer errors = new StringBuffer();
+		if (Utils.isEmpty(getName())){
+			errors.append("\nName is mandatory");
+		}
 		if (Utils.isEmpty(getPath())){
 			errors.append("\nPath is mandatory");
 		} else if (!new File(getPath()).exists()){

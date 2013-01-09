@@ -68,7 +68,7 @@ public class ActiveAppBusiness extends BusinessAbstract{
 	public List<ActiveApp> getActiveAppsByAppName(String appName, boolean refresh) {
 		List<ActiveApp> result = new ArrayList<>();
 		getActiveApps(refresh);
-		App app = getAppBusiness().getByName(appName);
+		App app = BusinessFactory.getAppBusiness().getByName(appName);
 		for(ActiveApp activeApp: activeApps){
 			if (activeApp.isInstanceOf(app)){
 				result.add(activeApp);

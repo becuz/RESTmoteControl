@@ -13,6 +13,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
+import org.zooper.becuz.restmote.business.BusinessFactory;
 import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.model.transport.Media;
 import org.zooper.becuz.restmote.rest.exceptions.NotAcceptableException;
@@ -69,7 +70,7 @@ public class ExploreResource extends AbstractResource {
 			throw new NotAcceptableException("path is mandatory");
 		}
 		log.info("get path: " + filePath + ", extensions: " + extensions + ", depth: " + depth + ", filter: " + filter);
-		return getMediaBusiness().retrieveMedias(
+		return BusinessFactory.getMediaBusiness().retrieveMedias(
 				filePath, 
 				depth,
 				extensions, 
@@ -96,13 +97,13 @@ public class ExploreResource extends AbstractResource {
 			){
 		log.info("get path: " + filePath + ", mediaCategoryName: " + mediaCategoryName + ", depth: " + depth + ", filter: " + filter);
 		if (Utils.isEmpty(filePath)){
-			return getMediaBusiness().retrieveMedias(mediaCategoryName); 
+			return BusinessFactory.getMediaBusiness().retrieveMedias(mediaCategoryName); 
 		}
 		MediaCategory mediaCategory = null;
 		if (!Utils.isEmpty(mediaCategoryName)){
-			mediaCategory = getMediaCategoryBusiness().getByName(mediaCategoryName);
+			mediaCategory = BusinessFactory.getMediaCategoryBusiness().getByName(mediaCategoryName);
 		}
-		return getMediaBusiness().retrieveMedias(
+		return BusinessFactory.getMediaBusiness().retrieveMedias(
 				filePath, 
 				depth,
 				mediaCategory == null ? null : new ArrayList<String>(mediaCategory.getExtensions()), 
@@ -158,7 +159,7 @@ public class ExploreResource extends AbstractResource {
 			@QueryParam("path") String pathFile){
 		try {
 			log.info("openFile pathFile:" + pathFile + ", appName:" + appName);
-			getRemoteControlBusiness().openFile(pathFile, getAppBusiness().getByName(appName));
+			BusinessFactory.getRemoteControlBusiness().openFile(pathFile, BusinessFactory.getAppBusiness().getByName(appName));
 		} catch (Exception e) {
 			log.error(e.getMessage() + " " + e.getCause());
 			throw new ServerException(e.getMessage());

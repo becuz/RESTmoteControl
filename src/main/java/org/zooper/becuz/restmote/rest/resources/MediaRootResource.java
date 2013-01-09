@@ -8,6 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
+import org.zooper.becuz.restmote.business.BusinessFactory;
 import org.zooper.becuz.restmote.model.transport.MediaRoot;
 
 /**
@@ -34,8 +35,8 @@ public class MediaRootResource extends AbstractResource{
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
 	public List<MediaRoot> getMediaRoots(){
 		log.debug("getMediaRoots");
-		getMediaBusiness().rootScan();
-		return getMediaBusiness().getMediaRoots();
+		BusinessFactory.getMediaBusiness().rootScan();
+		return BusinessFactory.getMediaBusiness().getMediaRoots();
 	}
 	
 	

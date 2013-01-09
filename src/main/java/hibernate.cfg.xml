@@ -39,7 +39,7 @@
         <mapping resource="org/zooper/becuz/restmote/model/Settings.hbm.xml"/>
         <mapping resource="org/zooper/becuz/restmote/model/ControlsManager.hbm.xml"/>
         <mapping resource="org/zooper/becuz/restmote/model/VisualControlsManager.hbm.xml"/>
-
+		<mapping resource="org/zooper/becuz/restmote/model/Command.hbm.xml"/>
     </session-factory>
 
 </hibernate-configuration>

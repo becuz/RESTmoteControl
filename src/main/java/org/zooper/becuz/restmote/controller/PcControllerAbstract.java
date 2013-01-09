@@ -19,12 +19,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
-import org.zooper.becuz.restmote.business.ActiveAppBusiness;
-import org.zooper.becuz.restmote.business.AppBusiness;
-import org.zooper.becuz.restmote.business.MediaBusiness;
-import org.zooper.becuz.restmote.business.MediaCategoryBusiness;
-import org.zooper.becuz.restmote.business.RemoteControlBusiness;
-import org.zooper.becuz.restmote.business.SettingsBusiness;
+import org.zooper.becuz.restmote.business.BusinessFactory;
 import org.zooper.becuz.restmote.conf.ModelFactoryAbstract;
 import org.zooper.becuz.restmote.controller.keyboards.Keyboard;
 import org.zooper.becuz.restmote.controller.keyboards.KeyboardClipboard;
@@ -55,13 +50,6 @@ public abstract class PcControllerAbstract {
 	 * Active {@link Process}es
 	 */
 	protected Map<App, Process> appProcesses = new HashMap<App, Process>();
-	
-	protected SettingsBusiness settingsBusiness = new SettingsBusiness();
-	protected MediaBusiness mediaBusiness = new MediaBusiness();
-	protected MediaCategoryBusiness mediaCategoryBusiness = new MediaCategoryBusiness();
-	protected ActiveAppBusiness activeAppBusiness = new ActiveAppBusiness();
-	protected AppBusiness appBusiness = new AppBusiness();
-	protected RemoteControlBusiness remoteControlBusiness = new RemoteControlBusiness();
 	
 	/**
 	 * Used to send keyStrokes and mouse movements
@@ -217,30 +205,6 @@ public abstract class PcControllerAbstract {
 	
 	//*****************************************************************************************
 	
-	public SettingsBusiness getSettingsBusiness() {
-		return settingsBusiness;
-	}
-
-	public MediaBusiness getMediaBusiness() {
-		return mediaBusiness;
-	}
-
-	public MediaCategoryBusiness getMediaCategoryBusiness() {
-		return mediaCategoryBusiness;
-	}
-
-	public ActiveAppBusiness getActiveAppBusiness() {
-		return activeAppBusiness;
-	}
-
-	public AppBusiness getAppBusiness() {
-		return appBusiness;
-	}
-
-	public RemoteControlBusiness getRemoteControlBusiness() {
-		return remoteControlBusiness;
-	}
-	
 	public ControlsManager getKbdControlsManager() {
 		if (kbdControlsManager == null){
 			kbdControlsManager = new ControlsManager();
@@ -370,7 +334,7 @@ public abstract class PcControllerAbstract {
 	 * @throws Exception 
 	 */
 	public boolean closeApp(App app) throws Exception {
-		killApps(activeAppBusiness.getActiveAppHandlesOfApp(app, true));
+		killApps(BusinessFactory.getActiveAppBusiness().getActiveAppHandlesOfApp(app, true));
 		Process process = appProcesses.get(app);
 		if (process != null){
 			process.destroy();
@@ -388,7 +352,7 @@ public abstract class PcControllerAbstract {
 	public void killActiveApps(List<String> handles) throws Exception{
 		killApps(handles);
 		for(String handle: handles){
-			ActiveApp activeApp = getActiveAppBusiness().getActiveAppByHandle(handle, false);
+			ActiveApp activeApp = BusinessFactory.getActiveAppBusiness().getActiveAppByHandle(handle, false);
 			Iterator<Entry<App, Process>> it = appProcesses.entrySet().iterator();
 			while (it.hasNext()) {
 				Entry<App, Process> entry = it.next();
@@ -407,7 +371,7 @@ public abstract class PcControllerAbstract {
 	 */
 	public void rebuildActiveApps(boolean detailed){
 		log.info("rebuildActiveApps");
-		getActiveAppBusiness().clearActiveApps();
+		BusinessFactory.getActiveAppBusiness().clearActiveApps();
 		BufferedReader brInput = null;
 		BufferedReader brError = null;
 		try {
@@ -417,11 +381,11 @@ public abstract class PcControllerAbstract {
 			List<ActiveApp> activeApps = getRunningApps(brInput, brError);
 			if (detailed){
 				for(ActiveApp activeApp: activeApps){
-					List<App> apps = getAppBusiness().getByFilters(null, activeApp.getName(), null, Utils.getOs(), true);
+					List<App> apps = BusinessFactory.getAppBusiness().getByFilters(null, activeApp.getName(), null, Utils.getOs(), true);
 					activeApp.setHasApp(!apps.isEmpty());
 				}
 			}
-			getActiveAppBusiness().addActiveApps(activeApps);
+			BusinessFactory.getActiveAppBusiness().addActiveApps(activeApps);
 			//p.waitFor();
 			p.destroy();
 		} catch (Exception e) {
@@ -449,7 +413,7 @@ public abstract class PcControllerAbstract {
 	public ActiveApp focusApp(String handle) throws Exception {
 		if (!Utils.isEmpty(handle)){
 			if (execute(true, getCommandFocusApp(handle).split("\\s+")) != null){ //TODO waitFor?
-				return activeAppBusiness.getActiveAppByHandle(handle, false);
+				return BusinessFactory.getActiveAppBusiness().getActiveAppByHandle(handle, false);
 			}
 		}
 		return null;
@@ -486,7 +450,7 @@ public abstract class PcControllerAbstract {
 	 * @return
 	 * @throws Exception
 	 */
-	protected Process execute(String... commands) throws Exception{
+	public Process execute(String... commands) throws IOException, InterruptedException{
 		return execute(false, commands);
 	}
 	
@@ -495,9 +459,11 @@ public abstract class PcControllerAbstract {
 	 * @param waitFor
 	 * @param commands
 	 * @return
+	 * @throws IOException 
+	 * @throws InterruptedException 
 	 * @throws Exception
 	 */
-	protected Process execute(boolean waitFor, String... commands) throws Exception{
+	protected Process execute(boolean waitFor, String... commands) throws IOException, InterruptedException {
 		ProcessBuilder processBuilder = new ProcessBuilder(commands);
 		Process process = processBuilder.start();
 //		BufferedReader bri = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -522,7 +488,7 @@ public abstract class PcControllerAbstract {
 	 * @throws Exception 
 	 */
 	public ActiveApp focusApp(App app, boolean refresh) throws Exception{
-		List<String> handles = activeAppBusiness.getActiveAppHandlesOfApp(app, refresh);
+		List<String> handles = BusinessFactory.getActiveAppBusiness().getActiveAppHandlesOfApp(app, refresh);
 		if (handles != null && handles.size() > 0){
 			return focusApp(handles.get(0));
 		}

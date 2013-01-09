@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.zooper.becuz.restmote.business.BusinessFactory;
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
 import org.zooper.becuz.restmote.controller.mouses.Mouse;
 import org.zooper.becuz.restmote.controller.mouses.Mouse.BTN_ACTION;
@@ -96,9 +97,9 @@ public class PcResource extends AbstractResource{
 		try {
 			log.info("pcControl control: " + control);
 			if ("suspend".equals(control)){
-				getRemoteControlBusiness().suspend();	
+				BusinessFactory.getRemoteControlBusiness().suspend();	
 			} else if ("poweroff".equals(control)){
-				getRemoteControlBusiness().poweroff();
+				BusinessFactory.getRemoteControlBusiness().poweroff();
 			} else {
 				log.warn("pccontrol " + control + " not implemented!");
 			}
@@ -114,11 +115,11 @@ public class PcResource extends AbstractResource{
 	public Response vol(@PathParam("action") String action){
 		try{
 			if ("toggle".equals(action)){
-				getRemoteControlBusiness().toggleMute();	
+				BusinessFactory.getRemoteControlBusiness().toggleMute();	
 			} else {
 				try {
 					int volume = Integer.parseInt(action);
-					getRemoteControlBusiness().setVolume(volume);
+					BusinessFactory.getRemoteControlBusiness().setVolume(volume);
 				} catch (NumberFormatException e){}
 			}
 			return Response.status(Response.Status.NO_CONTENT).build();
@@ -217,7 +218,7 @@ public class PcResource extends AbstractResource{
 		log.info("keyboardControl controlName: " + controlName);
 		try {
 			Control control = PcControllerFactory.getPcController().getKbdVisualControlsManager().getControl(controlName).getControl();
-			getRemoteControlBusiness().control(control);
+			BusinessFactory.getRemoteControlBusiness().control(control);
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(500).entity(e.getMessage()).type(MediaType.TEXT_PLAIN).build());
 		}

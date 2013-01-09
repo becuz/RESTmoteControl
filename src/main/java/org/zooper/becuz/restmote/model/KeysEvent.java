@@ -1,5 +1,6 @@
 package org.zooper.becuz.restmote.model;
 
+import java.awt.event.KeyEvent;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -15,22 +16,22 @@ import org.zooper.becuz.restmote.model.interfaces.Persistable;
 public class KeysEvent implements Comparable<KeysEvent>, Persistable{
 
 	/**
-	 * 
+	 * pk
 	 */
 	private Long id;
 	
 	/**
-	 * 
+	 * order for {@link Comparable}
 	 */
 	private Integer logicOrder;
 	
 	/**
-	 * 
+	 * {@link KeyEvent} codes to simulate keyboard keys press
 	 */
 	private Set<Integer> keys;
 	
 	/**
-	 * 
+	 * {@link #keys} are pressed repeat times 
 	 */
 	private Integer repeat;
 	
@@ -77,6 +78,7 @@ public class KeysEvent implements Comparable<KeysEvent>, Persistable{
 		return this.getLogicOrder().compareTo(o.getLogicOrder());
 	}
 	
+	//TODO
 	public void clean(){
 		if (keys != null){
 			Iterator<Integer> it = keys.iterator();

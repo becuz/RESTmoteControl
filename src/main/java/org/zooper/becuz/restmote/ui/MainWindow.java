@@ -17,6 +17,7 @@ import net.glxn.qrgen.QRCode;
 import net.glxn.qrgen.image.ImageType;
 
 import org.apache.log4j.Logger;
+import org.zooper.becuz.restmote.business.BusinessFactory;
 import org.zooper.becuz.restmote.business.SettingsBusiness;
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
 import org.zooper.becuz.restmote.http.InetAddr;
@@ -94,7 +95,7 @@ public class MainWindow extends javax.swing.JFrame {
 		
 		listPathsModel.clear();
 		
-		Settings settings = PcControllerFactory.getPcController().getSettingsBusiness().get();
+		Settings settings = BusinessFactory.getSettingsBusiness().get();
 		buildListInetNamesModel(settings.getServerInetName());
     	
 		listIconThemesModel.setSelectedItem(settings.getIconControlsTheme());
@@ -649,7 +650,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddPathActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        SettingsBusiness settingsBusiness = PcControllerFactory.getPcController().getSettingsBusiness();
+        SettingsBusiness settingsBusiness = BusinessFactory.getSettingsBusiness();
         Settings settings = settingsBusiness.get();
         settings.setServerPort(Integer.parseInt(textFieldPort.getText()));
         InetAddr inetAddr = listInetNamesModel.getSelectedItem();

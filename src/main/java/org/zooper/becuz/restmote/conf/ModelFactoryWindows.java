@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.zooper.becuz.restmote.model.App;
+import org.zooper.becuz.restmote.model.Command;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeApp;
 import org.zooper.becuz.restmote.model.ControlInterface;
 import org.zooper.becuz.restmote.model.VisualControl;
@@ -13,6 +14,11 @@ import org.zooper.becuz.restmote.utils.Constants;
 
 public class ModelFactoryWindows extends ModelFactoryAbstract{
 
+	@Override
+	public Command getACommand() {
+		return new Command("e", "explorer");
+	}
+	
 	@Override
 	public App getAppMovies(){
 		if (appMovies == null){

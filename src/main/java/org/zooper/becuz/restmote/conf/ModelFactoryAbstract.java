@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.zooper.becuz.restmote.model.App;
+import org.zooper.becuz.restmote.model.Command;
 import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeApp;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeKeyboard;
@@ -32,10 +33,11 @@ public abstract class ModelFactoryAbstract {
 	protected App appMusic;
 	protected App appPics;
 	
-	
 	public abstract App getAppMovies();
 	public abstract App getAppMusic();
 	public abstract App getAppPics();
+	
+	public abstract Command getACommand();
 	
 	public MediaCategory getMediaCategoryMovies(){
 		if (mediaCategoryMovies == null){

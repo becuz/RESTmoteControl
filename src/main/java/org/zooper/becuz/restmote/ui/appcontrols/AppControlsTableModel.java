@@ -3,12 +3,10 @@ package org.zooper.becuz.restmote.ui.appcontrols;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 import javax.swing.table.AbstractTableModel;
 
 import org.zooper.becuz.restmote.model.Control;
-import org.zooper.becuz.restmote.model.ControlsManager;
-import org.zooper.becuz.restmote.model.KeysEvent;
-import org.zooper.becuz.restmote.model.VisualControl;
 
 @SuppressWarnings("serial")
 public class AppControlsTableModel extends AbstractTableModel{

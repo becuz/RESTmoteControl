@@ -104,6 +104,7 @@ public class Control implements ControlInterface{
         return hash;
     }
 	
+	//TODO
 	public void clean(){
 		if (keysEvents != null){
 			Iterator<KeysEvent> it = keysEvents.iterator();
