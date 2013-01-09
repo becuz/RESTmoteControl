@@ -189,14 +189,20 @@ public class Server implements Runnable {
 	
 	/**
 	 * 
-	 * @return
+	 * @return the best {@link InetAddr} candidate where restmote should listen to
 	 * @throws Exception 
 	 */
 	private InetAddr getInetAddr(String serverInetName) {
-		for(InetAddr inetAddr: getLocalInetAddresses()){
-			if (Utils.isEmpty(serverInetName) || serverInetName.equals(inetAddr.getInetName())){
-				return inetAddr;
+		List<InetAddr> localInetAddresses = getLocalInetAddresses();
+		if (!Utils.isEmpty(serverInetName)){
+			for(InetAddr inetAddr: localInetAddresses){
+				if (serverInetName.equals(inetAddr.getInetName())){
+					return inetAddr;
+				}
 			}
+		}
+		if (!localInetAddresses.isEmpty()){ //returns the first interface if none is specified of if specified one isn't available
+			return localInetAddresses.get(0);
 		}
 		return null;
 	}
