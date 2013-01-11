@@ -19,12 +19,10 @@ import net.glxn.qrgen.image.ImageType;
 import org.apache.log4j.Logger;
 import org.zooper.becuz.restmote.business.BusinessFactory;
 import org.zooper.becuz.restmote.business.SettingsBusiness;
-import org.zooper.becuz.restmote.controller.PcControllerFactory;
 import org.zooper.becuz.restmote.http.InetAddr;
 import org.zooper.becuz.restmote.http.Server;
 import org.zooper.becuz.restmote.model.Settings;
 import org.zooper.becuz.restmote.ui.appcontrols.ImageList;
-import org.zooper.becuz.restmote.ui.model.ListComboBoxModel;
 import org.zooper.becuz.restmote.ui.widgets.IntTextField;
 import org.zooper.becuz.restmote.ui.widgets.URLLabel;
 import org.zooper.becuz.restmote.utils.Utils;
@@ -54,7 +52,7 @@ public class MainWindow extends javax.swing.JFrame {
     /**
      * Swing list model for {@link #comboInetNames} 
      */
-    private ListComboBoxModel<InetAddr> listInetNamesModel = new ListComboBoxModel<InetAddr>();
+    private DefaultComboBoxModel<InetAddr> listInetNamesModel = new DefaultComboBoxModel<InetAddr>();
 	
 	/**
      * Swing list model for {@link #comboInetNames} 
@@ -142,16 +140,16 @@ public class MainWindow extends javax.swing.JFrame {
 	 * @param selectInetName 
 	 */
 	private void buildListInetNamesModel(String selectInetName){
-		listInetNamesModel.clear();
-		listInetNamesModel.addAll(Server.getInstance().getLocalInetAddresses());
-		if (!Utils.isEmpty(selectInetName)){
-    		for(InetAddr inetAddr: listInetNamesModel.getAll()){
-    			if(inetAddr.getInetName().equals(selectInetName)){
-    				listInetNamesModel.setSelectedItem(inetAddr);
-    				break;
-    			}
-    		}
-    	}
+		listInetNamesModel.removeAllElements();
+		for(InetAddr inetAddr: Server.getInstance().getLocalInetAddresses()){
+			listInetNamesModel.addElement(inetAddr);
+			if (!Utils.isEmpty(selectInetName)){
+				if(inetAddr.getInetName().equals(selectInetName)){
+					listInetNamesModel.setSelectedItem(inetAddr);
+				}
+			}
+		}
+    	
 	}
 	
 	public static JFileChooser getFc() {
@@ -565,7 +563,7 @@ public class MainWindow extends javax.swing.JFrame {
   
     public void toggleServer(){
     	try {
-			Server.getInstance().toggle(listInetNamesModel.getSelectedItem().getInetName(), ((IntTextField)textFieldPort).getValue());
+			Server.getInstance().toggle(((InetAddr)listInetNamesModel.getSelectedItem()).getInetName(), ((IntTextField)textFieldPort).getValue());
 			updateViewStatusServer();
 		} catch (Exception e) {
 			logger.error("", e);
@@ -653,7 +651,7 @@ public class MainWindow extends javax.swing.JFrame {
         SettingsBusiness settingsBusiness = BusinessFactory.getSettingsBusiness();
         Settings settings = settingsBusiness.get();
         settings.setServerPort(Integer.parseInt(textFieldPort.getText()));
-        InetAddr inetAddr = listInetNamesModel.getSelectedItem();
+        InetAddr inetAddr = (InetAddr) listInetNamesModel.getSelectedItem();
         settings.setServerInetName(inetAddr.getInetName());
         settings.setServerLastIp(inetAddr.getIp());
         Set<String> paths = new HashSet<String>(); 
@@ -695,7 +693,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_comboIconThemeActionPerformed
 
     private void btnRefreshInetNamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshInetNamesActionPerformed
-        buildListInetNamesModel(listInetNamesModel.getSelectedItem() == null ? null : listInetNamesModel.getSelectedItem().getInetName());
+        buildListInetNamesModel(listInetNamesModel.getSelectedItem() == null ? null : ((InetAddr)listInetNamesModel.getSelectedItem()).getInetName());
     }//GEN-LAST:event_btnRefreshInetNamesActionPerformed
 
 	private void changedIconTheme(){
