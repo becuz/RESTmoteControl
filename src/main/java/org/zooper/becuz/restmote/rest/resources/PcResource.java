@@ -248,7 +248,7 @@ public class PcResource extends AbstractResource{
 	@Path("/keyboard/{type}")
 	public void keyboardType(@PathParam("type") String type) {
 		log.info("typeString type: " + type);
-		keyboardType(type);
+		keyboardTypeJSON(type);
 	}
 	
 	

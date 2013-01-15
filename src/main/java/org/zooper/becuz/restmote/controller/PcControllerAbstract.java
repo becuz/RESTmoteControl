@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 import org.zooper.becuz.restmote.business.BusinessFactory;
 import org.zooper.becuz.restmote.conf.ModelFactoryAbstract;
 import org.zooper.becuz.restmote.controller.keyboards.Keyboard;
-import org.zooper.becuz.restmote.controller.keyboards.KeyboardClipboard;
+import org.zooper.becuz.restmote.controller.keyboards.KeyboardRobot;
 import org.zooper.becuz.restmote.controller.mouses.Mouse;
 import org.zooper.becuz.restmote.controller.mouses.MouseRobot;
 import org.zooper.becuz.restmote.model.App;
@@ -245,7 +245,7 @@ public abstract class PcControllerAbstract {
 	 */
 	public Keyboard getKeyboard() throws AWTException {
 		if (keyboard == null){
-			keyboard = new KeyboardClipboard();
+			keyboard = new KeyboardRobot();
 		}
 		return keyboard;
 	}
