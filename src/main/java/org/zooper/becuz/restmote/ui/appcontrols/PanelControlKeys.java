@@ -17,7 +17,6 @@ import javax.swing.event.TableModelListener;
 
 import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.KeysEvent;
-import org.zooper.becuz.restmote.model.VisualControl;
 import org.zooper.becuz.restmote.ui.UIUtils;
 
 /**

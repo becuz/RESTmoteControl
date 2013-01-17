@@ -4,13 +4,12 @@
  */
 package org.zooper.becuz.restmote.ui.appcontrols;
 
-import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import org.zooper.becuz.restmote.model.Control;
+
 import org.zooper.becuz.restmote.model.VisualControl;
 import org.zooper.becuz.restmote.ui.UIUtils;
 

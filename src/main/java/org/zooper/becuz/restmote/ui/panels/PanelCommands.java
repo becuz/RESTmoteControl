@@ -5,6 +5,7 @@
 package org.zooper.becuz.restmote.ui.panels;
 
 import java.util.List;
+
 import org.zooper.becuz.restmote.business.BusinessFactory;
 import org.zooper.becuz.restmote.model.Command;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;

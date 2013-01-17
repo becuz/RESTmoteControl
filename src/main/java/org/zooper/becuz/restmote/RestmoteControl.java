@@ -8,7 +8,6 @@ import java.io.FileWriter;
 
 import org.zooper.becuz.restmote.business.MediaBusiness;
 import org.zooper.becuz.restmote.business.SettingsBusiness;
-import org.zooper.becuz.restmote.http.InetAddr;
 import org.zooper.becuz.restmote.http.Server;
 import org.zooper.becuz.restmote.model.Settings;
 import org.zooper.becuz.restmote.utils.PopulateDb;
