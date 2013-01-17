@@ -49,6 +49,7 @@ public class ImportExport {
 	public void importJson(String json, boolean justApps) throws JsonParseException, JsonMappingException, IOException{
 		ObjectMapper objectMapper = RestFactory.getJson().getContext(List.class);
 		PersistenceAbstract persistenceAbstract = PersistenceFactory.getPersistenceAbstract();
+		persistenceAbstract.beginTransaction();
 		if (justApps){
 			List<App> apps = objectMapper.readValue(json, new TypeReference<List<App>>() {});
 			persistenceAbstract.storeAll(apps);

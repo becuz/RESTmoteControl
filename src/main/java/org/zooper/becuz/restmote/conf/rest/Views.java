@@ -7,5 +7,6 @@ package org.zooper.becuz.restmote.conf.rest;
 public class Views {
     public static class Public { }	
     public static class All extends Public { }
+    public static class None extends All { }
 }
        

@@ -1,6 +1,5 @@
 package org.zooper.becuz.restmote.model;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonView;
 import org.zooper.becuz.restmote.conf.rest.Views;
 
@@ -23,7 +22,7 @@ public class VisualControl implements ControlInterface{
 	/**
 	 * Actual control
 	 */
-	@JsonIgnore
+	@JsonView(Views.All.class)
 	private Control control;
 	
 	/**

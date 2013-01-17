@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.codehaus.jackson.map.annotate.JsonView;
+import org.zooper.becuz.restmote.conf.rest.Views;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
 
 /**
@@ -91,6 +93,7 @@ public class KeysEvent implements Comparable<KeysEvent>, Persistable{
 		}
 	}
 	
+	@JsonView(Views.None.class)
 	public boolean isEmpty(){
 		return keys == null || keys.isEmpty();
 	}

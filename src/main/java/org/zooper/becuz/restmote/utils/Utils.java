@@ -22,7 +22,7 @@ public class Utils {
 	 * Operating systems
 	 */
 	public enum OS {
-		WINDOWS, LINUX, MAC
+		WINDOWS, LINUX, MAC, WEB
 	}
 
 	/**

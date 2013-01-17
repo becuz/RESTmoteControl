@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.codehaus.jackson.map.annotate.JsonView;
@@ -17,7 +16,7 @@ import org.zooper.becuz.restmote.utils.Utils;
  * @author bebo
  */
 @JsonSerialize(include = Inclusion.NON_NULL)
-public class Control implements ControlInterface{
+public class Control implements ControlInterface {
 
 	public static enum ControlDefaultTypeApp {
 		PLAY, PAUSE, STOP,
@@ -59,8 +58,13 @@ public class Control implements ControlInterface{
 	/**
 	 * mapped KeysEvent
 	 */
-	@JsonIgnore
+	@JsonView(Views.All.class)
 	private SortedSet<KeysEvent> keysEvents;
+	
+	/**
+	 */
+	@JsonView(Views.All.class)
+	private ControlCategory controlCategory;
 	
 	public Control() {
 	}
@@ -118,7 +122,6 @@ public class Control implements ControlInterface{
 		}
 	}
 	
-	@JsonIgnore
 	public boolean isEmpty(){
 		return keysEvents == null || keysEvents.isEmpty();
 	}
@@ -158,12 +161,19 @@ public class Control implements ControlInterface{
 		this.id = id;
 	}
 	
-	
 //	@Override
 //	public int compareTo(Control o) {
 //		return this.getLogicOrder().compareTo(o.getLogicOrder());
 //	}
 
+
+	public ControlCategory getControlCategory() {
+		return controlCategory;
+	}
+
+	public void setControlCategory(ControlCategory controlCategory) {
+		this.controlCategory = controlCategory;
+	}
 
 	public void addKeysEvent(KeysEvent keysEvent) {
 		keysEvent.setLogicOrder(getKeysEvents().size());

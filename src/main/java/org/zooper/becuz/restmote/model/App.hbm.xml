@@ -35,7 +35,11 @@
 			cascade="all,delete-orphan"
 	        column="visualControlsManagerId" 
 	        unique="true"
-	        />   
+	        />
+        <set name="controlCategories" table="App_ControlCategories" sort="natural" cascade="all" lazy="false">
+	        <key column="appId"/>
+	        <many-to-many column="controlCategoryId" class="ControlCategory"/>
+	    </set>   
 	</class>
 
 </hibernate-mapping>

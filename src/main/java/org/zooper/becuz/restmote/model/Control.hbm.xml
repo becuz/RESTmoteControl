@@ -14,6 +14,11 @@
 	        <key column="controlId"/>
 	        <many-to-many column="keysEventId" class="KeysEvent"/>
 	    </set>
+	    <many-to-one name="controlCategory" 
+	        lazy="false"
+	        column="controlCategoryId" 
+	        unique="false"			
+	        not-null="false"/>	
 	</class>
 
 </hibernate-mapping>

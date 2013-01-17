@@ -7,10 +7,13 @@ import java.util.Set;
 
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.Command;
+import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeApp;
+import org.zooper.becuz.restmote.model.ControlCategory;
 import org.zooper.becuz.restmote.model.ControlInterface;
 import org.zooper.becuz.restmote.model.VisualControl;
 import org.zooper.becuz.restmote.utils.Constants;
+import org.zooper.becuz.restmote.utils.Utils.OS;
 
 public class ModelFactoryWindows extends ModelFactoryAbstract{
 
@@ -49,7 +52,13 @@ public class ModelFactoryWindows extends ModelFactoryAbstract{
 			appMusic.addExtension("mp3");
 			appMusic.addExtension("ogg");
 			appMusic.setForceOneInstance(false);
-			getControl(appMusic, ControlDefaultTypeApp.VOLUP, 5, KeyEvent.VK_UP, 1, 0);
+			appMusic.setOs(OS.WINDOWS.toString().toLowerCase());
+			ControlCategory controlCategory = new ControlCategory("Play Music in Winamp");
+			ControlCategory controlCategory2 = new ControlCategory("Manage Winamp Window(s)");
+			appMusic.addControlCategory(controlCategory);
+			appMusic.addControlCategory(controlCategory2);
+			ControlInterface[] cs = getControl(appMusic, ControlDefaultTypeApp.VOLUP, 5, KeyEvent.VK_UP, 1, 0);
+			((Control)cs[0]).setDescription("pump up the volume");
 			getControl(appMusic, ControlDefaultTypeApp.PREV, KeyEvent.VK_Z, 2, -2);
 			getControl(appMusic, ControlDefaultTypeApp.PLAY, KeyEvent.VK_X, 2, -1);
 			getControl(appMusic, ControlDefaultTypeApp.PAUSE, KeyEvent.VK_C, 2, 0);
@@ -58,6 +67,9 @@ public class ModelFactoryWindows extends ModelFactoryAbstract{
 			getControl(appMusic, ControlDefaultTypeApp.BACKWARD, 3, KeyEvent.VK_LEFT, 3, -1);
 			getControl(appMusic, ControlDefaultTypeApp.VOLDOWN, 5, KeyEvent.VK_DOWN, 3, 0);
 			getControl(appMusic, ControlDefaultTypeApp.FORWARD, 3, KeyEvent.VK_RIGHT, 3, 1);
+			for(Control control: appMusic.getControlsManager().getControls()){
+				control.setControlCategory(controlCategory);
+			}
 		}
 		return appMusic;
 	}

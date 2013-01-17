@@ -7,7 +7,6 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.codehaus.jackson.map.annotate.JsonView;
@@ -27,7 +26,7 @@ import org.zooper.becuz.restmote.utils.Utils;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class MediaCategory implements Editable, Completable{
 
-	@JsonIgnore
+	@JsonView(Views.All.class)
 	public static final String ROOT_NAME = "root"; 
 	
 	/**
@@ -208,12 +207,12 @@ public class MediaCategory implements Editable, Completable{
 		this.active = active;
 	}
 
-	@JsonIgnore
+	@JsonView(Views.None.class)
 	public Boolean isRoot() {
 		return ROOT_NAME.equals(getName());
 	}
 	
-	@JsonIgnore
+	@JsonView(Views.None.class)
 	public Boolean isEditable() {
 		return !isRoot();
 	}

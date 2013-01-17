@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -125,6 +127,12 @@ public class App implements Editable, Completable{
 	 * UI controls for this app
 	 */
 	private VisualControlsManager visualControlsManager;
+	
+	/**
+	 * Categories of controls
+	 */
+	@JsonView(Views.All.class)
+	private SortedSet<ControlCategory> controlCategories;
 	
 	public App() {
 	}
@@ -290,6 +298,27 @@ public class App implements Editable, Completable{
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public SortedSet<ControlCategory> getControlCategories() {
+		if (controlCategories == null){
+			controlCategories = new TreeSet<ControlCategory>();
+		}
+		return controlCategories;
+	}
+	public void setControlCategories(SortedSet<ControlCategory> controlCategories) {
+		this.controlCategories = controlCategories;
+	}
+	public void addControlCategory(ControlCategory controlCategory) {
+		controlCategory.setLogicOrder(getControlCategories().size());
+		getControlCategories().add(controlCategory);
+	}
+	
+	public void removeKeysEvent(ControlCategory controlCategory) {
+		getControlCategories().remove(controlCategory);
+		int i = 0;
+		for(ControlCategory c: getControlCategories()){
+			c.setLogicOrder(i++);
+		}
 	}
 
 	public ControlsManager getControlsManager() {
