@@ -11,6 +11,10 @@ public class UIConstants {
 	public static final String TRAY_TOOLTIP = "Res(T)mote Control";
 	public static final String ERR_NO_INET = "Please specify a network interface";
 	
+	public static final String TOOLTIP_MENU_IMPORTALL = "Reset the database to defaults configuration";
+	public static final String TOOLTIP_MENU_IMPORTAPPS = "Load all apps from file";
+	public static final String TOOLTIP_MENU_EXPORTALL = "Exports all the database in a single file";
+	
 	public static final String TOOLTIP_STNGS_ALLINT = "Check if you want the server to listen in all available interfaces";
 	public static final String TOOLTIP_STNGS_BTNREFRESH_INTERFACES = "Refresh the net interfaces list";
 	public static final String TOOLTIP_STNGS_NAME = "Name that will be displayed in the client";
@@ -49,4 +53,7 @@ public class UIConstants {
 	public static final String ERROR_COMMAND_EMPTY_BODY = "Please specify a command";
 	public static final String ERROR_COMMAND_EXCEPTION_TITLE = "Exception caught";
 	public static final String ERROR_COMMAND_EXCEPTION_BODY = "<html>The following error occured:<br/>$ERR.<br/><b>Please check your command</b></html>";
+	
+	public static final String ERROR_IMPORTEXPORT_EXCEPTION_TITLE = "Error";
+	public static final String ERROR_IMPORTEXPORT_EXCEPTION_BODY = "<html>The following error occured:<br/>$ERR.<br/><b>Sorry :(</b></html>";
 }

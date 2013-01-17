@@ -45,6 +45,13 @@ public class PersistenceMemory extends PersistenceAbstract {
 		addInCache(p);
 		return p;
 	}
+	
+	@Override
+	public void storeAll(List<? extends Persistable> persistables) {
+		for(Persistable p: persistables){
+			store(p);
+		}
+	}
 
 	@Override
 	public void delete(Persistable p) {
@@ -59,6 +66,7 @@ public class PersistenceMemory extends PersistenceAbstract {
 		}
 		super.addInCache(p);
 	}
+
 	
 //	public static List<MediaRoot> getMediaRoots() {
 //	return mediaRoots;

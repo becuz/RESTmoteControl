@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ TestPersistence.class})
+@SuiteClasses({ TestPersistence.class, TestImportExport.class})
 public class AllPersistenceTests {
 
 	

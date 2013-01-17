@@ -93,9 +93,22 @@ public class PersistenceHibernate extends PersistenceAbstract{
 
 	@Override
 	public Persistable store(Persistable p) {
+		return store(p, true);
+	}
+	
+	public Persistable store(Persistable p, boolean addInCache) {
 		session.saveOrUpdate(p);
-		addInCache(p);
+		if (addInCache){
+			addInCache(p);
+		}
 		return p;
+	}
+	
+	@Override
+	public void storeAll(List<? extends Persistable> persistables) {
+		for(Persistable p: persistables){
+			store(p, false);
+		}
 	}
 	
 	@Override

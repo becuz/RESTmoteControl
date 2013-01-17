@@ -10,6 +10,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
@@ -22,6 +23,7 @@ import org.zooper.becuz.restmote.business.SettingsBusiness;
 import org.zooper.becuz.restmote.http.InetAddr;
 import org.zooper.becuz.restmote.http.Server;
 import org.zooper.becuz.restmote.model.Settings;
+import org.zooper.becuz.restmote.persistence.export.ImportExport;
 import org.zooper.becuz.restmote.ui.appcontrols.ImageList;
 import org.zooper.becuz.restmote.ui.widgets.IntTextField;
 import org.zooper.becuz.restmote.ui.widgets.URLLabel;
@@ -211,6 +213,10 @@ public class MainWindow extends javax.swing.JFrame {
         menuFile = new javax.swing.JMenu();
         menuFileExit = new javax.swing.JMenuItem();
         menuAbout = new javax.swing.JMenu();
+        menuAdvanced = new javax.swing.JMenu();
+        menuImport = new javax.swing.JMenu();
+        menuExport = new javax.swing.JMenu();
+        menuExportAll = new javax.swing.JMenuItem();
 
         FormListener formListener = new FormListener();
 
@@ -476,6 +482,22 @@ public class MainWindow extends javax.swing.JFrame {
         menuAbout.setText("About");
         menuBar.add(menuAbout);
 
+        menuAdvanced.setText("Advanced");
+
+        menuImport.setText("Import");
+        menuAdvanced.add(menuImport);
+
+        menuExport.setText("Export");
+
+        menuExportAll.setText("Export all");
+        menuExportAll.setToolTipText(UIConstants.TOOLTIP_MENU_EXPORTALL);
+        menuExportAll.addActionListener(formListener);
+        menuExport.add(menuExportAll);
+
+        menuAdvanced.add(menuExport);
+
+        menuBar.add(menuAdvanced);
+
         setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -544,6 +566,9 @@ public class MainWindow extends javax.swing.JFrame {
             }
             else if (evt.getSource() == menuFileExit) {
                 MainWindow.this.menuFileExitActionPerformed(evt);
+            }
+            else if (evt.getSource() == menuExportAll) {
+                MainWindow.this.menuExportAllActionPerformed(evt);
             }
         }
 
@@ -629,7 +654,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_btnToggleServerMousePressed
 
     private void menuFileExitMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuFileExitMousePressed
-        System.exit(0);
+        //System.exit(0);
     }//GEN-LAST:event_menuFileExitMousePressed
 
     private void showServerUrl(String url){
@@ -727,6 +752,19 @@ public class MainWindow extends javax.swing.JFrame {
         changedSelectedInetName();
     }//GEN-LAST:event_comboInetNamesActionPerformed
 
+    private void menuExportAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExportAllActionPerformed
+        ImportExport importExport = new ImportExport();
+		try {
+			String pathFile = importExport.exportJson(false);
+			JOptionPane.showMessageDialog(this, "Database exported to " + pathFile);
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this,
+						UIConstants.ERROR_IMPORTEXPORT_EXCEPTION_BODY.replace("$ERR", ex.getMessage()), 
+						UIConstants.ERROR_IMPORTEXPORT_EXCEPTION_TITLE,
+						JOptionPane.ERROR_MESSAGE);
+		}
+    }//GEN-LAST:event_menuExportAllActionPerformed
+
 	private void changedSelectedInetName(){
 		if (Server.getInstance().isRunning()){
 			int index = listInetNamesModel.getIndexOf(listInetNamesModel.getSelectedItem());
@@ -779,9 +817,13 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JList listImages;
     private javax.swing.JList listPaths;
     private javax.swing.JMenu menuAbout;
+    private javax.swing.JMenu menuAdvanced;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenu menuExport;
+    private javax.swing.JMenuItem menuExportAll;
     private javax.swing.JMenu menuFile;
     private javax.swing.JMenuItem menuFileExit;
+    private javax.swing.JMenu menuImport;
     private org.zooper.becuz.restmote.ui.panels.PanelApps panelApps;
     private org.zooper.becuz.restmote.ui.panels.PanelCategories panelCategories;
     private org.zooper.becuz.restmote.ui.panels.PanelCommands panelCommands;

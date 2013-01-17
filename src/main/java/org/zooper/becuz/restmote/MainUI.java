@@ -1,7 +1,5 @@
 package org.zooper.becuz.restmote;
 
-import java.awt.Color;
-
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 

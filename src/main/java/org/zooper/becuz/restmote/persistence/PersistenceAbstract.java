@@ -162,10 +162,17 @@ public abstract class PersistenceAbstract {
 	
 	/**
 	 * 
-	 * @param p
+	 * @param persistables
 	 * @return
 	 */
-	public abstract Persistable store(Persistable p);
+	public abstract void storeAll(List<? extends Persistable> persistables);
+	
+	/**
+	 * 
+	 * @param persistable
+	 * @return
+	 */
+	public abstract Persistable store(Persistable persistable);
 
 	/**
 	 * 
