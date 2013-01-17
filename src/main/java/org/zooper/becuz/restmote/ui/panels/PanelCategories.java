@@ -11,6 +11,7 @@ import org.zooper.becuz.restmote.model.interfaces.Persistable;
  *
  * @author bebo
  */
+@SuppressWarnings("serial")
 public class PanelCategories extends PanelPersistables {
 
 	/**

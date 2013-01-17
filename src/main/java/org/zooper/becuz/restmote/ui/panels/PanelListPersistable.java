@@ -15,7 +15,7 @@ import org.zooper.becuz.restmote.ui.widgets.CompletableListRenderer;
 
 /**
  *
- * @author admin
+ * @author bebo
  */
 public class PanelListPersistable extends javax.swing.JPanel {
 

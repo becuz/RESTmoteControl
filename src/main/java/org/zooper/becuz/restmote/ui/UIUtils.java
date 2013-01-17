@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
+import javax.swing.JScrollPane;
 
 public class UIUtils {
 
@@ -39,6 +40,11 @@ public class UIUtils {
 				setEnabledRecursive(c2, enabled);
 			}
 		}
+//		if(c.getClass().equals(JScrollPane.class)) {
+//			for(Component scrollPaneC : ((JScrollPane)c).getComponents()) {
+//				scrollPaneC.setEnabled(enabled);
+//			}
+//		}
 	}
 
 }

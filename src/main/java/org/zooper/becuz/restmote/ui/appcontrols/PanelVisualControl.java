@@ -15,7 +15,7 @@ import org.zooper.becuz.restmote.ui.UIUtils;
 
 /**
  *
- * @author admin
+ * @author bebo
  */
 public class PanelVisualControl extends javax.swing.JPanel {
 

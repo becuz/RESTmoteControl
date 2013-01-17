@@ -12,8 +12,9 @@ import org.zooper.becuz.restmote.model.interfaces.Persistable;
 
 /**
  *
- * @author admin
+ * @author bebo
  */
+@SuppressWarnings("serial")
 public class PanelCommands extends PanelPersistables {
 
 	/**
@@ -21,6 +22,7 @@ public class PanelCommands extends PanelPersistables {
 	 */
 	public PanelCommands() {
 		initComponents();
+		panelEditCommand.setEnabled(false);
 	}
 
 	/**

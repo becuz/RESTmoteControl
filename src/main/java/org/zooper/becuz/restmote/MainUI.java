@@ -1,5 +1,7 @@
 package org.zooper.becuz.restmote;
 
+import java.awt.Color;
+
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -16,6 +18,7 @@ public class MainUI {
 	public static void main(String[] args) throws Exception {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//			UIManager.put("TextArea.disabledBackground", Color.GRAY);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

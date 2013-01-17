@@ -6,6 +6,7 @@ package org.zooper.becuz.restmote.ui.panels;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
 import org.zooper.becuz.restmote.model.Command;
@@ -15,8 +16,9 @@ import org.zooper.becuz.restmote.utils.Utils;
 
 /**
  *
- * @author admin
+ * @author bebo
  */
+@SuppressWarnings("serial")
 public class PanelEditCommand extends PanelPersistable {
 
 	/**
@@ -43,6 +45,14 @@ public class PanelEditCommand extends PanelPersistable {
 		textAreaCommand.setText(command == null ? "" : command.getCommand());
 		listenViewChanges = true;
     }
+	
+	@Override
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		textAreaCommand.setBackground(enabled ? 
+				UIManager.getColor("TextField.background") 
+				: UIManager.getColor("TextField.disabledBackground")); //jvm bug? textarea isn't retrieved in UIUtils.setEnabledRecursive
+	}
 	
 	/**
 	 * This method is called from within the constructor to initialize the form.

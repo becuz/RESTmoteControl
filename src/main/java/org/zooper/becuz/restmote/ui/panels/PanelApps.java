@@ -9,7 +9,7 @@ import org.zooper.becuz.restmote.model.interfaces.Persistable;
 
 /**
  *
- * @author admin
+ * @author bebo
  */
 public class PanelApps extends PanelPersistables{
 
