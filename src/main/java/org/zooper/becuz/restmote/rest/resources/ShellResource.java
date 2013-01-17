@@ -99,7 +99,7 @@ public class ShellResource extends AbstractResource {
 		try {
 			log.info("runCommand command:" + command);
 			if (!Utils.isEmpty(command)){
-				PcControllerFactory.getPcController().execute(command);
+				PcControllerFactory.getPcController().executeStringCommand(command);
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage() + " " + e.getCause());

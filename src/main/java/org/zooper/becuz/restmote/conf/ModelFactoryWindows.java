@@ -16,7 +16,7 @@ public class ModelFactoryWindows extends ModelFactoryAbstract{
 
 	@Override
 	public Command getACommand() {
-		return new Command("e", "explorer", "open explorer");
+		return new Command("google", "explorer http://www.google.com", "open google.com with the default browser");
 	}
 	
 	@Override

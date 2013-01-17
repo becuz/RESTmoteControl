@@ -190,7 +190,7 @@ public class PanelEditCommand extends PanelPersistable {
 			errTitle = UIConstants.ERROR_COMMAND_EMPTY_TITLE;
 		} else {
 			try {
-				PcControllerFactory.getPcController().execute(command);
+				PcControllerFactory.getPcController().executeStringCommand(command);
 			} catch (Exception ex) {
 				errBody = UIConstants.ERROR_COMMAND_EXCEPTION_BODY.replace("$ERR", ex.getMessage());
 				errTitle = UIConstants.ERROR_COMMAND_EXCEPTION_TITLE;

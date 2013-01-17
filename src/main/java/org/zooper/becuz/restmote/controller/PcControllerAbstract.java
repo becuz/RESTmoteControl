@@ -446,7 +446,17 @@ public abstract class PcControllerAbstract {
 	
 	/**
 	 * Execute an operating system process without waiting it
-	 * @param commands
+	 * @param command es: "explorer http://www.google.com"
+	 * @return
+	 * @throws Exception
+	 */
+	public Process executeStringCommand(String command) throws IOException, InterruptedException{
+		return execute(false, command.trim().split("\\s+"));
+	}
+	
+	/**
+	 * Execute an operating system process without waiting it
+	 * @param commands es: {"explorer", "http://www.google.com"}
 	 * @return
 	 * @throws Exception
 	 */
