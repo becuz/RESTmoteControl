@@ -37,7 +37,7 @@ public class PanelCommands extends PanelPersistables {
         setName(""); // NOI18N
         setPreferredSize(new java.awt.Dimension(806, 535));
 
-        panelEditCommand.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        panelEditCommand.setPreferredSize(new java.awt.Dimension(414, 300));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

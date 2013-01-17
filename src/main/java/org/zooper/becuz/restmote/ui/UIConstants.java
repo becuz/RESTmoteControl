@@ -11,8 +11,13 @@ public class UIConstants {
 	public static final String TRAY_TOOLTIP = "Res(T)mote Control";
 	public static final String ERR_NO_INET = "Please specify a network interface";
 	
-	public static final String TOOLTIP_STNGS_NAME = "Name that will be displayed in the client";
 	public static final String TOOLTIP_STNGS_ALLINT = "Check if you want the server to listen in all available interfaces";
+	public static final String TOOLTIP_STNGS_BTNREFRESH_INTERFACES = "Refresh the net interfaces list";
+	public static final String TOOLTIP_STNGS_NAME = "Name that will be displayed in the client";
+	public static final String TOOLTIP_STNGS_NAMEROOT = "Name that will be displayed in the header of the client";
+	public static final String TOOLTIP_STNGS_SCANDEPTH = "How deep in the tree structure of the filesystem the search should go. High values slows down the process";
+	public static final String TOOLTIP_STNGS_ICONTHEME = "Set of icons displayed in the client";
+	
 	
 	public static final String TOOLTIP_CATEGORY_ACTIVE = "Active categories will appear on the clients";
 	public static final String TOOLTIP_CATEGORY_NAME = "Name for this category";
@@ -43,5 +48,5 @@ public class UIConstants {
 	public static final String ERROR_COMMAND_EMPTY_TITLE = "Command empty";
 	public static final String ERROR_COMMAND_EMPTY_BODY = "Please specify a command";
 	public static final String ERROR_COMMAND_EXCEPTION_TITLE = "Exception caught";
-	public static final String ERROR_COMMAND_EXCEPTION_BODY = "<html>The following error occured:\n$ERR.\n<b>Please check your command</b></html>";
+	public static final String ERROR_COMMAND_EXCEPTION_BODY = "<html>The following error occured:<br/>$ERR.<br/><b>Please check your command</b></html>";
 }

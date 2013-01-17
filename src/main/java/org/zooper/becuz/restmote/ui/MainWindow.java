@@ -238,6 +238,7 @@ public class MainWindow extends javax.swing.JFrame {
         lblServerUrl.setText("server URL");
 
         btnRefreshInetNames.setIcon(UIUtils.ICON_REFRESH);
+        btnRefreshInetNames.setToolTipText(UIConstants.TOOLTIP_STNGS_BTNREFRESH_INTERFACES);
         btnRefreshInetNames.setFocusPainted(false);
         btnRefreshInetNames.addActionListener(formListener);
 
@@ -311,28 +312,34 @@ public class MainWindow extends javax.swing.JFrame {
 
         lblTextFieldNameRoot.setLabelFor(textFieldNameRoot);
         lblTextFieldNameRoot.setText("NameRoot:");
+        lblTextFieldNameRoot.setToolTipText(UIConstants.TOOLTIP_STNGS_NAMEROOT);
 
         listPaths.setModel(listPathsModel);
         listPaths.addListSelectionListener(formListener);
         scrollPaneListPaths.setViewportView(listPaths);
 
         btnAddPath.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/add.png"))); // NOI18N
+        btnAddPath.setToolTipText("Add");
         btnAddPath.addActionListener(formListener);
 
         btnDeletePath.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/delete.png"))); // NOI18N
+        btnDeletePath.setToolTipText("Delete");
         btnDeletePath.setEnabled(false);
         btnDeletePath.addActionListener(formListener);
 
-        lblPaths.setText("Choose the directories that the system will monitor for medias");
+        lblPaths.setText("Choose the directories that the system will monitor for medias:");
 
         lblTextFieldScanDepth.setLabelFor(lblTextFieldScanDepth);
         lblTextFieldScanDepth.setText("ScanDepth:");
+        lblTextFieldScanDepth.setToolTipText(UIConstants.TOOLTIP_STNGS_SCANDEPTH);
 
         btnBrowsePath.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/folder.png"))); // NOI18N
+        btnBrowsePath.setToolTipText("Browse");
         btnBrowsePath.addActionListener(formListener);
 
         lblComboIconTheme.setLabelFor(comboIconTheme);
         lblComboIconTheme.setText("Icon Theme:");
+        lblComboIconTheme.setToolTipText(UIConstants.TOOLTIP_STNGS_ICONTHEME);
 
         comboIconTheme.setModel(listIconThemesModel);
         comboIconTheme.addActionListener(formListener);

@@ -73,7 +73,7 @@ public class PanelEditCommand extends PanelPersistable {
         lblTextFieldName.setText("Name:");
         lblTextFieldName.setToolTipText(UIConstants.TOOLTIP_COMMAND_NAME);
 
-        lblTextFieldDescription.setFont(lblTextFieldDescription.getFont().deriveFont(lblTextFieldDescription.getFont().getStyle() | java.awt.Font.BOLD));
+        lblTextFieldDescription.setFont(lblTextFieldDescription.getFont());
         lblTextFieldDescription.setText("Description:");
         lblTextFieldDescription.setToolTipText(UIConstants.TOOLTIP_COMMAND_COMMAND);
 
@@ -123,7 +123,7 @@ public class PanelEditCommand extends PanelPersistable {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnTest)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 314, Short.MAX_VALUE)
                         .addComponent(btnEditSave)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEditCancel)
@@ -162,7 +162,8 @@ public class PanelEditCommand extends PanelPersistable {
                                 .addComponent(btnEditSave)
                                 .addComponent(btnEditCancel))
                             .addComponent(btnTest, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(36, 36, 36))))
+                        .addGap(36, 36, 36)))
+                .addContainerGap(142, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

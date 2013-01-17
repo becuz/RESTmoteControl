@@ -259,6 +259,9 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="UIUtils.ICON_REFRESH" type="code"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="UIConstants.TOOLTIP_STNGS_BTNREFRESH_INTERFACES" type="code"/>
+                    </Property>
                     <Property name="focusPainted" type="boolean" value="false"/>
                   </Properties>
                   <Events>
@@ -402,6 +405,9 @@
                       <ComponentRef name="textFieldNameRoot"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="NameRoot:"/>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="UIConstants.TOOLTIP_STNGS_NAMEROOT" type="code"/>
+                    </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="textFieldNameRoot">
@@ -430,6 +436,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/add.png"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="Add"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddPathActionPerformed"/>
@@ -442,6 +449,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/delete.png"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="Delete"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                   <Events>
@@ -450,7 +458,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblPaths">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Choose the directories that the system will monitor for medias"/>
+                    <Property name="text" type="java.lang.String" value="Choose the directories that the system will monitor for medias:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblTextFieldScanDepth">
@@ -459,6 +467,9 @@
                       <ComponentRef name="lblTextFieldScanDepth"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="ScanDepth:"/>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="UIConstants.TOOLTIP_STNGS_SCANDEPTH" type="code"/>
+                    </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="textFieldScanDepth">
@@ -471,6 +482,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/folder.png"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="Browse"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBrowsePathActionPerformed"/>
@@ -482,6 +494,9 @@
                       <ComponentRef name="comboIconTheme"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Icon Theme:"/>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="UIConstants.TOOLTIP_STNGS_ICONTHEME" type="code"/>
+                    </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="comboIconTheme">
