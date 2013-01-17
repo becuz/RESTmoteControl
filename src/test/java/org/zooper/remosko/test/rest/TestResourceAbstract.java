@@ -41,7 +41,7 @@ public abstract class TestResourceAbstract extends TestAbstract{
 			server = Server.getInstance();
 			SettingsBusiness settingsBusiness = new SettingsBusiness(); 
 			Settings settings = settingsBusiness.get();
-			server.start(settings.getServerInetName(), settings.getServerPort());
+			server.startAll(settings.getServerPort());//(settings.getPreferredServerInetName(), settings.getServerPort());
 		}
 	}
 

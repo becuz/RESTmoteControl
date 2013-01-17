@@ -95,7 +95,7 @@ public class MainWindow extends javax.swing.JFrame {
 		listPathsModel.clear();
 		
 		Settings settings = BusinessFactory.getSettingsBusiness().get();
-		buildListInetNamesModel(settings.getServerInetName());
+		buildListInetNamesModel(settings.getPreferredServerInetName());
     	
 		listIconThemesModel.setSelectedItem(settings.getIconControlsTheme());
 		
@@ -109,6 +109,7 @@ public class MainWindow extends javax.swing.JFrame {
         textFieldName.setText(settings.getName());
         textFieldNameRoot.setText(settings.getNameRoot());
         textFieldScanDepth.setText(""+settings.getScanDepth());
+		jCheckBoxRunAllInterfaces.setSelected(Boolean.TRUE.equals(settings.getRunAllNetInterfaces()));
 	}
 	
 	/**
@@ -180,6 +181,7 @@ public class MainWindow extends javax.swing.JFrame {
         lblServerUrl = new URLLabel();
         btnRefreshInetNames = new javax.swing.JButton();
         lblQrCode = new javax.swing.JLabel();
+        jCheckBoxRunAllInterfaces = new javax.swing.JCheckBox();
         panelSettingsPnlGeneral = new javax.swing.JPanel();
         lblTextFieldName = new javax.swing.JLabel();
         textFieldName = new javax.swing.JTextField();
@@ -218,11 +220,12 @@ public class MainWindow extends javax.swing.JFrame {
 
         panelSettingsPnlServer.setBorder(javax.swing.BorderFactory.createTitledBorder("Server"));
 
-        lblComboInetNames.setText("Interface");
+        lblComboInetNames.setText("Interfaces:");
 
         comboInetNames.setModel(listInetNamesModel);
+        comboInetNames.addActionListener(formListener);
 
-        lblComboPort.setText("Port");
+        lblComboPort.setText("Port:");
 
         lblStatusServer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblStatusServer.setText("Checking server status..");
@@ -241,6 +244,9 @@ public class MainWindow extends javax.swing.JFrame {
         lblQrCode.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblQrCode.setText("qrCode");
 
+        jCheckBoxRunAllInterfaces.setText("Run in all interfaces");
+        jCheckBoxRunAllInterfaces.setToolTipText(UIConstants.TOOLTIP_STNGS_ALLINT);
+
         javax.swing.GroupLayout panelSettingsPnlServerLayout = new javax.swing.GroupLayout(panelSettingsPnlServer);
         panelSettingsPnlServer.setLayout(panelSettingsPnlServerLayout);
         panelSettingsPnlServerLayout.setHorizontalGroup(
@@ -254,26 +260,31 @@ public class MainWindow extends javax.swing.JFrame {
                         .addGroup(panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(comboInetNames, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(panelSettingsPnlServerLayout.createSequentialGroup()
-                                .addComponent(lblComboPort)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(textFieldPort, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblComboInetNames)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelSettingsPnlServerLayout.createSequentialGroup()
-                                    .addGap(45, 45, 45)
+                                .addGap(45, 45, 45)
+                                .addGroup(panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(panelSettingsPnlServerLayout.createSequentialGroup()
+                                        .addComponent(lblComboPort)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(textFieldPort, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(lblStatusServer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(btnToggleServer, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                        .addComponent(btnRefreshInetNames)))
+                        .addComponent(btnRefreshInetNames))
+                    .addGroup(panelSettingsPnlServerLayout.createSequentialGroup()
+                        .addComponent(lblComboInetNames)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jCheckBoxRunAllInterfaces)))
                 .addContainerGap())
         );
         panelSettingsPnlServerLayout.setVerticalGroup(
             panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelSettingsPnlServerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblComboInetNames)
-                .addGap(9, 9, 9)
+                .addGroup(panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblComboInetNames)
+                    .addComponent(jCheckBoxRunAllInterfaces))
+                .addGap(4, 4, 4)
                 .addGroup(panelSettingsPnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnRefreshInetNames, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(comboInetNames))
@@ -295,10 +306,11 @@ public class MainWindow extends javax.swing.JFrame {
         panelSettingsPnlGeneral.setBorder(javax.swing.BorderFactory.createTitledBorder("General"));
 
         lblTextFieldName.setLabelFor(lblTextFieldName);
-        lblTextFieldName.setText("Name");
+        lblTextFieldName.setText("Name:");
+        lblTextFieldName.setToolTipText(UIConstants.TOOLTIP_STNGS_NAME);
 
         lblTextFieldNameRoot.setLabelFor(textFieldNameRoot);
-        lblTextFieldNameRoot.setText("NameRoot");
+        lblTextFieldNameRoot.setText("NameRoot:");
 
         listPaths.setModel(listPathsModel);
         listPaths.addListSelectionListener(formListener);
@@ -314,13 +326,13 @@ public class MainWindow extends javax.swing.JFrame {
         lblPaths.setText("Choose the directories that the system will monitor for medias");
 
         lblTextFieldScanDepth.setLabelFor(lblTextFieldScanDepth);
-        lblTextFieldScanDepth.setText("ScanDepth");
+        lblTextFieldScanDepth.setText("ScanDepth:");
 
         btnBrowsePath.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/folder.png"))); // NOI18N
         btnBrowsePath.addActionListener(formListener);
 
         lblComboIconTheme.setLabelFor(comboIconTheme);
-        lblComboIconTheme.setText("Icon Theme");
+        lblComboIconTheme.setText("Icon Theme:");
 
         comboIconTheme.setModel(listIconThemesModel);
         comboIconTheme.addActionListener(formListener);
@@ -496,7 +508,10 @@ public class MainWindow extends javax.swing.JFrame {
     private class FormListener implements java.awt.event.ActionListener, java.awt.event.MouseListener, javax.swing.event.ListSelectionListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
-            if (evt.getSource() == btnToggleServer) {
+            if (evt.getSource() == comboInetNames) {
+                MainWindow.this.comboInetNamesActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnToggleServer) {
                 MainWindow.this.btnToggleServerActionPerformed(evt);
             }
             else if (evt.getSource() == btnRefreshInetNames) {
@@ -563,7 +578,11 @@ public class MainWindow extends javax.swing.JFrame {
   
     public void toggleServer(){
     	try {
-			Server.getInstance().toggle(((InetAddr)listInetNamesModel.getSelectedItem()).getInetName(), ((IntTextField)textFieldPort).getValue());
+    		if (jCheckBoxRunAllInterfaces.isSelected()){
+    			Server.getInstance().toggleAll(((IntTextField)textFieldPort).getValue());	
+    		} else {
+    			Server.getInstance().toggle(((InetAddr)listInetNamesModel.getSelectedItem()).getInetName(), ((IntTextField)textFieldPort).getValue());
+    		}
 			updateViewStatusServer();
 		} catch (Exception e) {
 			logger.error("", e);
@@ -585,12 +604,12 @@ public class MainWindow extends javax.swing.JFrame {
             	lblStatusServer.setText("Http Server is running!");
                 btnToggleServer.setText("Stop");
 				btnToggleServer.setIcon(ICON_STOP);
+				changedSelectedInetName();
             } else {
             	lblStatusServer.setText("Http Server is not running");
                 btnToggleServer.setText("Start");                
 				btnToggleServer.setIcon(ICON_PLAY);
             }
-            refreshLblServerUrl(Server.getInstance().getClientUrl());
             lblServerUrl.setVisible(serverRunning);
             lblQrCode.setVisible(serverRunning);
         } catch (Exception ex) {
@@ -606,7 +625,7 @@ public class MainWindow extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_menuFileExitMousePressed
 
-    private void refreshLblServerUrl(String url){
+    private void showServerUrl(String url){
 //        InetAddr inetAddr = listInetNamesModel.getSelectedItem();
 //        String url = inetAddr == null ? "" : "http://" + inetAddr.getIp() + ":" + ((IntTextField)textFieldPort).getValue() + "/client/index.html";
         lblServerUrl.setText(url);
@@ -652,8 +671,9 @@ public class MainWindow extends javax.swing.JFrame {
         Settings settings = settingsBusiness.get();
         settings.setServerPort(Integer.parseInt(textFieldPort.getText()));
         InetAddr inetAddr = (InetAddr) listInetNamesModel.getSelectedItem();
-        settings.setServerInetName(inetAddr.getInetName());
+        settings.setPreferredServerInetName(inetAddr.getInetName());
         settings.setServerLastIp(inetAddr.getIp());
+		settings.setRunAllNetInterfaces(jCheckBoxRunAllInterfaces.isSelected());
         Set<String> paths = new HashSet<String>(); 
         for (int i = 0; i < listPathsModel.size(); i++) {
             paths.add(listPathsModel.get(i));
@@ -689,14 +709,27 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void comboIconThemeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboIconThemeActionPerformed
-    	changedIconTheme();
+    	changedSelectedIconTheme();
     }//GEN-LAST:event_comboIconThemeActionPerformed
 
     private void btnRefreshInetNamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshInetNamesActionPerformed
         buildListInetNamesModel(listInetNamesModel.getSelectedItem() == null ? null : ((InetAddr)listInetNamesModel.getSelectedItem()).getInetName());
     }//GEN-LAST:event_btnRefreshInetNamesActionPerformed
 
-	private void changedIconTheme(){
+    private void comboInetNamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboInetNamesActionPerformed
+        changedSelectedInetName();
+    }//GEN-LAST:event_comboInetNamesActionPerformed
+
+	private void changedSelectedInetName(){
+		if (Server.getInstance().isRunning()){
+			int index = listInetNamesModel.getIndexOf(listInetNamesModel.getSelectedItem());
+			if (index > -1){
+				showServerUrl(Server.getInstance().getClientUrl(index));
+			}
+		}
+	}
+	
+	private void changedSelectedIconTheme(){
 		String theme = (String)listIconThemesModel.getSelectedItem();
 		ImageList.getImageListModel().setTheme(theme);
 		File creditsFile = new File(Utils.getThemeDir(theme) + "/credits");
@@ -722,6 +755,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton btnToggleServer;
     private javax.swing.JComboBox comboIconTheme;
     private javax.swing.JComboBox comboInetNames;
+    private javax.swing.JCheckBox jCheckBoxRunAllInterfaces;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblComboIconTheme;
     private javax.swing.JLabel lblComboInetNames;

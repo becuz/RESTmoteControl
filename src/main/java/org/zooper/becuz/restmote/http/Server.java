@@ -55,11 +55,13 @@ public class Server implements Runnable {
 	
 	//***************************************************************************
 
-	private HttpServer httpServer;
+	private List<HttpServer> httpServers = new ArrayList<HttpServer>();
 	
-	private String serverUrl = null;
+	private List<String> serverUrls = new ArrayList<String>();
 	
 	private List<ServerStatusListener> serverStatusListeners;
+	
+	private Thread thread;
 	
 	//***************************************************************************
 	
@@ -92,6 +94,25 @@ public class Server implements Runnable {
 		serverStatusListeners.add(serverStatusListener);
 	}
 	
+	/**
+	 * Depending on current status, start or stop all servers
+	 * @param port
+	 * @throws Exception
+	 */
+	public void toggleAll(int port) throws Exception{
+        if (isRunning()){
+            stop();
+        } else {
+			startAll(port);
+        }
+    }
+	
+	/**
+	 * Depending on current status, stop all servers, or run the specified one
+	 * @param inetName
+	 * @param port
+	 * @throws Exception
+	 */
 	public void toggle(String inetName, int port) throws Exception{
         if (isRunning()){
             stop();
@@ -99,6 +120,17 @@ public class Server implements Runnable {
 			Server.getInstance().start(inetName, port);
         }
     }
+	
+	/**
+	 * Start one server for every available net interface
+	 * @param port
+	 * @throws Exception
+	 */
+	public void startAll(int port) throws Exception {
+		for(InetAddr inetAddr: getLocalInetAddresses()){
+			start(inetAddr, port);
+		}
+	}
 	
 	/**
 	 * Start the {@link HttpServer}
@@ -110,20 +142,36 @@ public class Server implements Runnable {
 		if (inetAddr == null){
 			//serverUrl = UriBuilder.fromUri("http://128.131.193.124/").port(port).build().toString();
 			throw new Exception("Impossible to find a local net");
-		} 
-		serverUrl = UriBuilder.fromUri("http://" + inetAddr.getIp() + "/").port(port).build().toString();
+		}
+		return start(inetAddr, port);
+	}
+	
+	/**
+	 * Start the {@link HttpServer}
+	 * @throws IOException
+	 */
+	private InetAddr start(InetAddr inetAddr, int port) throws Exception {
+		log.info("Starting grizzly instance...");
+		String serverUrl = UriBuilder.fromUri("http://" + inetAddr.getIp() + "/").port(port).build().toString();
+		serverUrls.add(serverUrl);
 		
 		ResourceConfig rc = new PackagesResourceConfig("org.zooper.becuz.restmote.rest.resources");
 		rc.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-		httpServer = GrizzlyServerFactory.createHttpServer(getApiUrl(), rc);
+		HttpServer httpServer = GrizzlyServerFactory.createHttpServer(getApiUrl(serverUrls.size()-1), rc);
 		
 		StaticHttpHandler staticHttpHandler = new StaticHttpHandler(Utils.getRootDir() + "client");
 		staticHttpHandler.setFileCacheEnabled(false);	//Allow editing of files when server is running. TODO Should be true in production!
 		httpServer.getServerConfiguration().addHttpHandler(staticHttpHandler, "/client");
 		
+		httpServers.add(httpServer);
+		
 		log.info("Server started with WADL available at " + serverUrl + "application.wadl\n" +
-				"Try out " + getClientUrl() + " or " + getApiUrl()  + "data\n");
-		new Thread(this).start();
+				"Try out " + getClientUrl(serverUrls.size()-1) + " or " + getApiUrl(serverUrls.size()-1)  + "data\n");
+		if (thread == null || !thread.isAlive()){
+			log.debug("Starting thread");
+			thread = new Thread(this);
+			thread.start();
+		}
 		return inetAddr;
 	}	
 	
@@ -132,15 +180,23 @@ public class Server implements Runnable {
 	 * @throws IOException
 	 */
 	public void stop() throws IOException {
-		httpServer.stop();
-		httpServer = null;
+		for(HttpServer httpServer: httpServers){
+			httpServer.stop();	
+		}
+		serverUrls.clear();
+		httpServers.clear();
 	}
 	
 	/**
 	 * @return true if the {@link HttpServer} is on and running
 	 */
 	public boolean isRunning(){
-		return httpServer != null && httpServer.isStarted();
+		for(HttpServer httpServer: httpServers){
+			if (httpServer.isStarted()){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -208,11 +264,30 @@ public class Server implements Runnable {
 	}
 
 	public String getApiUrl(){
-		return serverUrl + "api/";
+		return getApiUrl(0);
 	}
 	
-	public String getClientUrl(){
-		return serverUrl + "client/index.html";
+	/**
+	 * 
+	 * @param index
+	 * @return the api url of the server at index position, or the first if index is out of bounds
+	 */
+	public String getApiUrl(int index){
+		if (index > serverUrls.size()-1){
+			index = 0;
+		}
+		return serverUrls.get(index) + "api/";
+	}
+	
+	/**
+	 * @param index
+	 * @return the client url of the server at index position, or the first if index is out of bounds
+	 */
+	public String getClientUrl(int index){
+		if (index > serverUrls.size()-1){
+			index = 0;
+		}
+		return serverUrls.get(index) + "client/index.html";
 	}
 
 
@@ -226,7 +301,7 @@ public class Server implements Runnable {
 				serverStatusListener.serverStatusChanged(true);
 			}
 		}
-		while(httpServer != null){
+		while(!httpServers.isEmpty()){
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {

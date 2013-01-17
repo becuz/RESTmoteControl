@@ -114,39 +114,6 @@ public class Tray implements ActionListener, ServerStatusListener {
 
 		//to show the window as default, enable this
 		getMainWindow(true).setVisible(true);
-		
-		// ActionListener listener = new ActionListener() {
-		// public void actionPerformed(ActionEvent e) {
-		// MenuItem item = (MenuItem)e.getSource();
-		// //TrayIcon.MessageType type = null;
-		// System.out.println(item.getLabel());
-		// if ("Error".equals(item.getLabel())) {
-		// //type = TrayIcon.MessageType.ERROR;
-		// trayIcon.displayMessage("Sun TrayIcon Demo",
-		// "This is an error message", TrayIcon.MessageType.ERROR);
-		//
-		// } else if ("Warning".equals(item.getLabel())) {
-		// //type = TrayIcon.MessageType.WARNING;
-		// trayIcon.displayMessage("Sun TrayIcon Demo",
-		// "This is a warning message", TrayIcon.MessageType.WARNING);
-		//
-		// } else if ("Info".equals(item.getLabel())) {
-		// //type = TrayIcon.MessageType.INFO;
-		// trayIcon.displayMessage("Sun TrayIcon Demo",
-		// "This is an info message", TrayIcon.MessageType.INFO);
-		//
-		// } else if ("None".equals(item.getLabel())) {
-		// //type = TrayIcon.MessageType.NONE;
-		// trayIcon.displayMessage("Sun TrayIcon Demo",
-		// "This is an ordinary message", TrayIcon.MessageType.NONE);
-		// }
-		// }
-		// };
-		//
-		// errorItem.addActionListener(listener);
-		// warningItem.addActionListener(listener);
-		// infoItem.addActionListener(listener);
-		// noneItem.addActionListener(listener);
 	}
 
 	@Override
@@ -162,7 +129,7 @@ public class Tray implements ActionListener, ServerStatusListener {
 			} else {
 				try {
 					Settings settings = new SettingsBusiness().get();
-					Server.getInstance().toggle(settings.getServerInetName(), settings.getServerPort());
+					Server.getInstance().toggleAll(settings.getServerPort());//(settings.getPreferredServerInetName(), settings.getServerPort());
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, UIConstants.TEXT_ERROR_SERVER_FROM_TRAY);
 				}
@@ -181,6 +148,5 @@ public class Tray implements ActionListener, ServerStatusListener {
 		if (mainWindow != null) {
 			mainWindow.updateViewStatusServer();
 		}
-
 	}
 }

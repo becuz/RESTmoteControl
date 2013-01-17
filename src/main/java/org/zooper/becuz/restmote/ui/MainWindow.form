@@ -144,15 +144,14 @@
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="comboInetNames" max="32767" attributes="0"/>
                                       <Group type="102" attributes="0">
-                                          <Component id="lblComboPort" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="textFieldPort" min="-2" pref="77" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="lblComboInetNames" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="1" attributes="0">
-                                              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
-                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Group type="102" attributes="0">
+                                                  <Component id="lblComboPort" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="textFieldPort" min="-2" pref="77" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
                                                   <Component id="lblStatusServer" max="32767" attributes="0"/>
                                                   <Component id="btnToggleServer" pref="157" max="32767" attributes="0"/>
                                               </Group>
@@ -161,6 +160,11 @@
                                   </Group>
                                   <EmptySpace pref="14" max="32767" attributes="0"/>
                                   <Component id="btnRefreshInetNames" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="lblComboInetNames" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="jCheckBoxRunAllInterfaces" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -171,8 +175,11 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="lblComboInetNames" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblComboInetNames" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCheckBoxRunAllInterfaces" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="btnRefreshInetNames" pref="0" max="32767" attributes="0"/>
                               <Component id="comboInetNames" max="32767" attributes="0"/>
@@ -198,7 +205,7 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="lblComboInetNames">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Interface"/>
+                    <Property name="text" type="java.lang.String" value="Interfaces:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="comboInetNames">
@@ -207,10 +214,13 @@
                       <Connection code="listInetNamesModel" type="code"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="comboInetNamesActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblComboPort">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Port"/>
+                    <Property name="text" type="java.lang.String" value="Port:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="textFieldPort">
@@ -259,6 +269,14 @@
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="text" type="java.lang.String" value="qrCode"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="jCheckBoxRunAllInterfaces">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Run in all interfaces"/>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="UIConstants.TOOLTIP_STNGS_ALLINT" type="code"/>
+                    </Property>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -370,7 +388,10 @@
                     <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
                       <ComponentRef name="lblTextFieldName"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Name"/>
+                    <Property name="text" type="java.lang.String" value="Name:"/>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="UIConstants.TOOLTIP_STNGS_NAME" type="code"/>
+                    </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="textFieldName">
@@ -380,7 +401,7 @@
                     <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
                       <ComponentRef name="textFieldNameRoot"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="NameRoot"/>
+                    <Property name="text" type="java.lang.String" value="NameRoot:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="textFieldNameRoot">
@@ -437,7 +458,7 @@
                     <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
                       <ComponentRef name="lblTextFieldScanDepth"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="ScanDepth"/>
+                    <Property name="text" type="java.lang.String" value="ScanDepth:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="textFieldScanDepth">
@@ -460,7 +481,7 @@
                     <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
                       <ComponentRef name="comboIconTheme"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Icon Theme"/>
+                    <Property name="text" type="java.lang.String" value="Icon Theme:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="comboIconTheme">

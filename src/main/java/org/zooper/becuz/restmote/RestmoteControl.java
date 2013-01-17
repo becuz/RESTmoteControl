@@ -75,12 +75,11 @@ public class RestmoteControl {
 		// start http listener
 		SettingsBusiness settingsBusiness = new SettingsBusiness(); 
 		Settings settings = settingsBusiness.get();
-		InetAddr inetAddr = Server.getInstance().start(settings.getServerInetName(), settings.getServerPort());
-		if (inetAddr != null){
-			settings.setServerInetName(inetAddr.getInetName());
-			settings.setServerLastIp(inetAddr.getIp());
+		if (Boolean.TRUE.equals(settings.getRunAllNetInterfaces())){
+			Server.getInstance().startAll(settings.getServerPort());
+		} else {
+			Server.getInstance().start(settings.getPreferredServerInetName(), settings.getServerPort());
 		}
-		settingsBusiness.store(settings);
 		
 		if (!getVersion().equals(getInstalledVersion())){
 			File f = new File(Utils.getRootDir() + "version");

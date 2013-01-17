@@ -66,10 +66,10 @@ public class Settings implements Persistable{
 	 * Names of net interfaces the server should run on
 	 */
 	@JsonView(Views.All.class)
-	private String serverInetName;
+	private String preferredServerInetName;
 	
 	/**
-	 * Ip of {@link #serverInetName}
+	 * Ip of {@link #preferredServerInetName}
 	 */
 	@JsonView(Views.All.class)
 	private String serverLastIp;
@@ -79,6 +79,12 @@ public class Settings implements Persistable{
 	 */
 	@JsonView(Views.All.class)
 	private Integer serverPort = 9898;
+	
+	/**
+	 * True if the server should run in all available net interaces. Otherwise will run in the {@link #preferredServerInetName}
+	 */
+	@JsonView(Views.All.class)
+	private Boolean runAllNetInterfaces;
 	
 	/**
 	 * icon theme name of controls 
@@ -208,12 +214,12 @@ public class Settings implements Persistable{
 		this.scanDepth = scanDepth;
 	}
 
-	public String getServerInetName() {
-		return serverInetName;
+	public String getPreferredServerInetName() {
+		return preferredServerInetName;
 	}
 
-	public void setServerInetName(String serverInetName) {
-		this.serverInetName = serverInetName;
+	public void setPreferredServerInetName(String preferredServerInetName) {
+		this.preferredServerInetName = preferredServerInetName;
 	}
 
 	public String getServerLastIp() {
@@ -230,6 +236,14 @@ public class Settings implements Persistable{
 
 	public void setServerPort(Integer serverPort) {
 		this.serverPort = serverPort;
+	}
+	
+	public Boolean getRunAllNetInterfaces() {
+		return runAllNetInterfaces;
+	}
+
+	public void setRunAllNetInterfaces(Boolean runAllNetInterfaces) {
+		this.runAllNetInterfaces = runAllNetInterfaces;
 	}
 
 	public void setTheme(String theme){

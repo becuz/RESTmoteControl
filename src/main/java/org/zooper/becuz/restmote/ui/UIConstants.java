@@ -12,6 +12,7 @@ public class UIConstants {
 	public static final String ERR_NO_INET = "Please specify a network interface";
 	
 	public static final String TOOLTIP_STNGS_NAME = "Name that will be displayed in the client";
+	public static final String TOOLTIP_STNGS_ALLINT = "Check if you want the server to listen in all available interfaces";
 	
 	public static final String TOOLTIP_CATEGORY_ACTIVE = "Active categories will appear on the clients";
 	public static final String TOOLTIP_CATEGORY_NAME = "Name for this category";
