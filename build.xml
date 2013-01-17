@@ -10,6 +10,7 @@
 <project name="RES(T)moteControl" default="default" basedir=".">
     <description>Builds, tests, and runs the project RES(T)moteControl.</description>
     
+	<import file="nbproject/build-impl.xml"/>
     <!--
 
 	this is to enable all NetBeans generated target
@@ -104,7 +105,4 @@
 	  		<fileset dir="./lib/"/>
 	  	</copy>
     </target>
-    
-    
-    
 </project>
