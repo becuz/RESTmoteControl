@@ -4,10 +4,17 @@
  */
 package org.zooper.becuz.restmote.ui.panels;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import org.zooper.becuz.restmote.business.BusinessFactory;
+import org.zooper.becuz.restmote.controller.PcControllerFactory;
 import org.zooper.becuz.restmote.model.Command;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
 import org.zooper.becuz.restmote.ui.UIConstants;
+import org.zooper.becuz.restmote.utils.Utils;
 
 /**
  *
@@ -21,7 +28,7 @@ public class PanelEditCommand extends PanelPersistable {
 	public PanelEditCommand() {
 		initComponents();
 		jComponentsToObserve = new JComponent[]{
-			textFieldName, textFieldCommand};
+			textFieldName, textFieldDescription, textAreaCommand};
 		activateViewChangesListener();
 	}
 
@@ -35,7 +42,8 @@ public class PanelEditCommand extends PanelPersistable {
 		super.edit(p);
 		Command command = (Command) p;
         textFieldName.setText(command == null ? "" : command.getName());
-        textFieldCommand.setText(command == null ? "" : command.getCommand());
+        textFieldDescription.setText(command == null ? "" : command.getDescription());
+		textAreaCommand.setText(command == null ? "" : command.getCommand());
 		listenViewChanges = true;
     }
 	
@@ -50,18 +58,24 @@ public class PanelEditCommand extends PanelPersistable {
 
         lblTextFieldName = new javax.swing.JLabel();
         textFieldName = new javax.swing.JTextField();
-        lblTextFieldCommand = new javax.swing.JLabel();
-        textFieldCommand = new javax.swing.JTextField();
+        lblTextFieldDescription = new javax.swing.JLabel();
+        textFieldDescription = new javax.swing.JTextField();
         btnEditSave = new javax.swing.JButton();
         btnEditCancel = new javax.swing.JButton();
+        jScrollPaneCommand = new javax.swing.JScrollPane();
+        textAreaCommand = new javax.swing.JTextArea();
+        lblTextCommand = new javax.swing.JLabel();
+        btnTest = new javax.swing.JButton();
+
+        setBorder(javax.swing.BorderFactory.createTitledBorder("Edit"));
 
         lblTextFieldName.setFont(lblTextFieldName.getFont().deriveFont(lblTextFieldName.getFont().getStyle() | java.awt.Font.BOLD));
         lblTextFieldName.setText("Name:");
         lblTextFieldName.setToolTipText(UIConstants.TOOLTIP_COMMAND_NAME);
 
-        lblTextFieldCommand.setFont(lblTextFieldCommand.getFont().deriveFont(lblTextFieldCommand.getFont().getStyle() | java.awt.Font.BOLD));
-        lblTextFieldCommand.setText("Command:");
-        lblTextFieldCommand.setToolTipText(UIConstants.TOOLTIP_COMMAND_COMMAND);
+        lblTextFieldDescription.setFont(lblTextFieldDescription.getFont().deriveFont(lblTextFieldDescription.getFont().getStyle() | java.awt.Font.BOLD));
+        lblTextFieldDescription.setText("Description:");
+        lblTextFieldDescription.setToolTipText(UIConstants.TOOLTIP_COMMAND_COMMAND);
 
         btnEditSave.setText("Save");
         btnEditSave.addActionListener(new java.awt.event.ActionListener() {
@@ -77,48 +91,78 @@ public class PanelEditCommand extends PanelPersistable {
             }
         });
 
+        textAreaCommand.setColumns(20);
+        textAreaCommand.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        textAreaCommand.setRows(5);
+        jScrollPaneCommand.setViewportView(textAreaCommand);
+
+        lblTextCommand.setFont(lblTextCommand.getFont().deriveFont(lblTextCommand.getFont().getStyle() | java.awt.Font.BOLD));
+        lblTextCommand.setText("Command:");
+        lblTextCommand.setToolTipText(UIConstants.TOOLTIP_COMMAND_COMMAND);
+
+        btnTest.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/test.png"))); // NOI18N
+        btnTest.setText("Test");
+        btnTest.setFocusPainted(false);
+        btnTest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTestActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(9, 9, 9)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblTextFieldName, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(lblTextFieldCommand, javax.swing.GroupLayout.Alignment.TRAILING))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(textFieldName, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
-                                .addComponent(textFieldCommand)))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnEditSave)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btnEditCancel)))
-                    .addGap(9, 9, 9)))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTextCommand, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblTextFieldDescription, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblTextFieldName, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnTest)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+                        .addComponent(btnEditSave)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEditCancel)
+                        .addGap(12, 12, 12))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPaneCommand, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(textFieldDescription)
+                            .addComponent(textFieldName))
+                        .addContainerGap())))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnEditCancel, btnEditSave, btnTest});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(79, 79, 79)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblTextFieldName)
-                        .addComponent(textFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblTextFieldCommand)
-                        .addComponent(textFieldCommand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(72, 72, 72)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnEditSave)
-                        .addComponent(btnEditCancel))
-                    .addContainerGap(80, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(52, 52, 52)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTextFieldName)
+                    .addComponent(textFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTextFieldDescription)
+                    .addComponent(textFieldDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(lblTextCommand)
+                        .addGap(114, 114, 114))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPaneCommand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnEditSave)
+                                .addComponent(btnEditCancel))
+                            .addComponent(btnTest, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(36, 36, 36))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -127,7 +171,8 @@ public class PanelEditCommand extends PanelPersistable {
         if (p != null){
             Command command = (Command) p;
             command.setName(textFieldName.getText());
-            command.setCommand(textFieldCommand.getText());
+			command.setCommand(textAreaCommand.getText());
+            command.setDescription(textFieldDescription.getText());
         }
         panelListPersistable.clearSelection();
     }//GEN-LAST:event_btnEditSaveActionPerformed
@@ -136,12 +181,39 @@ public class PanelEditCommand extends PanelPersistable {
         panelListPersistable.clearSelection();
     }//GEN-LAST:event_btnEditCancelActionPerformed
 
+    private void btnTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTestActionPerformed
+        String command = textAreaCommand.getText();
+		String errTitle = null;
+		String errBody = null;
+		if (Utils.isEmpty(command)){
+			errBody = UIConstants.ERROR_COMMAND_EMPTY_BODY;
+			errTitle = UIConstants.ERROR_COMMAND_EMPTY_TITLE;
+		} else {
+			try {
+				PcControllerFactory.getPcController().execute(command);
+			} catch (Exception ex) {
+				errBody = UIConstants.ERROR_COMMAND_EXCEPTION_BODY.replace("$ERR", ex.getMessage());
+				errTitle = UIConstants.ERROR_COMMAND_EXCEPTION_TITLE;
+			}
+		}
+		if (errTitle != null){
+			JOptionPane.showMessageDialog(this,
+					errBody, errTitle,
+					JOptionPane.ERROR_MESSAGE);
+		}
+				
+    }//GEN-LAST:event_btnTestActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditCancel;
     private javax.swing.JButton btnEditSave;
-    private javax.swing.JLabel lblTextFieldCommand;
+    private javax.swing.JButton btnTest;
+    private javax.swing.JScrollPane jScrollPaneCommand;
+    private javax.swing.JLabel lblTextCommand;
+    private javax.swing.JLabel lblTextFieldDescription;
     private javax.swing.JLabel lblTextFieldName;
-    private javax.swing.JTextField textFieldCommand;
+    private javax.swing.JTextArea textAreaCommand;
+    private javax.swing.JTextField textFieldDescription;
     private javax.swing.JTextField textFieldName;
     // End of variables declaration//GEN-END:variables
 }

@@ -36,5 +36,11 @@ public class UIConstants {
 	//public static final String TOOLTIP_APP_CONTROLS_TEST = "Test the configuration.";
 	
 	public static final String TOOLTIP_COMMAND_NAME = "Name of the command";
+	public static final String TOOLTIP_COMMAND_DESCRIPTION = "Free description of the command";
 	public static final String TOOLTIP_COMMAND_COMMAND = "Command to execute by the shell";
+	
+	public static final String ERROR_COMMAND_EMPTY_TITLE = "Command empty";
+	public static final String ERROR_COMMAND_EMPTY_BODY = "Please specify a command";
+	public static final String ERROR_COMMAND_EXCEPTION_TITLE = "Exception caught";
+	public static final String ERROR_COMMAND_EXCEPTION_BODY = "<html>The following error occured:\n$ERR.\n<b>Please check your command</b></html>";
 }

@@ -10,6 +10,7 @@
 		</id>
 		<property name="name" />
 		<property name="command" />
+		<property name="description" />
 	</class>
 
 </hibernate-mapping>

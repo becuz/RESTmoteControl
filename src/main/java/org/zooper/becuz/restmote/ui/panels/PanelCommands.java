@@ -37,7 +37,7 @@ public class PanelCommands extends PanelPersistables {
         setName(""); // NOI18N
         setPreferredSize(new java.awt.Dimension(806, 535));
 
-        panelEditCommand.setBorder(javax.swing.BorderFactory.createTitledBorder("Edit"));
+        panelEditCommand.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -86,7 +86,7 @@ public class PanelCommands extends PanelPersistables {
 
 	@Override
 	public Persistable getNew() {
-		return new Command("new command", "new command");
+		return new Command("new command", "new command", "");
 	}
 
 	@Override

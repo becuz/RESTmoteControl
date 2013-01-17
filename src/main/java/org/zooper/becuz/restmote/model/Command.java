@@ -11,7 +11,8 @@ import org.zooper.becuz.restmote.model.interfaces.Editable;
 import org.zooper.becuz.restmote.utils.Utils;
 
 /**
- * Identifies a customizable command to execute
+ * Identifies a customizable pc command to execute
+ * TODO examples
  * 
  * @author bebo
  */
@@ -35,15 +36,21 @@ public class Command implements Editable, Completable {
 	 */
 	private String command;
 	
+	/**
+	 * Free description for this command
+	 */
+	private String description;
+	
 	public Command() {
 		super();
 	}
 	
 
-	public Command(String name, String command) {
+	public Command(String name, String command, String description) {
 		this();
 		this.name = name;
 		this.command = command;
+		this.description = description;
 	}
 
 	@Override
@@ -88,5 +95,14 @@ public class Command implements Editable, Completable {
 	public void setCommand(String command) {
 		this.command = command;
 	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 
 }

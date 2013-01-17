@@ -112,7 +112,8 @@ public class Tray implements ActionListener, ServerStatusListener {
 			return;
 		}
 
-		//getMainWindow(true).setVisible(true);
+		//to show the window as default, enable this
+		getMainWindow(true).setVisible(true);
 		
 		// ActionListener listener = new ActionListener() {
 		// public void actionPerformed(ActionEvent e) {

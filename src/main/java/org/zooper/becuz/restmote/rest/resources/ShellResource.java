@@ -79,7 +79,7 @@ public class ShellResource extends AbstractResource {
 	}
 	
 	/**
-	 * Execute the command specified as a parameter
+	 * Execute the command specified as a parameter in the body
 	 * @param command
 	 */
 	@POST
@@ -90,7 +90,7 @@ public class ShellResource extends AbstractResource {
 	}
 	
 	/**
-	 * Execute the command specified as a parameter
+	 * Execute the command specified as a parameter in the query
 	 * @param command
 	 */
 	@POST

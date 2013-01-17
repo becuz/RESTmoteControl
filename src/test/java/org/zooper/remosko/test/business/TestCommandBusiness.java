@@ -23,7 +23,7 @@ public class TestCommandBusiness extends TestAbstract{
 	public void testBasicOps() {
 		int size = business.getAll().size();
 		assertTrue(size > 0);
-		Command command = new Command("name", "p");
+		Command command = new Command("name", "p", "desc");
 		business.store(command);
 		assertTrue(business.getAll().size() == size+1);
 		business.delete(command);

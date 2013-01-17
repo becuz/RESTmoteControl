@@ -13,7 +13,7 @@ public class ModelFactoryLinux extends ModelFactoryAbstract{
 
 	@Override
 	public Command getACommand() {
-		return new Command("ls", "ls");
+		return new Command("ls", "ls", "show files of current dir");
 	}
 	
 	/**
