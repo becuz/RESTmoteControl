@@ -193,6 +193,16 @@ public abstract class PersistenceAbstract {
 	 */
 	public abstract void delete(Persistable p);
 
+	/**
+	 * 
+	 * @param ps
+	 */
+	public void deleteAll(List<Persistable> ps) {
+		for(Persistable p: ps){
+			delete(p);
+		}
+	}
+
 
 
 	

@@ -63,8 +63,11 @@ public class Control implements ControlInterface {
 	
 	/**
 	 */
-	@JsonView(Views.All.class)
+	@JsonView(Views.Extreme.class)
 	private ControlCategory controlCategory;
+
+	@JsonView(Views.All.class)
+	private Long controlCategoryIdRef;
 	
 	public Control() {
 	}
@@ -122,6 +125,7 @@ public class Control implements ControlInterface {
 		}
 	}
 	
+	@JsonView(Views.Extreme.class)
 	public boolean isEmpty(){
 		return keysEvents == null || keysEvents.isEmpty();
 	}
@@ -166,13 +170,23 @@ public class Control implements ControlInterface {
 //		return this.getLogicOrder().compareTo(o.getLogicOrder());
 //	}
 
-
 	public ControlCategory getControlCategory() {
 		return controlCategory;
 	}
 
 	public void setControlCategory(ControlCategory controlCategory) {
 		this.controlCategory = controlCategory;
+	}
+	
+	public Long getControlCategoryIdRef() {
+		if (getControlCategory() != null){
+			setControlCategoryIdRef(getControlCategory().getId());
+		}
+		return controlCategoryIdRef;
+	}
+	
+	public void setControlCategoryIdRef(Long idRef) {
+		this.controlCategoryIdRef = idRef;
 	}
 
 	public void addKeysEvent(KeysEvent keysEvent) {

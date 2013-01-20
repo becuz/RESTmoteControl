@@ -3,7 +3,6 @@ package org.zooper.becuz.restmote.persistence.export;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,10 +19,15 @@ import org.codehaus.jackson.type.TypeReference;
 import org.zooper.becuz.restmote.RestmoteControl;
 import org.zooper.becuz.restmote.business.BusinessFactory;
 import org.zooper.becuz.restmote.conf.rest.RestFactory;
+import org.zooper.becuz.restmote.conf.rest.Views;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.ControlCategory;
+import org.zooper.becuz.restmote.model.ControlsManager;
 import org.zooper.becuz.restmote.model.KeysEvent;
+import org.zooper.becuz.restmote.model.MediaCategory;
+import org.zooper.becuz.restmote.model.VisualControl;
+import org.zooper.becuz.restmote.model.VisualControlsManager;
 import org.zooper.becuz.restmote.persistence.PersistenceAbstract;
 import org.zooper.becuz.restmote.persistence.PersistenceFactory;
 
@@ -35,10 +39,6 @@ import org.zooper.becuz.restmote.persistence.PersistenceFactory;
 public class ImportExport {
 
 	private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
-	
-//	public static void main(String[] args) {
-//		fillKeyMap();
-//	}
 	
 	public ImportExport() {}
 	
@@ -122,9 +122,9 @@ public class ImportExport {
 	 * @throws IOException
 	 */
 	public void importJson(String json, boolean justApps) throws JsonParseException, JsonMappingException, IOException{
-		ObjectMapper objectMapper = RestFactory.getJson().getContext(List.class);
 		PersistenceAbstract persistenceAbstract = PersistenceFactory.getPersistenceAbstract();
 		persistenceAbstract.beginTransaction();
+		ObjectMapper objectMapper = RestFactory.getJson().getContext(List.class);
 		if (justApps){
 			List<App> apps = objectMapper.readValue(json, new TypeReference<List<App>>() {});
 			for (App app: apps){
@@ -134,11 +134,79 @@ public class ImportExport {
 			}
 			persistenceAbstract.saveAll(apps);
 		} else {
+			persistenceAbstract.deleteAll(persistenceAbstract.getAll(MediaCategory.class));
+			persistenceAbstract.deleteAll(persistenceAbstract.getAll(App.class));
+			persistenceAbstract.deleteAll(persistenceAbstract.getAll(ControlCategory.class));
+			persistenceAbstract.deleteAll(persistenceAbstract.getAll(ControlsManager.class));
+			persistenceAbstract.deleteAll(persistenceAbstract.getAll(VisualControlsManager.class));
+			persistenceAbstract.deleteAll(persistenceAbstract.getAll(Control.class));
+			persistenceAbstract.deleteAll(persistenceAbstract.getAll(VisualControl.class));
+			persistenceAbstract.deleteAll(persistenceAbstract.getAll(KeysEvent.class));
+			persistenceAbstract.commit();
+			
+			persistenceAbstract.beginTransaction();
+			
 			Dump dump = objectMapper.readValue(json, new TypeReference<Dump>() {});
-			persistenceAbstract.store(dump.getSettings());
-			persistenceAbstract.storeAll(dump.getMediaCategories());
-			persistenceAbstract.storeAll(dump.getApps());
-			persistenceAbstract.storeAll(dump.getCommands());
+			List<App> apps = dump.getApps();
+			if (apps != null){
+				for(App app: apps){
+					if (app.getControlCategories() != null){
+						for(ControlCategory controlCategory: app.getControlCategories()){
+							persistenceAbstract.save(controlCategory);
+						}
+					}
+					if (app.getControlsManager() != null){
+						for (Control control: app.getControlsManager().getControls()){
+							if (control.getControlCategoryIdRef() != null){
+								for(ControlCategory controlCategory: app.getControlCategories()){
+									if (control.getControlCategoryIdRef().equals(controlCategory.getId())){
+										control.setControlCategory(controlCategory);
+										break;
+									}
+								}
+							}
+							for (KeysEvent keysEvent: control.getKeysEvents()){
+								persistenceAbstract.save(keysEvent);
+							}
+							persistenceAbstract.save(control);
+						}
+						persistenceAbstract.save(app.getControlsManager());
+					}
+					
+					if (app.getVisualControlsManager() != null){
+						for (VisualControl visualControl: app.getVisualControlsManager().getControls()){
+							if (visualControl.getControlIdRef() != null){
+								for (Control control: app.getControlsManager().getControls()){
+									if (visualControl.getControlIdRef().equals(control.getId())){
+										visualControl.setControl(control);
+										break;
+									}
+								}
+							}
+							persistenceAbstract.save(visualControl);
+						}
+						persistenceAbstract.save(app.getVisualControlsManager());
+					}
+					persistenceAbstract.save(app);
+				}
+			}
+			List<MediaCategory> mediaCategories = dump.getMediaCategories();
+			if (mediaCategories != null){
+				for(MediaCategory mediaCategory: mediaCategories){
+					if (mediaCategory.getAppIdRef() != null){
+						for (App app: apps){
+							if (mediaCategory.getAppIdRef().equals(app.getId())){
+								mediaCategory.setApp(app);
+								break;
+							}
+						}
+					}
+					persistenceAbstract.save(mediaCategory);
+				}
+			}
+			
+			persistenceAbstract.save(dump.getSettings());
+			persistenceAbstract.saveAll(dump.getCommands());
 		}
 		persistenceAbstract.commit();
 	}
@@ -171,7 +239,7 @@ public class ImportExport {
 				+ RestmoteControl.getInstalledVersion()
 				+ simpleDateFormat.format(new Date()) 
 				+ ".json"));
-		objectMapper.writerWithDefaultPrettyPrinter().writeValue(f, objectToExport);
+		objectMapper.writerWithDefaultPrettyPrinter().withView(Views.All.class).writeValue(f, objectToExport);
 		return f.getAbsolutePath();
 	}
 	

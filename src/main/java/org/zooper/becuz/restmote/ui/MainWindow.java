@@ -497,6 +497,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         menuImportApps.setText("Import apps...");
         menuImportApps.setToolTipText(UIConstants.TOOLTIP_MENU_EXPORTALL);
+        menuImportApps.setEnabled(false);
         menuImportApps.addActionListener(formListener);
         menuImport.add(menuImportApps);
 
@@ -511,6 +512,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         menuExportApps.setText("Export apps");
         menuExportApps.setToolTipText(UIConstants.TOOLTIP_MENU_EXPORTALL);
+        menuExportApps.setEnabled(false);
         menuExportApps.addActionListener(formListener);
         menuExport.add(menuExportApps);
 
@@ -587,17 +589,17 @@ public class MainWindow extends javax.swing.JFrame {
             else if (evt.getSource() == menuFileExit) {
                 MainWindow.this.menuFileExitActionPerformed(evt);
             }
+            else if (evt.getSource() == menuImportAll) {
+                MainWindow.this.menuImportAllActionPerformed(evt);
+            }
+            else if (evt.getSource() == menuImportApps) {
+                MainWindow.this.menuImportAppsActionPerformed(evt);
+            }
             else if (evt.getSource() == menuExportAll) {
                 MainWindow.this.menuExportAllActionPerformed(evt);
             }
             else if (evt.getSource() == menuExportApps) {
                 MainWindow.this.menuExportAppsActionPerformed(evt);
-            }
-            else if (evt.getSource() == menuImportApps) {
-                MainWindow.this.menuImportAppsActionPerformed(evt);
-            }
-            else if (evt.getSource() == menuImportAll) {
-                MainWindow.this.menuImportAllActionPerformed(evt);
             }
         }
 

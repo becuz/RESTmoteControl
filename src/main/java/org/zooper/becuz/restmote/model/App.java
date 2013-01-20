@@ -82,11 +82,13 @@ public class App implements Editable, Completable{
 	/**
 	 * meta arguments for file opening
 	 */
+	@JsonView({Views.All.class})
 	private String argumentsFile = Constants.APP_ARGUMENT_FILE;
 	
 	/**
 	 * meta arguments for directory opening
 	 */
+	@JsonView({Views.All.class})
 	private String argumentsDir = null;
 	
 	

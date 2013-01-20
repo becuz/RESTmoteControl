@@ -93,7 +93,7 @@ public class KeysEvent implements Comparable<KeysEvent>, Persistable{
 		}
 	}
 	
-	@JsonView(Views.None.class)
+	@JsonView(Views.Extreme.class)
 	public boolean isEmpty(){
 		return keys == null || keys.isEmpty();
 	}

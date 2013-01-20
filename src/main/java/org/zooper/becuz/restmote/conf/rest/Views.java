@@ -1,12 +1,29 @@
 package org.zooper.becuz.restmote.conf.rest;
 
 /**
- * Defines the views
+ * Defines the JSON views 
  * @author bebo
  */
 public class Views {
-    public static class Public { }	
+    
+	/**
+	 * 
+	 */
+	public static class Public { }
+	
+	/**
+	 * 
+	 */
+	public static class Custom extends Public { }	
+    
+	/**
+	 *
+	 */
     public static class All extends Public { }
-    public static class None extends All { }
+    
+    /**
+     *  
+     */
+    public static class Extreme extends All { }
 }
        

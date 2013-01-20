@@ -49,7 +49,14 @@ public class MediaCategory implements Editable, Completable{
 	/**
 	 * Reference to the {@link App} linked to this {@link MediaCategory}
 	 */
+	@JsonView(Views.Custom.class)
 	private App app;
+	
+	/**
+	 * 
+	 */
+	@JsonView(Views.All.class)
+	private Long appIdRef;
 	
 	/**
 	 * 
@@ -182,6 +189,17 @@ public class MediaCategory implements Editable, Completable{
 	public void setApp(App app) {
 		this.app = app;
 	}
+	
+	public Long getAppIdRef() {
+		if (getApp() != null){
+			setAppIdRef(getApp().getId());
+		}
+		return appIdRef;
+	}
+	
+	public void setAppIdRef(Long appIdRef) {
+		this.appIdRef = appIdRef;
+	}
 
 	public Long getId() {
 		return id;
@@ -207,12 +225,12 @@ public class MediaCategory implements Editable, Completable{
 		this.active = active;
 	}
 
-	@JsonView(Views.None.class)
+	@JsonView(Views.Extreme.class)
 	public Boolean isRoot() {
 		return ROOT_NAME.equals(getName());
 	}
 	
-	@JsonView(Views.None.class)
+	@JsonView(Views.Extreme.class)
 	public Boolean isEditable() {
 		return !isRoot();
 	}

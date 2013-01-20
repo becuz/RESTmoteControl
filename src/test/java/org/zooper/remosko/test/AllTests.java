@@ -4,10 +4,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 import org.zooper.remosko.test.business.AllBusinessTests;
+import org.zooper.remosko.test.persistence.AllPersistenceTests;
 import org.zooper.remosko.test.rest.AllRestTests;
 
 @RunWith(Suite.class)
-@SuiteClasses({ AllBusinessTests.class, AllRestTests.class})
+@SuiteClasses({ AllBusinessTests.class, AllRestTests.class, AllPersistenceTests.class})
 public class AllTests {
 
 }

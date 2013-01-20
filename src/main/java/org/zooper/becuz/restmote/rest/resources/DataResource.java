@@ -30,7 +30,7 @@ public class DataResource extends AbstractResource{
 	
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
-	@JsonView({Views.Public.class})
+	@JsonView({Views.Custom.class})
 	public Data get() {
 		log.info("Data get");
 		Data d = new Data();

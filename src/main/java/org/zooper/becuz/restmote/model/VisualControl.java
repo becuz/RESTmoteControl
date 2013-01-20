@@ -22,8 +22,11 @@ public class VisualControl implements ControlInterface{
 	/**
 	 * Actual control
 	 */
-	@JsonView(Views.All.class)
+	@JsonView(Views.Extreme.class)
 	private Control control;
+	
+	@JsonView(Views.All.class)
+	private Long controlIdRef;
 	
 	/**
 	 * TODO
@@ -148,10 +151,16 @@ public class VisualControl implements ControlInterface{
 		this.control = control;
 	}
 
-	@JsonView(Views.All.class)
-	public Long getControlIdReference() {
-		return getControl().getId();
+	public Long getControlIdRef() {
+		if (getControl() != null){
+			setControlIdRef(getControl().getId());
+		}
+		return controlIdRef;
 	}
 
+	public void setControlIdRef(Long controlIdRef) {
+		this.controlIdRef = controlIdRef;
+	}
+	
 
 }

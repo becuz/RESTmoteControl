@@ -18,7 +18,7 @@
 	        lazy="false"
 	        column="controlCategoryId" 
 	        unique="false"			
-	        not-null="false"/>	
+	        not-null="false"/>
 	</class>
 
 </hibernate-mapping>
