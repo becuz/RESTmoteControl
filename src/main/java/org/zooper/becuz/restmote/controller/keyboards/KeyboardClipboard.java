@@ -15,8 +15,6 @@ import org.zooper.becuz.restmote.controller.PcControllerAbstract;
  */
 public class KeyboardClipboard extends Keyboard{
 
-//	private static final Logger log = Logger.getLogger(KeyboardClipboard.class.getName());
-
     @Override
     public boolean type(String characters) throws Exception {
         if (!super.type(characters)){

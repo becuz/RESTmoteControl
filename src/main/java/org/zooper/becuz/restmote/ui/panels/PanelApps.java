@@ -84,7 +84,7 @@ public class PanelApps extends PanelPersistables{
         	appBusiness.store(listModel.get(i));
 		}
 		
-		for(Persistable p: panelListPersistable.getBin()){
+		for(Persistable p: panelListPersistable.getBin()){	
 			appBusiness.delete((App)p);
 		}
 	}

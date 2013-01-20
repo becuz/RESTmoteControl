@@ -5,11 +5,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.log4j.Logger;
+
 
 @Path("/test")
 public class TestResource extends AbstractResource{
 
-//	private static final Logger log = Logger.getLogger(TestResource.class.getName());
+	private static final Logger log = Logger.getLogger(TestResource.class.getName());
 	
 	public TestResource() {
 		super();
@@ -19,6 +21,7 @@ public class TestResource extends AbstractResource{
 	@Path("/ping")
 	@Produces({ MediaType.TEXT_PLAIN})
 	public String ping() {
+		log.info("ping!");
 		return "pong";
 	}
 	

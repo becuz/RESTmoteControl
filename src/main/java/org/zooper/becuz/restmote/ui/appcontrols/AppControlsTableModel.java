@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.swing.table.AbstractTableModel;
 
 import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.persistence.export.ImportExport;
 
 @SuppressWarnings("serial")
 public class AppControlsTableModel extends AbstractTableModel{
@@ -61,7 +62,7 @@ public class AppControlsTableModel extends AbstractTableModel{
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Control c = data.get(rowIndex);
 		if (columnIndex == 0){
-			return PanelControlKeys.getKeysAsString(c, -1);
+			return ImportExport.getStringFromControlKeys(c, -1);
 		}
 		if (columnIndex == 1){
 			return c.getDescription();

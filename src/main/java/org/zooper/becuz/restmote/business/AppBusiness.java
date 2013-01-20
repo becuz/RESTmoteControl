@@ -6,6 +6,7 @@ import java.util.List;
 import org.zooper.becuz.restmote.business.interfaces.BusinessModelAbstract;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.MediaCategory;
+import org.zooper.becuz.restmote.model.interfaces.Persistable;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
 import org.zooper.becuz.restmote.utils.Utils;
 import org.zooper.becuz.restmote.utils.Utils.OS;
@@ -56,25 +57,41 @@ public class AppBusiness extends BusinessModelAbstract<App>{
 			){
 		List<App> results = new ArrayList<App>();
 		List<App> apps = getAll();
-		for (App app: apps){
-			if (!Utils.isEmpty(nameFilter) && !app.getName().toLowerCase().contains(nameFilter.toLowerCase())){
-				continue;
+		if (apps != null){
+			for (App app: apps){
+				if (!Utils.isEmpty(nameFilter) && !app.getName().toLowerCase().contains(nameFilter.toLowerCase())){
+					continue;
+				}
+				if (!Utils.isEmpty(windowNameFilter) && !app.getWindowName().toLowerCase().contains(windowNameFilter.toLowerCase())){
+					continue;
+				}
+				if (!Utils.isEmpty(extensionFilter) && !app.getExtensions().contains(extensionFilter)){
+					continue;
+				}
+				if (osFilter != null && app.getOs() != null && !app.getOs().equals(osFilter.toString())){
+					continue;
+				}
+				if (Boolean.TRUE.equals(chosen) && Boolean.TRUE.equals(app.isChosen())){
+					continue;
+				}
+				results.add(app);
 			}
-			if (!Utils.isEmpty(windowNameFilter) && !app.getWindowName().toLowerCase().contains(windowNameFilter.toLowerCase())){
-				continue;
-			}
-			if (!Utils.isEmpty(extensionFilter) && !app.getExtensions().contains(extensionFilter)){
-				continue;
-			}
-			if (osFilter != null && app.getOs() != null && !app.getOs().equals(osFilter.toString())){
-				continue;
-			}
-			if (Boolean.TRUE.equals(chosen) && Boolean.TRUE.equals(app.isChosen())){
-				continue;
-			}
-			results.add(app);
 		}
 		return results;
 	}
+
+	@Override
+	public void delete(Persistable p) {
+		MediaCategoryBusiness mediaCategoryBusiness = BusinessFactory.getMediaCategoryBusiness();
+		for(MediaCategory mediaCategory: mediaCategoryBusiness.getAll()){
+			if (p.equals(mediaCategory.getApp())){
+				mediaCategory.setApp(null);
+				mediaCategoryBusiness.store(mediaCategory);
+			}
+		}
+		super.delete(p);
+	}
+	
+	
 	
 }

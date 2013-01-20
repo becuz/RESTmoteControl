@@ -8,6 +8,7 @@ import java.util.Set;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.Command;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeApp;
+import org.zooper.becuz.restmote.utils.Utils.OS;
 
 public class ModelFactoryLinux extends ModelFactoryAbstract{
 
@@ -24,6 +25,7 @@ public class ModelFactoryLinux extends ModelFactoryAbstract{
 		if (appMovies == null){
 			appMovies = (new ModelFactoryWindows()).getAppMovies();
 			appMovies.setPath("smplayer");
+			appMovies.setOs(OS.LINUX.toString());
 		}
 		return appMovies;
 	}
@@ -39,6 +41,7 @@ public class ModelFactoryLinux extends ModelFactoryAbstract{
 			appMusic.addExtension("mp3");
 			//appMusic.addExtension("ogg");
 			appMusic.setForceOneInstance(false);
+			appMusic.setOs(OS.LINUX.toString());
 			getControl(appMusic, 		
 					ControlDefaultTypeApp.VOLUP, 1, new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_ALT, KeyEvent.VK_UP})), 1, 0);
 			getControl(appMusic, 
@@ -68,6 +71,7 @@ public class ModelFactoryLinux extends ModelFactoryAbstract{
 			appPics.addExtension("gif");
 			appPics.addExtension("png");
 			appPics.setForceOneInstance(true);
+			appPics.setOs(OS.LINUX.toString());
 			getControl(appPics, ControlDefaultTypeApp.FULLSCREEN, KeyEvent.VK_F11, 1, 0);
 			getControl(appPics, ControlDefaultTypeApp.BACKWARD, KeyEvent.VK_LEFT, 2, -1);
 			getControl(appPics, ControlDefaultTypeApp.PLAY, KeyEvent.VK_F5, 2, 0);

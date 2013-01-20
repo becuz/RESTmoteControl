@@ -154,28 +154,6 @@ public class PanelControlKeys extends javax.swing.JPanel {
 		return (!control.getKeysEvents().isEmpty() && !control.getKeysEvents().last().getKeys().isEmpty());
 	}
 	
-	public static String getKeysAsString(Control c, int index){
-		List<KeysEvent> keysEventsList = new ArrayList<KeysEvent>(c.getKeysEvents());
-		int from = index == -1 ? 0 : index;
-		int to = index == -1 ? keysEventsList.size()-1 : index;
-		String keysText = new String();
-		for (int i = from; i <= to; i++) {
-			if (i > from){
-				keysText += ",";
-			}
-			KeysEvent currentKeysEvent = keysEventsList.get(i);
-			if (currentKeysEvent.getKeys() != null){
-				for(Integer key: currentKeysEvent.getKeys()){
-					if (keysText.length() > 0){
-						keysText += "+";
-					}
-					keysText += (KeyEvent.getKeyText(key));
-				}
-			}
-		}
-		return keysText;
-	}
-	
 	/**
 	 * Update the view accordingly to the {@link #control}
 	 */

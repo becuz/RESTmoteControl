@@ -95,7 +95,7 @@ public class KeyboardRobot extends Keyboard {
         case '9': return new int[]{KeyEvent.VK_9};
         case '-': return new int[]{KeyEvent.VK_MINUS};
         case '=': return new int[]{KeyEvent.VK_EQUALS};
-        case '~': return new int[]{KeyEvent.VK_SHIFT, KeyEvent.VK_BACK_QUOTE};
+        //case '~': return new int[]{KeyEvent.VK_SHIFT, KeyEvent.VK_BACK_QUOTE};
         case '!': return new int[]{KeyEvent.VK_EXCLAMATION_MARK};
         case '@': return new int[]{KeyEvent.VK_AT};
         case '#': return new int[]{KeyEvent.VK_NUMBER_SIGN};

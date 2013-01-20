@@ -27,11 +27,30 @@ public class BusinessModelAbstract<E extends Persistable> extends BusinessAbstra
 		return (List<E>) persistenceAbstract.getAll(type);
 	}
 
+	public E save(Persistable p){
+		persistenceAbstract.beginTransaction();
+		p = persistenceAbstract.save(p);
+		persistenceAbstract.commit();
+		return (E) p;
+	}
+	
+	public void saveAll(List<E> persistables){
+		persistenceAbstract.beginTransaction();
+		persistenceAbstract.saveAll(persistables);
+		persistenceAbstract.commit();
+	}
+	
 	public E store(Persistable p){
 		persistenceAbstract.beginTransaction();
 		p = persistenceAbstract.store(p);
 		persistenceAbstract.commit();
 		return (E) p;
+	}
+	
+	public void storeAll(List<E> persistables){
+		persistenceAbstract.beginTransaction();
+		persistenceAbstract.storeAll(persistables);
+		persistenceAbstract.commit();
 	}
 
 	public void delete(Persistable p){

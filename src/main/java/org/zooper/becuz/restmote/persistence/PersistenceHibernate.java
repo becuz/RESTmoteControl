@@ -92,12 +92,21 @@ public class PersistenceHibernate extends PersistenceAbstract{
 	}
 
 	@Override
-	public Persistable store(Persistable p) {
-		return store(p, true);
+	public Persistable save(Persistable p) {
+		return store(p, false, true);
 	}
 	
-	public Persistable store(Persistable p, boolean addInCache) {
-		session.saveOrUpdate(p);
+	@Override
+	public Persistable store(Persistable p) {
+		return store(p, true, true);
+	}
+	
+	private Persistable store(Persistable p, boolean saveOrUpdate, boolean addInCache) {
+		if (saveOrUpdate){
+			session.saveOrUpdate(p);
+		} else {
+			session.save(p);
+		}
 		if (addInCache){
 			addInCache(p);
 		}
@@ -107,7 +116,14 @@ public class PersistenceHibernate extends PersistenceAbstract{
 	@Override
 	public void storeAll(List<? extends Persistable> persistables) {
 		for(Persistable p: persistables){
-			store(p, false);
+			store(p, true, false);
+		}
+	}
+	
+	@Override
+	public void saveAll(List<? extends Persistable> persistables) {
+		for(Persistable p: persistables){
+			store(p, false, false);
 		}
 	}
 	

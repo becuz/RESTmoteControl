@@ -17,6 +17,7 @@ import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeApp;
 import org.zooper.becuz.restmote.model.ControlsManager;
+import org.zooper.becuz.restmote.utils.Utils;
 import org.zooper.becuz.restmote.utils.Utils.OS;
 import org.zooper.remosko.test.TestAbstract;
 
@@ -52,10 +53,10 @@ public class TestAppBusiness extends TestAbstract{
 				appBusiness.getByFilters(null, appMusic.getWindowName(), null, null, null).get(0)
 				.equals(appMusic));
 		assertTrue(
-				appBusiness.getByFilters(null, appMusic.getWindowName(), null, null, null).get(0)
+				appBusiness.getByFilters(null, null, "mp3", null, null).get(0)
 				.equals(appMusic));
 		assertTrue(
-				appBusiness.getByFilters(null, appMusic.getWindowName(), null, OS.WINDOWS, null).get(0)
+				appBusiness.getByFilters(null, appMusic.getWindowName(), null, Utils.getOs(), null).get(0)
 				.equals(appMusic));
 		assertTrue(
 				appBusiness.getByFilters(null, null, "mp3", null, null).get(0)

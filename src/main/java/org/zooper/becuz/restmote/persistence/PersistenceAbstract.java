@@ -161,14 +161,27 @@ public abstract class PersistenceAbstract {
 	public abstract List<Persistable> getAll(Class clazz);
 	
 	/**
-	 * 
+	 * Save a list of {@link Persistable}
+	 * @param persistables
+	 */
+	public abstract void saveAll(List<? extends Persistable> persistables);
+
+	/**
+	 * Save a {@link Persistable}
+	 * @param p
+	 * @return
+	 */
+	public abstract Persistable save(Persistable p);
+	
+	/**
+	 * Save or update a list of {@link Persistable}
 	 * @param persistables
 	 * @return
 	 */
 	public abstract void storeAll(List<? extends Persistable> persistables);
 	
 	/**
-	 * 
+	 * Save or update a {@link Persistable}
 	 * @param persistable
 	 * @return
 	 */
@@ -179,6 +192,8 @@ public abstract class PersistenceAbstract {
 	 * @param p
 	 */
 	public abstract void delete(Persistable p);
+
+
 
 	
 }

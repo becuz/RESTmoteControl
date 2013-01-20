@@ -41,6 +41,16 @@ public class PersistenceMemory extends PersistenceAbstract {
 	}
 
 	@Override
+	public void saveAll(List<? extends Persistable> persistables) {
+		storeAll(persistables);
+	}
+
+	@Override
+	public Persistable save(Persistable p) {
+		return store(p);
+	}
+	
+	@Override
 	public Persistable store(Persistable p) {
 		addInCache(p);
 		return p;

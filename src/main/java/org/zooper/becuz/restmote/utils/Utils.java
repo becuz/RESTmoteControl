@@ -126,10 +126,10 @@ public class Utils {
 		return Utils.getRootDir() + "/client/images/" + theme;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
+	public static String getFileExtension(File f) {
+		return getFileExtension(f.getAbsolutePath());
+	}
+	
 	public static String getFileExtension(String path) {
 		try {
 			return path.substring(path.lastIndexOf('.') + 1).toLowerCase();

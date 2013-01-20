@@ -13,6 +13,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
+import javax.swing.filechooser.FileFilter;
 
 import net.glxn.qrgen.QRCode;
 import net.glxn.qrgen.image.ImageType;
@@ -215,8 +216,11 @@ public class MainWindow extends javax.swing.JFrame {
         menuAbout = new javax.swing.JMenu();
         menuAdvanced = new javax.swing.JMenu();
         menuImport = new javax.swing.JMenu();
+        menuImportAll = new javax.swing.JMenuItem();
+        menuImportApps = new javax.swing.JMenuItem();
         menuExport = new javax.swing.JMenu();
         menuExportAll = new javax.swing.JMenuItem();
+        menuExportApps = new javax.swing.JMenuItem();
 
         FormListener formListener = new FormListener();
 
@@ -485,6 +489,17 @@ public class MainWindow extends javax.swing.JFrame {
         menuAdvanced.setText("Advanced");
 
         menuImport.setText("Import");
+
+        menuImportAll.setText("Import all...");
+        menuImportAll.setToolTipText(UIConstants.TOOLTIP_MENU_EXPORTALL);
+        menuImportAll.addActionListener(formListener);
+        menuImport.add(menuImportAll);
+
+        menuImportApps.setText("Import apps...");
+        menuImportApps.setToolTipText(UIConstants.TOOLTIP_MENU_EXPORTALL);
+        menuImportApps.addActionListener(formListener);
+        menuImport.add(menuImportApps);
+
         menuAdvanced.add(menuImport);
 
         menuExport.setText("Export");
@@ -493,6 +508,11 @@ public class MainWindow extends javax.swing.JFrame {
         menuExportAll.setToolTipText(UIConstants.TOOLTIP_MENU_EXPORTALL);
         menuExportAll.addActionListener(formListener);
         menuExport.add(menuExportAll);
+
+        menuExportApps.setText("Export apps");
+        menuExportApps.setToolTipText(UIConstants.TOOLTIP_MENU_EXPORTALL);
+        menuExportApps.addActionListener(formListener);
+        menuExport.add(menuExportApps);
 
         menuAdvanced.add(menuExport);
 
@@ -569,6 +589,15 @@ public class MainWindow extends javax.swing.JFrame {
             }
             else if (evt.getSource() == menuExportAll) {
                 MainWindow.this.menuExportAllActionPerformed(evt);
+            }
+            else if (evt.getSource() == menuExportApps) {
+                MainWindow.this.menuExportAppsActionPerformed(evt);
+            }
+            else if (evt.getSource() == menuImportApps) {
+                MainWindow.this.menuImportAppsActionPerformed(evt);
+            }
+            else if (evt.getSource() == menuImportAll) {
+                MainWindow.this.menuImportAllActionPerformed(evt);
             }
         }
 
@@ -721,7 +750,6 @@ public class MainWindow extends javax.swing.JFrame {
 		panelCategories.save();
 		panelCommands.save();
 		
-		
         setVisible(false);
     }//GEN-LAST:event_btnSaveActionPerformed
 
@@ -752,10 +780,10 @@ public class MainWindow extends javax.swing.JFrame {
         changedSelectedInetName();
     }//GEN-LAST:event_comboInetNamesActionPerformed
 
-    private void menuExportAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExportAllActionPerformed
-        ImportExport importExport = new ImportExport();
+	private void callExport(boolean justApps){
+		ImportExport importExport = new ImportExport();
 		try {
-			String pathFile = importExport.exportJson(false);
+			String pathFile = importExport.exportJson(justApps);
 			JOptionPane.showMessageDialog(this, "Database exported to " + pathFile);
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(this,
@@ -763,7 +791,60 @@ public class MainWindow extends javax.swing.JFrame {
 						UIConstants.ERROR_IMPORTEXPORT_EXCEPTION_TITLE,
 						JOptionPane.ERROR_MESSAGE);
 		}
+	}
+	
+	private void callImport(boolean justApps){
+		int n = JOptionPane.showConfirmDialog(
+			this,
+			justApps ? UIConstants.IMPORTAPPS_CONFIRM_BODY : UIConstants.IMPORTALL_CONFIRM_BODY,
+			UIConstants.IMPORT_CONFIRM_TITLE,
+			JOptionPane.YES_NO_OPTION);
+		if (n == JOptionPane.YES_OPTION){
+			JFileChooser fc = MainWindow.getFc();
+			fc.setCurrentDirectory(new File(".")); //new File(new File(".").getCanonicalPath());
+			fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+			fc.setFileFilter(new FileFilter() {
+				@Override
+				public boolean accept(File f) {
+					return "json".equals(Utils.getFileExtension(f));
+				}
+
+				@Override
+				public String getDescription() {
+					return "JSON Restmote files";
+				}
+			});
+			int returnVal = fc.showOpenDialog(this);
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				File file = fc.getSelectedFile();
+				ImportExport importExport = new ImportExport();
+				try {
+					importExport.importJsonFile(file.getAbsolutePath(), justApps);
+				} catch (Exception ex) {
+				JOptionPane.showMessageDialog(this,
+							UIConstants.ERROR_IMPORTEXPORT_EXCEPTION_BODY.replace("$ERR", ex.getMessage()), 
+							UIConstants.ERROR_IMPORTEXPORT_EXCEPTION_TITLE,
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
+	}
+	
+    private void menuExportAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExportAllActionPerformed
+        callExport(false);
     }//GEN-LAST:event_menuExportAllActionPerformed
+
+    private void menuExportAppsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExportAppsActionPerformed
+        callExport(true);
+    }//GEN-LAST:event_menuExportAppsActionPerformed
+
+    private void menuImportAppsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuImportAppsActionPerformed
+        callImport(true);
+    }//GEN-LAST:event_menuImportAppsActionPerformed
+
+    private void menuImportAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuImportAllActionPerformed
+        callImport(false);
+    }//GEN-LAST:event_menuImportAllActionPerformed
 
 	private void changedSelectedInetName(){
 		if (Server.getInstance().isRunning()){
@@ -821,9 +902,12 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu menuExport;
     private javax.swing.JMenuItem menuExportAll;
+    private javax.swing.JMenuItem menuExportApps;
     private javax.swing.JMenu menuFile;
     private javax.swing.JMenuItem menuFileExit;
     private javax.swing.JMenu menuImport;
+    private javax.swing.JMenuItem menuImportAll;
+    private javax.swing.JMenuItem menuImportApps;
     private org.zooper.becuz.restmote.ui.panels.PanelApps panelApps;
     private org.zooper.becuz.restmote.ui.panels.PanelCategories panelCategories;
     private org.zooper.becuz.restmote.ui.panels.PanelCommands panelCommands;

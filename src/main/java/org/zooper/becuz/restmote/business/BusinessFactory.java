@@ -9,6 +9,7 @@ public class BusinessFactory {
 	private static AppBusiness appBusiness = new AppBusiness();
 	private static RemoteControlBusiness remoteControlBusiness = new RemoteControlBusiness();
 	private static CommandBusiness commandBusiness = new CommandBusiness();
+	private static ControlCategoryBusiness controlCategoryBusiness = new ControlCategoryBusiness();
 	
 	public static SettingsBusiness getSettingsBusiness() {
 		return settingsBusiness;
@@ -36,6 +37,10 @@ public class BusinessFactory {
 	
 	public static CommandBusiness getCommandBusiness() {
 		return commandBusiness;
+	}
+	
+	public static ControlCategoryBusiness getControlCategoryBusiness() {
+		return controlCategoryBusiness;
 	}
 	
 }

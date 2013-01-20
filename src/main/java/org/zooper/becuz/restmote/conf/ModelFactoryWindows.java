@@ -29,6 +29,7 @@ public class ModelFactoryWindows extends ModelFactoryAbstract{
 			appMovies.setWindowName("smplayer");
 			appMovies.addExtension("avi");
 			appMovies.setForceOneInstance(true);
+			appMovies.setOs(OS.WINDOWS.toString());
 			getControl(appMovies, ControlDefaultTypeApp.VOLUP, 3, KeyEvent.VK_0, 1, 0);
 			getControl(appMovies, ControlDefaultTypeApp.FULLSCREEN, KeyEvent.VK_F, 2, -2);
 			getControl(appMovies, ControlDefaultTypeApp.BACKWARD, 3, KeyEvent.VK_LEFT, 2, -1);
@@ -52,7 +53,7 @@ public class ModelFactoryWindows extends ModelFactoryAbstract{
 			appMusic.addExtension("mp3");
 			appMusic.addExtension("ogg");
 			appMusic.setForceOneInstance(false);
-			appMusic.setOs(OS.WINDOWS.toString().toLowerCase());
+			appMusic.setOs(OS.WINDOWS.toString());
 			ControlCategory controlCategory = new ControlCategory("Play Music in Winamp");
 			ControlCategory controlCategory2 = new ControlCategory("Manage Winamp Window(s)");
 			appMusic.addControlCategory(controlCategory);
@@ -83,6 +84,7 @@ public class ModelFactoryWindows extends ModelFactoryAbstract{
 			appPics.addExtension("gif");
 			appPics.addExtension("png");
 			appPics.setForceOneInstance(true);
+			appPics.setOs(OS.WINDOWS.toString());
 			getControl(appPics, ControlDefaultTypeApp.FULLSCREEN, KeyEvent.VK_ENTER, 1, 0);
 			getControl(appPics, ControlDefaultTypeApp.BACKWARD, KeyEvent.VK_LEFT, 2, -1);
 			Set<Integer> list = new HashSet<Integer>();

@@ -49,6 +49,10 @@ public class UIConstants {
 	public static final String TOOLTIP_COMMAND_DESCRIPTION = "Free description of the command";
 	public static final String TOOLTIP_COMMAND_COMMAND = "Command to execute by the shell";
 	
+	public static final String IMPORT_CONFIRM_TITLE = "Import";
+	public static final String IMPORTALL_CONFIRM_BODY = "This operation will overwrite all your configurations, are you sure you want to continue?";
+	public static final String IMPORTAPPS_CONFIRM_BODY = "This operation will overwrite all your apps configurations, are you sure you want to continue?";
+	
 	public static final String ERROR_COMMAND_EMPTY_TITLE = "Command empty";
 	public static final String ERROR_COMMAND_EMPTY_BODY = "Please specify a command";
 	public static final String ERROR_COMMAND_EXCEPTION_TITLE = "Exception caught";

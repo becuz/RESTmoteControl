@@ -7,6 +7,11 @@ import org.zooper.becuz.restmote.model.Command;
 import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.model.Settings;
 
+/**
+ * Class used to serialize/deserialize the db or part of it
+ * 
+ * @author bebo
+ */
 public class Dump {
 
 	private Settings settings;
