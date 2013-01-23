@@ -11,10 +11,7 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableColumn;
 
 import org.zooper.becuz.restmote.business.ActiveAppBusiness;
 import org.zooper.becuz.restmote.controller.PcControllerFactory;
@@ -30,6 +27,7 @@ import org.zooper.becuz.restmote.ui.UIConstants;
 import org.zooper.becuz.restmote.ui.UIUtils;
 import org.zooper.becuz.restmote.ui.appcontrols.AppControlsTableModel;
 import org.zooper.becuz.restmote.ui.appcontrols.AppVisualControlsTableModel;
+import org.zooper.becuz.restmote.ui.appcontrols.ControlSelectionListener;
 import org.zooper.becuz.restmote.ui.appcontrols.ControlTransferHandler;
 import org.zooper.becuz.restmote.ui.appcontrols.ImageList;
 import org.zooper.becuz.restmote.ui.appcontrols.VisualControlRenderer;
@@ -73,20 +71,26 @@ public class PanelEditApp extends PanelPersistable {
 				textFieldArgFileApp, textFieldArgDirApp, textFieldPathApp, comboWindowName};
 		tableControls.setDragEnabled(true);
 		tableControls.setTransferHandler(new ControlTransferHandler());
-		tableControls.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			@Override
+		ControlSelectionListener controlSelectionListener = new ControlSelectionListener(tableControls, panelControlKeys){
 			public void valueChanged(ListSelectionEvent e) {
+				super.valueChanged(e);
 				btnDeleteControl.setEnabled(tableControls.getSelectedRowCount() > 0);
-			}
-		});
-		tableControls.getModel().addTableModelListener(new TableModelListener() {
+			};
 			@Override
 			public void tableChanged(TableModelEvent e) {
+				super.tableChanged(e);
 				btnDeleteControl.setEnabled(tableControls.getSelectedRowCount() > 0);
 			}
-		});
+		};
+		tableControls.getModel().addTableModelListener(controlSelectionListener);
+		tableControls.getSelectionModel().addListSelectionListener(controlSelectionListener);
+		tableControls.getColumnModel().getSelectionModel().addListSelectionListener(controlSelectionListener);
 		tableVisualControls.setDefaultRenderer(Control.class, new VisualControlRenderer());
 		tableVisualControls.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		controlSelectionListener = new ControlSelectionListener(tableVisualControls, panelVisualControl);
+		tableVisualControls.getModel().addTableModelListener(controlSelectionListener);
+		tableVisualControls.getSelectionModel().addListSelectionListener(controlSelectionListener);
+		tableVisualControls.getColumnModel().getSelectionModel().addListSelectionListener(controlSelectionListener);
 		buildListWindowsModel();
 		activateViewChangesListener();
 	}
@@ -482,13 +486,12 @@ public class PanelEditApp extends PanelPersistable {
 				}
 			}
 			app.setWindowName(comboWindowName.getSelectedItem().toString());
-			//TODO il panel edit non scrive sul modello, ma il panel dei controls si
 			ControlsManager controlsManager = app.getControlsManager();
 			VisualControlsManager visualControlsManager = app.getVisualControlsManager();
 			controlsManager.clear();
 			visualControlsManager.clear();
 			for (int i = 0; i < tableControls.getRowCount(); i++) {
-				Control c = (Control) ((AppControlsTableModel)tableControls.getModel()).getControlAt(i);
+				Control c = (Control) ((AppControlsTableModel)tableControls.getModel()).getControlAt(i, -1);
 				if (c != null){
 					c.clean();
 					if (!c.isEmpty()){

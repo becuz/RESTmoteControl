@@ -2,18 +2,17 @@ package org.zooper.becuz.restmote.ui.appcontrols;
 
 import java.util.ArrayList;
 import java.util.Set;
-import javax.swing.JOptionPane;
 
 import javax.swing.table.AbstractTableModel;
 
 import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.model.ControlInterface;
 import org.zooper.becuz.restmote.model.KeysEvent;
 import org.zooper.becuz.restmote.model.VisualControl;
 import org.zooper.becuz.restmote.persistence.export.ImportExport;
-import org.zooper.becuz.restmote.ui.UIConstants;
 
 @SuppressWarnings("serial")
-public class AppVisualControlsTableModel extends AbstractTableModel{
+public class AppVisualControlsTableModel extends AbstractTableModel implements HasControl{
 
     private VisualControl[][] data;
 
@@ -75,6 +74,11 @@ public class AppVisualControlsTableModel extends AbstractTableModel{
 		return data == null ? null : data[rowIndex][columnIndex];
 	}
 	
+	@Override
+	public ControlInterface getControlAt(int row, int column) {
+		return (ControlInterface) getValueAt(row, column);
+	}
+	
 	/**
 	 * Set the control at a specified location
 	 * @param control
@@ -99,5 +103,6 @@ public class AppVisualControlsTableModel extends AbstractTableModel{
 		data[rowIndex][columnIndex] = (VisualControl)aValue;
 		fireTableCellUpdated(rowIndex, columnIndex);
 	}
+
 
 }

@@ -7,11 +7,12 @@ import java.util.Set;
 import javax.swing.table.AbstractTableModel;
 
 import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.model.ControlInterface;
 import org.zooper.becuz.restmote.model.KeysEvent;
 import org.zooper.becuz.restmote.persistence.export.ImportExport;
 
 @SuppressWarnings("serial")
-public class AppControlsTableModel extends AbstractTableModel{
+public class AppControlsTableModel extends AbstractTableModel implements HasControl{
 
     private List<Control> data;
 
@@ -29,7 +30,8 @@ public class AppControlsTableModel extends AbstractTableModel{
 		fireTableDataChanged();
 	}
 	
-	public Control getControlAt(int rowIndex){
+	@Override
+	public ControlInterface getControlAt(int rowIndex, int colIndex){
 		return data.get(rowIndex);
 	}
 	

@@ -9,10 +9,11 @@ import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
 import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.ui.panels.PanelEditApp;
 
 /**
- * TransferHandler for Control.
- * It's used to drag'n'drop a Control from PanelEdit.tableControls to PanelEdit.visualTableControls
+ * {@link TransferHandler} for {@link Control}.
+ * It's used to drag'n'drop a {@link Control} from {@link PanelEditApp#tableControls} to {@link PanelEditApp#tableVisualControls}
  * @author bebo
  */
 @SuppressWarnings("serial")
@@ -27,7 +28,7 @@ public class ControlTransferHandler extends TransferHandler {
 		int index = t.getSelectedRow();
 		if (index < 0)
 			return null;
-		Control control = ((AppControlsTableModel)t.getModel()).getControlAt(index);
+		Control control = (Control) ((HasControl)t.getModel()).getControlAt(index, -1);
 		return new ControlTransferable(control);
 	}
 }

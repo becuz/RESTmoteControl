@@ -9,16 +9,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 
 import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.model.ControlInterface;
 import org.zooper.becuz.restmote.model.KeysEvent;
 import org.zooper.becuz.restmote.ui.UIConstants;
 import org.zooper.becuz.restmote.ui.UIUtils;
@@ -28,7 +24,7 @@ import org.zooper.becuz.restmote.ui.UIUtils;
  * @author bebo
  */
 @SuppressWarnings("serial")
-public class PanelControlKeys extends javax.swing.JPanel {
+public class PanelControlKeys extends javax.swing.JPanel implements EditControl {
 
 	private boolean modified;
 	
@@ -52,51 +48,7 @@ public class PanelControlKeys extends javax.swing.JPanel {
 	 */
 	private JTable appControlsTable;
 	
-	/**
-	 * Listener for change selection and cell updates for appControlsTable
-	 */
-	public class ControlSelectionListener implements ListSelectionListener, TableModelListener {
 	
-		public ControlSelectionListener() {
-		}
-
-		@Override
-		public void valueChanged(ListSelectionEvent e) {
-			if (e.getValueIsAdjusting()) {
-				return;
-			}
-			int selectedColumn = appControlsTable.getSelectedColumn();
-			int selectedRow = appControlsTable.getSelectedRow();
-			if (selectedColumn > -1 && selectedRow > -1){
-				Control controlSelected = ((AppControlsTableModel)appControlsTable.getModel()).getControlAt(selectedRow);
-				setControl(controlSelected);
-			} else {
-				setControl(null);
-			}
-		}
-		
-		/**
-		 * TODO it should be called after PanelEditApp does a appControlsTableModel.setData(app.getControlsManager().getControls());
-		 * like in PanelVisualControl
-		 * 
-		 * It's not, caused in PanelEditApp, it's created before doing app.setModel
-		 * 
-		 * @param e 
-		 */
-		@Override
-		public void tableChanged(TableModelEvent e) {
-			Control controlSelected = null;
-			int selectedColumn = appControlsTable.getSelectedColumn();
-			int selectedRow = appControlsTable.getSelectedRow();
-			if (selectedColumn > -1 && selectedRow > -1){
-				Object value = appControlsTable.getModel().getValueAt(selectedRow, selectedColumn);
-				if (value != null){
-					controlSelected = (Control) value;
-				}
-			}
-			setControl(controlSelected);
-		}
-	}
 	
 	public PanelControlKeys(){}
         
@@ -105,10 +57,6 @@ public class PanelControlKeys extends javax.swing.JPanel {
 	 */
 	public PanelControlKeys(JTable appControlsTable) {
 		this.appControlsTable = appControlsTable;
-		ControlSelectionListener controlSelectionListener = new ControlSelectionListener();
-		appControlsTable.getModel().addTableModelListener(controlSelectionListener);
-		appControlsTable.getSelectionModel().addListSelectionListener(controlSelectionListener);
-		appControlsTable.getColumnModel().getSelectionModel().addListSelectionListener(controlSelectionListener);
 		initComponents();
 		lblPaging.setHorizontalAlignment(JLabel.CENTER);
 	}
@@ -117,8 +65,9 @@ public class PanelControlKeys extends javax.swing.JPanel {
 	 * Set the Contol to edit
 	 * @param control
 	 */
-	public void setControl(Control control){
-		this.control = control;
+	@Override
+	public void setControl(ControlInterface controlInterface){
+		this.control = (Control)controlInterface;
 		this.keysEvents = control == null ? null : new ArrayList<KeysEvent>();
 		if (control != null){
 			for(KeysEvent keysEvent: control.getKeysEvents()){
@@ -141,8 +90,6 @@ public class PanelControlKeys extends javax.swing.JPanel {
 
 	@Override
 	public void setEnabled(boolean enabled) {
-		enabled &= (control != null); //if control is null disabled anyway
-		System.out.println("PanelControlKeys enabled: " + enabled);
 		super.setEnabled(enabled);
 		UIUtils.setEnabledRecursive(this, enabled);
 	}

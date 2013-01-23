@@ -5,12 +5,9 @@
 package org.zooper.becuz.restmote.ui.appcontrols;
 
 import javax.swing.JTable;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import org.apache.log4j.Logger;
 
+import org.apache.log4j.Logger;
+import org.zooper.becuz.restmote.model.ControlInterface;
 import org.zooper.becuz.restmote.model.VisualControl;
 import org.zooper.becuz.restmote.ui.UIConstants;
 import org.zooper.becuz.restmote.ui.UIUtils;
@@ -19,7 +16,7 @@ import org.zooper.becuz.restmote.ui.UIUtils;
  *
  * @author bebo
  */
-public class PanelVisualControl extends javax.swing.JPanel {
+public class PanelVisualControl extends javax.swing.JPanel implements EditControl {
 
 	private Logger logger = Logger.getLogger(PanelVisualControl.class.getName());
 	
@@ -36,44 +33,6 @@ public class PanelVisualControl extends javax.swing.JPanel {
 	private JTable appVisualControlsTable;
 	
 	/**
-	 * Listener for change selection and cell updates for appVisualControlsTable
-	 */
-	public class ControlSelectionListener implements ListSelectionListener, TableModelListener {
-
-		public ControlSelectionListener() {
-		}
-
-		@Override
-		public void valueChanged(ListSelectionEvent e) {
-			if (e.getValueIsAdjusting()) {
-				return;
-			}
-			int selectedColumn = appVisualControlsTable.getSelectedColumn();
-			int selectedRow = appVisualControlsTable.getSelectedRow();
-			
-			if (selectedRow > -1 && selectedColumn > -1){
-				VisualControl controlSelected = (VisualControl)appVisualControlsTable.getModel().getValueAt(selectedRow, selectedColumn);
-				setVisualControl(controlSelected);
-			}
-			//internalUpdate = false;
-		}
-
-		@Override
-		public void tableChanged(TableModelEvent e) {
-			VisualControl controlSelected = null;
-			int selectedColumn = appVisualControlsTable.getSelectedColumn();
-			int selectedRow = appVisualControlsTable.getSelectedRow();
-			if (selectedColumn > -1 && selectedRow > -1){
-				Object value = appVisualControlsTable.getModel().getValueAt(selectedRow, selectedColumn);
-				if (value != null){
-					controlSelected = (VisualControl) value;
-				}
-			}
-			setVisualControl(controlSelected);
-		}
-	}
-	
-	/**
 	 * Creates new form PanelVisualControl
 	 */
 	public PanelVisualControl() {
@@ -82,15 +41,12 @@ public class PanelVisualControl extends javax.swing.JPanel {
 	
 	public PanelVisualControl(JTable jt){
 		this.appVisualControlsTable = jt;
-		ControlSelectionListener controlSelectionListener = new ControlSelectionListener();
-		appVisualControlsTable.getModel().addTableModelListener(controlSelectionListener);
-		appVisualControlsTable.getSelectionModel().addListSelectionListener(controlSelectionListener);
-		appVisualControlsTable.getColumnModel().getSelectionModel().addListSelectionListener(controlSelectionListener);
 		initComponents();
 	}
 
-	public void setVisualControl(VisualControl control){
-		this.visualControl = control;
+	@Override
+	public void setControl(ControlInterface control){
+		this.visualControl = (VisualControl) control;
 		modified = false;
 		setEnabled(control != null);
 		UIUtils.setEnabledRecursive(this, control != null);
