@@ -17,7 +17,11 @@ public class PcControllerWindows extends PcControllerAbstract{
 
 	protected PcControllerWindows() {
 		super();
-		binDefaultPaths = Arrays.asList(new String[]{"%ProgramFiles%", "%CommonProgramFiles%"});
+		binDefaultPaths = Arrays.asList(new String[]{
+				"%ProgramFiles%", 
+				"%ProgramFiles(x86)%",
+				"%ProgramW6432%"
+				});
 	}
 	
 	@Override

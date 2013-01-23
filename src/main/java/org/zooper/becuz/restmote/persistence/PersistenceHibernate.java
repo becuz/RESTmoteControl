@@ -74,17 +74,17 @@ public class PersistenceHibernate extends PersistenceAbstract{
 	
 	@Override
 	public List<Persistable> getAll(Class clazz){
-		if (cacheContainsAllOfAKind.containsKey(clazz) && cacheContainsAllOfAKind.get(clazz).equals(Boolean.TRUE)){ 
-			Map<Long, Persistable> persistables = cache.get(clazz); 
-			return persistables == null ? null : new ArrayList<Persistable>(persistables.values());
-		}
+//		if (cacheContainsAllOfAKind.containsKey(clazz) && cacheContainsAllOfAKind.get(clazz).equals(Boolean.TRUE)){ 
+//			Map<Long, Persistable> persistables = cache.get(clazz); 
+//			return persistables == null ? null : new ArrayList<Persistable>(persistables.values());
+//		}
 		boolean sessionWasOpen = sessionIsOpen(); 
 		if (!sessionWasOpen){
 			beginTransaction();
 		}
 		List<Persistable> l =  session.createQuery(
 			    "from " + clazz.getSimpleName()).list();
-		addAllOfAKindInCache(clazz, l);
+//		addAllOfAKindInCache(clazz, l);
 		if (!sessionWasOpen){
 			session.close();
 		}

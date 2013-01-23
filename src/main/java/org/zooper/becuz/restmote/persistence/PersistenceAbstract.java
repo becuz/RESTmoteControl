@@ -17,10 +17,10 @@ public abstract class PersistenceAbstract {
 	 */
 	protected Map<Class, Map<Long, Persistable>> cache = new HashMap<Class, Map<Long,Persistable>>();
 	
-	/**
-	 * True if all defined instance of Class are currently in cache
-	 */
-	protected Map<Class, Boolean> cacheContainsAllOfAKind = new HashMap<Class, Boolean>();
+//	/**
+//	 * True if all defined instance of Class are currently in cache
+//	 */
+//	protected Map<Class, Boolean> cacheContainsAllOfAKind = new HashMap<Class, Boolean>();
 	
 	/**
 	 * Default Constructor
@@ -48,7 +48,7 @@ public abstract class PersistenceAbstract {
 	 */
 	public void clearCache(){
 		cache.clear();
-		cacheContainsAllOfAKind.clear();
+//		cacheContainsAllOfAKind.clear();
 	}
 	
 	/**
@@ -67,22 +67,22 @@ public abstract class PersistenceAbstract {
 		thisClassCache.put(p.getId(), p);
 	}
 	
-	/**
-	 * Add all defined {@link Persistable} instances of clazz in cache
-	 * @param clazz
-	 * @param l
-	 * @see #cacheContainsAllOfAKind
-	 */
-	public void addAllOfAKindInCache(Class clazz, List<Persistable> l) {
-		Map<Long, Persistable> allCachedThisKind = cache.get(clazz);
-		if (allCachedThisKind != null){
-			allCachedThisKind.clear();
-		}
-		for(Persistable p: l){
-			addInCache(p);
-		}
-		cacheContainsAllOfAKind.put(clazz, true);
-	}
+//	/**
+//	 * Add all defined {@link Persistable} instances of clazz in cache
+//	 * @param clazz
+//	 * @param l
+//	 * @see #cacheContainsAllOfAKind
+//	 */
+//	public void addAllOfAKindInCache(Class clazz, List<Persistable> l) {
+//		Map<Long, Persistable> allCachedThisKind = cache.get(clazz);
+//		if (allCachedThisKind != null){
+//			allCachedThisKind.clear();
+//		}
+//		for(Persistable p: l){
+//			addInCache(p);
+//		}
+//		cacheContainsAllOfAKind.put(clazz, true);
+//	}
 	
 	/**
 	 * 
@@ -198,8 +198,10 @@ public abstract class PersistenceAbstract {
 	 * @param ps
 	 */
 	public void deleteAll(List<Persistable> ps) {
-		for(Persistable p: ps){
-			delete(p);
+		if (ps != null){
+			for(Persistable p: ps){
+				delete(p);
+			}
 		}
 	}
 

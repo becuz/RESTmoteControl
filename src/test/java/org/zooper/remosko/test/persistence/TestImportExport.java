@@ -1,20 +1,18 @@
 package org.zooper.remosko.test.persistence;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.zooper.becuz.restmote.business.AppBusiness;
-import org.zooper.becuz.restmote.business.BusinessFactory;
-import org.zooper.becuz.restmote.business.MediaCategoryBusiness;
-import org.zooper.becuz.restmote.model.App;
-import org.zooper.becuz.restmote.model.MediaCategory;
+import org.zooper.becuz.restmote.model.KeysEvent;
 import org.zooper.becuz.restmote.persistence.export.ImportExport;
 import org.zooper.remosko.test.TestAbstract;
 
@@ -40,10 +38,29 @@ public class TestImportExport extends TestAbstract {
 		importExport = null;
 	}
 	
+	@Test
+	public void testConversionKeys() {
+		String[] strings = {"a", "d+a"};
+		for(String s: strings){
+			List<KeysEvent> keysEvents = importExport.getKeysEventsFromString(s);
+			assertEquals(s.toUpperCase(), ImportExport.getStringFromControlKeys(keysEvents));
+		}
+		
+		strings = new String[] {"0+!"};
+		for(String s: strings){
+			try {
+				List<KeysEvent> keysEvents = importExport.getKeysEventsFromString(s);
+				log.info(s + "\t" + ImportExport.getStringFromControlKeys(keysEvents));
+			} catch (IllegalArgumentException e){
+				log.error("", e);
+			}
+		}
+	}
+	
 	/**
 	 * 
 	 */
-	@Test
+//	@Test
 	public void testImportExportAll() {
 		log.info("Starting test");
 		File f = null;

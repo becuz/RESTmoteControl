@@ -67,23 +67,12 @@ public class TestPersistence extends TestAbstract {
 		persistenceAbstract.beginTransaction();
 		assertTrue(persistenceAbstract.getAll(MediaCategory.class).isEmpty());
 		assertTrue(persistenceAbstract.getAll(App.class).isEmpty());
-		assertNull(persistenceAbstract.getAll(ControlCategory.class));
-		assertNull(persistenceAbstract.getAll(ControlsManager.class));
-		assertNull(persistenceAbstract.getAll(VisualControlsManager.class));
-		assertNull(persistenceAbstract.getAll(Control.class));
-		assertNull(persistenceAbstract.getAll(VisualControl.class));
-		assertNull(persistenceAbstract.getAll(KeysEvent.class));
-		persistenceAbstract.commit();
-		
-		persistenceAbstract.beginTransaction();
-		assertTrue(persistenceAbstract.getAll(MediaCategory.class).isEmpty());
-		assertTrue(persistenceAbstract.getAll(App.class).isEmpty());
-		assertNull(persistenceAbstract.getAll(ControlCategory.class));
-		assertNull(persistenceAbstract.getAll(ControlsManager.class));
-		assertNull(persistenceAbstract.getAll(VisualControlsManager.class));
-		assertNull(persistenceAbstract.getAll(Control.class));
-		assertNull(persistenceAbstract.getAll(VisualControl.class));
-		assertNull(persistenceAbstract.getAll(KeysEvent.class));
+		assertTrue(persistenceAbstract.getAll(ControlCategory.class).isEmpty());
+		assertTrue(persistenceAbstract.getAll(ControlsManager.class).isEmpty());
+		assertTrue(persistenceAbstract.getAll(VisualControlsManager.class).isEmpty());
+		assertTrue(persistenceAbstract.getAll(Control.class).isEmpty());
+		assertTrue(persistenceAbstract.getAll(VisualControl.class).isEmpty());
+		assertTrue(persistenceAbstract.getAll(KeysEvent.class).isEmpty());
 		persistenceAbstract.commit();
 		
 		persistenceAbstract.beginTransaction();
@@ -93,21 +82,19 @@ public class TestPersistence extends TestAbstract {
 		
 		ControlCategory controlCategory = new ControlCategory("ControlCategory");
 		controlCategory.setId(99l);
-		
 		newApp.addControlCategory(controlCategory);
 		
 		Control c = new Control();
 		c.setId(999l);
 		c.setName("name");
 		c.setControlCategory(controlCategory);
+		newApp.getControlsManager().addControl(c);
+		
 		SortedSet<KeysEvent> keysEvents = new TreeSet<KeysEvent>();
 		KeysEvent k = new KeysEvent(1);
 		k.setLogicOrder(0);
 		keysEvents.add(k);
-//		c.addKeysEvent(new KeysEvent(1));
 		c.setKeysEvents(keysEvents);
-//		newApp.getControlsManager().setId(923278l);
-		newApp.getControlsManager().addControl(c);
 		
 		try {
 			persistenceAbstract.save(controlCategory);
@@ -120,24 +107,24 @@ public class TestPersistence extends TestAbstract {
 		
 		persistenceAbstract.commit();
 		
-//		persistenceAbstract.beginTransaction();
-//		List<Persistable> apps = persistenceAbstract.getAll(App.class);
-//		assertEquals(apps.size(), 1);
-//		assertEquals(persistenceAbstract.getAll(ControlCategory.class).size(), 1);
-//		assertEquals(persistenceAbstract.getAll(Control.class).size(), 1);
-//		assertEquals(persistenceAbstract.getAll(KeysEvent.class).size(), 1);
-//		boolean found = true;
-//		for (Persistable p: apps){
-//			if (((App)p).getName().equals("name2")){
-//				found = true;
-//				assertTrue(controlCategory.getName().equals(((App)p).getControlCategories().iterator().next().getName()));
-//				assertTrue(c.getName().equals(((App)p).getControlsManager().getControl(c.getName()).getName()));
-//				assertTrue(newApp.getControlsManager().getId().equals(((App)p).getControlsManager().getId()));
-//				break;
-//			}
-//		}
-//		assertTrue(found);
-//		persistenceAbstract.commit();
+		persistenceAbstract.beginTransaction();
+		List<Persistable> apps = persistenceAbstract.getAll(App.class);
+		assertEquals(apps.size(), 1);
+		assertEquals(persistenceAbstract.getAll(ControlCategory.class).size(), 1);
+		assertEquals(persistenceAbstract.getAll(Control.class).size(), 1);
+		assertEquals(persistenceAbstract.getAll(KeysEvent.class).size(), 1);
+		boolean found = true;
+		for (Persistable p: apps){
+			if (((App)p).getName().equals("name2")){
+				found = true;
+				assertTrue(controlCategory.getName().equals(((App)p).getControlCategories().iterator().next().getName()));
+				assertTrue(c.getName().equals(((App)p).getControlsManager().getControl(c.getName()).getName()));
+				assertTrue(newApp.getControlsManager().getId().equals(((App)p).getControlsManager().getId()));
+				break;
+			}
+		}
+		assertTrue(found);
+		persistenceAbstract.commit();
 	}
 	
 //	@Test

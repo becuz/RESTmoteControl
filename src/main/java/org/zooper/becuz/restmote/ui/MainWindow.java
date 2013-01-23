@@ -823,10 +823,11 @@ public class MainWindow extends javax.swing.JFrame {
 				try {
 					importExport.importJsonFile(file.getAbsolutePath(), justApps);
 				} catch (Exception ex) {
-				JOptionPane.showMessageDialog(this,
-							UIConstants.ERROR_IMPORTEXPORT_EXCEPTION_BODY.replace("$ERR", ex.getMessage()), 
-							UIConstants.ERROR_IMPORTEXPORT_EXCEPTION_TITLE,
-							JOptionPane.ERROR_MESSAGE);
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(this,
+								UIConstants.ERROR_IMPORTEXPORT_EXCEPTION_BODY.replace("$ERR", ex.getMessage()), 
+								UIConstants.ERROR_IMPORTEXPORT_EXCEPTION_TITLE,
+								JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}

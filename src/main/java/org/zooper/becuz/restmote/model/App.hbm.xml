@@ -15,6 +15,7 @@
 		<property name="chosen" />
 		<property name="os" />
 		<property name="path" />
+		<property name="relativePath" />
 		<property name="argumentsFile" />
 		<property name="argumentsDir" />	
 		<property name="forceOneInstance" />

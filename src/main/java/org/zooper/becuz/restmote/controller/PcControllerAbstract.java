@@ -42,7 +42,7 @@ public abstract class PcControllerAbstract {
 	protected static final Logger log = Logger.getLogger(PcControllerAbstract.class.getName());
 	
 	/**
-	 * TODO use them
+	 * List of common paths containing bins and programs
 	 */
 	protected List<String> binDefaultPaths;
 	

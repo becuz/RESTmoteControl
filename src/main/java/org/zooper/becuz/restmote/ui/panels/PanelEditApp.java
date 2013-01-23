@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
@@ -11,6 +12,7 @@ import javax.swing.JFileChooser;
 import javax.swing.ListSelectionModel;
 
 import org.zooper.becuz.restmote.business.ActiveAppBusiness;
+import org.zooper.becuz.restmote.controller.PcControllerFactory;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.ControlsManager;
@@ -442,6 +444,30 @@ public class PanelEditApp extends PanelPersistable {
             app.setArgumentsFile(textFieldArgFileApp.getText());
             app.setArgumentsDir(textFieldArgDirApp.getText());
             app.setPath(textFieldPathApp.getText());
+			if (!Utils.isEmpty(app.getPath())){
+				Map<String, String> env = System.getenv();
+				for(String commonPath: PcControllerFactory.getPcController().getBinDefaultPaths()){
+					if (commonPath.startsWith("%")){
+						String s = commonPath.substring(1, commonPath.length()-1);
+						for(String k: env.keySet()){
+							if (k.equalsIgnoreCase(s.toUpperCase())){
+								commonPath = env.get(k);
+								break;
+							}
+						}
+					}
+					if (!Utils.isEmpty(commonPath)){
+						if (app.getPath().startsWith(commonPath)){
+							String relativePath = app.getPath().substring(commonPath.length());
+							if (relativePath.startsWith(""+File.separatorChar)){
+								relativePath = relativePath.substring(1);
+							}
+							app.setRelativePath(relativePath);
+							break;
+						}
+					}
+				}
+			}
 			app.setWindowName(comboWindowName.getSelectedItem().toString());
 			//TODO il panel edit non scrive sul modello, ma il panel dei controls si
 			ControlsManager controlsManager = app.getControlsManager();

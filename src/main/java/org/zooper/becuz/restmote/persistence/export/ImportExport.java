@@ -20,6 +20,8 @@ import org.zooper.becuz.restmote.RestmoteControl;
 import org.zooper.becuz.restmote.business.BusinessFactory;
 import org.zooper.becuz.restmote.conf.rest.RestFactory;
 import org.zooper.becuz.restmote.conf.rest.Views;
+import org.zooper.becuz.restmote.controller.keyboards.Keyboard;
+import org.zooper.becuz.restmote.controller.keyboards.KeyboardRobot;
 import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.ControlCategory;
@@ -43,12 +45,20 @@ public class ImportExport {
 	public ImportExport() {}
 	
 	/**
+	 * 
+	 * @param keysEventsList
+	 * @return
+	 */
+	public static String getStringFromControlKeys(List<KeysEvent> keysEventsList){
+		return getStringFromControlKeys(keysEventsList, -1);
+	}
+	
+	/**
 	 * @param c
 	 * @param index
 	 * @return string representation of {@link Control#getKeysEvents()}
 	 */ 
-	public static String getStringFromControlKeys(Control c, int index){
-		List<KeysEvent> keysEventsList = new ArrayList<KeysEvent>(c.getKeysEvents());
+	public static String getStringFromControlKeys(List<KeysEvent> keysEventsList, int index){
 		int from = index == -1 ? 0 : index;
 		int to = index == -1 ? keysEventsList.size()-1 : index;
 		String keysText = new String();
@@ -73,7 +83,7 @@ public class ImportExport {
 	 * @param s
 	 * @return a {@link List<KeysEvent>} representation from a String
 	 */
-	public static List<KeysEvent> getKeysEventsFromString(String s){
+	public List<KeysEvent> getKeysEventsFromString(String s){
 		List<KeysEvent> keysEventsList = new ArrayList<KeysEvent>();
 		String[] keysEvents = s.trim().split(",");
 		for (int i = 0; i < keysEvents.length; i++) {
@@ -81,24 +91,23 @@ public class ImportExport {
 			Set<Integer> keys = new LinkedHashSet<Integer>();
 			String[] keysS = keysEvents[i].split("\\+");
 			for (int j = 0; j < keysS.length; j++) {
-				//TODO
+				String current = keysS[j]; 
+				Integer k = null;
+				if (current.length() == 1){
+					k = KeyboardRobot.getKeyEvents(current.charAt(0))[0];
+				} else {
+					k = Keyboard.SPECIAL_CHARS.get("$RES_" + current);
+				}
+				if (k == null){
+					throw new IllegalArgumentException("Code for " + current + " not found");
+				}
+				keys.add(k);
 			}
 			keysEvent.setKeys(keys);
+			keysEventsList.add(keysEvent); //so far, multiple sequene aren't parsed
 		}
 		return keysEventsList;
 	}
-	
-//	public static final void fillKeyMap() {
-//	    try {
-//	        Field[] fields = KeyEvent.class.getDeclaredFields();
-//	        for(Field f : fields) {
-//	            if(f.getName().startsWith("VK_")) {
-//	                int code = ((Integer)f.get(null)).intValue();
-//	                System.out.println(f.getName() + "\t\t\t" + code);
-//	            }
-//	        }
-//	    } catch(Exception ex) {}
-//	}
 	
 	/**
 	 * Import in the db the json content of the file at the specified location

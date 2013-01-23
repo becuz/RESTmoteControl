@@ -80,6 +80,11 @@ public class App implements Editable, Completable{
 	private String path;
 	
 	/**
+	 * Relative path
+	 */
+	private String relativePath;
+	
+	/**
 	 * meta arguments for file opening
 	 */
 	@JsonView({Views.All.class})
@@ -221,6 +226,12 @@ public class App implements Editable, Completable{
 	}
 	public void setPath(String path) {
 		this.path = path;
+	}
+	public String getRelativePath() {
+		return relativePath;
+	}
+	public void setRelativePath(String relativePath) {
+		this.relativePath = relativePath;
 	}
 	public String getArgumentsFile() {
 		return argumentsFile;

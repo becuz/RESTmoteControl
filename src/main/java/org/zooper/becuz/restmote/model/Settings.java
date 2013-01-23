@@ -81,10 +81,10 @@ public class Settings implements Persistable{
 	private Integer serverPort = 9898;
 	
 	/**
-	 * True if the server should run in all available net interaces. Otherwise will run in the {@link #preferredServerInetName}
+	 * True if the server should run in all available net interfaces. Otherwise will run in the {@link #preferredServerInetName}
 	 */
 	@JsonView(Views.All.class)
-	private Boolean runAllNetInterfaces;
+	private Boolean runAllNetInterfaces = true;
 	
 	/**
 	 * icon theme name of controls 
