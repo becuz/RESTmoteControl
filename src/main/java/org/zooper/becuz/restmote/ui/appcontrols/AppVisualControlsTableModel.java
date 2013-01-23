@@ -79,6 +79,19 @@ public class AppVisualControlsTableModel extends AbstractTableModel implements H
 		return (ControlInterface) getValueAt(row, column);
 	}
 	
+	@Override
+	public int[] getControlPosition(ControlInterface c){
+		for (int i = 0; i < getRowCount(); i++) {
+			for (int j = 0; j < getColumnCount(); j++) {
+				VisualControl visualControl = (VisualControl) getValueAt(i, j);
+				if (visualControl != null && visualControl.getControl() == c){
+					return new int[]{i, j};
+				}
+			}
+		}
+		return new int[]{-1, -1};
+	}
+	
 	/**
 	 * Set the control at a specified location
 	 * @param control

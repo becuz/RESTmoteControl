@@ -5,19 +5,23 @@
 package org.zooper.becuz.restmote.ui.appcontrols;
 
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
+import org.apache.log4j.Logger;
 import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.ControlInterface;
 import org.zooper.becuz.restmote.model.KeysEvent;
 import org.zooper.becuz.restmote.ui.UIConstants;
 import org.zooper.becuz.restmote.ui.UIUtils;
+import org.zooper.becuz.restmote.utils.Utils;
 
 /**
  * Panel to view and edit the shortcut of a {@link Control}
@@ -26,6 +30,8 @@ import org.zooper.becuz.restmote.ui.UIUtils;
 @SuppressWarnings("serial")
 public class PanelControlKeys extends javax.swing.JPanel implements EditControl {
 
+	private Logger logger = Logger.getLogger(PanelControlKeys.class.getName());
+	
 	private boolean modified;
 	
 	/**
@@ -48,7 +54,10 @@ public class PanelControlKeys extends javax.swing.JPanel implements EditControl 
 	 */
 	private JTable appControlsTable;
 	
-	
+	/**
+     * Swing list model for {@link #comboVirtualKey} 
+     */
+    private DefaultComboBoxModel<String> listVirtualKeyModel = new DefaultComboBoxModel<String>();
 	
 	public PanelControlKeys(){}
         
@@ -58,7 +67,21 @@ public class PanelControlKeys extends javax.swing.JPanel implements EditControl 
 	public PanelControlKeys(JTable appControlsTable) {
 		this.appControlsTable = appControlsTable;
 		initComponents();
+		postInitComponents();
+	}
+	
+	/**
+	 * called after {@link #initComponents()}
+	 */
+	private void postInitComponents(){
 		lblPaging.setHorizontalAlignment(JLabel.CENTER);
+		listVirtualKeyModel.addElement("");
+		Field[] fields = KeyEvent.class.getDeclaredFields();
+		for (Field f : fields) {
+			if (f.getName().startsWith("VK_")) {
+				listVirtualKeyModel.addElement(f.getName());
+			}
+		}
 	}
 
 	/**
@@ -67,6 +90,7 @@ public class PanelControlKeys extends javax.swing.JPanel implements EditControl 
 	 */
 	@Override
 	public void setControl(ControlInterface controlInterface){
+		listVirtualKeyModel.setSelectedItem("");
 		this.control = (Control)controlInterface;
 		this.keysEvents = control == null ? null : new ArrayList<KeysEvent>();
 		if (control != null){
@@ -167,7 +191,12 @@ public class PanelControlKeys extends javax.swing.JPanel implements EditControl 
         btnSave = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
-        comboVirtualKey.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboVirtualKey.setModel(listVirtualKeyModel);
+        comboVirtualKey.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboVirtualKeyActionPerformed(evt);
+            }
+        });
 
         textFieldKeyStroke.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -355,21 +384,18 @@ public class PanelControlKeys extends javax.swing.JPanel implements EditControl 
 	}
 	
     private void textFieldKeyStrokeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldKeyStrokeKeyTyped
+    	System.out.println("textFieldKeyStrokeKeyPressed");
     	evt.consume();
-		System.out.println("textFieldKeyStrokeKeyPressed");
 		keysEvents.get(indexKeysEvents).getKeys().clear();
     }//GEN-LAST:event_textFieldKeyStrokeKeyTyped
 
     private void textFieldKeyStrokeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldKeyStrokeKeyReleased
-		//checkMetaKey(checkBoxKeyAlt.isSelected(), KeyEvent.VK_ALT);
-		//checkMetaKey(checkBoxKeyCtrl.isSelected(), KeyEvent.VK_CONTROL);
-		//checkMetaKey(checkBoxKeyShift.isSelected(), KeyEvent.VK_SHIFT);
-		keysEvents.get(indexKeysEvents).getKeys().add(evt.getKeyCode());
+//		int keyCode = evt.getKeyCode();
+//		System.out.println("keyChar " + evt.getKeyChar());
+//		System.out.println("keyCode " + keyCode);
+//		System.out.println("TextCode " + KeyEvent.getKeyText(keyCode));
+    	keysEvents.get(indexKeysEvents).getKeys().add(evt.getKeyCode());
 		evt.consume();
-		int keyCode = evt.getKeyCode();
-		System.out.println("keyChar " + evt.getKeyChar());
-		System.out.println("keyCode " + keyCode);
-		System.out.println("TextCode " + KeyEvent.getKeyText(keyCode));
 		setModified(true);
 		copyToView();
     }//GEN-LAST:event_textFieldKeyStrokeKeyReleased
@@ -382,6 +408,22 @@ public class PanelControlKeys extends javax.swing.JPanel implements EditControl 
         copyToModel();
 		appControlsTable.clearSelection();
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void comboVirtualKeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboVirtualKeyActionPerformed
+        try {
+			String keyName = (String) listVirtualKeyModel.getSelectedItem();
+			if (!Utils.isEmpty(keyName)){
+				Field field = KeyEvent.class.getDeclaredField(keyName);
+				int code = ((Integer) field.get(null)).intValue();
+				keysEvents.get(indexKeysEvents).getKeys().clear();
+				keysEvents.get(indexKeysEvents).getKeys().add(code);
+				setModified(true);
+				copyToView();
+			}
+		} catch (Exception e){
+			logger.error("", e);
+		}
+    }//GEN-LAST:event_comboVirtualKeyActionPerformed
 
 	
 	

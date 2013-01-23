@@ -31,6 +31,11 @@ public class AppControlsTableModel extends AbstractTableModel implements HasCont
 	}
 	
 	@Override
+	public int[] getControlPosition(ControlInterface c){
+		return new int[]{data.indexOf(c), -1};
+	}
+	
+	@Override
 	public ControlInterface getControlAt(int rowIndex, int colIndex){
 		return data.get(rowIndex);
 	}

@@ -1,10 +1,12 @@
 package org.zooper.becuz.restmote.ui.panels;
 
+import java.awt.Rectangle;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
@@ -29,6 +31,7 @@ import org.zooper.becuz.restmote.ui.appcontrols.AppControlsTableModel;
 import org.zooper.becuz.restmote.ui.appcontrols.AppVisualControlsTableModel;
 import org.zooper.becuz.restmote.ui.appcontrols.ControlSelectionListener;
 import org.zooper.becuz.restmote.ui.appcontrols.ControlTransferHandler;
+import org.zooper.becuz.restmote.ui.appcontrols.HasControl;
 import org.zooper.becuz.restmote.ui.appcontrols.ImageList;
 import org.zooper.becuz.restmote.ui.appcontrols.VisualControlRenderer;
 import org.zooper.becuz.restmote.utils.Utils;
@@ -40,6 +43,8 @@ import org.zooper.becuz.restmote.utils.Utils;
 @SuppressWarnings("serial")
 public class PanelEditApp extends PanelPersistable {
 
+	private Logger logger = Logger.getLogger(PanelEditApp.class.getName());
+	
 	/**
      * Swing list model for {@link #comboInetNames} 
      */
@@ -72,6 +77,7 @@ public class PanelEditApp extends PanelPersistable {
 		tableControls.setDragEnabled(true);
 		tableControls.setTransferHandler(new ControlTransferHandler());
 		ControlSelectionListener controlSelectionListener = new ControlSelectionListener(tableControls, panelControlKeys){
+			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				super.valueChanged(e);
 				btnDeleteControl.setEnabled(tableControls.getSelectedRowCount() > 0);
@@ -87,7 +93,32 @@ public class PanelEditApp extends PanelPersistable {
 		tableControls.getColumnModel().getSelectionModel().addListSelectionListener(controlSelectionListener);
 		tableVisualControls.setDefaultRenderer(Control.class, new VisualControlRenderer());
 		tableVisualControls.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		controlSelectionListener = new ControlSelectionListener(tableVisualControls, panelVisualControl);
+		controlSelectionListener = new ControlSelectionListener(tableVisualControls, panelVisualControl){
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				super.valueChanged(e);
+				if (e.getValueIsAdjusting()) {
+					return;
+				}
+				int selectedColumn = tableVisualControls.getSelectedColumn();
+				int selectedRow = tableVisualControls.getSelectedRow();
+				if (selectedColumn > -1 && selectedRow > -1){
+					VisualControl visualControl = 
+							(VisualControl) ((HasControl)tableVisualControls.getModel()).getControlAt(selectedRow, selectedColumn);
+					if (visualControl != null){
+						Control control = visualControl.getControl();
+						//TODO visualControl.getControl()) is null
+						logger.info("Control retrieved from selected visualControl " + control);
+						int[] pos = ((HasControl)tableControls.getModel()).getControlPosition(control);
+						if (pos[0] != -1){
+							Rectangle rect = tableControls.getCellRect(pos[0], 1, true);
+							tableControls.scrollRectToVisible(rect);
+							tableControls.changeSelection(pos[0], 0, false, false);
+						}
+					}
+				}
+			};
+		};
 		tableVisualControls.getModel().addTableModelListener(controlSelectionListener);
 		tableVisualControls.getSelectionModel().addListSelectionListener(controlSelectionListener);
 		tableVisualControls.getColumnModel().getSelectionModel().addListSelectionListener(controlSelectionListener);
@@ -119,14 +150,13 @@ public class PanelEditApp extends PanelPersistable {
 		listWindowsModel.setSelectedItem(windowName == null ? "" : windowName);
 	}
 	
-	public void editControl(Control control){
-		panelControlKeys.setControl(control);
-	}
-	
 	@Override
 	public void edit(Persistable p){
 		super.edit(p);
 		App app = (App) p;
+		if (app.getVisualControlsManager().getControls() != null && app.getVisualControlsManager().getControls().size() > 0){
+			logger.info("First visualControl.getControl(): " + app.getVisualControlsManager().getControls().iterator().next().getControl());
+		}
         textFieldNameApp.setText(app == null ? "" : app.getName());
         textFieldExtensionsApp.setText(app == null ? "" : Utils.join(app.getExtensions(), ","));
 		checkInstanceApp.setSelected(app == null ? false : app.getForceOneInstance());

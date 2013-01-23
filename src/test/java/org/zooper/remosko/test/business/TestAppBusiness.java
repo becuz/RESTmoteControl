@@ -9,6 +9,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 import org.junit.Test;
 import org.zooper.becuz.restmote.business.AppBusiness;
@@ -18,7 +19,6 @@ import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeApp;
 import org.zooper.becuz.restmote.model.ControlsManager;
 import org.zooper.becuz.restmote.utils.Utils;
-import org.zooper.becuz.restmote.utils.Utils.OS;
 import org.zooper.remosko.test.TestAbstract;
 
 /**
@@ -71,7 +71,6 @@ public class TestAppBusiness extends TestAbstract{
 				.equals(appMusic));
 		assertTrue(appBusiness.getByFilters("not"+appMusic.getName(), null, null, null, null).isEmpty());
 		assertTrue(appBusiness.getByFilters(null, "not"+appMusic.getWindowName(), null, null, null).isEmpty());
-		
 	}
 	
 	@Test
@@ -98,6 +97,23 @@ public class TestAppBusiness extends TestAbstract{
 		appBusiness.store(app);
 		assertEquals(controlApp.getControls().size(), 1);
 		appBusiness.delete(app);
+	}
+	
+	@Test
+	public void testGetAll() {
+		List<App> apps = appBusiness.getAll();
+		assertTrue(apps.size() > 0);
+		App app = apps.get(0);
+		assertNotNull(app);
+		assertNotNull(app.getId());
+		assertNotNull(app.getName());
+		assertNotNull(app.getControlsManager());
+		assertNotNull(app.getControlsManager().getControls());
+		assertNotNull(app.getControlsManager().getControls().iterator().next());
+		assertNotNull(app.getVisualControlsManager());
+		assertNotNull(app.getVisualControlsManager().getControls());
+		assertNotNull(app.getVisualControlsManager().getControls().iterator().next());
+		assertNotNull(app.getVisualControlsManager().getControls().iterator().next().getControl());	
 	}
 
 }
