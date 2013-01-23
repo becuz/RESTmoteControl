@@ -84,12 +84,13 @@ public class AppResource extends AbstractResource {
 	@GET
 	@Path("/handle/{handle}")
 	@Produces({ MediaType.APPLICATION_JSON + "; charset=utf-8" })
+	@JsonView({Views.Public.class})
 	public App getByHandle(
 			@PathParam("handle") String handle){
 		log.info("AppResource get, handle: " + handle);
 		ActiveApp activeApp = BusinessFactory.getActiveAppBusiness().getActiveAppByHandle(handle, false);
 		if (activeApp != null){
-			return BusinessFactory.getAppBusiness().getByName(activeApp.getName());
+			return BusinessFactory.getAppBusiness().getByFilters(null, activeApp.getName(), null, null, null).get(0);
 		}
 		return null;
 	}

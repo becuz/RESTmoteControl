@@ -21,7 +21,7 @@
               <Component id="jLabel1" min="-2" pref="192" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="textFieldSelectedControlName" min="-2" pref="87" max="-2" attributes="0"/>
-              <EmptySpace pref="46" max="32767" attributes="0"/>
+              <EmptySpace pref="62" max="32767" attributes="0"/>
               <Component id="btnDeleteControl" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -56,8 +56,11 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnDeleteControl">
       <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/org/zooper/becuz/restmote/ui/images/16/delete.png"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="UIUtils.ICON_DELETE" type="code"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="UIConstants.TOOLTIP_APP_VISUAL_CONTROLS_DELETE" type="code"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>

@@ -62,11 +62,11 @@ public class VisualControl implements ControlInterface{
 	
 	public VisualControl() {}
 	
-	public VisualControl(String name, Integer row, Integer position) {
+	public VisualControl(String name, Integer row, Integer column) {
 		this();
 		this.name = name;
 		this.row = row;
-		this.column = position;
+		this.column = column;
 	}
 	
 	public VisualControl(Control control, Integer row, Integer position) {

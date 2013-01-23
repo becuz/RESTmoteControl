@@ -1,11 +1,16 @@
 package org.zooper.becuz.restmote.ui.appcontrols;
 
+import java.util.ArrayList;
 import java.util.Set;
+import javax.swing.JOptionPane;
 
 import javax.swing.table.AbstractTableModel;
 
 import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.model.KeysEvent;
 import org.zooper.becuz.restmote.model.VisualControl;
+import org.zooper.becuz.restmote.persistence.export.ImportExport;
+import org.zooper.becuz.restmote.ui.UIConstants;
 
 @SuppressWarnings("serial")
 public class AppVisualControlsTableModel extends AbstractTableModel{
@@ -32,29 +37,18 @@ public class AppVisualControlsTableModel extends AbstractTableModel{
 		fireTableDataChanged();
 	}
 	
-	public void setImageAt(String imgName, int rowIndex, int columnIndex){
+	public boolean setImageAt(String imgName, int rowIndex, int columnIndex){
 		Object o = getValueAt(rowIndex, columnIndex);
 		VisualControl control;
 		if (o == null){
-			return;
-		} else {
-			control = (VisualControl) o;
-			control.setName(imgName);
+			return false;
 		}
+		control = (VisualControl) o;
+		control.setName(imgName);
 		control.setHideImg(false);
 		fireTableCellUpdated(rowIndex, columnIndex);
+		return true;
 	}
-	
-	//REFACTORCONTROL
-//	public VisualControl createDefaultControlAt(String name, int rowIndex, int columnIndex, boolean add){
-//		int delta = (VisualControl.MAX_NUM_COLS-1)/2;
-//		Control control = Control.getControl(name, rowIndex+1, columnIndex - delta);
-//		control.addKeysEvent(new KeysEvent());
-//		if (add){
-//			setValueAt(control, rowIndex, columnIndex);
-//		}
-//		return control;
-//	}
 	
 	@Override
 	public String getColumnName(int column) {
@@ -78,7 +72,26 @@ public class AppVisualControlsTableModel extends AbstractTableModel{
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		return data[rowIndex][columnIndex];
+		return data == null ? null : data[rowIndex][columnIndex];
+	}
+	
+	/**
+	 * Set the control at a specified location
+	 * @param control
+	 * @param rowIndex
+	 * @param columnIndex 
+	 */
+	public void setControlAt(Control control, int rowIndex, int columnIndex) {
+		VisualControl visualControl = (VisualControl) getValueAt(rowIndex, columnIndex);
+		if (visualControl == null){
+			int delta = (VisualControl.MAX_NUM_COLS-1)/2;
+			String keys = ImportExport.getStringFromControlKeys(new ArrayList<KeysEvent>(control.getKeysEvents()));
+			visualControl = new VisualControl(keys, rowIndex+1, columnIndex - delta);
+			visualControl.setText(keys);
+			visualControl.setHideImg(true);
+			setValueAt(visualControl, rowIndex, columnIndex);
+		}
+		visualControl.setControl(control);
 	}
 	
 	@Override

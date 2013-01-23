@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.codehaus.jackson.map.annotate.JsonView;
@@ -112,7 +113,7 @@ public class KeysEvent implements Comparable<KeysEvent>, Persistable{
 	}
 	public Set<Integer> getKeys() {
 		if (keys == null){
-			keys = new HashSet<Integer>();
+			keys = new LinkedHashSet<Integer>();
 		}
 		return keys;
 	}

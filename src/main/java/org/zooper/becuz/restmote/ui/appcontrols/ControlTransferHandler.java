@@ -10,6 +10,11 @@ import javax.swing.TransferHandler;
 
 import org.zooper.becuz.restmote.model.Control;
 
+/**
+ * TransferHandler for Control.
+ * It's used to drag'n'drop a Control from PanelEdit.tableControls to PanelEdit.visualTableControls
+ * @author bebo
+ */
 @SuppressWarnings("serial")
 public class ControlTransferHandler extends TransferHandler {
 
@@ -52,8 +57,6 @@ class ControlTransferable implements Transferable {
 
 	public Object getTransferData(DataFlavor flavor)
 			throws UnsupportedFlavorException {
-		System.out.println(s);
-		System.out.println(flavor.getMimeType());
 		if (flavor.getMimeType().equals(s)) {
 			return control;
 		} else {

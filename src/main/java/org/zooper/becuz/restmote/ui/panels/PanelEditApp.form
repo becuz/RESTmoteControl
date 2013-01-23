@@ -302,20 +302,22 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="scrollPaneTableControls" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="btnEditControl" linkSize="3" alignment="0" min="-2" pref="35" max="-2" attributes="0"/>
                                   <Component id="btnAddControl" linkSize="3" alignment="1" min="-2" max="-2" attributes="0"/>
                                   <Component id="btnDeleteControl" linkSize="3" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Component id="scrollPaneListImages" max="32767" attributes="0"/>
-                          <Component id="scrollPaneTableVisualControls" alignment="1" pref="740" max="32767" attributes="0"/>
-                          <Component id="lblHelpIcons" alignment="0" max="32767" attributes="0"/>
-                          <Component id="panelControlKeys" alignment="1" max="32767" attributes="0"/>
+                          <Component id="scrollPaneTableVisualControls" alignment="1" pref="730" max="32767" attributes="0"/>
+                          <Component id="lblHelpIcons" alignment="0" pref="740" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="panelControlKeys" min="-2" pref="388" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="scrollPaneListImages" max="32767" attributes="0"/>
+                          </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="panelVisualControl1" min="-2" max="-2" attributes="0"/>
+                              <Component id="panelVisualControl" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -327,26 +329,26 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="scrollPaneTableControls" min="-2" pref="112" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Component id="btnDeleteControl" linkSize="4" min="-2" pref="21" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                               <Component id="btnAddControl" linkSize="4" min="-2" pref="23" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="btnEditControl" linkSize="4" min="-2" pref="21" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="btnDeleteControl" linkSize="4" min="-2" pref="21" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="89" max="32767" attributes="0"/>
                           </Group>
+                          <Component id="scrollPaneTableControls" pref="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="panelControlKeys" min="-2" pref="61" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="scrollPaneListImages" max="32767" attributes="0"/>
+                          <Component id="panelControlKeys" pref="113" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                       <Component id="lblHelpIcons" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="scrollPaneListImages" min="-2" pref="69" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="scrollPaneTableVisualControls" min="-2" pref="99" max="-2" attributes="0"/>
+                      <Component id="scrollPaneTableVisualControls" min="-2" pref="134" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="panelVisualControl1" min="-2" pref="26" max="-2" attributes="0"/>
-                      <EmptySpace pref="30" max="32767" attributes="0"/>
+                      <Component id="panelVisualControl" min="-2" pref="26" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -393,7 +395,7 @@
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new org.zooper.becuz.restmote.ui.appcontrols.VisualControlsTable()"/>
-                    <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="tableVisualControls.setModel(appTableModel);"/>
+                    <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="tableVisualControls.setModel(appVisualControlsTableModel);"/>
                   </AuxValues>
                 </Component>
               </SubComponents>
@@ -423,16 +425,23 @@
             </Component>
             <Component class="javax.swing.JLabel" name="lblHelpIcons">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Drag&apos;n&apos;drop the icons on the table below to add a Control"/>
+                <Property name="text" type="java.lang.String" value="Drag&apos;n&apos;drop in the cells below, firstly shortcuts from the upper table, and then icons from the right upper table."/>
               </Properties>
             </Component>
-            <Component class="org.zooper.becuz.restmote.ui.appcontrols.PanelVisualControl" name="panelVisualControl1">
+            <Component class="org.zooper.becuz.restmote.ui.appcontrols.PanelVisualControl" name="panelVisualControl">
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new org.zooper.becuz.restmote.ui.appcontrols.PanelVisualControl(tableVisualControls)"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="btnDeleteControl">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="UIUtils.ICON_DELETE" type="code"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIConstants.TOOLTIP_APP_CONTROLS_DELETE" type="code"/>
+                </Property>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeleteControlActionPerformed"/>
@@ -443,17 +452,13 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="UIUtils.ICON_ADD" type="code"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIConstants.TOOLTIP_APP_CONTROLS_ADD" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddControlActionPerformed"/>
               </Events>
-            </Component>
-            <Component class="javax.swing.JButton" name="btnEditControl">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="UIUtils.ICON_EDIT" type="code"/>
-                </Property>
-              </Properties>
             </Component>
           </SubComponents>
         </Container>

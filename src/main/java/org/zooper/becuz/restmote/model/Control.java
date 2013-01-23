@@ -100,14 +100,19 @@ public class Control implements ControlInterface {
         if (this == other) return true;
         if (!(other instanceof Control)) return false;
         final Control control = (Control) other;
-        if (!control.getName().equals(getName())) return false;
+		if (control.getName() != null && !control.getName().equals(getName())) return false;
         return true;
     }
 
 	@Override
     public int hashCode() {
 		int hash = 7;
-        hash = 31 * hash + getName().hashCode();
+		if (getKeysEvents() != null){
+			hash = 31 * hash + getKeysEvents().hashCode();
+		}
+		if (getDescription() != null){
+			hash = 31 * hash + getDescription().hashCode();
+		}
         return hash;
     }
 	

@@ -9,8 +9,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import org.apache.log4j.Logger;
 
 import org.zooper.becuz.restmote.model.VisualControl;
+import org.zooper.becuz.restmote.ui.UIConstants;
 import org.zooper.becuz.restmote.ui.UIUtils;
 
 /**
@@ -19,7 +21,9 @@ import org.zooper.becuz.restmote.ui.UIUtils;
  */
 public class PanelVisualControl extends javax.swing.JPanel {
 
-	private boolean modified;
+	private Logger logger = Logger.getLogger(PanelVisualControl.class.getName());
+	
+	private boolean modified = false;
 	
 	/**
 	 * model VisualControl
@@ -32,15 +36,10 @@ public class PanelVisualControl extends javax.swing.JPanel {
 	private JTable appVisualControlsTable;
 	
 	/**
-	 * Listener for change selection and cell updates for appControlsTable
+	 * Listener for change selection and cell updates for appVisualControlsTable
 	 */
 	public class ControlSelectionListener implements ListSelectionListener, TableModelListener {
-	
-		private int previousSelectedColumn = -1;
-		private int previousSelectedRow = -1;
 
-		//private boolean internalUpdate = false;
-		
 		public ControlSelectionListener() {
 		}
 
@@ -52,42 +51,10 @@ public class PanelVisualControl extends javax.swing.JPanel {
 			int selectedColumn = appVisualControlsTable.getSelectedColumn();
 			int selectedRow = appVisualControlsTable.getSelectedRow();
 			
-//			if (previousSelectedRow > -1 && previousSelectedColumn > -1 && (selectedRow != previousSelectedRow || selectedColumn != previousSelectedColumn)){
-//				Control controlSelected = (Control) appControlsTable.getModel().getValueAt(previousSelectedRow, previousSelectedColumn);	
-//				if (controlSelected != null){
-//					boolean valid = true;
-//					try {
-//						controlSelected.validate();
-//						valid = !controlSelected.isEmpty();
-//					} catch (IllegalArgumentException ex){
-//						valid = false;
-//					}
-//					if (!valid){
-//						//internalUpdate = true;
-//						appControlsTable.getModel().setValueAt(null, previousSelectedRow, previousSelectedColumn);
-////					} else {
-////						setControl(controlSelected);
-//					}
-//				}
-//			}
-//			VisualControl controlSelected = null;
-//			if (selectedColumn > -1 && selectedRow > -1){
-//				controlSelected = (VisualControl) appControlsTable.getModel().getValueAt(selectedRow, selectedColumn);	
-//				if (
-//						controlSelected == null 
-//						//&& !internalUpdate 
-//						&& (selectedColumn != previousSelectedColumn || selectedRow != previousSelectedRow)){
-//					//internalUpdate = true;
-//					controlSelected = ((AppVisualControlsTableModel)appControlsTable.getModel()).createDefaultControlAt("name", selectedRow, selectedColumn, false);
-//					controlSelected.setHideImg(true);
-//					appControlsTable.getModel().setValueAt(controlSelected, selectedRow, selectedColumn);
-//				}
-//			}
-			
-			VisualControl controlSelected = (VisualControl)appVisualControlsTable.getModel().getValueAt(selectedRow, selectedColumn);
-			setVisualControl(controlSelected);
-			previousSelectedRow = selectedRow;
-			previousSelectedColumn = selectedColumn;
+			if (selectedRow > -1 && selectedColumn > -1){
+				VisualControl controlSelected = (VisualControl)appVisualControlsTable.getModel().getValueAt(selectedRow, selectedColumn);
+				setVisualControl(controlSelected);
+			}
 			//internalUpdate = false;
 		}
 
@@ -97,12 +64,13 @@ public class PanelVisualControl extends javax.swing.JPanel {
 			int selectedColumn = appVisualControlsTable.getSelectedColumn();
 			int selectedRow = appVisualControlsTable.getSelectedRow();
 			if (selectedColumn > -1 && selectedRow > -1){
-				controlSelected = (VisualControl) appVisualControlsTable.getModel().getValueAt(selectedRow, selectedColumn);	
+				Object value = appVisualControlsTable.getModel().getValueAt(selectedRow, selectedColumn);
+				if (value != null){
+					controlSelected = (VisualControl) value;
+				}
 			}
 			setVisualControl(controlSelected);
 		}
-		
-		
 	}
 	
 	/**
@@ -159,7 +127,8 @@ public class PanelVisualControl extends javax.swing.JPanel {
             }
         });
 
-        btnDeleteControl.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/delete.png"))); // NOI18N
+        btnDeleteControl.setIcon(UIUtils.ICON_DELETE);
+        btnDeleteControl.setToolTipText(UIConstants.TOOLTIP_APP_VISUAL_CONTROLS_DELETE);
         btnDeleteControl.setEnabled(false);
         btnDeleteControl.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -176,7 +145,7 @@ public class PanelVisualControl extends javax.swing.JPanel {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(textFieldSelectedControlName, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addComponent(btnDeleteControl)
                 .addContainerGap())
         );

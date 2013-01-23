@@ -10,9 +10,9 @@ import javax.swing.table.TableCellRenderer;
 import org.zooper.becuz.restmote.model.VisualControl;
 
 @SuppressWarnings("serial")
-public class ControlRenderer extends JLabel implements TableCellRenderer {
+public class VisualControlRenderer extends JLabel implements TableCellRenderer {
 
-	public ControlRenderer() {
+	public VisualControlRenderer() {
 		setOpaque(true);
 		setHorizontalAlignment(JLabel.CENTER);
 //		setBorder(new BevelBorder(BevelBorder.LOWERED));

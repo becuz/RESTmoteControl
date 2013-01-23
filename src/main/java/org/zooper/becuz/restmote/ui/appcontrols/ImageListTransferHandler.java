@@ -9,6 +9,11 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.TransferHandler;
 
+/**
+ * TransferHandler for Contorl Images.
+ * It's used to drag'n'drop an image (through his name) to PanelEdit.visualTableControls
+ * @author bebo
+ */
 @SuppressWarnings("serial")
 public class ImageListTransferHandler extends TransferHandler {
 

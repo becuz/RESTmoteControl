@@ -6,7 +6,10 @@ package org.zooper.becuz.restmote.ui.appcontrols;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -17,6 +20,7 @@ import javax.swing.event.TableModelListener;
 
 import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.KeysEvent;
+import org.zooper.becuz.restmote.ui.UIConstants;
 import org.zooper.becuz.restmote.ui.UIUtils;
 
 /**
@@ -34,6 +38,11 @@ public class PanelControlKeys extends javax.swing.JPanel {
 	private Control control;
 	
 	/**
+	 * 
+	 */
+	private List<KeysEvent> keysEvents;
+	
+	/**
 	 * current index of {@link Control#getKeysEvents()}
 	 */
 	private int indexKeysEvents;
@@ -48,11 +57,6 @@ public class PanelControlKeys extends javax.swing.JPanel {
 	 */
 	public class ControlSelectionListener implements ListSelectionListener, TableModelListener {
 	
-		private int previousSelectedColumn = -1;
-		private int previousSelectedRow = -1;
-
-		//private boolean internalUpdate = false;
-		
 		public ControlSelectionListener() {
 		}
 
@@ -63,59 +67,35 @@ public class PanelControlKeys extends javax.swing.JPanel {
 			}
 			int selectedColumn = appControlsTable.getSelectedColumn();
 			int selectedRow = appControlsTable.getSelectedRow();
-			
-//			if (previousSelectedRow > -1 && previousSelectedColumn > -1 && (selectedRow != previousSelectedRow || selectedColumn != previousSelectedColumn)){
-//				Control controlSelected = (Control) appControlsTable.getModel().getValueAt(previousSelectedRow, previousSelectedColumn);	
-//				if (controlSelected != null){
-//					boolean valid = true;
-//					try {
-//						controlSelected.validate();
-//						valid = !controlSelected.isEmpty();
-//					} catch (IllegalArgumentException ex){
-//						valid = false;
-//					}
-//					if (!valid){
-//						//internalUpdate = true;
-//						appControlsTable.getModel().setValueAt(null, previousSelectedRow, previousSelectedColumn);
-////					} else {
-////						setControl(controlSelected);
-//					}
-//				}
-//			}
-//			VisualControl controlSelected = null;
-//			if (selectedColumn > -1 && selectedRow > -1){
-//				controlSelected = (VisualControl) appControlsTable.getModel().getValueAt(selectedRow, selectedColumn);	
-//				if (
-//						controlSelected == null 
-//						//&& !internalUpdate 
-//						&& (selectedColumn != previousSelectedColumn || selectedRow != previousSelectedRow)){
-//					//internalUpdate = true;
-//					controlSelected = ((AppVisualControlsTableModel)appControlsTable.getModel()).createDefaultControlAt("name", selectedRow, selectedColumn, false);
-//					controlSelected.setHideImg(true);
-//					appControlsTable.getModel().setValueAt(controlSelected, selectedRow, selectedColumn);
-//				}
-//			}
 			if (selectedColumn > -1 && selectedRow > -1){
 				Control controlSelected = ((AppControlsTableModel)appControlsTable.getModel()).getControlAt(selectedRow);
 				setControl(controlSelected);
-				previousSelectedRow = selectedRow;
-				previousSelectedColumn = selectedColumn;
-				//internalUpdate = false;
+			} else {
+				setControl(null);
 			}
 		}
-
+		
+		/**
+		 * TODO it should be called after PanelEditApp does a appControlsTableModel.setData(app.getControlsManager().getControls());
+		 * like in PanelVisualControl
+		 * 
+		 * It's not, caused in PanelEditApp, it's created before doing app.setModel
+		 * 
+		 * @param e 
+		 */
 		@Override
 		public void tableChanged(TableModelEvent e) {
 			Control controlSelected = null;
 			int selectedColumn = appControlsTable.getSelectedColumn();
 			int selectedRow = appControlsTable.getSelectedRow();
 			if (selectedColumn > -1 && selectedRow > -1){
-				controlSelected = (Control) appControlsTable.getModel().getValueAt(selectedRow, selectedColumn);	
+				Object value = appControlsTable.getModel().getValueAt(selectedRow, selectedColumn);
+				if (value != null){
+					controlSelected = (Control) value;
+				}
 			}
 			setControl(controlSelected);
 		}
-		
-		//private void updateView(){}
 	}
 	
 	public PanelControlKeys(){}
@@ -139,23 +119,44 @@ public class PanelControlKeys extends javax.swing.JPanel {
 	 */
 	public void setControl(Control control){
 		this.control = control;
+		this.keysEvents = control == null ? null : new ArrayList<KeysEvent>();
+		if (control != null){
+			for(KeysEvent keysEvent: control.getKeysEvents()){
+				KeysEvent copyKeysEvent = new KeysEvent();
+				Set<Integer> copyKeys = new LinkedHashSet<Integer>();
+				for(Integer k: keysEvent.getKeys()){
+					copyKeys.add(new Integer(k));
+				}
+				copyKeysEvent.setKeys(copyKeys);
+				//copyKeysEvent.setId(keysEvent.getId());
+				keysEvents.add(copyKeysEvent);
+			}
+		}
 		modified = false;
 		indexKeysEvents = 0;
 		setEnabled(control != null);
-		UIUtils.setEnabledRecursive(this, control != null);
+		btnSave.setEnabled(false);
 		copyToView();
+	}
+
+	@Override
+	public void setEnabled(boolean enabled) {
+		enabled &= (control != null); //if control is null disabled anyway
+		System.out.println("PanelControlKeys enabled: " + enabled);
+		super.setEnabled(enabled);
+		UIUtils.setEnabledRecursive(this, enabled);
 	}
 	
 	/**
 	 * 
-	 * @return true if the last {@link KeysEvent} of {@link #control} is not empty
 	 */
 	private boolean canAddShortcutInControl(){
-		return (!control.getKeysEvents().isEmpty() && !control.getKeysEvents().last().getKeys().isEmpty());
+		//return (!control.getKeysEvents().isEmpty() && !control.getKeysEvents().last().getKeys().isEmpty());
+		return keysEvents != null && !keysEvents.get(keysEvents.size()-1).getKeys().isEmpty();
 	}
 	
 	/**
-	 * Update the view accordingly to the {@link #control}
+	 * Update the view accordingly to the {@link #keysEvents}
 	 */
 	private void copyToView(){
 		textFieldKeyStroke.setText("");
@@ -164,11 +165,11 @@ public class PanelControlKeys extends javax.swing.JPanel {
 		checkBoxKeyCtrl.setSelected(false);
 		checkBoxKeyShift.setSelected(false);
 		btnPrev.setEnabled(indexKeysEvents > 0);
-		btnNext.setText(control == null || indexKeysEvents == control.getKeysEvents().size()-1 ? "+" : ">");
-		btnNext.setEnabled(control != null && (indexKeysEvents < control.getKeysEvents().size()-1 || canAddShortcutInControl()));
-		if (control != null){
-			List<KeysEvent> keysEventsList = new ArrayList(control.getKeysEvents());
-			KeysEvent currentKeysEvent = keysEventsList.get(indexKeysEvents);
+		btnNext.setIcon(keysEvents == null || indexKeysEvents == keysEvents.size()-1 ? UIUtils.ICON_ADD : UIUtils.ICON_RIGHT);
+		btnNext.setToolTipText(keysEvents == null || indexKeysEvents == keysEvents.size()-1 ? UIConstants.TOOLTIP_APP_CONTROLS_KEYS_ADD : UIConstants.TOOLTIP_APP_CONTROLS_KEYS_NEXT);
+		btnNext.setEnabled(keysEvents != null && (indexKeysEvents < keysEvents.size()-1 || canAddShortcutInControl()));
+		if (keysEvents != null){
+			KeysEvent currentKeysEvent = keysEvents.get(indexKeysEvents);
 			String keysText = new String();
 			if (currentKeysEvent.getKeys() != null){
 				for(Integer key: currentKeysEvent.getKeys()){
@@ -186,9 +187,15 @@ public class PanelControlKeys extends javax.swing.JPanel {
 				}
 				textFieldKeyStroke.setText(keysText);
 			}
-			lblPaging.setText((indexKeysEvents+1) + "/" + control.getKeysEvents().size());
+			lblPaging.setText((indexKeysEvents+1) + "/" + keysEvents.size());
 		}
-		
+	}
+	
+	private void copyToModel(){
+		control.setKeysEvents(null);
+		for(KeysEvent keysEvent: keysEvents){
+			control.addKeysEvent(keysEvent);
+		}
 	}
 	
 	/**
@@ -210,6 +217,8 @@ public class PanelControlKeys extends javax.swing.JPanel {
         btnPrev = new javax.swing.JButton();
         btnNext = new javax.swing.JButton();
         lblPaging = new javax.swing.JLabel();
+        btnSave = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         comboVirtualKey.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -250,7 +259,8 @@ public class PanelControlKeys extends javax.swing.JPanel {
 
         lblTextFieldKeyStroke.setText("Shortcut:");
 
-        btnPrev.setText("<");
+        btnPrev.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/arrow_left.png"))); // NOI18N
+        btnPrev.setToolTipText(UIConstants.TOOLTIP_APP_CONTROLS_KEYS_PREV);
         btnPrev.setFocusPainted(false);
         btnPrev.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -258,7 +268,8 @@ public class PanelControlKeys extends javax.swing.JPanel {
             }
         });
 
-        btnNext.setText(">");
+        btnNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/zooper/becuz/restmote/ui/images/16/arrow_right.png"))); // NOI18N
+        btnNext.setToolTipText("");
         btnNext.setFocusPainted(false);
         btnNext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -266,65 +277,88 @@ public class PanelControlKeys extends javax.swing.JPanel {
             }
         });
 
+        lblPaging.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblPaging.setText("0/0");
+
+        btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
+        jButton2.setIcon(UIUtils.ICON_DELETE);
+        jButton2.setToolTipText(UIConstants.TOOLTIP_APP_CONTROLS_KEYS_DELETE);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(116, 116, 116)
-                        .addComponent(btnPrev)
+                        .addComponent(btnPrev, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblTextFieldKeyStroke, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblComboVirtualKey, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(comboVirtualKey, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textFieldKeyStroke, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(lblComboVirtualKey, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addComponent(btnSave))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblPaging, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(comboVirtualKey, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(textFieldKeyStroke, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(checkBoxKeyShift)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(checkBoxKeyCtrl)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(checkBoxKeyAlt)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnNext))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(223, 223, 223)
-                        .addComponent(lblPaging, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(70, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 4, Short.MAX_VALUE))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnNext, btnPrev});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(checkBoxKeyAlt)
-                                    .addComponent(checkBoxKeyCtrl)
-                                    .addComponent(comboVirtualKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblComboVirtualKey))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(textFieldKeyStroke, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(checkBoxKeyShift)
-                                    .addComponent(lblTextFieldKeyStroke)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(comboVirtualKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblComboVirtualKey))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblPaging))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textFieldKeyStroke, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTextFieldKeyStroke)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(checkBoxKeyAlt)
+                            .addComponent(checkBoxKeyCtrl))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkBoxKeyShift))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(btnPrev, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(29, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnPrev, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(lblPaging))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSave))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 18, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnNext, btnPrev});
@@ -338,66 +372,69 @@ public class PanelControlKeys extends javax.swing.JPanel {
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         indexKeysEvents++;
-		if (control.getKeysEvents().size() == indexKeysEvents){
-			control.addKeysEvent(new KeysEvent());
+		if (keysEvents.size() == indexKeysEvents){
+			keysEvents.add(new KeysEvent());
 		}
 		copyToView();
     }//GEN-LAST:event_btnNextActionPerformed
 
+	private void setModified(boolean modified){
+		this.modified = modified;
+		btnSave.setEnabled(modified);
+	}
+	
     private void checkBoxKeyCtrlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkBoxKeyCtrlActionPerformed
-		modified = true;
 		checkMetaKey(checkBoxKeyCtrl.isSelected(), KeyEvent.VK_CONTROL);
 		copyToView();
     }//GEN-LAST:event_checkBoxKeyCtrlActionPerformed
 
     private void checkBoxKeyAltActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkBoxKeyAltActionPerformed
-        modified = true;
 		checkMetaKey(checkBoxKeyAlt.isSelected(), KeyEvent.VK_ALT);
 		copyToView();
     }//GEN-LAST:event_checkBoxKeyAltActionPerformed
 
     private void checkBoxKeyShiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkBoxKeyShiftActionPerformed
-		modified = true;
 		checkMetaKey(checkBoxKeyShift.isSelected(), KeyEvent.VK_SHIFT);
 		copyToView();
     }//GEN-LAST:event_checkBoxKeyShiftActionPerformed
 
 	private void checkMetaKey(boolean selected, Integer keyCode){
-		KeysEvent[] keysEventsArray = new KeysEvent[control.getKeysEvents().size()];
-		keysEventsArray = control.getKeysEvents().toArray(keysEventsArray);
         if (selected){
- 			keysEventsArray[indexKeysEvents].getKeys().add(keyCode);
+			keysEvents.get(indexKeysEvents).getKeys().add(keyCode);
 		} else {
- 		   keysEventsArray[indexKeysEvents].getKeys().remove(keyCode);
+			keysEvents.get(indexKeysEvents).getKeys().remove(keyCode);
 		}
+		setModified(true);
 	}
 	
     private void textFieldKeyStrokeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldKeyStrokeKeyTyped
-    	//NO
+    	evt.consume();
+		System.out.println("textFieldKeyStrokeKeyPressed");
+		keysEvents.get(indexKeysEvents).getKeys().clear();
     }//GEN-LAST:event_textFieldKeyStrokeKeyTyped
 
     private void textFieldKeyStrokeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldKeyStrokeKeyReleased
-        //System.out.println("textFieldKeyStrokeKeyTyped");
-    	modified = true;
-		KeysEvent[] keysEventsArray = new KeysEvent[control.getKeysEvents().size()];
-		keysEventsArray = control.getKeysEvents().toArray(keysEventsArray);
-		keysEventsArray[indexKeysEvents].getKeys().clear();
-		checkMetaKey(checkBoxKeyAlt.isSelected(), KeyEvent.VK_ALT);
-		checkMetaKey(checkBoxKeyCtrl.isSelected(), KeyEvent.VK_CONTROL);
-		checkMetaKey(checkBoxKeyShift.isSelected(), KeyEvent.VK_SHIFT);
-		keysEventsArray[indexKeysEvents].getKeys().add(evt.getKeyCode());
+		//checkMetaKey(checkBoxKeyAlt.isSelected(), KeyEvent.VK_ALT);
+		//checkMetaKey(checkBoxKeyCtrl.isSelected(), KeyEvent.VK_CONTROL);
+		//checkMetaKey(checkBoxKeyShift.isSelected(), KeyEvent.VK_SHIFT);
+		keysEvents.get(indexKeysEvents).getKeys().add(evt.getKeyCode());
 		evt.consume();
 		int keyCode = evt.getKeyCode();
 		System.out.println("keyChar " + evt.getKeyChar());
 		System.out.println("keyCode " + keyCode);
 		System.out.println("TextCode " + KeyEvent.getKeyText(keyCode));
+		setModified(true);
 		copyToView();
     }//GEN-LAST:event_textFieldKeyStrokeKeyReleased
 
     private void textFieldKeyStrokeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldKeyStrokeKeyPressed
-        //System.out.println("textFieldKeyStrokeKeyPressed");
-		
+        
     }//GEN-LAST:event_textFieldKeyStrokeKeyPressed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        copyToModel();
+		appControlsTable.clearSelection();
+    }//GEN-LAST:event_btnSaveActionPerformed
 
 	
 	
@@ -406,10 +443,12 @@ public class PanelControlKeys extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNext;
     private javax.swing.JButton btnPrev;
+    private javax.swing.JButton btnSave;
     private javax.swing.JCheckBox checkBoxKeyAlt;
     private javax.swing.JCheckBox checkBoxKeyCtrl;
     private javax.swing.JCheckBox checkBoxKeyShift;
     private javax.swing.JComboBox comboVirtualKey;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel lblComboVirtualKey;
     private javax.swing.JLabel lblPaging;
     private javax.swing.JLabel lblTextFieldKeyStroke;

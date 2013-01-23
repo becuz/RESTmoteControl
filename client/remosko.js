@@ -1,4 +1,4 @@
-var remoteUrl = "../api/"; 	//using phonegap, it would be nice to be able to do use an absolute url, like: "http://192.168.205.1:9898/api/";
+var remoteUrl = "../api/"; 	//using phonegap, it would be nice to be able to use an absolute url, like: "http://192.168.205.1:9898/api/";
 var stackMedias = new Array();
 var data;
 
@@ -108,6 +108,14 @@ function ajax_getData() {
 	});
 }
 
+function ajax_getAndDisplayApp(handle) {
+	$.getJSON(remoteUrl + "apps/handle/" + handle, function(app) {
+		if (app.visualControlsManager){
+			displayMediaRc(app);
+		}
+	});
+}
+
 function ajax_getMediaRoots() {
 	$.getJSON(remoteUrl + "mediaroots", function(mediaRoots) {
 		displayMediaRoots(mediaRoots);
@@ -199,7 +207,7 @@ function ajax_controlPc(command) {
 		url: remoteUrl + "pc/"+command,
 		success: function(data) {
 			if (command=="nextapp" ){
-				displayMediaRc(getConfiguredApp(data.name)); //data is model ActiveApp
+				displayAppRemoteControl(data.name, data.handle); //data is model ActiveApp
 			}
 	  	}
 	});
@@ -493,7 +501,7 @@ function displayApps(apps){
 	$.each(apps, function(i, activeApp){
 		$fieldset.append(
 				"<input type='checkbox' id='handle" + activeApp.handle + "'></input>" + 
-				"<label for='handle" + activeApp.handle + "' class='checkbox-app' data-appname='" + activeApp.name + "'>" +
+				"<label for='handle" + activeApp.handle + "' class='checkbox-app' data-apphandle='" + activeApp.handle + "' data-appname='" + activeApp.name + "'>" +
 					"<span data-role='use' class='use-app" + (activeApp.hasApp ? "" : "-disabled" ) + "'>" + activeApp.name + "</span>" +
 					"<span class='checkbox-app-winlbl'>" + activeApp.windowLbl + "</span>" +
 				"</label>" );
@@ -505,7 +513,9 @@ function displayApps(apps){
 			displayHome();
 			ajax_focusApp($(this).parents( "label" ).attr( "for" ).substr(6)); ////omit prefix "handle".length
 			if ($(this).hasClass( "use-app" )){
-				displayMediaRc(getConfiguredApp($(this).parents( "label" ).data( "appname" )));
+				var appName = $(this).parents( "label" ).data( "appname" );
+				var appHandle = $(this).parents( "label" ).data( "apphandle" );
+				displayAppRemoteControl(appName, appHandle);
 			}
 		});
 	});
@@ -514,11 +524,14 @@ function displayApps(apps){
 }
 
 
-function getConfiguredApp(appName){
+function displayAppRemoteControl(appName, handle){
 	for(j=0; j<data.mediaRoots.length;j++){
 		if (data.mediaRoots[j].mediaCategory.app && appName == data.mediaRoots[j].mediaCategory.app.windowName){
-			return data.mediaRoots[j].mediaCategory.app;
+			displayMediaRc(data.mediaRoots[j].mediaCategory.app);
+			return;
 		}
 	}
-	return 0;
+	if (handle){
+		ajax_getAndDisplayApp(handle);
+	}
 }

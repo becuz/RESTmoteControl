@@ -68,11 +68,13 @@ public class ImportExport {
 			}
 			KeysEvent currentKeysEvent = keysEventsList.get(i);
 			if (currentKeysEvent.getKeys() != null){
+				int j = 0;
 				for(Integer key: currentKeysEvent.getKeys()){
-					if (keysText.length() > 0){
+					if (j > 0){
 						keysText += "+";
 					}
 					keysText += (KeyEvent.getKeyText(key));
+					j++;
 				}
 			}
 		}

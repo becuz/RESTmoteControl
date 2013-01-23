@@ -12,10 +12,13 @@ import java.awt.dnd.DropTargetListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 import javax.swing.JTable;
 
 import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.model.VisualControl;
+import org.zooper.becuz.restmote.ui.UIConstants;
 
 /**
  * 
@@ -24,8 +27,10 @@ import org.zooper.becuz.restmote.model.Control;
 @SuppressWarnings("serial")
 public class VisualControlsTable extends JTable implements DropTargetListener {
 	
+	private Logger logger = Logger.getLogger(VisualControlsTable.class.getName());
+	
 	@SuppressWarnings("unused")
-	private DropTarget target;
+	private DropTarget target; //a marker field, used to notify the system that it supports drag'n'drop
 
 	public VisualControlsTable() {
 		target = new DropTarget(this, this);
@@ -57,15 +62,22 @@ public class VisualControlsTable extends JTable implements DropTargetListener {
 		try {
 			if (d[0].equals(DataFlavor.getTextPlainUnicodeFlavor())){
 				String imgName = (String) t.getTransferData(d[0]);
-				((AppVisualControlsTableModel)getModel()).setImageAt(imgName, row, col);
-				changeSelection(row, col, false, false);
+				if (((AppVisualControlsTableModel)getModel()).setImageAt(imgName, row, col)){
+					changeSelection(row, col, false, false);
+				} else {
+					JOptionPane.showMessageDialog(this,
+						UIConstants.ERROR_DRAGDROP_IMG_CONTROL_BODY, 
+						UIConstants.ERROR_DRAGDROP_IMG_CONTROL_TITLE,
+						JOptionPane.ERROR_MESSAGE);
+				}
 			} else {//if (d[0].getMimeType().equals(DataFlavor.javaSerializedObjectMimeType)){
 				Control control = (Control) t.getTransferData(d[0]);
+				((AppVisualControlsTableModel)getModel()).setControlAt(control, row, col);
 			}
 		} catch (UnsupportedFlavorException ex) {
-			Logger.getLogger(VisualControlsTable.class.getName()).log(Level.SEVERE, null, ex);
+			logger.log(Level.SEVERE, null, ex);
 		} catch (IOException ex) {
-			Logger.getLogger(VisualControlsTable.class.getName()).log(Level.SEVERE, null, ex);
+			logger.log(Level.SEVERE, null, ex);
 		}
 
 	}

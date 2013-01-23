@@ -22,7 +22,6 @@ public class UIConstants {
 	public static final String TOOLTIP_STNGS_SCANDEPTH = "How deep in the tree structure of the filesystem the search should go. High values slows down the process";
 	public static final String TOOLTIP_STNGS_ICONTHEME = "Set of icons displayed in the client";
 	
-	
 	public static final String TOOLTIP_CATEGORY_ACTIVE = "Active categories will appear on the clients";
 	public static final String TOOLTIP_CATEGORY_NAME = "Name for this category";
 	public static final String TOOLTIP_CATEGORY_EXTENSIONS = "Comma separated list of extensions that this category will filter";
@@ -40,10 +39,15 @@ public class UIConstants {
 	public static final String TOOLTIP_APP_BROWSE = "Browse and choose the executable";
 	public static final String TOOLTIP_APP_REFRESH = "Refresh the list of running applications";
 	
-	//public static final String TOOLTIP_APP_CONTROLS = "Edit the shortcuts";
-	//public static final String TOOLTIP_APP_CONTROLS_DELETE = "Delete selected Control";
-	public static final String TOOLTIP_APP_CONTROLS_RIGHT = "Add";
+	public static final String TOOLTIP_APP_CONTROLS_EDIT = "Advanced edit of the control";
+	public static final String TOOLTIP_APP_CONTROLS_DELETE = "Delete selected Control";
+	public static final String TOOLTIP_APP_CONTROLS_ADD = "Add a control";
+	public static final String TOOLTIP_APP_CONTROLS_KEYS_PREV = "Previous key";
+	public static final String TOOLTIP_APP_CONTROLS_KEYS_NEXT = "Next key";
+	public static final String TOOLTIP_APP_CONTROLS_KEYS_ADD = "Add a key";
+	public static final String TOOLTIP_APP_CONTROLS_KEYS_DELETE = "Remove these keys";
 	//public static final String TOOLTIP_APP_CONTROLS_TEST = "Test the configuration.";
+	public static final String TOOLTIP_APP_VISUAL_CONTROLS_DELETE = "Remove this control";
 	
 	public static final String TOOLTIP_COMMAND_NAME = "Name of the command";
 	public static final String TOOLTIP_COMMAND_DESCRIPTION = "Free description of the command";
@@ -60,4 +64,7 @@ public class UIConstants {
 	
 	public static final String ERROR_IMPORTEXPORT_EXCEPTION_TITLE = "Error";
 	public static final String ERROR_IMPORTEXPORT_EXCEPTION_BODY = "<html>The following error occured:<br/>$ERR.<br/><b>Sorry :(</b></html>";
+	
+	public static final String ERROR_DRAGDROP_IMG_CONTROL_TITLE = "Error";
+	public static final String ERROR_DRAGDROP_IMG_CONTROL_BODY = "Sorry, first drag'n'drop a shortcut from the upper table, then you can drag'n'drop an image over it";
 }

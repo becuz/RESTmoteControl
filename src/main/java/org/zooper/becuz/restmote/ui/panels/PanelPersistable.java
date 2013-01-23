@@ -15,7 +15,7 @@ import org.zooper.becuz.restmote.model.interfaces.Persistable;
 import org.zooper.becuz.restmote.ui.UIUtils;
 
 /**
- *
+ * Father of PanelEdit*
  * @author bebo
  */
 public abstract class PanelPersistable extends JPanel{
@@ -26,17 +26,18 @@ public abstract class PanelPersistable extends JPanel{
 	protected JComponent[] jComponentsToObserve;
 	
 	/*
-	 * 
+	 * Reference to the list component that show all Persistables
 	 */
 	protected PanelListPersistable panelListPersistable;
 	
 	/**
 	 * 
 	 */
-	private boolean viewModified = false;
+	private boolean modified = false;
 	
 	/**
-	 * 
+	 * Control the execution of changed() method in listenerChanges. 
+	 * It's set to true by children, after the UI it's loaded with the model
 	 */
 	protected boolean listenViewChanges = false;
 	
@@ -46,15 +47,15 @@ public abstract class PanelPersistable extends JPanel{
 	private ListenerChanges listenerChanges = new ListenerChanges();
 	
 	/**
-	 * 
+	 * Listener for changes in all ui components. Set modified = true
 	 */
 	class ListenerChanges implements DocumentListener, ActionListener{
 
 		private void changed(){
 			if (listenViewChanges){
-				viewModified = true;
+				modified = true;
 			}
-			System.out.println("viewModified: " + viewModified);
+			//System.out.println("viewModified: " + modified);
 		}
 		
 		@Override
@@ -88,7 +89,7 @@ public abstract class PanelPersistable extends JPanel{
 	
 	public void edit(Persistable p){
 		setEnabled(p != null);
-		viewModified = false;
+		modified = false;
 		listenViewChanges = false;
 	}
 	

@@ -70,7 +70,34 @@ public class AppControlsTableModel extends AbstractTableModel{
 		}
 		return "";
 	}
+
+	@Override
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+		Control c = data.get(rowIndex);
+		if (columnIndex == 1){
+			c.setDescription((String) aValue);
+		} else {}
+	}
+
+	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		return columnIndex == 1;
+	}
 	
+	public void addControl(){
+		Control c = new Control("name");
+		c.addKeysEvent(new KeysEvent(65));
+		data.add(c);
+		fireTableRowsInserted(data.size()-1, data.size()-1);
+	}
 	
+	public Control removeControl(int index){
+		if (index > -1 && index < data.size()){
+			Control control = data.remove(index);
+			fireTableRowsDeleted(index, index);
+			return control;
+		}
+		return null;
+	}
 
 }

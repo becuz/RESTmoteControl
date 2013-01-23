@@ -163,24 +163,24 @@ public class App implements Editable, Completable{
 	public void isComplete() throws IllegalArgumentException {
 		StringBuffer errors = new StringBuffer();
 		if (Utils.isEmpty(getName())){
-			errors.append("\nName is mandatory");
+			errors.append("<br/><b>Name</b> is mandatory");
 		}
 		if (Utils.isEmpty(getPath())){
-			errors.append("\nPath is mandatory");
+			errors.append("<br/><b>Path</b> is mandatory");
 		} else if (!new File(getPath()).exists()){
-			errors.append("\nPath doesn't exist");
+			errors.append("<br/><b>Path</b> doesn't exist");
 		}
 		if (Utils.isEmpty(getWindowName())){
-			errors.append("\nWindow is mandatory");
+			errors.append("<br/><b>Window</b> is mandatory");
 		}
 //		if (controls == null || controls.isEmpty()){
 //			errors.append("\nNo controls are defined");
 //		}
 		if (Utils.isEmpty(getArgumentsFile())){
-			errors.append("\nArg file is mandatory");
+			errors.append("<br/><b>Arg file</b> is mandatory");
 		}
 		if (errors.length() > 0){
-			throw new IllegalArgumentException(errors.toString());
+			throw new IllegalArgumentException("<html>" + errors.substring("<br/>".length()) + "</html>");
 		}
 	}
 
