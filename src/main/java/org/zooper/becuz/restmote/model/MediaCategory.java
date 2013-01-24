@@ -26,9 +26,6 @@ import org.zooper.becuz.restmote.utils.Utils;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class MediaCategory implements Editable, Completable{
 
-	@JsonView(Views.All.class)
-	public static final String ROOT_NAME = "root"; 
-	
 	/**
 	 * 
 	 */
@@ -161,7 +158,7 @@ public class MediaCategory implements Editable, Completable{
 		if (paths == null) {
 			paths = new HashSet<String>();
 		}
-		if (ROOT_NAME.equals(getName())){
+		if (Constants.MEDIA_ROOT.equals(getName())){
 			Iterable<Path> dirs = FileSystems.getDefault().getRootDirectories();
 			for (Path name: dirs) {
 			    paths.add(name.toFile().getAbsolutePath());
@@ -227,7 +224,7 @@ public class MediaCategory implements Editable, Completable{
 
 	@JsonView(Views.Extreme.class)
 	public Boolean isRoot() {
-		return ROOT_NAME.equals(getName());
+		return Constants.MEDIA_ROOT.equals(getName());
 	}
 	
 	@JsonView(Views.Extreme.class)

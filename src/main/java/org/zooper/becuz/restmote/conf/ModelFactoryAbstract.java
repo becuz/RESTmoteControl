@@ -16,6 +16,7 @@ import org.zooper.becuz.restmote.model.ControlInterface;
 import org.zooper.becuz.restmote.model.KeysEvent;
 import org.zooper.becuz.restmote.model.MediaCategory;
 import org.zooper.becuz.restmote.model.VisualControl;
+import org.zooper.becuz.restmote.utils.Constants;
 import org.zooper.becuz.restmote.utils.PopulateDb;
 
 /**
@@ -74,7 +75,7 @@ public abstract class ModelFactoryAbstract {
 	
 	public MediaCategory getMediaCategoryRoot(){
 		if (mediaCategoryRoot == null){
-			mediaCategoryRoot = new MediaCategory(MediaCategory.ROOT_NAME);
+			mediaCategoryRoot = new MediaCategory(Constants.MEDIA_ROOT);
 			mediaCategoryRoot.setDescription("Allows to browse the entire filesystem.");
 		}
 		return mediaCategoryRoot;
