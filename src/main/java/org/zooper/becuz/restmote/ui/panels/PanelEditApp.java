@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -107,8 +108,7 @@ public class PanelEditApp extends PanelPersistable {
 							(VisualControl) ((HasControl)tableVisualControls.getModel()).getControlAt(selectedRow, selectedColumn);
 					if (visualControl != null){
 						Control control = visualControl.getControl();
-						//TODO visualControl.getControl()) is null
-						logger.info("Control retrieved from selected visualControl " + control);
+						//logger.info("Control retrieved from selected visualControl " + control);
 						int[] pos = ((HasControl)tableControls.getModel()).getControlPosition(control);
 						if (pos[0] != -1){
 							Rectangle rect = tableControls.getCellRect(pos[0], 1, true);
@@ -154,9 +154,9 @@ public class PanelEditApp extends PanelPersistable {
 	public void edit(Persistable p){
 		super.edit(p);
 		App app = (App) p;
-		if (app.getVisualControlsManager().getControls() != null && app.getVisualControlsManager().getControls().size() > 0){
-			logger.info("First visualControl.getControl(): " + app.getVisualControlsManager().getControls().iterator().next().getControl());
-		}
+//		if (app != null && app.getVisualControlsManager().getControls() != null && app.getVisualControlsManager().getControls().size() > 0){
+//			logger.info("First visualControl.getControl(): " + app.getVisualControlsManager().getControls().iterator().next().getControl());
+//		}
         textFieldNameApp.setText(app == null ? "" : app.getName());
         textFieldExtensionsApp.setText(app == null ? "" : Utils.join(app.getExtensions(), ","));
 		checkInstanceApp.setSelected(app == null ? false : app.getForceOneInstance());
@@ -208,13 +208,13 @@ public class PanelEditApp extends PanelPersistable {
         scrollPaneTableControls = new javax.swing.JScrollPane();
         tableControls = new javax.swing.JTable();
         scrollPaneTableVisualControls = new javax.swing.JScrollPane();
-        tableVisualControls = new org.zooper.becuz.restmote.ui.appcontrols.VisualControlsTable();
+        tableVisualControls = new org.zooper.becuz.restmote.ui.appcontrols.VisualControlsTable(this);
         tableVisualControls.setModel(appVisualControlsTableModel);
         scrollPaneListImages = new javax.swing.JScrollPane();
         listImages = new ImageList(false);
-        panelControlKeys = new org.zooper.becuz.restmote.ui.appcontrols.PanelControlKeys(tableControls);
+        panelControlKeys = new org.zooper.becuz.restmote.ui.appcontrols.PanelControlKeys(this, tableControls);
         lblHelpIcons = new javax.swing.JLabel();
-        panelVisualControl = new org.zooper.becuz.restmote.ui.appcontrols.PanelVisualControl(tableVisualControls);
+        panelVisualControl = new org.zooper.becuz.restmote.ui.appcontrols.PanelVisualControl(this, tableVisualControls);
         btnDeleteControl = new javax.swing.JButton();
         btnAddControl = new javax.swing.JButton();
 
@@ -466,7 +466,7 @@ public class PanelEditApp extends PanelPersistable {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditAppCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditAppCancelActionPerformed
-		panelListPersistable.clearSelection();
+		panelListPersistable.clearSelection(isModified());
     }//GEN-LAST:event_btnEditAppCancelActionPerformed
 
 	@Override
@@ -491,7 +491,10 @@ public class PanelEditApp extends PanelPersistable {
             app.setArgumentsFile(textFieldArgFileApp.getText());
             app.setArgumentsDir(textFieldArgDirApp.getText());
             app.setPath(textFieldPathApp.getText());
-			if (!Utils.isEmpty(app.getPath())){
+            app.setWindowName(comboWindowName.getSelectedItem().toString());
+            
+            //determining app.relativePath
+            if (!Utils.isEmpty(app.getPath())){
 				Map<String, String> env = System.getenv();
 				for(String commonPath: PcControllerFactory.getPcController().getBinDefaultPaths()){
 					if (commonPath.startsWith("%")){
@@ -515,11 +518,19 @@ public class PanelEditApp extends PanelPersistable {
 					}
 				}
 			}
-			app.setWindowName(comboWindowName.getSelectedItem().toString());
+			
 			ControlsManager controlsManager = app.getControlsManager();
 			VisualControlsManager visualControlsManager = app.getVisualControlsManager();
-			controlsManager.clear();
-			visualControlsManager.clear();
+//			controlsManager.clear();
+//			visualControlsManager.clear();
+			
+			Iterator<Control> it = controlsManager.getControls().iterator();
+			while (it.hasNext()) {
+				Control control = it.next();
+				if (((AppControlsTableModel)tableControls.getModel()).getControlPosition(control)[0] == -1){
+					it.remove();
+				}
+			}
 			for (int i = 0; i < tableControls.getRowCount(); i++) {
 				Control c = (Control) ((AppControlsTableModel)tableControls.getModel()).getControlAt(i, -1);
 				if (c != null){
@@ -529,9 +540,30 @@ public class PanelEditApp extends PanelPersistable {
 							c.validate();
 						} catch (IllegalArgumentException e){
 							//TODO 
+							e.printStackTrace();
 						}
-						controlsManager.addControl(c);
+						if (c.getId() == null){
+							controlsManager.addControl(c);
+						}
 					}
+				}
+			}
+			
+			Iterator<VisualControl> it2 = visualControlsManager.getControls().iterator();
+			while (it2.hasNext()) {
+				VisualControl control = it2.next();
+				boolean found = false;
+				for (int i = 0; i < tableVisualControls.getRowCount(); i++) {
+					for (int j = 0; j < tableVisualControls.getColumnCount(); j++) {
+						VisualControl c = (VisualControl) tableVisualControls.getModel().getValueAt(i, j);
+						if (control == c){
+							found = true;
+							break;
+						}
+					}
+				}
+				if (!found){
+					it2.remove();
 				}
 			}
 			for (int i = 0; i < tableVisualControls.getRowCount(); i++) {
@@ -541,9 +573,12 @@ public class PanelEditApp extends PanelPersistable {
 						try {
 							c.validate();
 						} catch (IllegalArgumentException e){
-							//TODO 
+							//TODO
+							e.printStackTrace();
 						}
-						visualControlsManager.addControl(c);
+						if (c.getId() == null){
+							visualControlsManager.addControl(c);
+						}
 					}
 				}
 			}
@@ -572,7 +607,8 @@ public class PanelEditApp extends PanelPersistable {
     }//GEN-LAST:event_btnAddControlActionPerformed
 
     private void btnDeleteControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteControlActionPerformed
-        //Control control = 
+        setModified(true);
+		//Control control = 
 				appControlsTableModel.removeControl(tableControls.getSelectedRow());
 		//Persistable p = panelListPersistable.getSelectedItem();
 		//((App)p).getControlsManager().removeControl(control);

@@ -1,16 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.zooper.becuz.restmote.ui.panels;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.swing.DefaultListModel;
+import org.zooper.becuz.restmote.business.AppBusiness;
+import org.zooper.becuz.restmote.business.interfaces.BusinessModelAbstract;
 
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
+import org.zooper.becuz.restmote.persistence.PersistenceFactory;
 import org.zooper.becuz.restmote.ui.UIUtils;
+import org.zooper.becuz.restmote.ui.appcontrols.VisualControlsTable;
 import org.zooper.becuz.restmote.ui.widgets.CompletableListRenderer;
 
 /**
@@ -19,9 +20,16 @@ import org.zooper.becuz.restmote.ui.widgets.CompletableListRenderer;
  */
 public class PanelListPersistable extends javax.swing.JPanel {
 
+	private Logger logger = Logger.getLogger(PanelListPersistable.class.getName());
 	
+	/**
+	 * 
+	 */
 	private PanelPersistables panelPersistables;
 	
+	/**
+	 * Model for the list of Persistable
+	 */
 	private DefaultListModel<Persistable> listModel;
 	
 	/**
@@ -147,8 +155,29 @@ public class PanelListPersistable extends javax.swing.JPanel {
 		return bin;
 	}
 
+	/**
+	 * Clear the selection of the list
+	 */
 	void clearSelection() {
+		clearSelection(false);
+	}
+	
+	/**
+	 * Clear the selection of the list
+	 * @param reloadSelected if true reload the selected app, cause has been modified and cancel has been clicked
+	 */
+	void clearSelection(boolean reloadSelected) {
+		int i = list.getSelectedIndex();
 		list.clearSelection();
+		logger.info("Called clearSelection with " + reloadSelected + " i: " + i);
+		if (reloadSelected){
+			Persistable p = listModel.getElementAt(i);
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			BusinessModelAbstract business = new BusinessModelAbstract(p.getClass());
+			Persistable p2 = business.get(p.getId());
+			p2.validate();
+			listModel.set(i, p2);
+		}
 	}
 
 	Persistable getSelectedItem() {

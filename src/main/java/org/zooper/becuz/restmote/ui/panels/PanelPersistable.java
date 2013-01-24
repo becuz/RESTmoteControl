@@ -86,7 +86,14 @@ public abstract class PanelPersistable extends JPanel{
 		UIUtils.setEnabledRecursive(this, enabled);
 	}
 	
-	
+	public boolean isModified() {
+		return modified;
+	}
+
+	public void setModified(boolean modified) {
+		this.modified = modified;
+	}
+
 	public void edit(Persistable p){
 		setEnabled(p != null);
 		modified = false;

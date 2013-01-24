@@ -12,6 +12,8 @@ public abstract class PersistenceAbstract {
 
 	protected static final Logger log = Logger.getLogger(PersistenceAbstract.class.getName());
 	
+	private boolean cacheEnabled = false;
+	
 	/**
 	 * Cache
 	 */
@@ -56,15 +58,17 @@ public abstract class PersistenceAbstract {
 	 * @param p
 	 */
 	public void addInCache(Persistable p){
-		if (p == null){
-			throw new IllegalArgumentException("Trying to add null object in cache");
+		if (cacheEnabled){
+			if (p == null){
+				throw new IllegalArgumentException("Trying to add null object in cache");
+			}
+			Map<Long, Persistable> thisClassCache = cache.get(p.getClass());
+			if (thisClassCache == null){
+				thisClassCache = new HashMap<Long, Persistable>();
+				cache.put(p.getClass(), thisClassCache);
+			}
+			thisClassCache.put(p.getId(), p);
 		}
-		Map<Long, Persistable> thisClassCache = cache.get(p.getClass());
-		if (thisClassCache == null){
-			thisClassCache = new HashMap<Long, Persistable>();
-			cache.put(p.getClass(), thisClassCache);
-		}
-		thisClassCache.put(p.getId(), p);
 	}
 	
 //	/**

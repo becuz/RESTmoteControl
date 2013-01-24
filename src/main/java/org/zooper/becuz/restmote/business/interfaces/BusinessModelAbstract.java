@@ -11,7 +11,7 @@ public class BusinessModelAbstract<E extends Persistable> extends BusinessAbstra
 
 	private Class<E> type;
 
-	protected BusinessModelAbstract(Class<E> type) { 
+	public BusinessModelAbstract(Class<E> type) { 
 		this.type = type;  
 	}
 	

@@ -37,7 +37,10 @@ public class AppControlsTableModel extends AbstractTableModel implements HasCont
 	
 	@Override
 	public ControlInterface getControlAt(int rowIndex, int colIndex){
-		return data.get(rowIndex);
+		if (rowIndex > -1 && rowIndex < data.size()){
+			return data.get(rowIndex);
+		}
+		return null;
 	}
 	
 	@Override

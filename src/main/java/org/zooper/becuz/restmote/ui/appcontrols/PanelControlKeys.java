@@ -21,6 +21,7 @@ import org.zooper.becuz.restmote.model.ControlInterface;
 import org.zooper.becuz.restmote.model.KeysEvent;
 import org.zooper.becuz.restmote.ui.UIConstants;
 import org.zooper.becuz.restmote.ui.UIUtils;
+import org.zooper.becuz.restmote.ui.panels.PanelPersistable;
 import org.zooper.becuz.restmote.utils.Utils;
 
 /**
@@ -31,8 +32,6 @@ import org.zooper.becuz.restmote.utils.Utils;
 public class PanelControlKeys extends javax.swing.JPanel implements EditControl {
 
 	private Logger logger = Logger.getLogger(PanelControlKeys.class.getName());
-	
-	private boolean modified;
 	
 	/**
 	 * model Control
@@ -55,6 +54,11 @@ public class PanelControlKeys extends javax.swing.JPanel implements EditControl 
 	private JTable appControlsTable;
 	
 	/**
+	 * 
+	 */
+	private PanelPersistable panelEditApp;
+	
+	/**
      * Swing list model for {@link #comboVirtualKey} 
      */
     private DefaultComboBoxModel<String> listVirtualKeyModel = new DefaultComboBoxModel<String>();
@@ -64,7 +68,8 @@ public class PanelControlKeys extends javax.swing.JPanel implements EditControl 
 	/**
 	 * Creates new form PanelControlKeys
 	 */
-	public PanelControlKeys(JTable appControlsTable) {
+	public PanelControlKeys(PanelPersistable panelEditApp, JTable appControlsTable) {
+		this.panelEditApp = panelEditApp;
 		this.appControlsTable = appControlsTable;
 		initComponents();
 		postInitComponents();
@@ -105,7 +110,6 @@ public class PanelControlKeys extends javax.swing.JPanel implements EditControl 
 				keysEvents.add(copyKeysEvent);
 			}
 		}
-		modified = false;
 		indexKeysEvents = 0;
 		setEnabled(control != null);
 		btnSave.setEnabled(false);
@@ -355,7 +359,6 @@ public class PanelControlKeys extends javax.swing.JPanel implements EditControl 
     }//GEN-LAST:event_btnNextActionPerformed
 
 	private void setModified(boolean modified){
-		this.modified = modified;
 		btnSave.setEnabled(modified);
 	}
 	
@@ -384,16 +387,11 @@ public class PanelControlKeys extends javax.swing.JPanel implements EditControl 
 	}
 	
     private void textFieldKeyStrokeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldKeyStrokeKeyTyped
-    	System.out.println("textFieldKeyStrokeKeyPressed");
     	evt.consume();
 		keysEvents.get(indexKeysEvents).getKeys().clear();
     }//GEN-LAST:event_textFieldKeyStrokeKeyTyped
 
     private void textFieldKeyStrokeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldKeyStrokeKeyReleased
-//		int keyCode = evt.getKeyCode();
-//		System.out.println("keyChar " + evt.getKeyChar());
-//		System.out.println("keyCode " + keyCode);
-//		System.out.println("TextCode " + KeyEvent.getKeyText(keyCode));
     	keysEvents.get(indexKeysEvents).getKeys().add(evt.getKeyCode());
 		evt.consume();
 		setModified(true);
@@ -405,7 +403,8 @@ public class PanelControlKeys extends javax.swing.JPanel implements EditControl 
     }//GEN-LAST:event_textFieldKeyStrokeKeyPressed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        copyToModel();
+        panelEditApp.setModified(true);
+		copyToModel();
 		appControlsTable.clearSelection();
     }//GEN-LAST:event_btnSaveActionPerformed
 

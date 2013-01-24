@@ -394,7 +394,7 @@
                     </Property>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new org.zooper.becuz.restmote.ui.appcontrols.VisualControlsTable()"/>
+                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new org.zooper.becuz.restmote.ui.appcontrols.VisualControlsTable(this)"/>
                     <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="tableVisualControls.setModel(appVisualControlsTableModel);"/>
                   </AuxValues>
                 </Component>
@@ -420,7 +420,7 @@
             </Container>
             <Component class="org.zooper.becuz.restmote.ui.appcontrols.PanelControlKeys" name="panelControlKeys">
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new org.zooper.becuz.restmote.ui.appcontrols.PanelControlKeys(tableControls)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new org.zooper.becuz.restmote.ui.appcontrols.PanelControlKeys(this, tableControls)"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="lblHelpIcons">
@@ -430,7 +430,7 @@
             </Component>
             <Component class="org.zooper.becuz.restmote.ui.appcontrols.PanelVisualControl" name="panelVisualControl">
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new org.zooper.becuz.restmote.ui.appcontrols.PanelVisualControl(tableVisualControls)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new org.zooper.becuz.restmote.ui.appcontrols.PanelVisualControl(this, tableVisualControls)"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="btnDeleteControl">

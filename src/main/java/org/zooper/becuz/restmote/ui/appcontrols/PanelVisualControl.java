@@ -11,6 +11,7 @@ import org.zooper.becuz.restmote.model.ControlInterface;
 import org.zooper.becuz.restmote.model.VisualControl;
 import org.zooper.becuz.restmote.ui.UIConstants;
 import org.zooper.becuz.restmote.ui.UIUtils;
+import org.zooper.becuz.restmote.ui.panels.PanelPersistable;
 
 /**
  *
@@ -19,9 +20,7 @@ import org.zooper.becuz.restmote.ui.UIUtils;
 public class PanelVisualControl extends javax.swing.JPanel implements EditControl {
 
 	private Logger logger = Logger.getLogger(PanelVisualControl.class.getName());
-	
-	private boolean modified = false;
-	
+
 	/**
 	 * model VisualControl
 	 */
@@ -33,13 +32,19 @@ public class PanelVisualControl extends javax.swing.JPanel implements EditContro
 	private JTable appVisualControlsTable;
 	
 	/**
+	 * 
+	 */
+	private PanelPersistable panelEditApp;
+	
+	/**
 	 * Creates new form PanelVisualControl
 	 */
 	public PanelVisualControl() {
 		initComponents();
 	}
 	
-	public PanelVisualControl(JTable jt){
+	public PanelVisualControl(PanelPersistable panelEditApp, JTable jt){
+		this.panelEditApp = panelEditApp;
 		this.appVisualControlsTable = jt;
 		initComponents();
 	}
@@ -47,7 +52,6 @@ public class PanelVisualControl extends javax.swing.JPanel implements EditContro
 	@Override
 	public void setControl(ControlInterface control){
 		this.visualControl = (VisualControl) control;
-		modified = false;
 		setEnabled(control != null);
 		UIUtils.setEnabledRecursive(this, control != null);
 		copyToView();
@@ -118,8 +122,7 @@ public class PanelVisualControl extends javax.swing.JPanel implements EditContro
     }// </editor-fold>//GEN-END:initComponents
 
     private void textFieldSelectedControlNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldSelectedControlNameKeyReleased
-        System.out.println("TODO textFieldSelectedControlNameKeyReleased");
-        modified = true;
+        panelEditApp.setModified(true);
         visualControl.setName(textFieldSelectedControlName.getText());
         fireUpdate();
     }//GEN-LAST:event_textFieldSelectedControlNameKeyReleased
@@ -130,8 +133,7 @@ public class PanelVisualControl extends javax.swing.JPanel implements EditContro
 	}
 	
     private void textFieldSelectedControlNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldSelectedControlNameKeyTyped
-        System.out.println("TODO textFieldSelectedControlNameKeyTyped");
-        textFieldSelectedControlName.setText(visualControl == null ? "" : visualControl.getName());
+        //textFieldSelectedControlName.setText(visualControl == null ? "" : visualControl.getName());
     }//GEN-LAST:event_textFieldSelectedControlNameKeyTyped
 
     private void btnDeleteControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteControlActionPerformed

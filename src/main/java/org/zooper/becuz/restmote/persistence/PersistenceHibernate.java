@@ -5,7 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.zooper.becuz.restmote.model.interfaces.Persistable;
 import org.zooper.becuz.restmote.persistence.hibernate.HibernateUtil;
 
@@ -39,7 +43,11 @@ public class PersistenceHibernate extends PersistenceAbstract{
 			if (!sessionWasOpen){
 				beginTransaction();
 			}
-			p = (Persistable) session.load(clazz, id);
+			//p = (Persistable) session.load(clazz, id); //doesn't do lazy loading
+		    p = (Persistable) session.createQuery(
+				    "select a from " + clazz.getSimpleName() + " as a where a.id = :id")
+				    .setLong("id", id)
+				    .uniqueResult();
 			if (p != null){
 				addInCache(p);
 			}

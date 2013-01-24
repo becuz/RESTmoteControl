@@ -19,6 +19,7 @@ import javax.swing.JTable;
 import org.zooper.becuz.restmote.model.Control;
 import org.zooper.becuz.restmote.model.VisualControl;
 import org.zooper.becuz.restmote.ui.UIConstants;
+import org.zooper.becuz.restmote.ui.panels.PanelPersistable;
 
 /**
  * 
@@ -32,8 +33,15 @@ public class VisualControlsTable extends JTable implements DropTargetListener {
 	@SuppressWarnings("unused")
 	private DropTarget target; //a marker field, used to notify the system that it supports drag'n'drop
 
+	private PanelPersistable panelEditApp;
+	
 	public VisualControlsTable() {
 		target = new DropTarget(this, this);
+	}
+	
+	public VisualControlsTable(PanelPersistable panelEditApp) {
+		this();
+		this.panelEditApp = panelEditApp;
 	}
 
 	@Override
@@ -64,6 +72,7 @@ public class VisualControlsTable extends JTable implements DropTargetListener {
 				String imgName = (String) t.getTransferData(d[0]);
 				if (((AppVisualControlsTableModel)getModel()).setImageAt(imgName, row, col)){
 					changeSelection(row, col, false, false);
+					panelEditApp.setModified(true);
 				} else {
 					JOptionPane.showMessageDialog(this,
 						UIConstants.ERROR_DRAGDROP_IMG_CONTROL_BODY, 
@@ -73,6 +82,7 @@ public class VisualControlsTable extends JTable implements DropTargetListener {
 			} else {//if (d[0].getMimeType().equals(DataFlavor.javaSerializedObjectMimeType)){
 				Control control = (Control) t.getTransferData(d[0]);
 				((AppVisualControlsTableModel)getModel()).setControlAt(control, row, col);
+				panelEditApp.setModified(true);
 			}
 		} catch (UnsupportedFlavorException ex) {
 			logger.log(Level.SEVERE, null, ex);
