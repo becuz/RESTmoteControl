@@ -749,6 +749,7 @@ public class MainWindow extends javax.swing.JFrame {
         settingsBusiness.store(settings);
 		
 		panelApps.save();
+		//TODO if there's a referenced app in media categories, commit fails
 		panelCategories.save();
 		panelCommands.save();
 		

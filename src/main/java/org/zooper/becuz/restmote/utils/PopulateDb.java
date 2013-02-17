@@ -2,11 +2,14 @@ package org.zooper.becuz.restmote.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileReader;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.hibernate.cfg.Environment;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.zooper.becuz.restmote.RestmoteControl;
 import org.zooper.becuz.restmote.business.SettingsBusiness;
 import org.zooper.becuz.restmote.conf.ModelFactoryAbstract;
@@ -110,5 +113,49 @@ public class PopulateDb {
 		
 		persistenceAbstract.commit();
 	}
+	
+	
+	FileFilter htmlFiler = new FileFilter() {
+		@Override
+		public boolean accept(File pathname) {
+			return !pathname.isDirectory() && pathname.getAbsolutePath().endsWith(".html");
+		}
+	};
+	
+	
+	public void importShortcutWorls() throws Exception{
+		String path = "C:\\Users\\admin\\Documents\\shortcutworldSingle\\www.shortcutworld.com\\en\\win";
+		File file = new File(path);
+		if (file.exists()){
+			int i = 0;
+			File[] children = file.listFiles(htmlFiler);
+			if (children != null){
+				for(File child: children){
+					System.out.println(child.getAbsolutePath());
+					if (i == 1){
+						break;
+					}
+					Document doc = Jsoup.parse(child, "UTF-8");
+					doc.getElementsContainingOwnText("Show all");
+					
+//					BufferedReader br = new BufferedReader(new FileReader(child));
+//					String line;
+//					while ((line = br.readLine()) != null) {
+//					   
+//					}
+//					br.close();
+					
+					i++;
+				}
+			}
+		} else {
+			System.err.println(path + " doesn't exist");
+		}
+	}
+	
+	
+	
+	
+	
 	
 }

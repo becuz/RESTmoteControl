@@ -408,7 +408,7 @@ public class PanelControlKeys extends javax.swing.JPanel implements EditControl 
 		appControlsTable.clearSelection();
     }//GEN-LAST:event_btnSaveActionPerformed
 
-    private void comboVirtualKeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboVirtualKeyActionPerformed
+    private void comboVirtualKeyActionPerformed(java.awt.event.ActionEvent evt) {//GENf-FIRST:event_comboVirtualKeyActionPerformed
         try {
 			String keyName = (String) listVirtualKeyModel.getSelectedItem();
 			if (!Utils.isEmpty(keyName)){

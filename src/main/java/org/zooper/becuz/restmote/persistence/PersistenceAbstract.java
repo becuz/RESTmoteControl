@@ -12,7 +12,7 @@ public abstract class PersistenceAbstract {
 
 	protected static final Logger log = Logger.getLogger(PersistenceAbstract.class.getName());
 	
-	private boolean cacheEnabled = false;
+	private boolean cacheEnabled = true;
 	
 	/**
 	 * Cache
