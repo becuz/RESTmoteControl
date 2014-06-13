@@ -167,8 +167,8 @@ public class App implements Editable, Completable{
 		}
 		if (Utils.isEmpty(getPath())){
 			errors.append("<br/><b>Path</b> is mandatory");
-		} else if (!new File(getPath()).exists()){
-			errors.append("<br/><b>Path</b> doesn't exist");
+//		} else if (!new File(getPath()).exists()){
+//			errors.append("<br/><b>Path</b> doesn't exist");
 		}
 		if (Utils.isEmpty(getWindowName())){
 			errors.append("<br/><b>Window</b> is mandatory");
