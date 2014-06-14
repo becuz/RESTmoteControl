@@ -20,12 +20,6 @@ import org.zooper.becuz.restmote.ui.Tray;
  *  the section with the controls is quiet big. (Expecially in music) users would mostly choose the media, no play with controls.
  *  therefore the secion visibility should be toggled easily somehow.
  *  
- *  
- *  FAIL
- *  //TestAppBusiness.testDetaching
- *  //TestActiveAppBusiness.testBasicOps
- *  //TestRemoteControlBusiness.testOpenMedia
- *  TestDataResource.testGet
  *
  */
 public class MainUI {
