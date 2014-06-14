@@ -86,7 +86,8 @@ public class PopulateDb {
 			
 			//Flexible way to specify paths to scan for media. developers can list their own paths
 			try {
-				BufferedReader br = new BufferedReader(new FileReader(this.getClass().getResource("/paths").getPath()));
+				BufferedReader br = new BufferedReader(
+						new FileReader(this.getClass().getResource("/paths" + Utils.getOs()).getPath()));
 		        String line;
 		        while((line = br.readLine()) != null) {
 		        	if (!line.startsWith("#")){

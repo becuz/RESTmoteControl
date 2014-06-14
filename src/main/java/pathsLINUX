@@ -1,0 +1,4 @@
+#paths specified here will be inserted on database creation.
+#it's a fast way to avoid developers to manually insert after a db re-creation.
+/var/media
+/home/bebo/Downloads/AAA Torrent
