@@ -102,12 +102,12 @@ public class PcControllerLinux extends PcControllerAbstract{
 
 	@Override
 	public boolean poweroff() throws Exception {
-		return execute(new String[]{"shutdown"}) != null;
+		return execute(new String[]{"sudo shutdown"}) != null;
 	}
 
 	@Override
 	public boolean suspend() throws Exception {
-		return execute(new String[]{"pm-suspend"}) != null; 							//TODO only root?
+		return execute(new String[]{"sudo pm-suspend"}) != null; 
 	}
 
 

@@ -17,7 +17,9 @@ public class RestmoteMain {
 		boolean forcePopulateDb = false;
 		if (args != null && args.length > 0){
 			ui = Boolean.parseBoolean(args[1]);
-			forcePopulateDb = Boolean.parseBoolean(args[1]);
+			if (args.length > 1) {
+				forcePopulateDb = Boolean.parseBoolean(args[1]);
+			}
 		}
 		if (ui){
 			try {
