@@ -63,7 +63,7 @@ public class ModelFactoryLinux extends ModelFactoryAbstract{
 			getControl(appMusic, 
 					ControlDefaultTypeApp.VOLDOWN, 1, new HashSet<Integer>(Arrays.asList(new Integer[]{KeyEvent.VK_CONTROL, KeyEvent.VK_MINUS})), 3, 0);
 			getControl(appMusic, 
-					ControlDefaultTypeApp.BACKWARD, 3, KeyEvent.VK_RIGHT, 3, 1);
+					ControlDefaultTypeApp.FORWARD, 3, KeyEvent.VK_RIGHT, 3, 1);
 			
 			ControlCategory controlCategory = new ControlCategory("Play Music in Winamp");
 			ControlCategory controlCategory2 = new ControlCategory("Manage Winamp Window(s)");

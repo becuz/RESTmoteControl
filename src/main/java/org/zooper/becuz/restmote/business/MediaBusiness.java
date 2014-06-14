@@ -3,6 +3,7 @@ package org.zooper.becuz.restmote.business;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -159,6 +160,7 @@ public class MediaBusiness extends BusinessAbstract{
 			File f = new File(path);
 			if (f.exists() && f.isDirectory()){
 				File[] children = f.listFiles(new MediaFilter(extensions, pattern));
+				Arrays.sort(children); //File is a comparable, lexicographically
 				if (children != null){
 					for(File child: children){
 						String childPath = child.getAbsolutePath();
@@ -166,7 +168,7 @@ public class MediaBusiness extends BusinessAbstract{
 						if (!child.isDirectory()){
 							mediaChild.setFile(true);	//let's leave it at null in case it's a directory: less noise as we avoid serialize nulls
 						}
-						results.add(mediaChild);							
+						results.add(mediaChild);
 					}
 					if (depth != 1){ 
 						for (Media mediaChild: results){

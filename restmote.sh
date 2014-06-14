@@ -1,1 +1,1 @@
-javaw -jar restmote.jar
+java -jar restmote.jar

@@ -93,7 +93,6 @@ public class PopulateDb {
 				BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		        String line;
 		        while((line = br.readLine()) != null) {
-		        	System.out.println("Read path line " + line);
 		        	if (!line.startsWith("#")){
 			        	if (new File(line).exists()){
 			        		settings.addPath(line);
@@ -107,9 +106,11 @@ public class PopulateDb {
 				log.error("File paths not found " + e.toString());
 			}
 			
-			String userHome = Utils.getUserHome();
-			if (new File(userHome).exists()){
-				settings.addPath(userHome);
+			if (settings.getPaths().isEmpty()){
+				String userHome = Utils.getUserHome();
+				if (new File(userHome).exists()){
+					settings.addPath(userHome);
+				}
 			}
 			
 			persistenceAbstract.store(appMovies);

@@ -80,9 +80,9 @@ public class Tray implements ActionListener, ServerStatusListener {
 
 	public TrayIcon getTrayIcon() {
 		if (trayIcon == null) {
-			trayIcon = new TrayIcon(UIUtils.createImage(
-					MainWindow.class.getResource("images/remosko.png"), null,
-					false));
+			trayIcon = new TrayIcon(
+					UIUtils.createImage(MainWindow.class.getResource("images/remosko.png"), null,false)
+					);
 			trayIcon.setImageAutoSize(true);
 			trayIcon.setPopupMenu(getPopup());
 			trayIcon.setToolTip(UIConstants.TRAY_TOOLTIP);
