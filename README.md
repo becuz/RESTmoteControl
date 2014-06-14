@@ -41,7 +41,7 @@ There are project files to open it with Eclipse or NetBeans. No Maven (yet).
 
 
 # Simple Usage
-- The run the server, run the org.zooper.becuz.restmote.Main or MainUI class
+- The run the server, run the org.zooper.becuz.restmote.RestmoteMainNoUI or MainUI class
 - Open with a browser the url logged in the console (Main) or defined in the UI (MainUI). Should be http://machineip:9898/client/index.html
 - You can optionally configure media paths editing file src/main/java/paths (Main) or through the UI (MainUI)
 - To be able to control applications, you need to add them in PopulateDb.java or have the default ones installed. Right now the default hardcoded configuration, and the tests, assumes winamp, smplayer and irfanview (Windows) or Rhythmbox, smplayer and Gnome Image Viewer (Linux) are installed on the machine. Check ModelFactory*.java.

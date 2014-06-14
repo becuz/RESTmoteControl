@@ -129,7 +129,7 @@ public class TestActiveAppBusiness extends TestAbstract{
 			ActiveApp activeApp2 = activeAppBusiness.next();
 			Thread.sleep(1000);
 			assertTrue(!activeApp2.getHandle().equals(prevHandle));
-			assertTrue(!activeApp2.getHandle().equals(activeApp.getHandle()));
+			assertTrue(!activeApp2.getHandle().equals(activeApp.getHandle()));	//TODO this fails on windows
 			assertEquals(activeAppBusiness.getActiveAppFocused(false).getHandle(), activeApp2.getHandle());
 			assertEquals(activeAppBusiness.getActiveAppFocused(true).getHandle(), activeApp2.getHandle());
 			

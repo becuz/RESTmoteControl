@@ -106,7 +106,7 @@ public class ExploreResource extends AbstractResource {
 		return BusinessFactory.getMediaBusiness().retrieveMedias(
 				filePath, 
 				depth,
-				mediaCategory == null ? null : new ArrayList<String>(mediaCategory.getExtensions()), 
+				mediaCategory == null ? null : mediaCategory.getExtensions(), 
 				filter);
 	}
 	

@@ -49,6 +49,9 @@ public class TestActiveAppResource extends TestResourceAbstract {
 			}
 		}
 		
+		System.out.println("Handle eclipse: " + handleEclipse);
+		System.out.println("Handle other: " + handleOther);
+		
 		//POST /activeapps/handleOther/focus
 		invokeUrl(
 				server.getApiUrl() + "activeapps/handle/" + handleOther + "/focus", "", 
@@ -64,6 +67,7 @@ public class TestActiveAppResource extends TestResourceAbstract {
 		assertTrue(activeApp.isFocus());
 		
 		if (handleEclipse != null){
+			//TODO this misteriously fails, on windows
 			invokeUrl(
 					server.getApiUrl() + "activeapps/handle/" + handleEclipse + "/focus", "", 
 					MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, "POST", "", HttpURLConnection.HTTP_NO_CONTENT);

@@ -17,9 +17,13 @@ import org.zooper.becuz.restmote.ui.Tray;
  *  therefore the secion visibility should be toggled easily somehow.
  *
  */
-public class MainUI {
+public class RestmoteMainUI {
 
 	public static void main(String[] args) throws Exception {
+		boolean forcePopulateDb = false;
+		if (args != null && args.length > 0){
+			forcePopulateDb = Boolean.parseBoolean(args[0]);
+		}
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 //			UIManager.put("TextArea.disabledBackground", Color.GRAY);
@@ -28,7 +32,7 @@ public class MainUI {
         }
 		final Tray tray = new Tray();
 		Server.getInstance().addServerStatusListeners(tray);
-		new RestmoteControl().run(true);
+		new RestmoteControl().run(forcePopulateDb);
 		SwingUtilities.invokeLater(new Runnable() {
             public void run() {
             	tray.createAndShowGUI();

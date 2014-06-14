@@ -1,8 +1,11 @@
 package org.zooper.becuz.restmote.utils;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -85,11 +88,12 @@ public class PopulateDb {
 			Command command = modelFactoryAbstract.getACommand();
 			
 			//Flexible way to specify paths to scan for media. developers can list their own paths
+			InputStream is = this.getClass().getResourceAsStream("/paths" + Utils.getOs());
 			try {
-				BufferedReader br = new BufferedReader(
-						new FileReader(this.getClass().getResource("/paths" + Utils.getOs()).getPath()));
+				BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		        String line;
 		        while((line = br.readLine()) != null) {
+		        	System.out.println("Read path line " + line);
 		        	if (!line.startsWith("#")){
 			        	if (new File(line).exists()){
 			        		settings.addPath(line);
@@ -100,7 +104,7 @@ public class PopulateDb {
 		        }
 		        br.close();
 			} catch (Exception e){
-				log.error(e.toString());
+				log.error("File paths not found " + e.toString());
 			}
 			
 			String userHome = Utils.getUserHome();

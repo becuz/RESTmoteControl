@@ -120,10 +120,10 @@ public class MediaBusiness extends BusinessAbstract{
 	 */
 	public class MediaFilter implements FileFilter {
 
-		private List<String> extensions;
+		private Collection<String> extensions;
 		private Pattern pattern;
 		
-		public MediaFilter(List<String> extensions, String patternString) {
+		public MediaFilter(Collection<String> extensions, String patternString) {
 			super();
 			this.extensions = extensions;
 			if (!Utils.isEmpty(patternString)){
@@ -151,7 +151,7 @@ public class MediaBusiness extends BusinessAbstract{
 	 * @param pattern filter by this regex 
 	 * @return
 	 */
-	public List<Media> retrieveMedias(String path, Integer depth, List<String> extensions, String pattern){
+	public List<Media> retrieveMedias(String path, Integer depth, Collection<String> extensions, String pattern){
 		log.debug("getMedia() path: " + path + ", depth: " + depth + ", extensions: " + extensions + ", pattern: " + pattern);
 		List<Media> results = new ArrayList<Media>();
 		depth = depth == null ? BusinessFactory.getSettingsBusiness().get().getScanDepth() : depth;
