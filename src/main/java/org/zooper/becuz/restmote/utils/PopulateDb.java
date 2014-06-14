@@ -30,26 +30,35 @@ public class PopulateDb {
 	
 	private static final Logger log = Logger.getLogger(PopulateDb.class.getName());
 
-	public void createAndPopulate(/*boolean develop*/) {
-		boolean populate = false;
+	public void createAndPopulate(boolean forceCreateDb) {
 		PersistenceAbstract persistenceAbstract = PersistenceFactory.getPersistenceAbstract();
-		if (persistenceAbstract instanceof PersistenceHibernate){
-			Properties p = new Properties();
-			String hbm2dll = null;
-			String dbFile = HibernateUtil.getDbFile(false);
-			if (!new File(dbFile+".properties").exists()){
-				hbm2dll = "create";
-				populate = true;
-			} else if (/*develop ||*/ !RestmoteControl.getVersion().equals(RestmoteControl.getInstalledVersion())){
-				hbm2dll = "update";
-			}
-			if (hbm2dll != null){
-				log.info("A mainteneance operation is goin to perform on the database: " + hbm2dll);
-				p.put(Environment.HBM2DDL_AUTO, hbm2dll); 	
+		boolean populate = false;
+		boolean isHibernate = persistenceAbstract instanceof PersistenceHibernate;
+		
+		if (forceCreateDb || !isHibernate){
+			if (isHibernate){
+				Properties p = new Properties();
+				p.put(Environment.HBM2DDL_AUTO, "create"); 	
 				HibernateUtil.setProperties(p);
 			}
-		} else {
 			populate = true;
+		} else {
+			if (isHibernate){
+				String hbm2dll = null;
+				String dbFile = HibernateUtil.getDbFile(false);
+				if (!new File(dbFile+".properties").exists()){
+					hbm2dll = "create";
+					populate = true;
+				} else if (!RestmoteControl.getVersion().equals(RestmoteControl.getInstalledVersion())){
+					hbm2dll = "update";
+				}
+				if (hbm2dll != null){
+					log.info("A mainteneance operation is goin to perform on the database: " + hbm2dll);
+					Properties p = new Properties();
+					p.put(Environment.HBM2DDL_AUTO, hbm2dll); 	
+					HibernateUtil.setProperties(p);
+				}
+			}
 		}
 		
 		Settings settings = new SettingsBusiness().get();

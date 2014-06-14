@@ -98,7 +98,8 @@ public class App implements Editable, Completable{
 	
 	
 	/**
-	 * if true, {@link PcControllerAbstract} makes this app to run always in just one instance.
+	 * if true, {@link PcControllerAbstract} RESTmote will take care to ensure that just one instance of this app wwill be allowed
+	 * set it to false if this is achieved by the app itself (maybe editing its settings)
 	 * @see PcControllerWindows#openFile(String, App)
 	 * @see PcControllerWindows#closeApp(App)
 	 */
@@ -167,8 +168,8 @@ public class App implements Editable, Completable{
 		}
 		if (Utils.isEmpty(getPath())){
 			errors.append("<br/><b>Path</b> is mandatory");
-		} else if (!new File(getPath()).exists()){
-			errors.append("<br/><b>Path</b> doesn't exist");
+//		} else if (!new File(getPath()).exists()){	//if its in the bin system varaible, there's no need to check for existence
+//			errors.append("<br/><b>Path</b> doesn't exist");
 		}
 		if (Utils.isEmpty(getWindowName())){
 			errors.append("<br/><b>Window</b> is mandatory");

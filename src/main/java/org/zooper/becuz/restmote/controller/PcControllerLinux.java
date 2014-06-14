@@ -35,7 +35,7 @@ public class PcControllerLinux extends PcControllerAbstract{
 	}
 	
 	/**
-	 * 0x05000004  0 smplayer.Smplayer     kancha SMPlayer
+	 * ex: 0x05000004  0 smplayer.Smplayer     kancha SMPlayer
 	 */
 	@Override
 	public List<ActiveApp> getRunningApps(BufferedReader brInput, BufferedReader brError) throws IOException {

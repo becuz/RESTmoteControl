@@ -56,6 +56,9 @@ public abstract class ModelFactoryAbstract {
 		if (mediaCategoryMusic == null){
 			mediaCategoryMusic = new MediaCategory("Music");
 			mediaCategoryMusic.addExtension("mp3");
+			mediaCategoryMusic.addExtension("flac");
+			mediaCategoryMusic.addExtension("mpc");
+			mediaCategoryMusic.addExtension("ogg");
 			mediaCategoryMusic.setApp(getAppMusic());
 		}
 		return mediaCategoryMusic;
@@ -79,12 +82,6 @@ public abstract class ModelFactoryAbstract {
 			mediaCategoryRoot.setDescription("Allows to browse the entire filesystem.");
 		}
 		return mediaCategoryRoot;
-	}
-	
-	public Character getAppMusicPauseChar(){
-		return KeyEvent.getKeyText(
-				getAppMusic().getVisualControlsManager().getControl(ControlDefaultTypeApp.PAUSE.toString().toLowerCase())
-				.getControl().getKeysEvents().iterator().next().getKeys().iterator().next()).charAt(0);
 	}
 	
 	public static ControlInterface[] getControlKeyboard(ControlDefaultTypeKeyboard c, Integer key, Integer row, Integer position){

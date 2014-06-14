@@ -1,8 +1,10 @@
 #paths specified here will be inserted on database creation. it's a fast way to avoid developers to manually insert after a db re-creation.
-C:\downloads\AAA torrent
-C:\Media\Music
-C:\Media\Pictures\
-C:\Users\admin\Desktop\Export
-/media/bebo/dreams/downloads/AAA torrent
-/media/bebo/dreams/Media/Music
-/media/bebo/dreams/Media/Pictures
+#C:\downloads\AAA torrent
+#C:\Media\Music
+#C:\Media\Pictures\
+#C:\Users\admin\Desktop\Export
+#/media/bebo/dreams/downloads/AAA torrent
+#/media/bebo/dreams/Media/Music
+#/media/bebo/dreams/Media/Pictures
+/var/media
+/home/bebo/Downloads/AAA Torrent

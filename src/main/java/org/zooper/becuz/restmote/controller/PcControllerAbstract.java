@@ -57,12 +57,12 @@ public abstract class PcControllerAbstract {
 	protected static Robot myRobot;
 	
 	/**
-	 * Implementation to simulate keyboard
+	 * keyboard control
 	 */
 	protected Keyboard keyboard;
 
 	/**
-	 * Implementation to simulate mouse
+	 * mouse control
 	 */
 	protected Mouse mouse;
 	

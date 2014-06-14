@@ -56,11 +56,11 @@ public class RestmoteControl {
 	
 	/**
 	 * 
-	 * @param develop
+	 * @param forcePopulateDb
 	 * @throws Exception
 	 */
-	public void run(boolean develop) throws Exception {
-		new PopulateDb().createAndPopulate(/*develop*/);
+	public void run(boolean forcePopulateDb) throws Exception {
+		new PopulateDb().createAndPopulate(forcePopulateDb);
 
 		// to cache everything, let's do several getAll
 //		PersistenceAbstract persistenceAbstract = PersistenceFactory.getPersistenceAbstract();

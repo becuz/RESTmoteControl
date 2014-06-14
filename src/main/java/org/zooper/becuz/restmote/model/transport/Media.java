@@ -1,5 +1,6 @@
 package org.zooper.becuz.restmote.model.transport;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class Media {
 	
 	@Override
 	public String toString() {
-		return getPath();
+		return "path:" + getPath();
 	}
 	
 	public List<Media> getMediaChildren() {
@@ -94,9 +95,7 @@ public class Media {
 		this.path = path;
 		if (path != null){
 			String[] p = path.split("\\"+System.getProperty("file.separator"));
-			if (p.length > 0){ // case linux root path "/"
-				setName(p[p.length-1]);
-			}
+			setName(p.length > 0 ? p[p.length-1] : path);
 		}
 	}
 

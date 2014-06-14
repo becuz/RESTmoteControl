@@ -63,11 +63,9 @@ public class TestActiveAppBusiness extends TestAbstract{
 		try {
 			List<MediaRoot> mediaRoots = mediaBusiness.getMediaRoots();
 			assertNotNull(mediaRoots);
-			assertEquals(mediaRoots.size(), 4);
+			assertTrue(mediaRoots.size() > 0);
 			Media m = findMediaByExtensionInMediaRoots(mediaRoots, "mp3");
 			assertNotNull(m);
-			
-			//OpenFile
 			
 			remoteControlBusiness.openFile(m.getPath(), appMusic);
 			
@@ -80,6 +78,7 @@ public class TestActiveAppBusiness extends TestAbstract{
 			
 			List<ActiveApp> activeApps = activeAppBusiness.getActiveApps(true, true);
 			boolean found = false;
+			System.out.println("Looking for app " + appMusic.getWindowName());
 			for(ActiveApp acApp: activeApps){
 				if (acApp.getName().equals(appMusic.getWindowName())){
 					found = true;

@@ -9,6 +9,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.awt.event.KeyEvent;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,7 +18,9 @@ import org.zooper.becuz.restmote.business.ActiveAppBusiness;
 import org.zooper.becuz.restmote.business.MediaBusiness;
 import org.zooper.becuz.restmote.business.RemoteControlBusiness;
 import org.zooper.becuz.restmote.conf.ModelFactoryFactory;
+import org.zooper.becuz.restmote.model.App;
 import org.zooper.becuz.restmote.model.Control;
+import org.zooper.becuz.restmote.model.Control.ControlDefaultTypeApp;
 import org.zooper.becuz.restmote.model.transport.ActiveApp;
 import org.zooper.becuz.restmote.model.transport.Media;
 import org.zooper.becuz.restmote.model.transport.MediaRoot;
@@ -33,6 +36,12 @@ public class TestRemoteControlBusiness extends TestAbstract{
 	private RemoteControlBusiness remoteControlBusiness = new RemoteControlBusiness();
 	private ActiveAppBusiness activeAppBusiness = new ActiveAppBusiness();
 	private String handle;
+	
+	private Character getAppMusicPauseChar(App appMusic){
+		return KeyEvent.getKeyText(
+				appMusic.getVisualControlsManager().getControl(ControlDefaultTypeApp.PLAY.toString().toLowerCase())
+				.getControl().getKeysEvents().iterator().next().getKeys().iterator().next()).charAt(0);
+	}
 	
 	/**
 	 * Tests openMedia, control, closeMedia, openFile, testKillActiveApps
@@ -65,9 +74,9 @@ public class TestRemoteControlBusiness extends TestAbstract{
 			remoteControlBusiness.control(appMusic.getName(), Control.ControlDefaultTypeApp.NEXT.toString(), null);
 			Thread.sleep(50);
 			//by app name, char
-			remoteControlBusiness.control(appMusic.getName(), null, ModelFactoryFactory.getModelFactoryAbstract().getAppMusicPauseChar());
+			remoteControlBusiness.control(appMusic.getName(), null, getAppMusicPauseChar(appMusic));
 			Thread.sleep(50);
-			remoteControlBusiness.control(appMusic.getName(), null, ModelFactoryFactory.getModelFactoryAbstract().getAppMusicPauseChar());
+			remoteControlBusiness.control(appMusic.getName(), null, getAppMusicPauseChar(appMusic));
 			//by app handle, control name
 			remoteControlBusiness.controlByHandle(handle, Control.ControlDefaultTypeApp.PREV.toString(), null);
 			

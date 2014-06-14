@@ -45,8 +45,10 @@ public class TestDataResource extends TestResourceAbstract {
 			assertNotNull(mediaRoot.getName());
 			assertNull(mediaRoot.getPath());
 			assertFalse(mediaRoot.isFile());
+			System.out.println("MEDIA ROOT: " + mediaRoot.getName() + ": " + mediaRoot);
 			if (mediaRoot.getMediaChildren() != null){
 				for(Media mediaChild: mediaRoot.getMediaChildren()){
+					System.out.println(mediaChild.getName() + ": " + mediaChild);
 //					assertNotNull(mediaChild.getId()); //JsonIgnore
 					assertNotNull(mediaChild.getName());
 				}
