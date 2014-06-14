@@ -13,13 +13,8 @@ import org.zooper.becuz.restmote.ui.Tray;
  *	TODO
  *	children should be sorted alpabetichally
  *
- *	hold in a li, in the client, doesn't load the folder
- *
- *  attack & release of black keys was not loaded, maybe because of the & ?
- * 
  *  the section with the controls is quiet big. (Expecially in music) users would mostly choose the media, no play with controls.
  *  therefore the secion visibility should be toggled easily somehow.
- *  
  *
  */
 public class MainUI {

@@ -128,7 +128,7 @@ function ajax_getMedias(media, $liCount) {
 		url:   
 			remoteUrl + "medias" 
 			+ (currentMediaCategory ? ("/"+currentMediaCategory.name) : "" ) 
-			+ (media.path ? "?path="+encodeURI(media.path) : ""),
+			+ (media.path ? "?path="+encodeURIComponent(media.path) : ""),
 		success: function(data) {
 			if (data && data.length){
 				media.mediaChildren = data;
